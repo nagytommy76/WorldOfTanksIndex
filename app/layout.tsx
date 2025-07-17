@@ -1,8 +1,11 @@
 import type { Metadata } from 'next'
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter'
+
 import { Montserrat } from 'next/font/google'
 import './globals.css'
 
 import Footer from '@/components/Footer/Footer'
+import Navbar from '@/componentsNavbar/Navbar'
 
 const montserrat = Montserrat({
    subsets: ['latin'],
@@ -20,10 +23,13 @@ export default function RootLayout({
 }>) {
    return (
       <html className={montserrat.className} lang='en'>
-         <body>
-            {children}
-            <Footer />
-         </body>
+         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+            <body>
+               <Navbar />
+               {children}
+               <Footer />
+            </body>
+         </AppRouterCacheProvider>
       </html>
    )
 }

@@ -4,6 +4,8 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter'
 import { Montserrat } from 'next/font/google'
 import './globals.css'
 
+import ThemeProvider from '@/ProvidersThemeProvider'
+
 import Footer from '@/components/Footer/Footer'
 import Navbar from '@/componentsNavbar/Navbar'
 
@@ -24,11 +26,13 @@ export default function RootLayout({
    return (
       <html className={montserrat.className} lang='en'>
          <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-            <body>
-               <Navbar />
-               {children}
-               <Footer />
-            </body>
+            <ThemeProvider>
+               <body>
+                  <Navbar />
+                  <main className='max-w-screen-2xl mx-auto px-5'>{children}</main>
+                  <Footer />
+               </body>
+            </ThemeProvider>
          </AppRouterCacheProvider>
       </html>
    )

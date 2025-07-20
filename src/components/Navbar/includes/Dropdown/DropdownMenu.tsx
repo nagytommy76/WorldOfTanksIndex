@@ -31,7 +31,7 @@ export default function DropdownMenu() {
             Tech tree
          </Button>
          <Menu id='tech-tree-menu' anchorEl={anchorEl} open={open} onClose={handleClose}>
-            <Dropdown />
+            <Dropdown handleClose={handleClose} />
          </Menu>
       </div>
    )

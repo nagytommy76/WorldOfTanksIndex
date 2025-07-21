@@ -16,7 +16,13 @@ export default function FlagLinks() {
                   href={`/techtree/${key}`}
                   key={key}
                >
-                  <Image src={flagSources[key].source} alt={flagSources[key].alt} width={70} height={70} />
+                  <Image
+                     src={flagSources[key].source}
+                     alt={flagSources[key].alt}
+                     title={flagSources[key].alt}
+                     width={70}
+                     height={70}
+                  />
                </Link>
             )
          })}

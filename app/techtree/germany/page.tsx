@@ -6,6 +6,8 @@ export const metadata: Metadata = {
    description: 'Tech tree for German vehicles in World of Tanks game',
 }
 
+import PremiumTanks from '@/TechtreeTanks/PremiumTanks'
+
 async function getAllGermanVehicles() {
    const filteredData = await fetch(
       `https://api.worldoftanks.eu/wot/encyclopedia/vehicles/?application_id=${process.env.WOT_APP_ID}&nation=germany&fields=tank_id%2C+is_premium%2C+images%2C+type%2C+short_name%2C+name%2C+nation%2C+tier%2C+price_gold%2C+price_credit%2C+next_tanks`,
@@ -29,6 +31,9 @@ export default async function page() {
       if (currentVehicle.is_premium === true) {
          groupedPremiumTanksByTier[currentVehicle.tier] ||= []
          groupedPremiumTanksByTier[currentVehicle.tier].push(currentVehicle)
+      } else if (currentVehicle.price_credit !== null || currentVehicle.is_premium === false) {
+         groupedTanksByTier[currentVehicle.tier] ||= []
+         groupedTanksByTier[currentVehicle.tier].push(currentVehicle)
       } else if (
          currentVehicle.price_credit !== null &&
          currentVehicle.price_gold === 0 &&
@@ -37,22 +42,19 @@ export default async function page() {
          groupedCollectorTanksByTier[currentVehicle.tier] ||= []
          groupedCollectorTanksByTier[currentVehicle.tier].push(currentVehicle)
       }
-      //  else if (currentVehicle.price_credit !== null) {
-      groupedTanksByTier[currentVehicle.tier] ||= []
-      groupedTanksByTier[currentVehicle.tier].push(currentVehicle)
-      // }
    })
 
-   console.log(groupedTanksByTier[10])
-   // console.log(groupedPremiumTanksByTier[5])
+   console.log(groupedTanksByTier[8])
+   console.log(groupedPremiumTanksByTier[8])
    // console.log(groupedCollectorTanksByTier[4])
    return (
       <>
-         {groupedTanksByTier[10].map((techTreeVehicle) => (
+         {/* {groupedTanksByTier[10].map((techTreeVehicle) => (
             <div key={techTreeVehicle.tank_id}>
                <h1>{techTreeVehicle.name}</h1>
             </div>
-         ))}
+         ))} */}
+         <PremiumTanks groupedPremiumTanksByTier={groupedPremiumTanksByTier} />
       </>
    )
 }

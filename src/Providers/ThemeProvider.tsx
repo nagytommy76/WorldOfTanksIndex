@@ -32,12 +32,6 @@ const darkTheme = createTheme({
    },
    typography: {
       fontFamily: montserrat.style.fontFamily,
-      allVariants: {
-         color: '#fafafa',
-      },
-      h2: {
-         color: 'palegreen',
-      },
    },
 })
 

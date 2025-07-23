@@ -28,23 +28,27 @@ function getIcon(type: string) {
 
 export default function TankCard({ vehicle }: { vehicle: ITechTreeVehicleType }) {
    return (
-      <Link href={`/${vehicle.tank_id}/${vehicle.name}`} className={'w-[110px] h-[90px] relative'}>
-         <Image
-            className='w-full bg-gradient-to-b from-gray-800 to-gray-900'
-            src={vehicle.images.small_icon}
-            alt={vehicle.name}
-            width={100}
-            height={80}
-         />
-         <Image
-            className={'absolute top-0 right-0'}
-            src={getIcon(vehicle.type)}
-            alt={vehicle.name}
-            width={10}
-            height={10}
-         />
+      <Link href={`/${vehicle.tank_id}/${vehicle.name}`} className={'w-[120px] h-[110px]'}>
+         <div className='relative'>
+            <Image
+               className='w-full bg-gradient-to-b from-gray-800 to-gray-900'
+               src={vehicle.images.small_icon}
+               alt={vehicle.name}
+               width={100}
+               height={100}
+            />
+            {vehicle.price_gold !== 0 && (
+               <p className='absolute bottom-0 right-0 text-xs text-amber-300'>{vehicle.price_gold}</p>
+            )}
+            <Image
+               className={'absolute top-0 right-0'}
+               src={getIcon(vehicle.type)}
+               alt={vehicle.name}
+               width={10}
+               height={10}
+            />
+         </div>
          <p className={'h-[20px] w-full text-xs text-center bg-gray-900'}>{vehicle.short_name}</p>
-         <p className=''>{vehicle.price_gold || 0}</p>
       </Link>
    )
 }

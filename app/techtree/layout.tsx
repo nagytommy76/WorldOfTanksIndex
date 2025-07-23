@@ -13,7 +13,7 @@ export default async function layout({
    children: React.ReactNode
 }>) {
    return (
-      <section className={'h-screen'}>
+      <section className={'min-h-screen'}>
          <HeaderTitle />
          <FlagLinks />
          {children}

@@ -6,9 +6,11 @@
    --foreground: #171717;
 }
 
-@theme inline {
+@theme {
    --color-background: var(--background);
    --color-foreground: var(--foreground);
+   --color-lightTank: cubic-bezier(0.3, 0, 0, 1);
+   --color-heavyTank: linear-gradient(35deg, #e66465, #9198e5);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -24,4 +26,20 @@ body {
    background-image: url('/wot_sparkles.png');
    background-repeat: repeat;
    background-size: cover;
+}
+
+.heavyTank {
+   @apply bg-gradient-to-b from-[#530179] to-[#1c1c1e];
+}
+.mediumTank {
+   @apply bg-gradient-to-b from-[#4a3829] to-[#1c1c1e];
+}
+.SPG {
+   @apply bg-gradient-to-b from-[#203c4e] to-[#1c1c1e];
+}
+.AT-SPG {
+   @apply bg-gradient-to-b from-[#16194a] to-[#1c1c1e];
+}
+.lightTank {
+   @apply bg-gradient-to-b from-[#29492b] to-[#1c1c1e];
 }

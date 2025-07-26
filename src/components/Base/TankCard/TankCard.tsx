@@ -28,17 +28,24 @@ function getIcon(type: string) {
 
 export default function TankCard({ vehicle }: { vehicle: ITechTreeVehicleType }) {
    return (
-      <Link href={`/${vehicle.tank_id}/${vehicle.name}`} className={'w-[120px] h-[110px]'}>
+      <Link
+         href={`/${vehicle.tank_id}/${vehicle.name}`}
+         title={vehicle.name}
+         className={'w-[120px] h-[110px]'}
+      >
          <div className='relative'>
             <Image
-               className='w-full bg-gradient-to-b from-gray-800 to-gray-900'
+               className={`w-full ${vehicle.type}`}
                src={vehicle.images.small_icon}
                alt={vehicle.name}
                width={100}
                height={100}
             />
             {vehicle.price_gold !== 0 && (
-               <p className='absolute bottom-0 right-0 text-xs text-amber-300'>{vehicle.price_gold}</p>
+               <p className='absolute bottom-0 right-0 text-[10px] text-amber-300'>{vehicle.price_gold}</p>
+            )}
+            {vehicle.price_credit !== 0 && (
+               <p className='absolute bottom-0 right-0 text-[10px]'>{vehicle.price_credit}</p>
             )}
             <Image
                className={'absolute top-0 right-0'}

@@ -15,15 +15,15 @@ export default function PremiumTanks({
          <Typography variant='h6' className={'my-8 text-center text-amber-200 '}>
             Premium vehicles
          </Typography>
-         <div className='w-full flex flex-row flex-wrap justify-center gap-3'>
+         <div className='w-full flex flex-row flex-wrap justify-center gap-5'>
             {Object.keys(groupedPremiumTanksByTier).map((key) => (
                <div key={key}>
                   {groupedPremiumTanksByTier[Number(key)].map((premiumVehicle) => (
-                     <>
+                     <span key={premiumVehicle.tank_id}>
                         {!premiumVehicle.name.endsWith('FL') && (
                            <TankCard key={premiumVehicle.tank_id} vehicle={premiumVehicle} />
                         )}
-                     </>
+                     </span>
                   ))}
                </div>
             ))}

@@ -7,7 +7,7 @@ export default function PremiumTanks({
    groupedPremiumTanksByTier,
 }: {
    groupedPremiumTanksByTier: {
-      [index: number]: ITechTreeVehicleType[]
+      [tier: number]: ITechTreeVehicleType[]
    }
 }) {
    return (
@@ -19,11 +19,11 @@ export default function PremiumTanks({
             {Object.keys(groupedPremiumTanksByTier).map((key) => (
                <div key={key}>
                   {groupedPremiumTanksByTier[Number(key)].map((premiumVehicle) => (
-                     <span key={premiumVehicle.tank_id}>
+                     <div key={premiumVehicle.tank_id} className='my-6'>
                         {!premiumVehicle.name.endsWith('FL') && (
                            <TankCard key={premiumVehicle.tank_id} vehicle={premiumVehicle} />
                         )}
-                     </span>
+                     </div>
                   ))}
                </div>
             ))}

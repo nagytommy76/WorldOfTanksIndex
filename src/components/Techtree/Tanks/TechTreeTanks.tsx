@@ -1,5 +1,9 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import TankCard from '@/Base/TankCard/TankCard'
+
+import getIcon from '@/lib/getVehicleTypeIcon'
+import { flagSources } from '@/Base/FlagLinks/FlagLinks'
 
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
@@ -21,12 +25,12 @@ export default function TechTreeTanks({
 }) {
    return (
       <TableContainer component={Paper}>
-         <Table sx={{ minWidth: 450 }} aria-label='simple table' size='small'>
+         <Table aria-label='simple table' size='small'>
             <TableHead>
                <TableRow>
-                  <TableCell>Vehicle name</TableCell>
+                  <TableCell>Nation</TableCell>
                   <TableCell>Type</TableCell>
-                  <TableCell>nation</TableCell>
+                  <TableCell>Vehicle name</TableCell>
                </TableRow>
             </TableHead>
             <TableBody>
@@ -37,19 +41,31 @@ export default function TechTreeTanks({
                            key={techTreeVehicle.tank_id}
                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
-                           <TableCell>
-                              <div className={'felx flex-col justify-center'}>
-                                 <Typography>{techTreeVehicle.name}</Typography>
+                           <Link
+                              href={`/${techTreeVehicle.tank_id}/${techTreeVehicle.name}`}
+                              key={techTreeVehicle.tank_id}
+                           >
+                              <TableCell>
+                                 <Image
+                                    src={flagSources[techTreeVehicle.nation].source}
+                                    alt={flagSources[techTreeVehicle.nation].alt}
+                                    width={30}
+                                    height={30}
+                                 />
+                              </TableCell>
+                              <TableCell>
+                                 <Image src={getIcon(techTreeVehicle.type)} alt={techTreeVehicle.name} />
+                              </TableCell>
+                              <TableCell className={'flex flex-row items-center'}>
                                  <Image
                                     src={techTreeVehicle.images.contour_icon}
                                     width={65}
                                     height={65}
                                     alt={techTreeVehicle.name}
                                  />
-                              </div>
-                           </TableCell>
-                           <TableCell>{techTreeVehicle.type}</TableCell>
-                           <TableCell>{techTreeVehicle.nation}</TableCell>
+                                 <Typography>{techTreeVehicle.name}</Typography>
+                              </TableCell>
+                           </Link>
                         </TableRow>
                      ))}
                   </>

@@ -1,4 +1,5 @@
 import TankCard from '@/Base/TankCard/TankCard'
+import TierList from '@/componentsTechtree/Header/TierList'
 
 import Typography from '@mui/material/Typography'
 import type { ITechTreeVehicleType } from '@/types/techTreeTypes'
@@ -15,6 +16,7 @@ export default function PremiumTanks({
          <Typography variant='h6' className={'my-8 text-center text-amber-200 '}>
             Premium vehicles
          </Typography>
+         <TierList />
          <div className='w-full flex flex-row flex-wrap justify-center gap-5'>
             {Object.keys(groupedPremiumTanksByTier).map((key) => (
                <div key={key}>

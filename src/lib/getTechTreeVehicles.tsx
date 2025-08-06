@@ -2,11 +2,11 @@ import type { ITechTreeVehicleType } from '@/types/techTreeTypes'
 
 async function getAllVehicles(nation: string) {
    const filteredData = await fetch(
-      `https://api.worldoftanks.eu/wot/encyclopedia/vehicles/?application_id=${process.env.WOT_APP_ID}&nation=${nation}&fields=tank_id%2C+is_premium%2C+images%2C+type%2C+short_name%2C+name%2C+nation%2C+tier%2C+price_gold%2C+price_credit%2C+next_tanks`,
+      `https://api.worldoftanks.eu/wot/encyclopedia/vehicles/?application_id=${process.env.WOT_APP_ID}&nation=${nation}&fields=tag%2C+tank_id%2C+is_premium%2C+images%2C+type%2C+short_name%2C+name%2C+nation%2C+tier%2C+price_gold%2C+price_credit%2C+next_tanks`,
       { method: 'GET' }
    )
    const response = (await filteredData.json()) as Promise<{
-      data: { [index: number]: ITechTreeVehicleType }
+      data: { [tank_id: number]: ITechTreeVehicleType }
    }>
    return await response
 }
@@ -14,9 +14,9 @@ async function getAllVehicles(nation: string) {
 export default async function returnVehicles(nation: string) {
    const allVehicles = await getAllVehicles(nation)
 
-   const groupedTanksByTier: { [index: number]: ITechTreeVehicleType[] } = {}
-   const groupedPremiumTanksByTier: { [index: number]: ITechTreeVehicleType[] } = {}
-   const groupedCollectorTanksByTier: { [index: number]: ITechTreeVehicleType[] } = {}
+   const groupedTanksByTier: { [tier: number]: ITechTreeVehicleType[] } = {}
+   const groupedPremiumTanksByTier: { [tier: number]: ITechTreeVehicleType[] } = {}
+   const groupedCollectorTanksByTier: { [tier: number]: ITechTreeVehicleType[] } = {}
 
    Object.keys(allVehicles.data).map((key) => {
       const currentVehicle = allVehicles.data[Number(key)]

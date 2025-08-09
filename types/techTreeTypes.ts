@@ -10,6 +10,7 @@ export interface ITechTreeVehicleType {
    } | null
    is_premium: boolean
    name: string
+   tag: string
    short_name: string
    nation: string
    price_credit: number | null

@@ -18,4 +18,5 @@ export interface ITechTreeVehicleType {
    tank_id: number
    tier: number
    type: string
+   prices_xp: { [id: string]: number } | null
 }

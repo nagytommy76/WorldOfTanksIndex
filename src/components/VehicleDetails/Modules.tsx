@@ -16,18 +16,17 @@ export default async function Modules({
 }) {
    const moduleTree: { [stage: string]: any } = {}
 
-   Object.values(modulesTree[Number(tank_id)].modules_tree).map((module) => {
-      moduleTree[module.type] ||= []
-      moduleTree[module.type].push(module)
-      if (module.next_modules !== null) {
-         const nextModule = modulesTree[Number(tank_id)].modules_tree[module.next_modules[0]]
-         console.log(nextModule)
+   for (const [key, module] of Object.entries(modulesTree[Number(tank_id)].modules_tree)) {
+      // moduleTree.push(module)
+      // console.log('Key: ', key, 'Module: ', module)
+      if (module.is_default) {
+         moduleTree[module.type] ||= []
+         moduleTree[module.type].push(module)
+         console.log(module)
       }
 
-      if (Object.keys(modulesTree[Number(tank_id)].modules_tree).includes(module.module_id.toString())) {
-      }
-      // console.log(module)
-   })
+      // console.log(moduleTree)
+   }
 
    // console.log(modulesTree[Number(tank_id)].modules_tree)
    return (

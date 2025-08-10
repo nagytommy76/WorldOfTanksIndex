@@ -1,5 +1,6 @@
 import PremiumTanks from '@/TechtreeTanks/PremiumTanks'
 import TechTreeTanks from '@/TechtreeTanks/TechTreeTanks'
+import Collectors from '@/TechtreeTanks/Collectors'
 
 import type { ITechTreeVehicleType } from '@/types/techTreeTypes'
 
@@ -15,9 +16,10 @@ export default function TechTree({
    }
 }) {
    return (
-      <section>
+      <>
          <TechTreeTanks groupedTechTreeByTier={groupedTanksByTier} />
          <PremiumTanks groupedPremiumTanksByTier={groupedPremiumTanksByTier} />
-      </section>
+         <Collectors groupedCollectorTanksByTier={groupedCollectorTanksByTier} />
+      </>
    )
 }

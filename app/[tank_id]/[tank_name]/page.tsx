@@ -24,15 +24,6 @@ export default async function page({ params }: { params: Promise<{ tank_id: stri
    const { tank_id, tank_name } = await params
    const { data: modulesTree } = await getModulesTree(tank_id)
 
-   const test2: { [module_type: string]: any[] } = {}
-
-   Object.values(modulesTree[Number(tank_id)].modules_tree).map((module) => {
-      test2[module.type] ||= []
-      test2[module.type].push(module)
-   })
-
-   console.log(test2)
-
    return (
       <section className='min-h-screen'>
          <Header
@@ -40,7 +31,7 @@ export default async function page({ params }: { params: Promise<{ tank_id: stri
             tank_name={tank_name}
             description={modulesTree[Number(tank_id)].description}
          />
-         <Modules />
+         <Modules modulesTree={modulesTree} tank_id={tank_id} />
       </section>
    )
 }

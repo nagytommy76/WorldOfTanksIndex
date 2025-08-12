@@ -1,5 +1,6 @@
 import Header from '@/VehicleDetails/Header'
 import Modules from '@/VehicleDetails/Modules'
+import { IModules } from '@/types/VehicleDetails/module'
 
 // https://api.worldoftanks.eu/wot/encyclopedia/vehicles/?application_id=fefeeb22948e9ab6ed8c62a09515d476&tank_id=9745
 // https://api.worldoftanks.eu/wot/encyclopedia/vehicleprofile/?application_id=fefeeb22948e9ab6ed8c62a09515d476&tank_id=9745
@@ -15,7 +16,7 @@ async function getModulesTree(tank_id: string | number) {
       { method: 'GET' }
    )
    const response = (await filteredData.json()) as Promise<{
-      data: { [tank_id: number]: { description: string; modules_tree: { [module_id: number]: any } } }
+      data: { [tank_id: number]: { description: string; modules_tree: { [module_id: number]: IModules } } }
    }>
    return await response
 }

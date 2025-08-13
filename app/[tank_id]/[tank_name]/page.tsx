@@ -1,5 +1,5 @@
 import Header from '@/VehicleDetails/Header'
-import Modules from '@/VehicleDetails/Modules'
+import Modules from '@/VehicleDetails/Modules/Modules'
 import { IModules } from '@/types/VehicleDetails/module'
 
 // https://api.worldoftanks.eu/wot/encyclopedia/vehicles/?application_id=fefeeb22948e9ab6ed8c62a09515d476&tank_id=9745

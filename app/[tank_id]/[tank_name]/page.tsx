@@ -32,7 +32,7 @@ export default async function page({ params }: { params: Promise<{ tank_id: stri
             tank_name={tank_name}
             description={modulesTree[Number(tank_id)].description}
          />
-         <Modules modulesTree={modulesTree} tank_id={tank_id} />
+         <Modules modulesTree={modulesTree[Number(tank_id)].modules_tree} tank_id={tank_id} />
       </section>
    )
 }

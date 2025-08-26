@@ -1,6 +1,6 @@
 import { useEffect, type ActionDispatch } from 'react'
 import type { IModules, ModuleType } from '@/types/VehicleDetails/module'
-import type { IModuleContextActions } from '../Types'
+import type { IModuleContextActions } from '@/ModuleContext/Types'
 
 export default function useGroupModules(
    modulesTree: { [module_id: number]: IModules },

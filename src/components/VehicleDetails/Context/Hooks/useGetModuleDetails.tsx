@@ -27,7 +27,7 @@ export default function useGetModuleDetails(
                suspension_id: vehicleChassis,
                engine_id: vehicleEngine,
                gun_id: vehicleGun,
-               turret_id: vehicleTurret,
+               turret_id: vehicleTurret === 0 ? null : vehicleTurret,
                radio_id: vehicleRadio,
             },
          }
@@ -38,7 +38,7 @@ export default function useGetModuleDetails(
       if (vehicleChassis && vehicleEngine && vehicleGun && vehicleRadio) setIsIdsReady(true)
    }, [setIsIdsReady, vehicleChassis, vehicleEngine, vehicleGun, vehicleRadio])
 
-   const { data, isError } = useQuery({
+   const { data } = useQuery({
       queryKey: ['moduleDetails', [vehicleChassis, vehicleEngine, vehicleGun, vehicleRadio]],
       queryFn: queryFunction,
       refetchOnWindowFocus: false,
@@ -49,7 +49,7 @@ export default function useGetModuleDetails(
       if (data) {
          vehicleProfileDispatch({ type: 'SET_VEHICLE_PROFILE', payload: data.data.data[tank_id] })
       }
-   }, [data, isError, tank_id, vehicleProfileDispatch])
+   }, [data, tank_id, vehicleProfileDispatch])
 
    return null
 }

@@ -88,7 +88,7 @@ export interface Radio {
  * Type of ammo
  * @ARMOR_PIERCING_CR = armor piercing Premium
  */
-export type AmmoType = 'ARMOR_PIERCING' | 'ARMOR_PIERCING_CR' | 'HIGH_EXPLOSIVE'
+export type AmmoType = 'ARMOR_PIERCING' | 'ARMOR_PIERCING_CR' | 'HIGH_EXPLOSIVE' | 'HOLLOW_CHARGE'
 
 export interface Ammo {
    penetration: number[]

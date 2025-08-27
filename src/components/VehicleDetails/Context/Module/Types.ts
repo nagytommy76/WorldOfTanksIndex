@@ -47,6 +47,7 @@ export const moduleInitialState: IModulesReducerState = {
 // CONTEXT
 export interface IModulesContext {
    tank_id: string
+   tank_short_name: string
    modulesReducer: IModulesReducerState
    modulesDispatch: React.Dispatch<IModuleContextActions>
 }

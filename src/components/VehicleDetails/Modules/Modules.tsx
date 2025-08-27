@@ -10,12 +10,14 @@ import DetailsTable from './DetailsTable/DetailsTable'
 export default function Modules({
    modulesTree,
    tank_id,
+   tank_short_name,
 }: {
    tank_id: string
    modulesTree: { [module_id: number]: IModules }
+   tank_short_name: string
 }) {
    return (
-      <ModuleContextProvider modulesTree={modulesTree} tank_id={tank_id}>
+      <ModuleContextProvider tank_short_name={tank_short_name} modulesTree={modulesTree} tank_id={tank_id}>
          <DetailsContextProvider>
             <section className={'w-full min-h-[600px] my-20 flex flex-row justify-between gap-5'}>
                <ModuleSelect />

@@ -19,7 +19,7 @@ export default function useGetModuleDetails(
 
    const queryFunction = async () => {
       return await axios.get<{ data: { [tank_id: string]: IModuleDetails } }>(
-         '/encyclopedia/vehicleprofile/',
+         'https://api.worldoftanks.eu/wot/encyclopedia/vehicleprofile/',
          {
             params: {
                application_id: process.env.NEXT_PUBLIC_WOT_APP_ID,

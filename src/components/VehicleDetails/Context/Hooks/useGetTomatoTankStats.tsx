@@ -1,7 +1,7 @@
 import axios from '@/ProvidersAxiosProvider'
 import { useQuery } from '@tanstack/react-query'
 
-import { useContext } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { ModuleContext } from '@/ModuleContext/ModuleContext'
 
 import type { ITomatoTankStats } from '@/types/VehicleDetails/tomatoGGTankStats'
@@ -11,15 +11,20 @@ import type { ITomatoTankStats } from '@/types/VehicleDetails/tomatoGGTankStats'
 
 export default function useGetTomatoTankStats() {
    const { tank_short_name, tank_id } = useContext(ModuleContext)
+   const [tomatoTankStats, setTomatoTankStats] = useState<ITomatoTankStats>({} as ITomatoTankStats)
    async function getTomatoTankStats() {
-      const response = (await axios.get(`/${tank_id}/${tank_short_name}`)) as ITomatoTankStats
-      return response
+      const response = (await axios.get(`/${tank_id}/${tank_short_name}`)) as { data: ITomatoTankStats }
+      return response.data
    }
 
-   const { data } = useQuery({
+   const { data, isError } = useQuery({
       queryKey: ['tomato-tank-stats', tank_short_name],
       queryFn: getTomatoTankStats,
    })
 
-   return data
+   useEffect(() => {
+      if (!isError && data) setTomatoTankStats(data)
+   }, [data, isError])
+
+   return tomatoTankStats
 }

@@ -30,7 +30,8 @@
          "@/Techtree*": ["./src/components/Techtree/*"],
          // Contexts
          "@/ModuleContext/*": ["./src/components/VehicleDetails/Context/Module/*"],
-         "@/DetailsContext/*": ["./src/components/VehicleDetails/Context/Details/*"]
+         "@/DetailsContext/*": ["./src/components/VehicleDetails/Context/Details/*"],
+         "@/TomatoContext/*": ["./src/components/VehicleDetails/Context/TomatoContext/*"]
       }
    },
    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

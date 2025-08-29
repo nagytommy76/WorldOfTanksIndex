@@ -3,6 +3,7 @@ import type { IModules } from '@/types/VehicleDetails/module'
 
 import ModuleContextProvider from '@/ModuleContext/ModuleContext'
 import DetailsContextProvider from '@/DetailsContext/DetailsContext'
+import TomatoContextProvider from '@/TomatoContext/TomatoContext'
 
 import ModuleSelect from './ModuleSelect/ModuleSelect'
 import DetailsTable from './DetailsTable/DetailsTable'
@@ -18,12 +19,14 @@ export default function Modules({
 }) {
    return (
       <ModuleContextProvider tank_short_name={tank_short_name} modulesTree={modulesTree} tank_id={tank_id}>
-         <DetailsContextProvider>
-            <section className={'w-full min-h-[600px] my-20 flex flex-row justify-between gap-5'}>
-               <ModuleSelect />
-               <DetailsTable />
-            </section>
-         </DetailsContextProvider>
+         <TomatoContextProvider>
+            <DetailsContextProvider>
+               <section className={'w-full min-h-[600px] my-20 flex flex-row justify-between gap-5'}>
+                  <ModuleSelect />
+                  <DetailsTable />
+               </section>
+            </DetailsContextProvider>
+         </TomatoContextProvider>
       </ModuleContextProvider>
    )
 }

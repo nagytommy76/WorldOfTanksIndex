@@ -1,5 +1,7 @@
 import { useContext } from 'react'
-import { DetailsContext } from '@/DetailsContext/DetailsContext'
+// import { DetailsContext } from '@/DetailsContext/DetailsContext'
+import { TomatoContext } from '@/TomatoContext/TomatoContext'
+import { ModuleContext } from '@/ModuleContext/ModuleContext'
 
 import Typography from '@mui/material/Typography'
 import Table from '@mui/material/Table'
@@ -11,12 +13,18 @@ import TableRow from '@mui/material/TableRow'
 import TableRowComponent from './TableRow'
 
 export default function Firepower() {
+   // const {
+   //    vehicleProfileReducer: { vehicleProfile },
+   // } = useContext(DetailsContext)
    const {
-      vehicleProfileReducer: { vehicleProfile },
-   } = useContext(DetailsContext)
-   if (!vehicleProfile) return null
+      modulesReducer: { selectedModuleNames },
+   } = useContext(ModuleContext)
+   const {
+      tomatoReducer: { vehicleChassis, vehicleEngine, vehicleRadio, vehicleTurret, vehicleGun },
+   } = useContext(TomatoContext)
+   // if (!vehicleProfile) return null
 
-   console.log(vehicleProfile)
+   // console.log(tankData)
 
    return (
       <Table size='small' aria-label='Firepower table with average damage and penetration'>
@@ -31,34 +39,40 @@ export default function Firepower() {
          <TableBody>
             <TableRowComponent
                titleText='Average Damage'
-               valueText={vehicleProfile.ammo[0]?.damage[0]}
+               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.shells[0].damage.armor}
                unit='HP'
             />
             <TableRowComponent
-               titleText='Average Penetration'
-               valueText={vehicleProfile.ammo[0]?.penetration[1]}
-               unit='HP'
+               titleText='Average Penetration (at 50 m)'
+               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.shells[0].piercingPower[0]}
+               unit='mm'
+            />
+            <TableRowComponent
+               titleText='Average Penetration (at 500 m)'
+               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.shells[0].piercingPower[1]}
+               unit='mm'
             />
             <TableRowComponent
                titleText='Rate of Fire'
-               valueText={(60 / vehicleProfile.gun.reload_time).toFixed(2)}
+               valueText={(60 / vehicleGun[selectedModuleNames.vehicleGun]?.reloadTime).toFixed(2)}
                unit='rounds/min'
             />
             <TableRowComponent
                titleText='Average Damage per Minute'
-               valueText={((60 / vehicleProfile.gun.reload_time) * vehicleProfile.ammo[0]?.damage[1]).toFixed(
-                  0
-               )}
+               valueText={(
+                  (60 / vehicleGun[selectedModuleNames.vehicleGun]?.reloadTime) *
+                  vehicleGun[selectedModuleNames.vehicleGun]?.shells[0].damage.armor
+               ).toFixed(0)}
                unit='HP/min'
             />
             <TableRowComponent
                titleText='Gun Loading'
-               valueText={vehicleProfile.gun.reload_time.toFixed(2)}
+               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.reloadTime}
                unit='s'
             />
             <TableRowComponent
                titleText='Aiming Time'
-               valueText={vehicleProfile.gun.aim_time.toFixed(2)}
+               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.aimTime.toFixed(2)}
                unit='s'
             />
             <TableRow>
@@ -68,14 +82,75 @@ export default function Firepower() {
                <TableCell></TableCell>
             </TableRow>
             <TableRowComponent
-               titleText='At 100 m'
-               valueText={vehicleProfile.gun.dispersion.toFixed(2)}
+               titleText='Accuracy At 100 m'
+               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.accuracy}
+               unit='m'
+               paddingLeft
+            />
+            <TableRowComponent
+               titleText='Moving'
+               valueText={vehicleChassis[selectedModuleNames.vehicleChassis]?.dispersion.vehicleMovement}
+               unit='m'
+               paddingLeft
+            />
+            <TableRowComponent
+               titleText='Tank traverse'
+               valueText={vehicleChassis[selectedModuleNames.vehicleChassis]?.dispersion.vehicleRotation}
+               unit='m'
+               paddingLeft
+            />
+            <TableRowComponent
+               titleText='Turret traverse'
+               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.dispersion.turretRotation}
+               unit='m'
+               paddingLeft
+            />
+            <TableRowComponent
+               titleText='After firing'
+               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.dispersion.afterShot}
+               unit='m'
+               paddingLeft
+            />
+            <TableRowComponent
+               titleText='While damaged'
+               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.dispersion.whileDamaged}
+               unit='m'
+               paddingLeft
+            />
+            <TableRowComponent
+               titleText='Gun depression'
+               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.depression}
+               unit='°'
+            />
+            <TableRowComponent
+               titleText='Gun elevation'
+               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.elevation}
+               unit='°'
+            />
+            <TableRowComponent
+               titleText='Module damage'
+               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.shells[0].damage.devices}
+               unit='hp'
+            />
+            <TableRowComponent
+               titleText='Shell velocity'
+               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.shells[0].speed}
+               unit='m/s'
+            />
+            <TableRowComponent
+               titleText='Range'
+               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.shells[0].maxDistance}
                unit='m'
             />
             <TableRowComponent
-               titleText='At 100 m'
-               valueText={vehicleProfile.gun.caliber.toFixed(2)}
-               unit='m'
+               titleText='Ammo capacity'
+               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.maxAmmo}
+               unit='rounds'
+            />
+            <TableRowComponent
+               titleText='Shell cost'
+               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.shells[0].price}
+               unit='credits'
             />
          </TableBody>
       </Table>

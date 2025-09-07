@@ -7,15 +7,15 @@ export default function ModuleReducer(state: IModulesReducerState, { payload, ty
             ...state,
             moduleGroup: payload,
          }
-      case 'SET_SELECTED_MODULE_IDS':
+      case 'SET_SELECTED_MODULE_NAMES':
          return {
             ...state,
-            selectedModuleIds: payload,
+            selectedModuleNames: payload,
          }
-      case 'SET_MODULE_ID_BY_TYPE':
+      case 'SET_MODULE_NAME_BY_TYPE':
          return {
             ...state,
-            selectedModuleIds: { ...state.selectedModuleIds, [payload.type]: payload.value },
+            selectedModuleNames: { ...state.selectedModuleNames, [payload.type]: payload.value },
          }
       default: {
          return {

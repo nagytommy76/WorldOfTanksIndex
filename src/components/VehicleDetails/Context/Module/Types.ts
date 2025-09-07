@@ -6,13 +6,13 @@ interface setModuleGroupByTypeAction {
 }
 
 interface setSelectedModuleIdsByTypeAction {
-   type: 'SET_SELECTED_MODULE_IDS'
-   payload: { [moduleType in ModuleType]: number }
+   type: 'SET_SELECTED_MODULE_NAMES'
+   payload: { [moduleType in ModuleType]: string }
 }
 
 interface setModuleIdByType {
-   type: 'SET_MODULE_ID_BY_TYPE'
-   payload: { type: ModuleType; value: number }
+   type: 'SET_MODULE_NAME_BY_TYPE'
+   payload: { type: ModuleType; value: string }
 }
 
 export type IModuleContextActions =
@@ -22,8 +22,8 @@ export type IModuleContextActions =
 
 export interface IModulesReducerState {
    moduleGroup: { [moduleType in ModuleType]: IModules[] }
-   selectedModuleIds: {
-      [moduleType in ModuleType]: number | null
+   selectedModuleNames: {
+      [moduleType in ModuleType]: string
    }
 }
 
@@ -35,12 +35,12 @@ export const moduleInitialState: IModulesReducerState = {
       vehicleRadio: [],
       vehicleTurret: [],
    },
-   selectedModuleIds: {
-      vehicleChassis: null,
-      vehicleEngine: null,
-      vehicleGun: null,
-      vehicleRadio: null,
-      vehicleTurret: null,
+   selectedModuleNames: {
+      vehicleChassis: '',
+      vehicleEngine: '',
+      vehicleGun: '',
+      vehicleRadio: '',
+      vehicleTurret: '',
    },
 }
 

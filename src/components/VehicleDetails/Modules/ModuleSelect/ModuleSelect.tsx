@@ -14,14 +14,14 @@ import ReturnModuleType from '../Includes/ModuleType'
 
 export default function ModuleSelect() {
    const {
-      modulesReducer: { moduleGroup, selectedModuleIds },
+      modulesReducer: { moduleGroup, selectedModuleNames },
       modulesDispatch,
    } = useContext(ModuleContext)
 
-   function setModuleIDByType(moduleType: ModuleType, moduleId: number) {
+   function setModuleNameByType(moduleType: ModuleType, moduleName: string) {
       modulesDispatch({
-         type: 'SET_MODULE_ID_BY_TYPE',
-         payload: { type: moduleType, value: moduleId },
+         type: 'SET_MODULE_NAME_BY_TYPE',
+         payload: { type: moduleType, value: moduleName },
       })
    }
 
@@ -35,8 +35,8 @@ export default function ModuleSelect() {
                   <ListItemButton
                      id={module.module_id.toString()}
                      key={module.module_id}
-                     selected={module.module_id === selectedModuleIds[key as ModuleType]}
-                     onClick={() => setModuleIDByType(key as ModuleType, module.module_id)}
+                     selected={module.name === selectedModuleNames[key as ModuleType]}
+                     onClick={() => setModuleNameByType(key as ModuleType, module.name)}
                   >
                      <ListItemAvatar>
                         <Image src={ReturnModuleImg(module.type)} alt={module.name} width={45} height={45} />

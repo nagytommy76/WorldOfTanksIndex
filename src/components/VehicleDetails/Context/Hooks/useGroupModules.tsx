@@ -25,16 +25,14 @@ export default function useGroupModules(
 
       modulesDispatch({ type: 'SET_MODULE_GROUP', payload: groupedModules })
       modulesDispatch({
-         type: 'SET_SELECTED_MODULE_IDS',
+         type: 'SET_SELECTED_MODULE_NAMES',
          payload: {
             vehicleChassis:
-               groupedModules.vehicleChassis[groupedModules.vehicleChassis.length - 1]?.module_id || 0,
-            vehicleEngine:
-               groupedModules.vehicleEngine[groupedModules.vehicleEngine.length - 1]?.module_id || 0,
-            vehicleGun: groupedModules.vehicleGun[groupedModules.vehicleGun.length - 1]?.module_id || 0,
-            vehicleRadio: groupedModules.vehicleRadio[groupedModules.vehicleRadio.length - 1]?.module_id || 0,
-            vehicleTurret:
-               groupedModules.vehicleTurret[groupedModules.vehicleTurret.length - 1]?.module_id || 0,
+               groupedModules.vehicleChassis[groupedModules.vehicleChassis.length - 1]?.name || '',
+            vehicleEngine: groupedModules.vehicleEngine[groupedModules.vehicleEngine.length - 1]?.name || '',
+            vehicleGun: groupedModules.vehicleGun[groupedModules.vehicleGun.length - 1]?.name || '',
+            vehicleRadio: groupedModules.vehicleRadio[groupedModules.vehicleRadio.length - 1]?.name || '',
+            vehicleTurret: groupedModules.vehicleTurret[groupedModules.vehicleTurret.length - 1]?.name || '',
          },
       })
    }, [modulesTree, modulesDispatch])

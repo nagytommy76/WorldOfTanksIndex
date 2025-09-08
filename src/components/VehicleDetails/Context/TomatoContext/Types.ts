@@ -1,3 +1,4 @@
+import type { ModuleType } from '@/types/VehicleDetails/module'
 import type {
    IChassis,
    IEngines,
@@ -33,6 +34,16 @@ interface setShellsAction {
    payload: { [shellName: string]: IShells }
 }
 
+interface setSelectedModuleIdsByTypeAction {
+   type: 'SET_SELECTED_MODULE_NAMES'
+   payload: { [moduleType in ModuleType]: string }
+}
+
+interface setModuleIdByType {
+   type: 'SET_MODULE_NAME_BY_TYPE'
+   payload: { type: ModuleType; value: string }
+}
+
 export type ITomatoContextActions =
    | setChassisAction
    | setEnginesAction
@@ -40,23 +51,39 @@ export type ITomatoContextActions =
    | setTurretsAction
    | setGunsAction
    | setShellsAction
+   | setSelectedModuleIdsByTypeAction
+   | setModuleIdByType
 
 export interface ITomatoReducerState {
-   vehicleChassis: { [moduleName: string]: IChassis }
-   vehicleEngine: { [moduleName: string]: IEngines }
-   vehicleRadio: { [moduleName: string]: IRadios }
-   vehicleTurret: { [moduleName: string]: ITurrets }
-   vehicleGun: { [moduleName: string]: IGuns }
+   moduleGroup: {
+      vehicleChassis: { [moduleName: string]: IChassis }
+      vehicleEngine: { [moduleName: string]: IEngines }
+      vehicleRadio: { [moduleName: string]: IRadios }
+      vehicleTurret: { [moduleName: string]: ITurrets }
+      vehicleGun: { [moduleName: string]: IGuns }
+   }
    shells: { [shellName: string]: IShells }
+   selectedModuleNames: {
+      [moduleType in ModuleType]: string
+   }
 }
 
 export const tomatoInitialState: ITomatoReducerState = {
-   vehicleChassis: {},
-   vehicleEngine: {},
-   vehicleRadio: {},
-   vehicleTurret: {},
-   vehicleGun: {},
+   moduleGroup: {
+      vehicleChassis: {},
+      vehicleEngine: {},
+      vehicleRadio: {},
+      vehicleTurret: {},
+      vehicleGun: {},
+   },
    shells: {},
+   selectedModuleNames: {
+      vehicleChassis: '',
+      vehicleEngine: '',
+      vehicleGun: '',
+      vehicleRadio: '',
+      vehicleTurret: '',
+   },
 }
 
 // CONTEXT

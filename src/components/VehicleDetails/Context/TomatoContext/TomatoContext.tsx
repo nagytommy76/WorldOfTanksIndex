@@ -2,8 +2,10 @@ import { createContext, useReducer } from 'react'
 import TomatoReducer from './TomatoReducer'
 
 import type { ITankData } from '@/types/VehicleDetails/tomatoGGTankStats'
+import type { IModules } from '@/types/VehicleDetails/module'
 import { ITomatoContext, tomatoInitialState } from './Types'
 
+import useGroupModules from '../Hooks/useGroupModules'
 import useGetTomatoTankStats from '../Hooks/useGetTomatoTankStats'
 import useSetChassis from './Hooks/useSetChassis'
 import useSetRadios from './Hooks/useSetRadios'
@@ -17,13 +19,24 @@ export const TomatoContext = createContext<ITomatoContext>({
    tankData: {} as ITankData,
 })
 
-export default function TomatoContextProvider({ children }: { children: React.ReactNode }) {
+export default function TomatoContextProvider({
+   children,
+   modulesTree,
+   tank_short_name,
+   tank_id,
+}: {
+   children: React.ReactNode
+   modulesTree: { [module_id: number]: IModules }
+   tank_short_name: string
+   tank_id: string
+}) {
+   const tankData = useGetTomatoTankStats(tank_short_name, tank_id)
    const [tomatoReducer, tomatoDispatch] = useReducer(TomatoReducer, tomatoInitialState)
-   const tankData = useGetTomatoTankStats()
 
+   useGroupModules(modulesTree, tomatoDispatch)
    useSetChassis(tankData.tankData, tomatoDispatch)
    useSetRadios(tankData.tankData, tomatoDispatch)
-   useSetGuns(tankData.tankData, tomatoDispatch)
+   useSetGuns(tankData.tankData, tomatoDispatch, tomatoReducer.selectedModuleNames.vehicleTurret)
    useSetTurrets(tankData.tankData, tomatoDispatch)
    useSetEngines(tankData.tankData, tomatoDispatch)
 

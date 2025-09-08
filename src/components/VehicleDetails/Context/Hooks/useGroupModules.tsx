@@ -1,10 +1,10 @@
 import { useEffect, type ActionDispatch } from 'react'
 import type { IModules, ModuleType } from '@/types/VehicleDetails/module'
-import type { IModuleContextActions } from '@/ModuleContext/Types'
+import type { ITomatoContextActions } from '../TomatoContext/Types'
 
 export default function useGroupModules(
    modulesTree: { [module_id: number]: IModules },
-   modulesDispatch: ActionDispatch<[IModuleContextActions]>
+   tomatoDispatch: ActionDispatch<[ITomatoContextActions]>
 ) {
    useEffect(() => {
       const groupedModules: { [moduleType in ModuleType]: IModules[] } = {
@@ -22,9 +22,7 @@ export default function useGroupModules(
          const moduleType = key as ModuleType
          groupedModules[moduleType].sort((a, b) => a.price_xp - b.price_xp)
       })
-
-      modulesDispatch({ type: 'SET_MODULE_GROUP', payload: groupedModules })
-      modulesDispatch({
+      tomatoDispatch({
          type: 'SET_SELECTED_MODULE_NAMES',
          payload: {
             vehicleChassis:
@@ -35,7 +33,7 @@ export default function useGroupModules(
             vehicleTurret: groupedModules.vehicleTurret[groupedModules.vehicleTurret.length - 1]?.name || '',
          },
       })
-   }, [modulesTree, modulesDispatch])
+   }, [modulesTree, tomatoDispatch])
 
    return null
 }

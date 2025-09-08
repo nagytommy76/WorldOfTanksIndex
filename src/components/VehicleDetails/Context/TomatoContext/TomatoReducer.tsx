@@ -5,32 +5,42 @@ export default function TomatoReducer(state: ITomatoReducerState, { payload, typ
       case 'SET_CHASSIS':
          return {
             ...state,
-            vehicleChassis: payload,
+            moduleGroup: { ...state.moduleGroup, vehicleChassis: payload },
          }
       case 'SET_ENGINES':
          return {
             ...state,
-            vehicleEngine: payload,
+            moduleGroup: { ...state.moduleGroup, vehicleEngine: payload },
          }
       case 'SET_GUNS':
          return {
             ...state,
-            vehicleGun: payload,
+            moduleGroup: { ...state.moduleGroup, vehicleGun: payload },
          }
       case 'SET_RADIOS':
          return {
             ...state,
-            vehicleRadio: payload,
+            moduleGroup: { ...state.moduleGroup, vehicleRadio: payload },
          }
       case 'SET_TURRETS':
          return {
             ...state,
-            vehicleTurret: payload,
+            moduleGroup: { ...state.moduleGroup, vehicleTurret: payload },
          }
       case 'SET_SHELLS':
          return {
             ...state,
             shells: payload,
+         }
+      case 'SET_SELECTED_MODULE_NAMES':
+         return {
+            ...state,
+            selectedModuleNames: payload,
+         }
+      case 'SET_MODULE_NAME_BY_TYPE':
+         return {
+            ...state,
+            selectedModuleNames: { ...state.selectedModuleNames, [payload.type]: payload.value },
          }
       default:
          return state

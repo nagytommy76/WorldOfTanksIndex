@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image'
 import { useContext } from 'react'
-import { ModuleContext } from '@/ModuleContext/ModuleContext'
+import { TomatoContext } from '@/TomatoContext/TomatoContext'
 import type { ModuleType } from '@/types/VehicleDetails/module'
 
 import List from '@mui/material/List'
@@ -12,14 +12,19 @@ import Typography from '@mui/material/Typography'
 import ReturnModuleImg from '../Includes/ReturnModuleImg'
 import ReturnModuleType from '../Includes/ModuleType'
 
+import useSetDefaultSelectedModuleNames from '../Hooks/useSetDefaultSelectedModuleNames'
+
 export default function ModuleSelect() {
    const {
-      modulesReducer: { moduleGroup, selectedModuleNames },
-      modulesDispatch,
-   } = useContext(ModuleContext)
+      tomatoReducer: { selectedModuleNames, moduleGroup },
+      tomatoDispatch,
+   } = useContext(TomatoContext)
+
+   useSetDefaultSelectedModuleNames()
 
    function setModuleNameByType(moduleType: ModuleType, moduleName: string) {
-      modulesDispatch({
+      console.log(moduleName, moduleType)
+      tomatoDispatch({
          type: 'SET_MODULE_NAME_BY_TYPE',
          payload: { type: moduleType, value: moduleName },
       })
@@ -31,15 +36,19 @@ export default function ModuleSelect() {
          {Object.entries(moduleGroup).map(([key, modules]) => (
             <List key={key} sx={{ width: '100%', maxWidth: 290 }}>
                <ReturnModuleType moduleType={key as ModuleType} />
-               {modules.map((module) => (
+               {Object.values(modules as Record<string, { name: string }>).map((module) => (
                   <ListItemButton
-                     id={module.module_id.toString()}
-                     key={module.module_id}
+                     key={module.name}
                      selected={module.name === selectedModuleNames[key as ModuleType]}
                      onClick={() => setModuleNameByType(key as ModuleType, module.name)}
                   >
                      <ListItemAvatar>
-                        <Image src={ReturnModuleImg(module.type)} alt={module.name} width={45} height={45} />
+                        <Image
+                           src={ReturnModuleImg(key as ModuleType)}
+                           alt={module.name}
+                           width={45}
+                           height={45}
+                        />
                      </ListItemAvatar>
                      <Typography variant='caption'>{module.name}</Typography>
                   </ListItemButton>

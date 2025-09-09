@@ -1,6 +1,6 @@
 import { AmmoType } from './module'
 
-interface IChassis {
+export interface IChassis {
    armor: number
    dispersion: {
       vehicleMovement: number
@@ -22,7 +22,7 @@ interface IChassis {
    wheeled: boolean
 }
 
-interface IEngines {
+export interface IEngines {
    fireStartingChance: number
    level: number
    maxHealth: number
@@ -60,7 +60,7 @@ interface IHull {
    armor: number[]
 }
 
-interface IRadios {
+export interface IRadios {
    distance: number
    level: number
    maxHealth: number
@@ -73,7 +73,7 @@ interface IRadios {
    weight: number
 }
 
-interface IShells {
+export interface IShells {
    caliber: number
    damage: {
       armor: number
@@ -97,7 +97,7 @@ interface IShells {
    userString: string
 }
 
-interface IGuns {
+export interface IGuns {
    accuracy: number
    aimTime: number
    arc: null
@@ -128,7 +128,7 @@ interface IGuns {
    weight: number
 }
 
-interface ITurrets {
+export interface ITurrets {
    armor: number[]
    gunPosition: number[]
    guns: IGuns[]
@@ -165,29 +165,24 @@ export interface ITankData {
    role: string
    shortName: string
    stats: {
+      camo: {
+         moving: number
+         stationary: number
+         camoBonus: number
+         firePenalty: number
+      }
+      chassis: IChassis[]
+      engines: IEngines[]
+      fuelTank: IFuelTank
+      hull: IHull
+      radios: IRadios[]
       speedLimit: {
          forward: number
          backward: number
       }
-      // Add other stats properties as needed
+      turretPosition: number[]
+      turrets: ITurrets[]
    }
-   camo: {
-      moving: number
-      stationary: number
-      camoBonus: number
-      firePenalty: number
-   }
-   chassis: IChassis[]
-   engines: IEngines[]
-   fuelTank: IFuelTank
-   hull: IHull
-   radios: IRadios[]
-   speedLimit: {
-      forward: number
-      backward: number
-   }
-   turretPosition: number[]
-   turrets: ITurrets[]
    tags: string[]
    tier: number
    type: string

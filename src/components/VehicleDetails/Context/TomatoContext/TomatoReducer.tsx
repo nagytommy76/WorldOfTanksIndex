@@ -32,11 +32,6 @@ export default function TomatoReducer(state: ITomatoReducerState, { payload, typ
             ...state,
             shells: payload,
          }
-      case 'SET_SELECTED_MODULE_NAMES':
-         return {
-            ...state,
-            selectedModuleNames: payload,
-         }
       case 'SET_MODULE_NAME_BY_TYPE':
          return {
             ...state,

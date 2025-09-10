@@ -34,11 +34,6 @@ interface setShellsAction {
    payload: { [shellName: string]: IShells }
 }
 
-interface setSelectedModuleIdsByTypeAction {
-   type: 'SET_SELECTED_MODULE_NAMES'
-   payload: { [moduleType in ModuleType]: string }
-}
-
 interface setModuleIdByType {
    type: 'SET_MODULE_NAME_BY_TYPE'
    payload: { type: ModuleType; value: string }
@@ -51,7 +46,6 @@ export type ITomatoContextActions =
    | setTurretsAction
    | setGunsAction
    | setShellsAction
-   | setSelectedModuleIdsByTypeAction
    | setModuleIdByType
 
 export interface ITomatoReducerState {

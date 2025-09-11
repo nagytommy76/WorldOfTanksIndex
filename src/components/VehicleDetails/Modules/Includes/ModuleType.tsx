@@ -1,17 +1,26 @@
 import type { ModuleType } from '@/types/VehicleDetails/module'
+import Typography from '@mui/material/Typography'
+
+function ReturnTypography({ text }: { text: string }) {
+   return (
+      <Typography gutterBottom variant='h6'>
+         {text}
+      </Typography>
+   )
+}
 
 export default function ModuleType({ moduleType }: { moduleType: ModuleType }) {
    switch (moduleType) {
       case 'vehicleChassis':
-         return <h1>Chassis</h1>
+         return <ReturnTypography text='Chassis' />
       case 'vehicleEngine':
-         return <h1>Engines</h1>
+         return <ReturnTypography text='Engine' />
       case 'vehicleGun':
-         return <h1>Guns</h1>
+         return <ReturnTypography text='Guns' />
       case 'vehicleRadio':
-         return <h1>Radios</h1>
+         return <ReturnTypography text='Radio' />
       case 'vehicleTurret':
-         return <h1>Turrets</h1>
+         return <ReturnTypography text='Turrets' />
       default:
          return <h1></h1>
    }

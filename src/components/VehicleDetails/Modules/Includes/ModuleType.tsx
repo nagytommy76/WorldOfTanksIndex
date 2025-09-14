@@ -21,6 +21,8 @@ export default function ModuleType({ moduleType }: { moduleType: ModuleType }) {
          return <ReturnTypography text='Radio' />
       case 'vehicleTurret':
          return <ReturnTypography text='Turrets' />
+      case 'shells':
+         return <ReturnTypography text='Shells' />
       default:
          return <h1></h1>
    }

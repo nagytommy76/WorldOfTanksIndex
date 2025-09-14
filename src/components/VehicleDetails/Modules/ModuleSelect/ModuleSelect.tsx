@@ -1,6 +1,8 @@
 'use client'
 import { useContext } from 'react'
 import { TomatoContext } from '@/TomatoContext/TomatoContext'
+import useSetShells from '../../Context/TomatoContext/Hooks/useSetShells'
+
 import type { AmmoType, ModuleType } from '@/types/VehicleDetails/module'
 
 import List from '@mui/material/List'
@@ -15,6 +17,7 @@ export default function ModuleSelect() {
       tomatoReducer: { selectedModuleNames, moduleGroup },
       tomatoDispatch,
    } = useContext(TomatoContext)
+   useSetShells()
 
    function setModuleNameByType(moduleType: ModuleType, moduleName: string) {
       tomatoDispatch({

@@ -6,15 +6,19 @@ export default function TableRowComponent({
    titleText,
    valueText,
    unit,
+   paddingLeft,
 }: {
    titleText: string
    valueText: string | number
    unit?: string
+   paddingLeft?: boolean
 }) {
    return (
       <TableRow>
          <TableCell component='th' scope='row'>
-            <Typography variant='caption'>{titleText}</Typography>
+            <Typography className={paddingLeft ? 'pl-3' : ''} variant='caption'>
+               {titleText}
+            </Typography>
          </TableCell>
          <TableCell align='right' className='flex flex-row justify-end gap-1 items-center'>
             <Typography className='text-green-300' variant='subtitle2'>

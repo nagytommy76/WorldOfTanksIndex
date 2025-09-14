@@ -1,7 +1,5 @@
 import { useContext } from 'react'
-// import { DetailsContext } from '@/DetailsContext/DetailsContext'
 import { TomatoContext } from '@/TomatoContext/TomatoContext'
-import { ModuleContext } from '@/ModuleContext/ModuleContext'
 
 import Typography from '@mui/material/Typography'
 import Table from '@mui/material/Table'
@@ -13,18 +11,12 @@ import TableRow from '@mui/material/TableRow'
 import TableRowComponent from './TableRow'
 
 export default function Firepower() {
-   // const {
-   //    vehicleProfileReducer: { vehicleProfile },
-   // } = useContext(DetailsContext)
    const {
-      modulesReducer: { selectedModuleNames },
-   } = useContext(ModuleContext)
-   const {
-      tomatoReducer: { vehicleChassis, vehicleEngine, vehicleRadio, vehicleTurret, vehicleGun },
+      tomatoReducer: {
+         selectedModuleNames,
+         moduleGroup: { vehicleChassis, vehicleGun, shells },
+      },
    } = useContext(TomatoContext)
-   // if (!vehicleProfile) return null
-
-   // console.log(tankData)
 
    return (
       <Table size='small' aria-label='Firepower table with average damage and penetration'>
@@ -39,17 +31,17 @@ export default function Firepower() {
          <TableBody>
             <TableRowComponent
                titleText='Average Damage'
-               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.shells[0].damage.armor}
+               valueText={shells[selectedModuleNames.shells]?.damage.armor}
                unit='HP'
             />
             <TableRowComponent
                titleText='Average Penetration (at 50 m)'
-               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.shells[0].piercingPower[0]}
+               valueText={shells[selectedModuleNames.shells]?.piercingPower[0]}
                unit='mm'
             />
             <TableRowComponent
                titleText='Average Penetration (at 500 m)'
-               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.shells[0].piercingPower[1]}
+               valueText={shells[selectedModuleNames.shells]?.piercingPower[1]}
                unit='mm'
             />
             <TableRowComponent
@@ -61,7 +53,7 @@ export default function Firepower() {
                titleText='Average Damage per Minute'
                valueText={(
                   (60 / vehicleGun[selectedModuleNames.vehicleGun]?.reloadTime) *
-                  vehicleGun[selectedModuleNames.vehicleGun]?.shells[0].damage.armor
+                  shells[selectedModuleNames.shells]?.damage.armor
                ).toFixed(0)}
                unit='HP/min'
             />
@@ -129,17 +121,17 @@ export default function Firepower() {
             />
             <TableRowComponent
                titleText='Module damage'
-               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.shells[0].damage.devices}
+               valueText={shells[selectedModuleNames.shells]?.damage.devices}
                unit='hp'
             />
             <TableRowComponent
                titleText='Shell velocity'
-               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.shells[0].speed}
+               valueText={shells[selectedModuleNames.shells]?.speed}
                unit='m/s'
             />
             <TableRowComponent
                titleText='Range'
-               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.shells[0].maxDistance}
+               valueText={shells[selectedModuleNames.shells]?.maxDistance}
                unit='m'
             />
             <TableRowComponent
@@ -149,7 +141,7 @@ export default function Firepower() {
             />
             <TableRowComponent
                titleText='Shell cost'
-               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.shells[0].price}
+               valueText={shells[selectedModuleNames.shells]?.price}
                unit='credits'
             />
          </TableBody>

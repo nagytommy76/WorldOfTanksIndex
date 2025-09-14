@@ -1,7 +1,6 @@
 import { createContext, useReducer } from 'react'
 import TomatoReducer from './TomatoReducer'
 
-import type { ITankData } from '@/types/VehicleDetails/tomatoGGTankStats'
 import { ITomatoContext, tomatoInitialState } from './Types'
 
 import useGetTomatoTankStats from '../Hooks/useGetTomatoTankStats'
@@ -14,7 +13,6 @@ import useSetEngines from './Hooks/useSetEngines'
 export const TomatoContext = createContext<ITomatoContext>({
    tomatoDispatch: () => null,
    tomatoReducer: tomatoInitialState,
-   tankData: {} as ITankData,
 })
 
 export default function TomatoContextProvider({
@@ -38,7 +36,6 @@ export default function TomatoContextProvider({
    return (
       <TomatoContext.Provider
          value={{
-            tankData: tankData.tankData,
             tomatoReducer,
             tomatoDispatch,
          }}

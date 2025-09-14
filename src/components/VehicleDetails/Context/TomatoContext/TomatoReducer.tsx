@@ -30,7 +30,7 @@ export default function TomatoReducer(state: ITomatoReducerState, { payload, typ
       case 'SET_SHELLS':
          return {
             ...state,
-            shells: payload,
+            moduleGroup: { ...state.moduleGroup, shells: payload },
          }
       case 'SET_MODULE_NAME_BY_TYPE':
          return {

@@ -6,7 +6,6 @@ import type {
    IRadios,
    ITurrets,
    IShells,
-   ITankData,
 } from '@/types/VehicleDetails/tomatoGGTankStats'
 
 interface setChassisAction {
@@ -55,8 +54,8 @@ export interface ITomatoReducerState {
       vehicleRadio: { [moduleName: string]: IRadios }
       vehicleTurret: { [moduleName: string]: ITurrets }
       vehicleGun: { [moduleName: string]: IGuns }
+      shells: { [shellName: string]: IShells }
    }
-   shells: { [shellName: string]: IShells }
    selectedModuleNames: {
       [moduleType in ModuleType]: string
    }
@@ -69,20 +68,20 @@ export const tomatoInitialState: ITomatoReducerState = {
       vehicleRadio: {},
       vehicleTurret: {},
       vehicleGun: {},
+      shells: {},
    },
-   shells: {},
    selectedModuleNames: {
       vehicleChassis: '',
       vehicleEngine: '',
       vehicleGun: '',
       vehicleRadio: '',
       vehicleTurret: '',
+      shells: '',
    },
 }
 
 // CONTEXT
 export interface ITomatoContext {
-   tankData: ITankData | undefined
    tomatoReducer: ITomatoReducerState
    tomatoDispatch: React.Dispatch<ITomatoContextActions>
 }

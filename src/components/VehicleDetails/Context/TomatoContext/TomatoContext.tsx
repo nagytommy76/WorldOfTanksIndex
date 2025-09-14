@@ -1,5 +1,6 @@
 import { createContext, useReducer } from 'react'
 import TomatoReducer from './TomatoReducer'
+import type { IFuelTank, IHull, ISpeedLimit } from '@/types/VehicleDetails/tomatoGGTankStats'
 
 import { ITomatoContext, tomatoInitialState } from './Types'
 
@@ -13,6 +14,9 @@ import useSetEngines from './Hooks/useSetEngines'
 export const TomatoContext = createContext<ITomatoContext>({
    tomatoDispatch: () => null,
    tomatoReducer: tomatoInitialState,
+   hull: {} as IHull,
+   fuelTank: {} as IFuelTank,
+   speedLimit: {} as ISpeedLimit,
 })
 
 export default function TomatoContextProvider({
@@ -36,6 +40,9 @@ export default function TomatoContextProvider({
    return (
       <TomatoContext.Provider
          value={{
+            hull: tankData.tankData?.stats.hull,
+            fuelTank: tankData.tankData?.stats.fuelTank,
+            speedLimit: tankData.tankData?.stats.speedLimit,
             tomatoReducer,
             tomatoDispatch,
          }}

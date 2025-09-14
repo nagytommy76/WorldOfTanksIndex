@@ -1,32 +1,34 @@
-import { type ActionDispatch, useEffect } from 'react'
+import { type ActionDispatch, useEffect, useState } from 'react'
 import type { ITomatoContextActions } from '../Types'
 import type { IGuns, ITankData } from '@/types/VehicleDetails/tomatoGGTankStats'
 
 export default function useSetGuns(
    tankData: ITankData,
    tomatoDispatch: ActionDispatch<[ITomatoContextActions]>,
-   vehicleTurret: string | null
+   selectedTurret: string | null
 ) {
+   const [allGuns, setAllGuns] = useState<{ [gunName: string]: IGuns }>({})
    useEffect(() => {
       if (tankData) {
-         const foundSelectedTurret = tankData.stats.turrets.find((turret) => turret.name === vehicleTurret)
+         const foundSelectedTurret = tankData.stats.turrets.find((turret) => turret.name === selectedTurret)
          if (foundSelectedTurret) {
-            const helperObject: { [gunName: string]: IGuns } = {}
+            const allGuns: { [gunName: string]: IGuns } = {}
             for (const gun of foundSelectedTurret.guns) {
-               helperObject[gun.name] = gun
+               allGuns[gun.name] = gun
             }
-            tomatoDispatch({ type: 'SET_GUNS', payload: helperObject })
+            tomatoDispatch({ type: 'SET_GUNS', payload: allGuns })
+            setAllGuns(allGuns)
 
-            const vehicleGunKeys: string[] = Object.keys(helperObject)
+            const vehicleGunKeys: string[] = Object.keys(allGuns)
             tomatoDispatch({
                type: 'SET_MODULE_NAME_BY_TYPE',
                payload: {
                   type: 'vehicleGun',
-                  value: helperObject[vehicleGunKeys[vehicleGunKeys.length - 1]]?.name || '',
+                  value: allGuns[vehicleGunKeys[vehicleGunKeys.length - 1]]?.name || '',
                },
             })
          }
       }
-   }, [tankData, tomatoDispatch, vehicleTurret])
-   return null
+   }, [tankData, tomatoDispatch, selectedTurret])
+   return allGuns
 }

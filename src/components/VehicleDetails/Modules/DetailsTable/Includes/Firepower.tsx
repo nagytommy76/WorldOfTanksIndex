@@ -5,9 +5,9 @@ import Typography from '@mui/material/Typography'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
-import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 
+import TableHeadComponent from './TableHead'
 import TableRowComponent from './TableRow'
 
 export default function Firepower() {
@@ -20,14 +20,7 @@ export default function Firepower() {
 
    return (
       <Table size='small' aria-label='Firepower table with average damage and penetration'>
-         <TableHead>
-            <TableRow className='bg-lime-900'>
-               <TableCell>
-                  <Typography variant='h5'>Firepower</Typography>
-               </TableCell>
-               <TableCell align='right'>icon</TableCell>
-            </TableRow>
-         </TableHead>
+         <TableHeadComponent headTitle='Firepower' />
          <TableBody>
             <TableRowComponent
                titleText='Average Damage'

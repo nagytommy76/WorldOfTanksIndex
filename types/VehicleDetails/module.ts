@@ -1,4 +1,10 @@
-export type ModuleType = 'vehicleTurret' | 'vehicleEngine' | 'vehicleChassis' | 'vehicleGun' | 'vehicleRadio'
+export type ModuleType =
+   | 'vehicleTurret'
+   | 'vehicleEngine'
+   | 'vehicleChassis'
+   | 'vehicleGun'
+   | 'vehicleRadio'
+   | 'shells'
 export interface IModules {
    is_default: boolean
    module_id: number
@@ -88,7 +94,17 @@ export interface Radio {
  * Type of ammo
  * @ARMOR_PIERCING_CR = armor piercing Premium
  */
-export type AmmoType = 'ARMOR_PIERCING' | 'ARMOR_PIERCING_CR' | 'HIGH_EXPLOSIVE' | 'HOLLOW_CHARGE'
+export type AmmoType =
+   | 'ARMOR_PIERCING'
+   | 'ARMOR_PIERCING_CR'
+   | 'ARMOR_PIERCING_CR_PREMIUM'
+   | 'ARMOR_PIERCING_PREMIUM'
+   | 'HIGH_EXPLOSIVE_MODERN'
+   | 'HIGH_EXPLOSIVE_MODERN_PREMIUM'
+   | 'HIGH_EXPLOSIVE_SPG_STUN'
+   | 'HIGH_EXPLOSIVE_SPG'
+   | 'HOLLOW_CHARGE_PREMIUM'
+   | 'HOLLOW_CHARGE'
 
 export interface Ammo {
    penetration: number[]

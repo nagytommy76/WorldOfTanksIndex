@@ -42,7 +42,7 @@ export interface IEngines {
    wwsoundPC: string
 }
 
-interface IFuelTank {
+export interface IFuelTank {
    tags: string[]
    price: number
    weight: number
@@ -51,13 +51,19 @@ interface IFuelTank {
    repairCost: number
 }
 
-interface IHull {
+export interface IHull {
    ammoRackHealth: {
       maxHealth: number
       maxRegenHealth: number
       repairCost: number
    }
    armor: number[]
+   weight: number
+}
+
+export interface ISpeedLimit {
+   backward: number
+   forward: number
 }
 
 export interface IRadios {

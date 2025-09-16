@@ -74,6 +74,16 @@ export default function Mobility() {
                valueText={vehicleEngine[selectedModuleNames.vehicleEngine]?.realPower}
                unit='hp'
             />
+            <TableRowComponent
+               titleText='Traverse Speed'
+               valueText={vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed}
+               unit='°/s'
+            />
+            <TableRowComponent
+               titleText='Gun Traverse Speed'
+               valueText={vehicleTurret[selectedModuleNames.vehicleTurret]?.traverse}
+               unit='°/s'
+            />
             <TableRow>
                <TableCell>
                   <Typography variant='body1'>Terrain (hard / medium / soft)</Typography>
@@ -94,11 +104,39 @@ export default function Mobility() {
                paddingLeft
                titleText='Effective top speed'
                valueText={`
-                     ${vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0].toFixed(2)} /
-                     ${vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[1].toFixed(2)} /
-                     ${vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[2].toFixed(2)}
+                     ${(
+                        speedLimit?.forward /
+                        vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0]
+                     ).toFixed(2)} /
+                     ${(
+                        speedLimit?.forward /
+                        vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[1]
+                     ).toFixed(2)} /
+                     ${(
+                        speedLimit?.forward /
+                        vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[2]
+                     ).toFixed(2)}
                   `}
-               unit='m/s²'
+               unit='km/h'
+            />
+            <TableRowComponent
+               paddingLeft
+               titleText='Effective traverse speed'
+               valueText={`
+                     ${(
+                        vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed /
+                        vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0]
+                     ).toFixed(2)} /
+                     ${(
+                        vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed /
+                        vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[1]
+                     ).toFixed(2)} /
+                     ${(
+                        vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed /
+                        vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[2]
+                     ).toFixed(2)}
+                  `}
+               unit='°/s'
             />
          </TableBody>
       </Table>

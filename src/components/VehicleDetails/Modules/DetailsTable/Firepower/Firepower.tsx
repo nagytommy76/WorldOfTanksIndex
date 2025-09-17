@@ -7,8 +7,8 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 
-import TableHeadComponent from './TableHead'
-import TableRowComponent from './TableRow'
+import TableHeadComponent from '../Includes/TableHead'
+import TableRowComponent from '../Includes/TableRow'
 
 export default function Firepower() {
    const {
@@ -60,9 +60,9 @@ export default function Firepower() {
                valueText={vehicleGun[selectedModuleNames.vehicleGun]?.aimTime.toFixed(2)}
                unit='s'
             />
-            <TableRow>
+            <TableRow className='bg-gray-700'>
                <TableCell>
-                  <Typography variant='h6'>Gun Dispersions</Typography>
+                  <Typography variant='body1'>Gun Dispersions</Typography>
                </TableCell>
                <TableCell></TableCell>
             </TableRow>
@@ -126,11 +126,6 @@ export default function Firepower() {
                titleText='Range'
                valueText={shells[selectedModuleNames.shells]?.maxDistance}
                unit='m'
-            />
-            <TableRowComponent
-               titleText='Ammo capacity'
-               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.maxAmmo}
-               unit='rounds'
             />
             <TableRowComponent
                titleText='Shell cost'

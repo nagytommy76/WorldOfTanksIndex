@@ -9,6 +9,7 @@ import type {
    IHull,
    IFuelTank,
    ISpeedLimit,
+   ICamo,
 } from '@/types/VehicleDetails/tomatoGGTankStats'
 
 interface setChassisAction {
@@ -88,6 +89,8 @@ export interface ITomatoContext {
    hull: IHull
    fuelTank: IFuelTank
    speedLimit: ISpeedLimit
+   camo: ICamo
+   tankCost: number
    tomatoReducer: ITomatoReducerState
    tomatoDispatch: React.Dispatch<ITomatoContextActions>
 }

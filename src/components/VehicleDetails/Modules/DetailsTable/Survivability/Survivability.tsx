@@ -27,19 +27,21 @@ export default function Survivability() {
                valueText={vehicleTurret[selectedModuleNames.vehicleTurret]?.hp}
                unit='hp'
             />
-            <TableRowComponent
-               titleText='Hull armor'
-               valueText={`
-                    ${hull.armor[0]} / ${hull.armor[1]} / ${hull.armor[2]}
-                `}
-               unit='mm'
-            />
+            {hull && (
+               <TableRowComponent
+                  titleText='Hull armor'
+                  valueText={`
+                     ${hull.armor[0]} / ${hull.armor[1]} / ${hull.armor[2]}
+                     `}
+                  unit='mm'
+               />
+            )}
             <TableRowComponent
                titleText='Turret armor'
                valueText={`
                     ${vehicleTurret[selectedModuleNames.vehicleTurret]?.armor[0]} / ${
-                  vehicleTurret[selectedModuleNames.vehicleTurret].armor[1]
-               } / ${vehicleTurret[selectedModuleNames.vehicleTurret].armor[2]}
+                  vehicleTurret[selectedModuleNames.vehicleTurret]?.armor[1]
+               } / ${vehicleTurret[selectedModuleNames.vehicleTurret]?.armor[2]}
                 `}
                unit='mm'
             />

@@ -1,5 +1,12 @@
 import { AmmoType } from './module'
 
+export interface ICamo {
+   camoBonus: number
+   firePenalty: number
+   moving: number
+   stationary: number
+}
+
 export interface IChassis {
    armor: number
    dispersion: {

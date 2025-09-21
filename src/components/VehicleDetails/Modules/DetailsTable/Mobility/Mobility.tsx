@@ -84,7 +84,7 @@ export default function Mobility() {
                valueText={vehicleTurret[selectedModuleNames.vehicleTurret]?.traverse}
                unit='°/s'
             />
-            <TableRow>
+            <TableRow className='bg-gray-700'>
                <TableCell>
                   <Typography variant='body1'>Terrain (hard / medium / soft)</Typography>
                </TableCell>

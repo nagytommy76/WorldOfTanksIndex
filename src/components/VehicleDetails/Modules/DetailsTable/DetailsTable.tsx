@@ -12,8 +12,13 @@ import Other from './Other/Other'
 export default function DetailsTable() {
    return (
       <section className='w-full'>
-         <Typography variant='h5'>Tank specifications</Typography>
-         <TableContainer component={Paper} className='min-h-1/2 grid grid-cols-2 grid-rows-2 gap-4'>
+         <Typography gutterBottom variant='h5'>
+            Tank specifications
+         </Typography>
+         <TableContainer
+            component={Paper}
+            className='min-h-full grid grid-cols-1 grid-rows-1 gap-4 xl:grid-cols-2 xl:grid-rows-2'
+         >
             <Firepower />
             <Mobility />
             <Survivability />

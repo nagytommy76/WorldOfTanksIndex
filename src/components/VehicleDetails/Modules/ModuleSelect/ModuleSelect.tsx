@@ -27,7 +27,7 @@ export default function ModuleSelect() {
    }
 
    return (
-      <aside>
+      <aside className={'w-full flex flex-col items-center my-5 xl:w-[300px]'}>
          <Typography variant='h5'>Modules</Typography>
          {Object.entries(moduleGroup).map(([key, modules]) => (
             <List key={key} sx={{ width: '100%', maxWidth: 290 }}>

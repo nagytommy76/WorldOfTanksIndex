@@ -1,7 +1,7 @@
 import axios from '@/ProvidersAxiosProvider'
 import { useSuspenseQuery } from '@tanstack/react-query'
 
-import type { ITomatoTankStats } from '@/types/VehicleDetails/tomatoGGTankStats'
+import type { ITomatoTankStats } from '@/types/VehicleDetails/Vehicle'
 // https://tomato.gg/_next/data/MibomUS6JqK7jWsXG9--J/en/tanks/9745/e-75/EU.json?tankId=9745&name=e-75&server=EU
 // https://tomato.gg/_next/data/MibomUS6JqK7jWsXG9--J/en/tank-stats.json
 

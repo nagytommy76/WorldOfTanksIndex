@@ -1,6 +1,7 @@
 import { type ActionDispatch, useEffect } from 'react'
 import type { ITomatoContextActions } from '../Types'
-import type { IChassis, ITankData } from '@/types/VehicleDetails/tomatoGGTankStats'
+import type { ITankData } from '@VehicleTypes/Vehicle'
+import type { IChassis } from '@VehicleTypes/Hull'
 
 export default function useSetChassis(
    tankData: ITankData,

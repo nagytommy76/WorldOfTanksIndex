@@ -1,6 +1,7 @@
 import { type ActionDispatch, useEffect } from 'react'
 import type { ITomatoContextActions } from '../Types'
-import type { IRadios, ITankData } from '@/types/VehicleDetails/tomatoGGTankStats'
+import type { ITankData } from '@VehicleTypes/Vehicle'
+import type { IRadios } from '@VehicleTypes/Other'
 
 export default function useSetRadios(
    tankData: ITankData,

@@ -1,16 +1,10 @@
-import type { ModuleType } from '@/types/VehicleDetails/module'
-import type {
-   IChassis,
-   IEngines,
-   IGuns,
-   IRadios,
-   ITurrets,
-   IShells,
-   IHull,
-   IFuelTank,
-   ISpeedLimit,
-   ICamo,
-} from '@/types/VehicleDetails/tomatoGGTankStats'
+import type { ModuleType } from '@VehicleTypes/module'
+import type { IRadios, IFuelTank, ISpeedLimit, ICamo } from '@VehicleTypes/Other'
+import type { ITurrets } from '@VehicleTypes/Turrets'
+import type { IEngines } from '@VehicleTypes/Engines'
+import type { IChassis, IHull } from '@VehicleTypes/Hull'
+import type { IGuns } from '@VehicleTypes/Guns'
+import type { IShells } from '@VehicleTypes/Shells'
 
 interface setChassisAction {
    type: 'SET_CHASSIS'
@@ -90,7 +84,7 @@ export interface ITomatoContext {
    fuelTank: IFuelTank
    speedLimit: ISpeedLimit
    camo: ICamo
-   tankCost: number
+   tankCost: number | { gold: number }
    tomatoReducer: ITomatoReducerState
    tomatoDispatch: React.Dispatch<ITomatoContextActions>
 }

@@ -1,6 +1,7 @@
 import { type ActionDispatch, useEffect } from 'react'
 import type { ITomatoContextActions } from '../Types'
-import type { IEngines, ITankData } from '@/types/VehicleDetails/tomatoGGTankStats'
+import type { ITankData } from '@VehicleTypes/Vehicle'
+import type { IEngines } from '@VehicleTypes/Engines'
 
 export default function useSetEngines(
    tankData: ITankData,

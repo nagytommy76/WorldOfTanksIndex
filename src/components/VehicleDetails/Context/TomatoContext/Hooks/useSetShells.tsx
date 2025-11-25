@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react'
 import { TomatoContext } from '@/TomatoContext/TomatoContext'
-import type { IShells } from '@/types/VehicleDetails/tomatoGGTankStats'
+import type { IShells } from '@VehicleTypes/Shells'
 
 export default function useSetShells() {
    const {

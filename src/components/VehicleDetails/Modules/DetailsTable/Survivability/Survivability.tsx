@@ -81,11 +81,13 @@ export default function Survivability() {
                valueText={fuelTank.maxRegenHealth}
                unit='hp'
             />
-            <TableRowComponent
-               titleText='Engine fire chance'
-               valueText={vehicleEngine[selectedModuleNames.vehicleEngine]?.fireStartingChance * 100}
-               unit='%'
-            />
+            {vehicleEngine[selectedModuleNames.vehicleEngine]?.fireStartingChance && (
+               <TableRowComponent
+                  titleText='Engine fire chance'
+                  valueText={vehicleEngine[selectedModuleNames.vehicleEngine]?.fireStartingChance * 100}
+                  unit='%'
+               />
+            )}
             <TableRowComponent
                titleText='Engine health'
                valueText={vehicleEngine[selectedModuleNames.vehicleEngine]?.maxHealth}

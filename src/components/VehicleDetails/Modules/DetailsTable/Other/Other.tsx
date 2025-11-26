@@ -30,14 +30,17 @@ export default function Other() {
                valueText={vehicleGun[selectedModuleNames.vehicleGun]?.maxAmmo}
                unit='shells'
             />
-            <TableRowComponent
-               titleText='Potential Damage'
-               valueText={
-                  vehicleGun[selectedModuleNames.vehicleGun]?.maxAmmo *
-                  shells[selectedModuleNames.shells]?.damage.armor
-               }
-               unit='HP'
-            />
+            {vehicleGun[selectedModuleNames.vehicleGun]?.maxAmmo &&
+               shells[selectedModuleNames.shells]?.damage.armor && (
+                  <TableRowComponent
+                     titleText='Potential Damage'
+                     valueText={
+                        vehicleGun[selectedModuleNames.vehicleGun]?.maxAmmo *
+                        shells[selectedModuleNames.shells]?.damage.armor
+                     }
+                     unit='HP'
+                  />
+               )}
             <TableRowComponent
                titleText='Shell Cost per 1000 HP'
                valueText={(

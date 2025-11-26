@@ -10,14 +10,18 @@ import { IModules } from '@/types/VehicleDetails/module'
 
 async function getModulesTree(tank_id: string | number) {
    const filteredData = await fetch(
+      // `https://api.worldoftanks.eu/wot/encyclopedia/vehicles/
+      // ?application_id=${process.env.WOT_APP_ID}
+      // &fields=radios%2Csuspensions%2Cengines%2Ccrew%2Cguns%2Cdescription%2Cnext_tanks%2Cmodules_tree%2Cnation%2Ctier%2Cdefault_profile%2Cturrets&tank_id=${tank_id}`,
       `https://api.worldoftanks.eu/wot/encyclopedia/vehicles/
       ?application_id=${process.env.WOT_APP_ID}
-      &fields=radios%2Csuspensions%2Cengines%2Ccrew%2Cguns%2Cdescription%2Cnext_tanks%2Cmodules_tree%2Cnation%2Ctier%2Cdefault_profile%2Cturrets&tank_id=${tank_id}`,
+      &fields=description&tank_id=${tank_id}`,
       { method: 'GET' }
    )
    const response = (await filteredData.json()) as Promise<{
       data: { [tank_id: number]: { description: string; modules_tree: { [module_id: number]: IModules } } }
    }>
+
    return await response
 }
 
@@ -34,16 +38,8 @@ export default async function page({
 
    return (
       <section className='min-h-screen'>
-         <Header
-            tank_id={tank_id}
-            tank_name={tank_name}
-            description={modulesTree[Number(tank_id)].description}
-         />
-         <Modules
-            tank_short_name={tank_short_name}
-            modulesTree={modulesTree[Number(tank_id)].modules_tree}
-            tank_id={tank_id}
-         />
+         <Header tank_name={tank_name} description={modulesTree[Number(tank_id)].description} />
+         <Modules tank_short_name={tank_short_name} tank_id={tank_id} />
       </section>
    )
 }

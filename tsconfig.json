@@ -21,13 +21,15 @@
       "paths": {
          "@/*": ["./*"],
          "@/lib/*": ["./src/lib/*"],
-         "@Types/*": ["./types/*"],
          "@/Base/*": ["./src/components/Base/*"],
          "@/components*": ["./src/components/*"],
          "@/VehicleDetails/*": ["./src/components/VehicleDetails/*"],
          "@/Providers*": ["./src/Providers/*"],
          "@/Images*": ["./src/assets/images/*"],
          "@/Techtree*": ["./src/components/Techtree/*"],
+         // TYPES
+         "@Types/*": ["./types/*"],
+         "@VehicleTypes/*": ["./types/VehicleDetails/*"],
          // Contexts
          "@/ModuleContext/*": ["./src/components/VehicleDetails/Context/Module/*"],
          "@/DetailsContext/*": ["./src/components/VehicleDetails/Context/Details/*"],

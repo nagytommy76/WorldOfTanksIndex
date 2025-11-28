@@ -1,14 +1,16 @@
 import axios from '@/ProvidersAxiosProvider'
 import { useSuspenseQuery } from '@tanstack/react-query'
 
-import type { ITomatoTankStats } from '@/types/VehicleDetails/Vehicle'
-// https://tomato.gg/_next/data/MibomUS6JqK7jWsXG9--J/en/tanks/9745/e-75/EU.json?tankId=9745&name=e-75&server=EU
-// https://tomato.gg/_next/data/MibomUS6JqK7jWsXG9--J/en/tank-stats.json
+import type { ITankData } from '@/types/VehicleDetails/Vehicle'
+import { AxiosResponse } from 'axios'
 
 export default function useGetTomatoTankStats(tank_short_name: string, tank_id: string) {
    async function getTomatoTankStats() {
-      const response = (await axios.get(`/${tank_id}/${tank_short_name}`)) as { data: ITomatoTankStats }
-      return response.data
+      const response = (await axios.get(`/${tank_id}/${tank_short_name}`)) as AxiosResponse<{
+         vehicleStats: ITankData
+      }>
+
+      return response.data.vehicleStats
    }
 
    const { data, isLoading, isError } = useSuspenseQuery({

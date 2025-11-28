@@ -9,9 +9,10 @@ export async function GET(
    const { tank_id, tank_name } = await params
    await dbConnect()
    try {
+      console.log('TANK NAME: ', tank_name)
       const vehicleStats = await VehicleModel.findOne({
          id: Number(tank_id),
-         // xmlId: tank_name,
+         xmlId: tank_name,
       })
 
       return NextResponse.json({ vehicleStats }, { status: 200 })

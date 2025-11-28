@@ -27,6 +27,7 @@
          "@/Providers*": ["./src/Providers/*"],
          "@/Images*": ["./src/assets/images/*"],
          "@/Techtree*": ["./src/components/Techtree/*"],
+         "@Models/*": ["./src/models/*"],
          // TYPES
          "@Types/*": ["./types/*"],
          "@VehicleTypes/*": ["./types/VehicleDetails/*"],

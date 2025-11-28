@@ -39,9 +39,7 @@ export default function TechTreeTanks({
                      id={techTreeVehicle.tank_id.toString()}
                      className='w-full flex flex-row justify-start items-center gap-6 
                      border-b-1 border-neutral-600 py-2 transition-all hover:bg-neutral-800'
-                     href={`/${techTreeVehicle.tank_id}/${
-                        techTreeVehicle.tag
-                     }?tank_short_name=${techTreeVehicle.short_name.replace(/ /g, '-').toLocaleLowerCase()}`}
+                     href={`/${techTreeVehicle.tank_id}/${techTreeVehicle.tag}`}
                      key={techTreeVehicle.tank_id}
                   >
                      <div className='w-[50px] flex flex-row justify-center' title={techTreeVehicle.nation}>

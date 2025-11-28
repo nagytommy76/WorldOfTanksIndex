@@ -25,21 +25,14 @@ async function getModulesTree(tank_id: string | number) {
    return await response
 }
 
-export default async function page({
-   params,
-   searchParams,
-}: {
-   params: Promise<{ tank_id: string; tank_name: string }>
-   searchParams: Promise<{ tank_short_name: string }>
-}) {
-   const { tank_short_name } = await searchParams
+export default async function page({ params }: { params: Promise<{ tank_id: string; tank_name: string }> }) {
    const { tank_id, tank_name } = await params
    const { data: modulesTree } = await getModulesTree(tank_id)
 
    return (
       <section className='min-h-screen'>
          <Header tank_name={tank_name} description={modulesTree[Number(tank_id)].description} />
-         <Modules tank_short_name={tank_short_name} tank_id={tank_id} />
+         <Modules tank_short_name={tank_name} tank_id={tank_id} />
       </section>
    )
 }

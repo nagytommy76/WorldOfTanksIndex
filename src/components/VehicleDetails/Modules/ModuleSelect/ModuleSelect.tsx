@@ -32,7 +32,7 @@ export default function ModuleSelect() {
          {Object.entries(moduleGroup).map(([key, modules]) => (
             <List key={key} sx={{ width: '100%', maxWidth: 290 }}>
                <ReturnModuleType moduleType={key as ModuleType} />
-               {Object.values(modules as Record<string, { name: string; image?: AmmoType }>).map((module) => (
+               {Object.values(modules as Record<string, { name: string; kind?: AmmoType }>).map((module) => (
                   <ListItemButton
                      key={module.name}
                      selected={module.name === selectedModuleNames[key as ModuleType]}
@@ -41,7 +41,7 @@ export default function ModuleSelect() {
                      <ModuleImage
                         moduleName={module.name}
                         moduleType={key as ModuleType}
-                        shellImage={module.image}
+                        shellImage={module.kind}
                      />
                      <Typography variant='caption'>{module.name}</Typography>
                   </ListItemButton>

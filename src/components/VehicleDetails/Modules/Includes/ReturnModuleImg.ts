@@ -11,6 +11,7 @@ import ARMOR_PIERCING_CR from '@/ImagesShells/ARMOR_PIERCING_CR.webp'
 import ARMOR_PIERCING_CR_PREMIUM from '@/ImagesShells/ARMOR_PIERCING_CR_PREMIUM.webp'
 import ARMOR_PIERCING_PREMIUM from '@/ImagesShells/ARMOR_PIERCING_PREMIUM.webp'
 import HIGH_EXPLOSIVE_MODERN from '@/ImagesShells/HIGH_EXPLOSIVE_MODERN.webp'
+import HIGH_EXPLOSIVE from '@/ImagesShells/HIGH_EXPLOSIVE_MODERN.webp'
 import HIGH_EXPLOSIVE_MODERN_PREMIUM from '@/ImagesShells/HIGH_EXPLOSIVE_MODERN_PREMIUM.webp'
 import HIGH_EXPLOSIVE_SPG_STUN from '@/ImagesShells/HIGH_EXPLOSIVE_SPG_STUN.webp'
 import HIGH_EXPLOSIVE_SPG from '@/ImagesShells/HIGH_EXPLOSIVE_SPG.webp'
@@ -41,6 +42,8 @@ export default function ReturnModuleImg(moduleType: ModuleType, ammoType?: AmmoT
                return ARMOR_PIERCING_PREMIUM
             case 'HIGH_EXPLOSIVE_MODERN':
                return HIGH_EXPLOSIVE_MODERN
+            case 'HIGH_EXPLOSIVE':
+               return HIGH_EXPLOSIVE
             case 'HIGH_EXPLOSIVE_MODERN_PREMIUM':
                return HIGH_EXPLOSIVE_MODERN_PREMIUM
             case 'HIGH_EXPLOSIVE_SPG_STUN':

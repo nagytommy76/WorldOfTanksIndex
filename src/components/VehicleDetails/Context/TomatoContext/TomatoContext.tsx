@@ -34,20 +34,20 @@ export default function TomatoContextProvider({
    const { data: tankData } = useGetTomatoTankStats(tank_short_name, tank_id)
    const [tomatoReducer, tomatoDispatch] = useReducer(TomatoReducer, tomatoInitialState)
 
-   useSetChassis(tankData.tankData, tomatoDispatch)
-   useSetRadios(tankData.tankData, tomatoDispatch)
-   useSetTurrets(tankData.tankData, tomatoDispatch)
-   useSetGuns(tankData.tankData, tomatoDispatch, tomatoReducer.selectedModuleNames.vehicleTurret)
-   useSetEngines(tankData.tankData, tomatoDispatch)
+   useSetChassis(tankData, tomatoDispatch)
+   useSetRadios(tankData, tomatoDispatch)
+   useSetTurrets(tankData, tomatoDispatch)
+   useSetGuns(tankData, tomatoDispatch, tomatoReducer.selectedModuleNames.vehicleTurret)
+   useSetEngines(tankData, tomatoDispatch)
 
    return (
       <TomatoContext.Provider
          value={{
-            hull: tankData.tankData?.stats.hull,
-            fuelTank: tankData.tankData?.stats.fuelTank,
-            speedLimit: tankData.tankData?.stats.speedLimit,
-            camo: tankData.tankData?.stats.camo,
-            tankCost: tankData.tankData?.price,
+            hull: tankData?.stats.hull,
+            fuelTank: tankData?.stats.fuelTank,
+            speedLimit: tankData?.stats.speedLimit,
+            camo: tankData?.stats.camo,
+            tankCost: tankData?.price,
             tomatoReducer,
             tomatoDispatch,
          }}

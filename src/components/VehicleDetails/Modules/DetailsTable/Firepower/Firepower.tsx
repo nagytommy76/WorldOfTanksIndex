@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { TomatoContext } from '@/TomatoContext/TomatoContext'
+import { VehicleContext } from '@/VehicleContext/VehicleContext'
 
 import Typography from '@mui/material/Typography'
 import Table from '@mui/material/Table'
@@ -12,11 +12,11 @@ import TableRowComponent from '../Includes/TableRow'
 
 export default function Firepower() {
    const {
-      tomatoReducer: {
+      vehicleReducer: {
          selectedModuleNames,
          moduleGroup: { vehicleChassis, vehicleGun, shells },
       },
-   } = useContext(TomatoContext)
+   } = useContext(VehicleContext)
 
    return (
       <Table size='small' aria-label='Firepower table with average damage and penetration'>

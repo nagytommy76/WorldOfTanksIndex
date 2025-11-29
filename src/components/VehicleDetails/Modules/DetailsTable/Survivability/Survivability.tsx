@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { TomatoContext } from '@/TomatoContext/TomatoContext'
+import { VehicleContext } from '@/VehicleContext/VehicleContext'
 
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -11,12 +11,12 @@ export default function Survivability() {
    const {
       hull,
       fuelTank,
-      tomatoReducer: {
+      vehicleReducer: {
          selectedModuleNames,
 
          moduleGroup: { vehicleChassis, vehicleEngine, vehicleTurret },
       },
-   } = useContext(TomatoContext)
+   } = useContext(VehicleContext)
 
    return (
       <Table size='small' aria-label='Survivability table with hit points'>

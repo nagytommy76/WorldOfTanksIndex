@@ -1,11 +1,11 @@
 import { type ActionDispatch, useEffect } from 'react'
-import type { ITomatoContextActions } from '../Types'
+import type { IVehicleContextActions } from '../Types'
 import type { ITankData } from '@VehicleTypes/Vehicle'
 import type { ITurrets } from '@VehicleTypes/Turrets'
 
 export default function useSetTurrets(
    tankData: ITankData,
-   tomatoDispatch: ActionDispatch<[ITomatoContextActions]>
+   tomatoDispatch: ActionDispatch<[IVehicleContextActions]>
 ) {
    useEffect(() => {
       if (tankData) {

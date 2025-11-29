@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { TomatoContext } from '@/TomatoContext/TomatoContext'
+import { VehicleContext } from '@/VehicleContext/VehicleContext'
 
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -10,12 +10,12 @@ import TableRowComponent from '../Includes/TableRow'
 export default function Other() {
    const {
       tankCost,
-      tomatoReducer: {
+      vehicleReducer: {
          selectedModuleNames,
 
          moduleGroup: { shells, vehicleTurret, vehicleGun },
       },
-   } = useContext(TomatoContext)
+   } = useContext(VehicleContext)
    return (
       <Table size='small' aria-label='Other table with concealment, potential damage etc...'>
          <TableHeadComponent headTitle='Other' className='bg-yellow-700' />

@@ -1,15 +1,15 @@
 import { useContext, useEffect } from 'react'
-import { TomatoContext } from '@/TomatoContext/TomatoContext'
+import { VehicleContext } from '../VehicleContext'
 import type { IShells } from '@VehicleTypes/Shells'
 
 export default function useSetShells() {
    const {
-      tomatoReducer: {
+      vehicleReducer: {
          moduleGroup: { vehicleTurret },
          selectedModuleNames: { vehicleTurret: selectedTurretName, vehicleGun: selectedGun },
       },
-      tomatoDispatch,
-   } = useContext(TomatoContext)
+      vehicleDispatch,
+   } = useContext(VehicleContext)
 
    useEffect(() => {
       const foundSelectedTurret = Object.values(vehicleTurret).find(
@@ -22,13 +22,13 @@ export default function useSetShells() {
          for (const shell of foundSelectedGun?.shells || []) {
             helperObjectShells[shell.name] = shell
          }
-         tomatoDispatch({
+         vehicleDispatch({
             type: 'SET_SHELLS',
             payload: helperObjectShells,
          })
 
          const vehiclShellsKeys: string[] = Object.keys(helperObjectShells)
-         tomatoDispatch({
+         vehicleDispatch({
             type: 'SET_MODULE_NAME_BY_TYPE',
             payload: {
                type: 'shells',
@@ -36,7 +36,7 @@ export default function useSetShells() {
             },
          })
       }
-   }, [selectedTurretName, selectedGun, vehicleTurret, tomatoDispatch])
+   }, [selectedTurretName, selectedGun, vehicleTurret, vehicleDispatch])
 
    return null
 }

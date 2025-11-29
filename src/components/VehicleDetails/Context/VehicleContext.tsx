@@ -1,20 +1,20 @@
 import { createContext, useReducer } from 'react'
-import TomatoReducer from './TomatoReducer'
+import TomatoReducer from './VehicleReducer'
 import type { ICamo, IFuelTank, ISpeedLimit } from '@VehicleTypes/Other'
 import type { IHull } from '@VehicleTypes/Hull'
 
-import { ITomatoContext, tomatoInitialState } from './Types'
+import { InitialState, IVehicleContext } from './Types'
 
-import useGetTomatoTankStats from '../Hooks/useGetTomatoTankStats'
+import useGetTankStats from './Hooks/useGetTankStats'
 import useSetChassis from './Hooks/useSetChassis'
 import useSetRadios from './Hooks/useSetRadios'
 import useSetGuns from './Hooks/useSetGuns'
 import useSetTurrets from './Hooks/useSetTurrets'
 import useSetEngines from './Hooks/useSetEngines'
 
-export const TomatoContext = createContext<ITomatoContext>({
-   tomatoDispatch: () => null,
-   tomatoReducer: tomatoInitialState,
+export const VehicleContext = createContext<IVehicleContext>({
+   vehicleDispatch: () => null,
+   vehicleReducer: InitialState,
    hull: {} as IHull,
    fuelTank: {} as IFuelTank,
    speedLimit: {} as ISpeedLimit,
@@ -22,7 +22,7 @@ export const TomatoContext = createContext<ITomatoContext>({
    tankCost: 0,
 })
 
-export default function TomatoContextProvider({
+export default function VehicleContextProvider({
    children,
    tank_short_name,
    tank_id,
@@ -31,28 +31,28 @@ export default function TomatoContextProvider({
    tank_short_name: string
    tank_id: string
 }) {
-   const { data: tankData } = useGetTomatoTankStats(tank_short_name, tank_id)
-   const [tomatoReducer, tomatoDispatch] = useReducer(TomatoReducer, tomatoInitialState)
+   const { data: tankData } = useGetTankStats(tank_short_name, tank_id)
+   const [vehicleReducer, vehicleDispatch] = useReducer(TomatoReducer, InitialState)
 
-   useSetChassis(tankData, tomatoDispatch)
-   useSetRadios(tankData, tomatoDispatch)
-   useSetTurrets(tankData, tomatoDispatch)
-   useSetGuns(tankData, tomatoDispatch, tomatoReducer.selectedModuleNames.vehicleTurret)
-   useSetEngines(tankData, tomatoDispatch)
+   useSetChassis(tankData, vehicleDispatch)
+   useSetRadios(tankData, vehicleDispatch)
+   useSetTurrets(tankData, vehicleDispatch)
+   useSetGuns(tankData, vehicleDispatch, vehicleReducer.selectedModuleNames.vehicleTurret)
+   useSetEngines(tankData, vehicleDispatch)
 
    return (
-      <TomatoContext.Provider
+      <VehicleContext.Provider
          value={{
             hull: tankData?.stats.hull,
             fuelTank: tankData?.stats.fuelTank,
             speedLimit: tankData?.stats.speedLimit,
             camo: tankData?.stats.camo,
             tankCost: tankData?.price,
-            tomatoReducer,
-            tomatoDispatch,
+            vehicleReducer,
+            vehicleDispatch,
          }}
       >
          {children}
-      </TomatoContext.Provider>
+      </VehicleContext.Provider>
    )
 }

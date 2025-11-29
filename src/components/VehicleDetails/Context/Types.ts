@@ -36,7 +36,7 @@ interface setModuleIdByType {
    payload: { type: ModuleType; value: string }
 }
 
-export type ITomatoContextActions =
+export type IVehicleContextActions =
    | setChassisAction
    | setEnginesAction
    | setRadiosAction
@@ -45,7 +45,7 @@ export type ITomatoContextActions =
    | setShellsAction
    | setModuleIdByType
 
-export interface ITomatoReducerState {
+export interface IVehicleReducerState {
    moduleGroup: {
       vehicleChassis: { [moduleName: string]: IChassis }
       vehicleEngine: { [moduleName: string]: IEngines }
@@ -59,7 +59,7 @@ export interface ITomatoReducerState {
    }
 }
 
-export const tomatoInitialState: ITomatoReducerState = {
+export const InitialState: IVehicleReducerState = {
    moduleGroup: {
       vehicleChassis: {},
       vehicleEngine: {},
@@ -79,12 +79,12 @@ export const tomatoInitialState: ITomatoReducerState = {
 }
 
 // CONTEXT
-export interface ITomatoContext {
+export interface IVehicleContext {
    hull: IHull
    fuelTank: IFuelTank
    speedLimit: ISpeedLimit
    camo: ICamo
    tankCost: number | { gold: number }
-   tomatoReducer: ITomatoReducerState
-   tomatoDispatch: React.Dispatch<ITomatoContextActions>
+   vehicleReducer: IVehicleReducerState
+   vehicleDispatch: React.Dispatch<IVehicleContextActions>
 }

@@ -1,7 +1,7 @@
 'use client'
 import { useContext } from 'react'
-import { TomatoContext } from '@/TomatoContext/TomatoContext'
-import useSetShells from '../../Context/TomatoContext/Hooks/useSetShells'
+import { VehicleContext } from '@/VehicleContext/VehicleContext'
+import useSetShells from '../../Context/Hooks/useSetShells'
 
 import type { AmmoType, ModuleType } from '@/types/VehicleDetails/module'
 
@@ -14,13 +14,13 @@ import ModuleImage from '../Includes/ModuleImage'
 
 export default function ModuleSelect() {
    const {
-      tomatoReducer: { selectedModuleNames, moduleGroup },
-      tomatoDispatch,
-   } = useContext(TomatoContext)
+      vehicleReducer: { selectedModuleNames, moduleGroup },
+      vehicleDispatch,
+   } = useContext(VehicleContext)
    useSetShells()
 
    function setModuleNameByType(moduleType: ModuleType, moduleName: string) {
-      tomatoDispatch({
+      vehicleDispatch({
          type: 'SET_MODULE_NAME_BY_TYPE',
          payload: { type: moduleType, value: moduleName },
       })

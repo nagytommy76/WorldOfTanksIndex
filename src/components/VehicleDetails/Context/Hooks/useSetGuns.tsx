@@ -1,11 +1,11 @@
 import { type ActionDispatch, useEffect, useState } from 'react'
-import type { ITomatoContextActions } from '../Types'
+import type { IVehicleContextActions } from '../Types'
 import type { ITankData } from '@VehicleTypes/Vehicle'
 import type { IGuns } from '@VehicleTypes/Guns'
 
 export default function useSetGuns(
    tankData: ITankData,
-   tomatoDispatch: ActionDispatch<[ITomatoContextActions]>,
+   tomatoDispatch: ActionDispatch<[IVehicleContextActions]>,
    selectedTurret: string | null
 ) {
    const [allGuns, setAllGuns] = useState<{ [gunName: string]: IGuns }>({})

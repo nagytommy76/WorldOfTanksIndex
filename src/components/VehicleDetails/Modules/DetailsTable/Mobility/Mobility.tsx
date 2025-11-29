@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import { TomatoContext } from '@/TomatoContext/TomatoContext'
+import { VehicleContext } from '@/VehicleContext/VehicleContext'
 
 import TableHeadComponent from '../Includes/TableHead'
 
@@ -17,11 +17,11 @@ export default function Mobility() {
       speedLimit,
       hull,
       fuelTank,
-      tomatoReducer: {
+      vehicleReducer: {
          selectedModuleNames,
          moduleGroup: { vehicleChassis, vehicleTurret, vehicleGun, vehicleEngine, vehicleRadio },
       },
-   } = useContext(TomatoContext)
+   } = useContext(VehicleContext)
 
    useEffect(() => {
       const totalWeight =

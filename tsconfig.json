@@ -32,9 +32,7 @@
          "@Types/*": ["./types/*"],
          "@VehicleTypes/*": ["./types/VehicleDetails/*"],
          // Contexts
-         "@/ModuleContext/*": ["./src/components/VehicleDetails/Context/Module/*"],
-         "@/DetailsContext/*": ["./src/components/VehicleDetails/Context/Details/*"],
-         "@/TomatoContext/*": ["./src/components/VehicleDetails/Context/TomatoContext/*"]
+         "@/VehicleContext/*": ["./src/components/VehicleDetails/Context/*"]
       }
    },
    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

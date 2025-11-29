@@ -4,8 +4,8 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 import type { ITankData } from '@/types/VehicleDetails/Vehicle'
 import { AxiosResponse } from 'axios'
 
-export default function useGetTomatoTankStats(tank_short_name: string, tank_id: string) {
-   async function getTomatoTankStats() {
+export default function useGetTankStats(tank_short_name: string, tank_id: string) {
+   async function getTankStats() {
       const response = (await axios.get(`/${tank_id}/${tank_short_name}`)) as AxiosResponse<{
          vehicleStats: ITankData
       }>
@@ -14,8 +14,8 @@ export default function useGetTomatoTankStats(tank_short_name: string, tank_id: 
    }
 
    const { data, isLoading, isError } = useSuspenseQuery({
-      queryKey: ['tomato-tank-stats', tank_short_name],
-      queryFn: getTomatoTankStats,
+      queryKey: ['tank-stats', tank_short_name],
+      queryFn: getTankStats,
    })
 
    return { data, isLoading, isError }

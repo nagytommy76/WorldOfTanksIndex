@@ -1,6 +1,9 @@
-import type { ITomatoContextActions, ITomatoReducerState } from './Types'
+import type { IVehicleReducerState, IVehicleContextActions } from './Types'
 
-export default function TomatoReducer(state: ITomatoReducerState, { payload, type }: ITomatoContextActions) {
+export default function TomatoReducer(
+   state: IVehicleReducerState,
+   { payload, type }: IVehicleContextActions
+) {
    switch (type) {
       case 'SET_CHASSIS':
          return {

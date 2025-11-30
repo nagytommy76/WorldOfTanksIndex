@@ -1,4 +1,4 @@
-import { Schema, model, models } from 'mongoose'
+import { Model, Schema, model, models } from 'mongoose'
 import type { ITankData } from '@/types/VehicleDetails/Vehicle'
 
 const shells = {
@@ -235,7 +235,7 @@ const tankDetails = {
    tag: String,
 }
 
-const VehicleSchema = new Schema<ITankData>({
+const VehicleSchema = new Schema<ITankData, Model<ITankData>>({
    id: { type: Number, required: false, default: null },
    name: String,
    shortName: String,
@@ -262,4 +262,5 @@ const VehicleSchema = new Schema<ITankData>({
    stats,
 })
 
-export const VehicleModel = models.Vehicles || model<ITankData>('Vehicles', VehicleSchema)
+export const VehicleModel =
+   (models.Vehicles as Model<ITankData>) || model<ITankData, Model<ITankData>>('Vehicles', VehicleSchema)

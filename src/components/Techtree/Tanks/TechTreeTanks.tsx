@@ -7,15 +7,13 @@ import { flagSources } from '@/Base/FlagLinks/FlagLinks'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 
-import type { ITechTreeVehicleType } from '@/types/techTreeTypes'
+import type { TechTreeVehiclesType } from '@/types/VehicleDetails/Vehicle'
 import tiers from '@/lib/tierList'
 
 export default function TechTreeTanks({
    groupedTechTreeByTier,
 }: {
-   groupedTechTreeByTier: {
-      [tier: number]: ITechTreeVehicleType[]
-   }
+   groupedTechTreeByTier: TechTreeVehiclesType[]
 }) {
    return (
       <section className='w-3xl mx-auto my-11'>
@@ -32,51 +30,53 @@ export default function TechTreeTanks({
             </Typography>
             <Typography variant='subtitle1'>Credits</Typography>
          </div>
-         {Object.keys(groupedTechTreeByTier).map((key) => (
-            <div key={key} id={`tier-${key}`}>
-               {groupedTechTreeByTier[Number(key)].map((techTreeVehicle) => (
-                  <Link
-                     id={techTreeVehicle.tank_id.toString()}
-                     className='w-full flex flex-row justify-start items-center gap-6 
+         {groupedTechTreeByTier.map((techTreeVehicle, index) => (
+            <div key={index} id={`tier-${index}`}>
+               <Link
+                  id={techTreeVehicle.id?.toString()}
+                  className='w-full flex flex-row justify-start items-center gap-6 
                      border-b-1 border-neutral-600 py-2 transition-all hover:bg-neutral-800'
-                     href={`/${techTreeVehicle.tank_id}/${techTreeVehicle.tag}`}
-                     key={techTreeVehicle.tank_id}
-                  >
-                     <div className='w-[50px] flex flex-row justify-center' title={techTreeVehicle.nation}>
-                        <Image
-                           src={flagSources[techTreeVehicle.nation].source}
-                           alt={flagSources[techTreeVehicle.nation].alt}
-                           width={90}
-                           height={90}
-                           className='object-cover w-[45px]'
-                        />
-                     </div>
-                     <div className='w-[30px] flex flex-row justify-center' title={techTreeVehicle.type}>
-                        <Image
-                           src={getIcon(techTreeVehicle.type)}
-                           alt={techTreeVehicle.name}
-                           width={15}
-                           height={15}
-                        />
-                     </div>
-                     <Typography className='w-[30px] text-center' textAlign={'center'}>
-                        {tiers[Number(techTreeVehicle.tier - 1)]}
-                     </Typography>
-                     <div className={'w-[250px] flex flex-row items-center '}>
-                        <Image
-                           src={techTreeVehicle.images.contour_icon}
-                           width={65}
-                           height={65}
-                           alt={techTreeVehicle.name}
-                        />
-                        <Typography>{techTreeVehicle.name}</Typography>
-                     </div>
+                  href={`/${techTreeVehicle.id}/${techTreeVehicle.xmlId}`}
+                  key={techTreeVehicle.id}
+               >
+                  <div className='w-[50px] flex flex-row justify-center' title={techTreeVehicle.nation}>
+                     <Image
+                        src={flagSources[techTreeVehicle.nation].source}
+                        alt={flagSources[techTreeVehicle.nation].alt}
+                        width={90}
+                        height={90}
+                        className='object-cover w-[45px]'
+                     />
+                  </div>
+                  <div className='w-[30px] flex flex-row justify-center' title={techTreeVehicle.type}>
+                     <Image
+                        src={getIcon(techTreeVehicle.type)}
+                        alt={techTreeVehicle.name}
+                        width={15}
+                        height={15}
+                     />
+                  </div>
+                  <Typography className='w-[30px] text-center' textAlign={'center'}>
+                     {tiers[Number(techTreeVehicle.tier - 1)]}
+                  </Typography>
+                  <div className={'w-[250px] flex flex-row items-center '}>
+                     <Image
+                        src={techTreeVehicle.tankDetails?.images.contour_icon || ''}
+                        width={65}
+                        height={65}
+                        alt={techTreeVehicle.name}
+                     />
+                     <Typography>{techTreeVehicle.name}</Typography>
+                  </div>
+                  {techTreeVehicle.tier === 1 ? (
+                     <Typography className='min-w-[80px]'>0</Typography>
+                  ) : (
                      <Typography className='min-w-[80px]'>
-                        {techTreeVehicle.price_credit?.toLocaleString()}
+                        {techTreeVehicle.price.toLocaleString()}
                      </Typography>
-                     <Button>More details</Button>
-                  </Link>
-               ))}
+                  )}
+                  <Button>More details</Button>
+               </Link>
             </div>
          ))}
       </section>

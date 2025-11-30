@@ -1,5 +1,5 @@
 import { createContext, useReducer } from 'react'
-import TomatoReducer from './VehicleReducer'
+import VehicleReducer from './VehicleReducer'
 import type { ICamo, IFuelTank, ISpeedLimit } from '@VehicleTypes/Other'
 import type { IHull } from '@VehicleTypes/Hull'
 
@@ -32,7 +32,7 @@ export default function VehicleContextProvider({
    tank_id: string
 }) {
    const { data: tankData } = useGetTankStats(tank_short_name, tank_id)
-   const [vehicleReducer, vehicleDispatch] = useReducer(TomatoReducer, InitialState)
+   const [vehicleReducer, vehicleDispatch] = useReducer(VehicleReducer, InitialState)
 
    useSetChassis(tankData, vehicleDispatch)
    useSetRadios(tankData, vehicleDispatch)

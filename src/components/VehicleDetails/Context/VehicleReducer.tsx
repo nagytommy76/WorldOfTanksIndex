@@ -1,6 +1,6 @@
 import type { IVehicleReducerState, IVehicleContextActions } from './Types'
 
-export default function TomatoReducer(
+export default function VehicleReducer(
    state: IVehicleReducerState,
    { payload, type }: IVehicleContextActions
 ) {

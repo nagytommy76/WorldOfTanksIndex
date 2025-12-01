@@ -5,19 +5,20 @@ export const metadata: Metadata = {
    description: 'Tech tree for German vehicles in World of Tanks game',
 }
 
-import returnVehicles from '@/lib/getTechTreeVehicles'
+import returnVehicles from '@/lib/getVehicles'
 
 import TechTree from '@/TechtreeTechTree'
 
 export default async function page() {
-   const { groupedCollectorTanksByTier, groupedPremiumTanksByTier, groupedTanksByTier } =
-      await returnVehicles('germany')
+   const allTechTreeVehicles = await returnVehicles('germany')
+   const collectorsVehicles = await returnVehicles('germany', '/collectors')
+   const premiumVehicles = await returnVehicles('germany', '/premium')
 
    return (
       <TechTree
-         groupedPremiumTanksByTier={groupedPremiumTanksByTier}
-         groupedTanksByTier={groupedTanksByTier}
-         groupedCollectorTanksByTier={groupedCollectorTanksByTier}
+         groupedPremiumTanksByTier={premiumVehicles}
+         groupedTanksByTier={allTechTreeVehicles}
+         groupedCollectorTanksByTier={collectorsVehicles}
       />
    )
 }

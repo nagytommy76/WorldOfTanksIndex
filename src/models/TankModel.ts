@@ -233,6 +233,10 @@ const tankDetails = {
    big_icon: String,
    tank_id: Number,
    tag: String,
+   description: String,
+   short_name: String,
+   name: String,
+   is_premium_igr: { type: Boolean, required: false, default: false },
 }
 
 const VehicleSchema = new Schema<ITankData, Model<ITankData>>({

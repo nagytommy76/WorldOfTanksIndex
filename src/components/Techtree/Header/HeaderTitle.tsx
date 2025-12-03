@@ -2,6 +2,14 @@
 import { usePathname } from 'next/navigation'
 import Typography from '@mui/material/Typography'
 
+function TypeText({ children }: { children: React.ReactNode }) {
+   return (
+      <Typography variant='h2' className={'my-8 text-center text-amber-200 '}>
+         {children}
+      </Typography>
+   )
+}
+
 export default function HeaderTitle() {
    const pathname = usePathname()
 
@@ -18,10 +26,36 @@ export default function HeaderTitle() {
       sweden: { title: 'Sweden' },
       italy: { title: 'Italy' },
    }
-
-   return (
-      <Typography variant='h2' className={'my-8 text-center text-amber-200 '}>
-         Tech tree for {pathname && title[pathname.replace('/techtree/', '')].title}
-      </Typography>
-   )
+   const vehicleType = pathname && pathname.split('/')[2]
+   switch (vehicleType) {
+      case 'techtree':
+         return (
+            <TypeText>
+               Tech tree for {pathname && title[pathname.replace(`/vehicles/${vehicleType}/`, '')].title}
+            </TypeText>
+         )
+      case 'premium':
+         return (
+            <TypeText>
+               Premium vehicles of{' '}
+               {pathname && title[pathname.replace(`/vehicles/${vehicleType}/`, '')].title}
+            </TypeText>
+         )
+      case 'collectors':
+         return (
+            <TypeText>
+               Collector vehicles of{' '}
+               {pathname && title[pathname.replace(`/vehicles/${vehicleType}/`, '')].title}
+            </TypeText>
+         )
+      case 'specials':
+         return (
+            <TypeText>
+               Special vehicles of{' '}
+               {pathname && title[pathname.replace(`/vehicles/${vehicleType}/`, '')].title}
+            </TypeText>
+         )
+      default:
+         return null
+   }
 }

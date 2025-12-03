@@ -17,7 +17,7 @@ export default function FlagLinks({
       <>
          {Object.keys(flagSources).map((key) => {
             return (
-               <Link href={`/${path}/${key}`} key={key}>
+               <Link href={`/vehicles/${path}/${key}`} key={key}>
                   <MenuItem onClick={handleClose} className={'w-[190px] flex flex-row gap-2'}>
                      <Image src={flagSources[key].source} alt={flagSources[key].alt} width={30} height={30} />{' '}
                      {flagSources[key].text}

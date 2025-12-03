@@ -48,7 +48,7 @@ export default function DropdownMenu() {
                expanded={expanded}
                handleExpandChange={handleExpandChange}
                handleClose={handleClose}
-               path='premuim'
+               path='premium'
                accordionName='Premium Tanks'
             />
             <AccordionMenu

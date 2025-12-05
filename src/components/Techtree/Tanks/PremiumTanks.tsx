@@ -1,32 +1,18 @@
 import TankCard from '@/Base/TankCard/TankCard'
-import TierList from '@/componentsTechtree/Header/TierList'
 
-import Typography from '@mui/material/Typography'
-import type { ITechTreeVehicleType } from '@/types/techTreeTypes'
+import type { TechTreeVehiclesType } from '@/types/VehicleDetails/Vehicle'
 
 export default function PremiumTanks({
    groupedPremiumTanksByTier,
 }: {
-   groupedPremiumTanksByTier: {
-      [tier: number]: ITechTreeVehicleType[]
-   }
+   groupedPremiumTanksByTier: TechTreeVehiclesType[]
 }) {
    return (
-      <section className={'w-full flex flex-col justify-center'}>
-         <Typography variant='h6' className={'my-8 text-center text-amber-200 '}>
-            Premium vehicles
-         </Typography>
-         <TierList />
+      <section className={'w-full flex flex-col justify-center my-5'}>
          <div className='w-full flex flex-row flex-wrap justify-center gap-5'>
-            {Object.keys(groupedPremiumTanksByTier).map((key) => (
-               <div key={key}>
-                  {groupedPremiumTanksByTier[Number(key)].map((premiumVehicle) => (
-                     <div key={premiumVehicle.tank_id} className='my-6'>
-                        {!premiumVehicle.name.endsWith('FL') && (
-                           <TankCard key={premiumVehicle.tank_id} vehicle={premiumVehicle} />
-                        )}
-                     </div>
-                  ))}
+            {groupedPremiumTanksByTier.map((premiumVehicle) => (
+               <div key={premiumVehicle.id} className='my-6'>
+                  <TankCard key={premiumVehicle.id} vehicle={premiumVehicle} />
                </div>
             ))}
          </div>

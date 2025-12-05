@@ -66,7 +66,7 @@ export default function TechTreeTanks({
                         height={65}
                         alt={techTreeVehicle.name}
                      />
-                     <Typography>{techTreeVehicle.name}</Typography>
+                     <Typography>{techTreeVehicle.tankDetails?.name}</Typography>
                   </div>
                   {techTreeVehicle.tier === 1 ? (
                      <Typography className='min-w-[80px]'>0</Typography>

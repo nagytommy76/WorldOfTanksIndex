@@ -1,28 +1,31 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import tiers from '@/lib/tierList'
 
-import type { ITechTreeVehicleType } from '@/types/techTreeTypes'
+import type { TechTreeVehiclesType } from '@/types/VehicleDetails/Vehicle'
 
 import getIcon from '@/lib/getVehicleTypeIcon'
 
-export default function TankCard({ vehicle }: { vehicle: ITechTreeVehicleType }) {
+export default function TankCard({ vehicle }: { vehicle: TechTreeVehiclesType }) {
    return (
-      <div className='w-[140px] h-[40px]'>
-         <Link href={`/${vehicle.tank_id}/${vehicle.tag}`} title={vehicle.name} className={'w-full h-full'}>
+      <div className='w-[170px] h-[60px]'>
+         <Link href={`/${vehicle.id}/${vehicle.xmlId}`} title={vehicle.name} className={'w-full h-full'}>
             <div className='relative w-full h-full'>
                <Image
                   className={`w-full h-full object-cover ${vehicle.type}`}
-                  src={vehicle.images.small_icon}
+                  src={vehicle.tankDetails?.images.big_icon || ''}
                   alt={vehicle.name}
-                  width={100}
-                  height={60}
+                  width={200}
+                  height={150}
                />
-               {vehicle.price_gold !== 0 && (
-                  <p className='absolute bottom-0 right-0 text-[10px] text-amber-300'>{vehicle.price_gold}</p>
+               {typeof vehicle.price === 'number' ? (
+                  <p className='absolute bottom-0 right-0 text-[10px]'>{vehicle.price}</p>
+               ) : (
+                  <p className='absolute bottom-0 right-0 text-[10px]  text-amber-300'>
+                     gold: {vehicle.price.gold}
+                  </p>
                )}
-               {vehicle.price_credit !== 0 && (
-                  <p className='absolute bottom-0 right-0 text-[10px]'>{vehicle.price_credit}</p>
-               )}
+               <p className='absolute text-[10px] top-0 right-5'>Tier: {tiers[vehicle.tier - 1]}</p>
                <Image
                   className={'absolute top-0 right-0'}
                   src={getIcon(vehicle.type)}
@@ -31,7 +34,13 @@ export default function TankCard({ vehicle }: { vehicle: ITechTreeVehicleType })
                   height={10}
                />
             </div>
-            <p className={'h-[25px] w-full text-xs text-center bg-gray-900'}>{vehicle.short_name}</p>
+            <p
+               className={
+                  'flex flex-row justify-center items-center h-[25px] w-full text-xs text-center bg-gray-900'
+               }
+            >
+               {vehicle.tankDetails?.name}
+            </p>
          </Link>
       </div>
    )

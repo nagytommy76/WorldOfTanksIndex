@@ -28,6 +28,7 @@ export interface ITankDetails {
    tag: string
    short_name: string
    description: string
+   name: string
 }
 
 interface ITankStats {

@@ -8,19 +8,32 @@ export async function GET(request: NextRequest) {
    try {
       await dbConnect()
       const techTreeVehicles = await VehicleModel.find({
+         nation,
+         notInShop: false,
+         tankDetails: { $ne: null },
          $and: [
-            { nation },
-            { notInShop: false },
-            { tankDetails: { $ne: null } },
+            { 'tankDetails.prices_xp': { $ne: null } },
             { 'tankDetails.is_gift': { $eq: false } },
             { 'tankDetails.is_premium': { $eq: false } },
          ],
       })
-         .select(['tankDetails', 'price', 'type', 'tier', 'id', 'name', 'notInShop', 'xmlId', 'nation'])
-         .sort({ tier: 1, name: 1 })
+         .select([
+            'tankDetails.name',
+            'tankDetails.shortName',
+            'tankDetails.images',
+            'price',
+            'type',
+            'tier',
+            'id',
+            'name',
+            'notInShop',
+            'xmlId',
+            'nation',
+         ])
+         .sort({ tier: -1, type: 1 })
          .lean()
 
-      return NextResponse.json({ techTreeVehicles })
+      return NextResponse.json({ vehicles: techTreeVehicles })
    } catch (err) {
       return NextResponse.json(
          { error: 'Failed to fetch tech tree vehicles', errorType: err },

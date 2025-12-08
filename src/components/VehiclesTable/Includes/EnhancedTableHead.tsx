@@ -36,7 +36,7 @@ const headCells: readonly HeadCell[] = [
       id: 'price',
       numeric: true,
       disablePadding: true,
-      label: 'Credits',
+      label: 'Price',
    },
 ]
 
@@ -60,6 +60,7 @@ export default function EnhancedTableHead(props: EnhancedTableProps) {
                      active={orderBy === headCell.id}
                      direction={orderBy === headCell.id ? order : 'asc'}
                      onClick={createSortHandler(headCell.id)}
+                     className='text-[20px]'
                   >
                      {headCell.label}
                      {orderBy === headCell.id ? (

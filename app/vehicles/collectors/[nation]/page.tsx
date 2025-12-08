@@ -1,10 +1,10 @@
 import { Metadata } from 'next'
+import dynamic from 'next/dynamic'
+
 import { flagSources } from '@/Base/FlagLinks/FlagLinks'
 import returnVehicles from '@/lib/getVehicles'
 
-import Collectors from '@/TechtreeTanks/Collectors'
-
-import FlagLinks from '@/componentsTechtree/Header/FlagLinks'
+const VehiclesTable = dynamic(() => import('@/componentsVehiclesTable/VehiclesTable'))
 
 type Props = {
    params: Promise<{ nation: string }>
@@ -22,10 +22,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function page({ params }: { params: Promise<{ nation: string }> }) {
    const { nation } = await params
    const allCollectorsVehicles = await returnVehicles(nation, '/collectors')
-   return (
-      <>
-         <FlagLinks />
-         <Collectors groupedCollectorTanksByTier={allCollectorsVehicles} />
-      </>
-   )
+   return <VehiclesTable allVehicles={allCollectorsVehicles} />
 }

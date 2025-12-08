@@ -19,15 +19,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 import returnVehicles from '@/lib/getVehicles'
 import { flagSources } from '@/Base/FlagLinks/FlagLinks'
 
-import FlagLinks from '@/componentsTechtree/Header/FlagLinks'
-
 export default async function page({ params }: { params: Promise<{ nation: string }> }) {
    const { nation } = await params
    const allTechTreeVehicles = await returnVehicles(nation)
-   return (
-      <>
-         <FlagLinks />
-         <VehiclesTable allTechTreeVehicles={allTechTreeVehicles} />
-      </>
-   )
+   return <VehiclesTable allVehicles={allTechTreeVehicles} />
 }

@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
-import HeaderTitle from '@/componentsTechtree/Header/HeaderTitle'
+import HeaderTitle from '@/componentsVehiclesTable/Includes/HeaderTitle'
+import FlagLinks from '@/componentsVehiclesTable/Includes/FlagLinks'
 
 export const metadata: Metadata = {
    keywords: [
@@ -20,6 +21,7 @@ export default async function layout({
    return (
       <section className={'min-h-screen'}>
          <HeaderTitle />
+         <FlagLinks />
          {children}
       </section>
    )

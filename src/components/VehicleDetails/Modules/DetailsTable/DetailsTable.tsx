@@ -1,5 +1,3 @@
-'use client'
-
 import Typography from '@mui/material/Typography'
 import TableContainer from '@mui/material/TableContainer'
 import Paper from '@mui/material/Paper'
@@ -17,7 +15,7 @@ export default function DetailsTable() {
          </Typography>
          <TableContainer
             component={Paper}
-            className='min-h-full grid grid-cols-1 grid-rows-1 gap-4 xl:grid-cols-2 xl:grid-rows-2'
+            className='min-h-screen grid grid-cols-1 grid-rows-1 gap-4 xl:grid-cols-2 xl:grid-rows-2'
          >
             <Firepower />
             <Mobility />

@@ -1,3 +1,4 @@
+'use client'
 import { useContext } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 
@@ -17,6 +18,8 @@ export default function Firepower() {
          moduleGroup: { vehicleChassis, vehicleGun, shells },
       },
    } = useContext(VehicleContext)
+   const gunDepression = -vehicleGun[selectedModuleNames.vehicleGun]?.elevationLimits.depression[1] || 0
+   const gunElevation = -vehicleGun[selectedModuleNames.vehicleGun]?.elevationLimits.elevation[1] || 0
 
    return (
       <Table size='small' aria-label='Firepower table with average damage and penetration'>
@@ -102,16 +105,8 @@ export default function Firepower() {
                unit='m'
                paddingLeft
             />
-            <TableRowComponent
-               titleText='Gun depression'
-               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.depression}
-               unit='°'
-            />
-            <TableRowComponent
-               titleText='Gun elevation'
-               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.elevation}
-               unit='°'
-            />
+            <TableRowComponent titleText='Gun depression' valueText={gunDepression} unit='°' />
+            <TableRowComponent titleText='Gun elevation' valueText={gunElevation} unit='°' />
             <TableRowComponent
                titleText='Module damage'
                valueText={shells[selectedModuleNames.shells]?.damage.devices}

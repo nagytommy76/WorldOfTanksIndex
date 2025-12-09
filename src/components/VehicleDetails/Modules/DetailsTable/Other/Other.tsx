@@ -1,3 +1,4 @@
+'use client'
 import { useContext } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 
@@ -13,7 +14,7 @@ export default function Other() {
       vehicleReducer: {
          selectedModuleNames,
 
-         moduleGroup: { shells, vehicleTurret, vehicleGun },
+         moduleGroup: { shells, vehicleTurret, vehicleGun, vehicleEngine, vehicleRadio },
       },
    } = useContext(VehicleContext)
    return (
@@ -24,6 +25,16 @@ export default function Other() {
                titleText='View range'
                valueText={vehicleTurret[selectedModuleNames.vehicleTurret]?.viewRange}
                unit='m'
+            />
+            <TableRowComponent
+               titleText='Signal range'
+               valueText={vehicleRadio[selectedModuleNames.vehicleRadio]?.distance}
+               unit='m'
+            />
+            <TableRowComponent
+               titleText='Fire chance'
+               valueText={vehicleEngine[selectedModuleNames.vehicleEngine]?.fireStartingChance * 100}
+               unit='%'
             />
             <TableRowComponent
                titleText='Ammo Capacity'
@@ -49,7 +60,19 @@ export default function Other() {
                ).toFixed(0)}
                unit='HP'
             />
-            <TableRowComponent titleText='Tank Cost' valueText={tankCost.toLocaleString()} unit='credits' />
+            {typeof tankCost === 'number' ? (
+               <TableRowComponent
+                  titleText='Tank Cost'
+                  valueText={tankCost.toLocaleString()}
+                  unit='credits'
+               />
+            ) : (
+               <TableRowComponent
+                  titleText='Tank Cost'
+                  valueText={tankCost.gold.toLocaleString()}
+                  unit='gold'
+               />
+            )}
          </TableBody>
       </Table>
    )

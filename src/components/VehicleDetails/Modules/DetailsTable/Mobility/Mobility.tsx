@@ -1,3 +1,4 @@
+'use client'
 import { useContext, useEffect, useState } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 
@@ -25,7 +26,7 @@ export default function Mobility() {
 
    useEffect(() => {
       const totalWeight =
-         fuelTank?.weight +
+         fuelTank[0]?.weight +
          hull?.weight +
          vehicleChassis[selectedModuleNames.vehicleChassis]?.weight +
          vehicleEngine[selectedModuleNames.vehicleEngine]?.weight +
@@ -64,14 +65,14 @@ export default function Mobility() {
             <TableRowComponent
                titleText='Specific power'
                valueText={(
-                  (vehicleEngine[selectedModuleNames.vehicleEngine]?.realPower / totalWeight) *
+                  (vehicleEngine[selectedModuleNames.vehicleEngine]?.power / totalWeight) *
                   1000
                ).toFixed(2)}
                unit='hp/tn'
             />
             <TableRowComponent
                titleText='Engine power'
-               valueText={vehicleEngine[selectedModuleNames.vehicleEngine]?.realPower}
+               valueText={vehicleEngine[selectedModuleNames.vehicleEngine]?.power}
                unit='hp'
             />
             <TableRowComponent

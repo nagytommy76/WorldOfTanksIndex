@@ -1,3 +1,4 @@
+'use client'
 import { useContext } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 
@@ -75,10 +76,10 @@ export default function Survivability() {
                valueText={hull.ammoRackHealth.maxRegenHealth}
                unit='hp'
             />
-            <TableRowComponent titleText='Fuel tank health' valueText={fuelTank.maxHealth} unit='hp' />
+            <TableRowComponent titleText='Fuel tank health' valueText={fuelTank[0].maxHealth} unit='hp' />
             <TableRowComponent
                titleText='Fuel tank health (Repaired)'
-               valueText={fuelTank.maxRegenHealth}
+               valueText={fuelTank[0].maxRegenHealth}
                unit='hp'
             />
             {vehicleEngine[selectedModuleNames.vehicleEngine]?.fireStartingChance && (

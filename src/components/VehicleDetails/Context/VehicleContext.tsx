@@ -1,11 +1,12 @@
+'use client'
 import { createContext, useReducer } from 'react'
 import VehicleReducer from './VehicleReducer'
 import type { ICamo, IFuelTank, ISpeedLimit } from '@VehicleTypes/Other'
 import type { IHull } from '@VehicleTypes/Hull'
+import type { ITankData } from '@VehicleTypes/Vehicle'
 
 import { InitialState, IVehicleContext } from './Types'
 
-import useGetTankStats from './Hooks/useGetTankStats'
 import useSetChassis from './Hooks/useSetChassis'
 import useSetRadios from './Hooks/useSetRadios'
 import useSetGuns from './Hooks/useSetGuns'
@@ -16,7 +17,7 @@ export const VehicleContext = createContext<IVehicleContext>({
    vehicleDispatch: () => null,
    vehicleReducer: InitialState,
    hull: {} as IHull,
-   fuelTank: {} as IFuelTank,
+   fuelTank: {} as IFuelTank[],
    speedLimit: {} as ISpeedLimit,
    camo: {} as ICamo,
    tankCost: 0,
@@ -24,30 +25,27 @@ export const VehicleContext = createContext<IVehicleContext>({
 
 export default function VehicleContextProvider({
    children,
-   tank_short_name,
-   tank_id,
+   tankDetails,
 }: {
    children: React.ReactNode
-   tank_short_name: string
-   tank_id: string
+   tankDetails: ITankData
 }) {
-   const { data: tankData } = useGetTankStats(tank_short_name, tank_id)
    const [vehicleReducer, vehicleDispatch] = useReducer(VehicleReducer, InitialState)
 
-   useSetChassis(tankData, vehicleDispatch)
-   useSetRadios(tankData, vehicleDispatch)
-   useSetTurrets(tankData, vehicleDispatch)
-   useSetGuns(tankData, vehicleDispatch, vehicleReducer.selectedModuleNames.vehicleTurret)
-   useSetEngines(tankData, vehicleDispatch)
+   useSetChassis(tankDetails, vehicleDispatch)
+   useSetRadios(tankDetails, vehicleDispatch)
+   useSetTurrets(tankDetails, vehicleDispatch)
+   useSetGuns(tankDetails, vehicleDispatch, vehicleReducer.selectedModuleNames.vehicleTurret)
+   useSetEngines(tankDetails, vehicleDispatch)
 
    return (
       <VehicleContext.Provider
          value={{
-            hull: tankData?.stats.hull,
-            fuelTank: tankData?.stats.fuelTank,
-            speedLimit: tankData?.stats.speedLimit,
-            camo: tankData?.stats.camo,
-            tankCost: tankData?.price,
+            hull: tankDetails?.stats.hull,
+            fuelTank: tankDetails?.stats.fuelTank,
+            speedLimit: tankDetails?.stats.speedLimit,
+            camo: tankDetails?.stats.camo,
+            tankCost: tankDetails?.price,
             vehicleReducer,
             vehicleDispatch,
          }}

@@ -81,7 +81,7 @@ export const InitialState: IVehicleReducerState = {
 // CONTEXT
 export interface IVehicleContext {
    hull: IHull
-   fuelTank: IFuelTank
+   fuelTank: IFuelTank[]
    speedLimit: ISpeedLimit
    camo: ICamo
    tankCost: number | { gold: number }

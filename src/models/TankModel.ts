@@ -177,8 +177,8 @@ const stats = {
       },
    ],
    speedLimit: {
-      maxSpeed: Number,
-      maxReverseSpeed: Number,
+      forward: Number,
+      backward: Number,
    },
    turrets: [
       {

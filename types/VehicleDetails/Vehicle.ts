@@ -1,7 +1,7 @@
 import type { IEngines } from './Engines'
 import type { IChassis, IHull } from './Hull'
 import type { ITurrets } from './Turrets'
-import type { IFuelTank, IRadios, ISpeedLimit, IHydropneumatic, ISiegeMode } from './Other'
+import type { IFuelTank, IRadios, ISpeedLimit, IHydropneumatic, ISiegeMode, VehicleTypes } from './Other'
 
 /**
  * @description From WG API
@@ -40,7 +40,7 @@ interface ITankStats {
    }
    chassis: IChassis[]
    engines: IEngines[]
-   fuelTank: IFuelTank
+   fuelTank: IFuelTank[]
    hull: IHull
    radios: IRadios[]
    speedLimit: ISpeedLimit
@@ -63,7 +63,7 @@ export interface ITankData {
    shortName: string
    tags: string[]
    tier: number
-   type: string
+   type: VehicleTypes
    xmlId: string
    notInShop: boolean
    crew: {

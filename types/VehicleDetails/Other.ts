@@ -41,3 +41,5 @@ export interface IRadios {
    userString: string
    weight: number
 }
+
+export type VehicleTypes = 'lightTank' | 'mediumTank' | 'heavyTank' | 'AT-SPG' | 'SPG'

@@ -24,11 +24,13 @@ export default function RootLayout({
    return (
       <html className={montserrat.className} lang='en'>
          <body>
-            <Providers>
-               <Navbar />
-               <main className='max-w-screen-2xl mx-auto px-5'>{children}</main>
-               <Footer />
-            </Providers>
+            <main>
+               <Providers>
+                  <Navbar />
+                  {children}
+                  <Footer />
+               </Providers>
+            </main>
          </body>
       </html>
    )

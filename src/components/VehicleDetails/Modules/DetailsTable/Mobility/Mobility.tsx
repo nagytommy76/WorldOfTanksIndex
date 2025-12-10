@@ -125,15 +125,15 @@ export default function Mobility() {
                titleText='Effective traverse speed'
                valueText={`
                      ${(
-                        vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed /
+                        vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed *
                         vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0]
                      ).toFixed(2)} /
                      ${(
-                        vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed /
+                        vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed *
                         vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[1]
                      ).toFixed(2)} /
                      ${(
-                        vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed /
+                        vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed *
                         vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[2]
                      ).toFixed(2)}
                   `}

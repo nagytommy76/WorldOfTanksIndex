@@ -11,6 +11,7 @@ import TableRowComponent from '../Includes/TableRow'
 export default function Other() {
    const {
       tankCost,
+      camo,
       vehicleReducer: {
          selectedModuleNames,
 
@@ -32,8 +33,18 @@ export default function Other() {
                unit='m'
             />
             <TableRowComponent
+               titleText='Concealment stationary vehicle'
+               valueText={camo.stationary * 100}
+               unit='%'
+            />
+            <TableRowComponent
+               titleText='Concealment moving vehicle'
+               valueText={(camo.moving + camo.camoBonus) * 100}
+               unit='%'
+            />
+            <TableRowComponent
                titleText='Fire chance'
-               valueText={vehicleEngine[selectedModuleNames.vehicleEngine]?.fireStartingChance * 100}
+               valueText={vehicleEngine[selectedModuleNames.vehicleEngine]?.fireStartingChance * 100 || 0}
                unit='%'
             />
             <TableRowComponent
@@ -58,13 +69,13 @@ export default function Other() {
                   (1000 / shells[selectedModuleNames.shells]?.damage.armor) *
                   shells[selectedModuleNames.shells]?.price
                ).toFixed(0)}
-               unit='HP'
+               unit='Credits'
             />
             {typeof tankCost === 'number' ? (
                <TableRowComponent
                   titleText='Tank Cost'
                   valueText={tankCost.toLocaleString()}
-                  unit='credits'
+                  unit='Credits'
                />
             ) : (
                <TableRowComponent

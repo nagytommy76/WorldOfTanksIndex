@@ -83,25 +83,27 @@ export default function Firepower() {
             />
             <TableRowComponent
                titleText='Tank traverse'
-               valueText={vehicleChassis[selectedModuleNames.vehicleChassis]?.dispersion.vehicleRotation}
+               valueText={
+                  '+ ' + vehicleChassis[selectedModuleNames.vehicleChassis]?.dispersion.vehicleRotation
+               }
                unit='m'
                paddingLeft
             />
             <TableRowComponent
                titleText='Turret traverse'
-               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.dispersion.turretRotation}
+               valueText={'+ ' + vehicleGun[selectedModuleNames.vehicleGun]?.dispersion.turretRotation}
                unit='m'
                paddingLeft
             />
             <TableRowComponent
                titleText='After firing'
-               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.dispersion.afterShot}
-               unit='m'
+               valueText={'* ' + vehicleGun[selectedModuleNames.vehicleGun]?.dispersion.afterShot}
+               unit=''
                paddingLeft
             />
             <TableRowComponent
                titleText='While damaged'
-               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.dispersion.whileDamaged}
+               valueText={'+ ' + vehicleGun[selectedModuleNames.vehicleGun]?.dispersion.whileDamaged}
                unit='m'
                paddingLeft
             />

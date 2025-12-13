@@ -26,8 +26,12 @@ export default function ModuleSelect() {
       })
    }
 
+   function setModuleName(moduleName: string): string {
+      return moduleName.split('_').join(' ')
+   }
+
    return (
-      <aside className={'w-full flex flex-col items-center my-5 xl:w-[300px]'}>
+      <aside className={'w-full flex flex-col items-center xl:w-[300px]'}>
          <Typography variant='h5'>Modules</Typography>
          {Object.entries(moduleGroup).map(([key, modules]) => (
             <List key={key} sx={{ width: '100%', maxWidth: 290 }}>
@@ -43,7 +47,7 @@ export default function ModuleSelect() {
                         moduleType={key as ModuleType}
                         shellImage={module.kind}
                      />
-                     <Typography variant='caption'>{module.name}</Typography>
+                     <Typography variant='caption'>{setModuleName(module.name)}</Typography>
                   </ListItemButton>
                ))}
             </List>

@@ -1,9 +1,31 @@
-import React from 'react'
+import type { ITankData } from '@/types/VehicleDetails/Vehicle'
 
-export default function page() {
+import ModuleSelect from '@/VehicleDetails/Modules/ModuleSelect/ModuleSelect'
+import DetailsTable from '@/VehicleDetails/Modules/DetailsTable/DetailsTable'
+import VehicleContextProvider from '@/VehicleContext/VehicleContext'
+
+// Big tank image: Vehicle tag: "tag": "G89_Leopard1" -> .toLocaleLowerCase() method needed
+// https://eu-wotp.wgcdn.co/dcont/tankopedia_images/g89_leopard1/g89_leopard1_image.png
+
+async function getTankDetails(tank_id: number, tank_name: string) {
+   const URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+   const vehicleStats = await fetch(`${URL}/api/${tank_id}/${tank_name}`, { method: 'GET' })
+   const response = (await vehicleStats.json()) as Promise<{ vehicleStats: ITankData }>
+
+   return (await response).vehicleStats
+}
+
+export default async function page({ params }: { params: Promise<{ tank_id: string; tank_name: string }> }) {
+   const { tank_id, tank_name } = await params
+   const tankStats = await getTankDetails(Number(tank_id), tank_name)
    return (
-      <div>
-         <h1>EZ ITT A MODULES</h1>
-      </div>
+      <VehicleContextProvider tankDetails={tankStats}>
+         <section
+            className={'flex w-full min-h-screen flex-col gap-0 xl:flex-row xl:gap-5 xl:justify-between'}
+         >
+            <ModuleSelect />
+            <DetailsTable />
+         </section>
+      </VehicleContextProvider>
    )
 }

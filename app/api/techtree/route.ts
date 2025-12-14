@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
       })
          .select([
             'tankDetails.name',
-            'tankDetails.shortName',
+            'tankDetails.short_name',
             'tankDetails.images',
             'price',
             'type',

@@ -25,7 +25,7 @@ export default function TabsProvider({ baseHref }: { baseHref: string }) {
       <section className='my-7'>
          <Tabs value={value} onChange={handleChange} aria-label='nav tabs example' role='navigation'>
             <LinkTab label='Modules' href={`${baseHref}/modules`} />
-            <LinkTab label='Mark of excellence' href={`${baseHref}/excellence`} />
+            <LinkTab label='Marks of excellence' href={`${baseHref}/excellence`} />
             <LinkTab label='WN8' href={`${baseHref}/`} />
          </Tabs>
       </section>

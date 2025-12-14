@@ -13,7 +13,7 @@ function LinkComponent({ href, children }: { href: string; children: React.React
 
 export default function Footer() {
    return (
-      <footer className='w-full h-36 flex flex-col justify-center items-center gap-1 opacity-50'>
+      <footer className='w-full h-[200px] flex flex-col justify-center items-center gap-1 mt-5 opacity-70 bg-neutral-950'>
          <h1>
             Made by Thomas Nagy{' '}
             <LinkComponent href={'https://tomato.gg/stats/nagytommy93-511400957/EU?tab=main'}>

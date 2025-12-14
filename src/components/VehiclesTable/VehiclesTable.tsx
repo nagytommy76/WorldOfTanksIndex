@@ -88,7 +88,7 @@ export default function EnhancedTable({ allVehicles }: { allVehicles: TechTreeVe
                         <TableCell align='right'>
                            <Link
                               id={vehicle.id?.toString()}
-                              href={`/${vehicle.id}/${vehicle.xmlId}`}
+                              href={`/${vehicle.id}/${vehicle.xmlId}/modules`}
                               key={vehicle.id}
                            >
                               <Button variant='contained'>More details</Button>

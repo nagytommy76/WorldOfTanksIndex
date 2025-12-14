@@ -1,8 +1,20 @@
 import type { ITankData } from '@/types/VehicleDetails/Vehicle'
+import type { Metadata } from 'next'
 
 import ModuleSelect from '@/VehicleDetails/Modules/ModuleSelect/ModuleSelect'
 import DetailsTable from '@/VehicleDetails/Modules/DetailsTable/DetailsTable'
 import VehicleContextProvider from '@/VehicleContext/VehicleContext'
+
+type Params = Promise<{ tank_id: string; tank_name: string }>
+
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+   const { tank_name } = await params
+   const tankName = tank_name?.split('_').slice(1).join(' ')
+   return {
+      title: `${tankName} | Details | World of Tanks Index`,
+      description: `Vehicle details for ${tankName} with WN8, Marks of Excellence and Modules.`,
+   }
+}
 
 // Big tank image: Vehicle tag: "tag": "G89_Leopard1" -> .toLocaleLowerCase() method needed
 // https://eu-wotp.wgcdn.co/dcont/tankopedia_images/g89_leopard1/g89_leopard1_image.png
@@ -15,7 +27,7 @@ async function getTankDetails(tank_id: number, tank_name: string) {
    return (await response).vehicleStats
 }
 
-export default async function page({ params }: { params: Promise<{ tank_id: string; tank_name: string }> }) {
+export default async function page({ params }: { params: Params }) {
    const { tank_id, tank_name } = await params
    const tankStats = await getTankDetails(Number(tank_id), tank_name)
    return (

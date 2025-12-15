@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 
 import Tabs from '@mui/material/Tabs'
@@ -15,8 +16,17 @@ function LinkTab(props: LinkTabProps) {
    return <Tab component={Link as 'a' | typeof Link} aria-current={props.selected && 'page'} {...props} />
 }
 
+const PATHS: { [index: string]: number } = {
+   modules: 0,
+   excellence: 1,
+   WN8: 2,
+}
+
 export default function TabsProvider({ baseHref }: { baseHref: string }) {
-   const [value, setValue] = useState(0)
+   const pathname = usePathname().split('/')
+   const currentPath = pathname[pathname.length - 1]
+
+   const [value, setValue] = useState(PATHS[currentPath])
 
    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
       setValue(newValue)

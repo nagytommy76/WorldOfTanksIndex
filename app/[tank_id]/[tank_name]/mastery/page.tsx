@@ -1,7 +1,10 @@
 import type { Metadata } from 'next'
 import type { Params } from '@/types/types'
+import type { IMastery } from '@/types/MOE/moeTypes'
 
 import getPoliroid from '@/lib/getPoliroid'
+
+import Mastery from '@/components/Mastery/Mastery'
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
    const { tank_name } = await params
@@ -14,9 +17,8 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
 export default async function page({ params }: { params: Params }) {
    const { tank_id } = await params
-   const mastery = await getPoliroid(Number(tank_id), 'mastery')
+   const mastery = (await getPoliroid(Number(tank_id), 'mastery')) as IMastery[] | undefined
+   if (!mastery) return <h1>no mastery</h1>
 
-   console.log(mastery)
-
-   return <div>page</div>
+   return <Mastery mastery={mastery} />
 }

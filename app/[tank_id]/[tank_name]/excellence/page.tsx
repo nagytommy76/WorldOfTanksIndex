@@ -1,11 +1,13 @@
-import type { IMoe } from '@/types/MOE/moeTypes'
 import type { Metadata } from 'next'
+import type { IMoe } from '@/types/MOE/moeTypes'
+import type { Params } from '@/types/types'
+
+import getPoliroid from '@/lib/getPoliroid'
 
 import Typography from '@mui/material/Typography'
 
 import Moe from '@/components/Moe/Moe'
 
-type Params = Promise<{ tank_id: string; tank_name: string }>
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
    const { tank_name } = await params
    const tankName = tank_name?.split('_').slice(1).join(' ')
@@ -15,23 +17,10 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
    }
 }
 
-async function getMarksOfExcellence(tank_id: number): Promise<IMoe[] | undefined> {
-   try {
-      const URL = `https://poliroid.me/gunmarks/api/v2/data/eu/vehicle/${tank_id}/65,85,95,100`
-      const vehicleMarks = await fetch(URL, { method: 'GET' })
-      const response = (await vehicleMarks.json()) as Promise<{ data: { data: IMoe[] } }>
-
-      return (await response)?.data?.data
-   } catch (error: unknown) {
-      console.log(error)
-      return undefined
-   }
-}
-
 export default async function page({ params }: { params: Params }) {
    const { tank_id, tank_name } = await params
    const tankName = tank_name?.split('_').slice(1).join(' ')
-   const marksOfExcellence = await getMarksOfExcellence(Number(tank_id))
+   const marksOfExcellence = (await getPoliroid(Number(tank_id), 'gunmarks')) as IMoe[]
 
    if (!marksOfExcellence)
       return (
@@ -49,8 +38,5 @@ export default async function page({ params }: { params: Params }) {
             </header>
          </section>
       )
-
-   marksOfExcellence.reverse()
-
    return <Moe marksOfExcellence={marksOfExcellence} />
 }

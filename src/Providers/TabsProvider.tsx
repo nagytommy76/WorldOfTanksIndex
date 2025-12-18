@@ -16,17 +16,23 @@ function LinkTab(props: LinkTabProps) {
    return <Tab component={Link as 'a' | typeof Link} aria-current={props.selected && 'page'} {...props} />
 }
 
-const PATHS: { [index: string]: number } = {
-   modules: 0,
-   excellence: 1,
-   WN8: 2,
+const PATHS: {
+   [index: string]: {
+      displayText: string
+      index: number
+   }
+} = {
+   modules: { displayText: 'Modules', index: 0 },
+   excellence: { displayText: 'Marks of excellence', index: 1 },
+   mastery: { displayText: 'Mastery Badge', index: 2 },
+   wn8: { displayText: 'WN8', index: 3 },
 }
 
 export default function TabsProvider({ baseHref }: { baseHref: string }) {
    const pathname = usePathname().split('/')
    const currentPath = pathname[pathname.length - 1]
 
-   const [value, setValue] = useState(PATHS[currentPath])
+   const [value, setValue] = useState<number>(PATHS[currentPath].index)
 
    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
       setValue(newValue)
@@ -34,9 +40,9 @@ export default function TabsProvider({ baseHref }: { baseHref: string }) {
    return (
       <section className='my-7'>
          <Tabs value={value} onChange={handleChange} aria-label='nav tabs example' role='navigation'>
-            <LinkTab label='Modules' href={`${baseHref}/modules`} />
-            <LinkTab label='Marks of excellence' href={`${baseHref}/excellence`} />
-            <LinkTab label='WN8' href={`${baseHref}/`} />
+            {Object.entries(PATHS).map(([index, path]) => (
+               <LinkTab key={path.index} label={path.displayText} href={`${baseHref}/${index}`} />
+            ))}
          </Tabs>
       </section>
    )

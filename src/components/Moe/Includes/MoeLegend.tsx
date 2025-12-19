@@ -1,9 +1,22 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function MoeLegend({ payload }: any) {
+'use client'
+
+import type { LegendProps, LegendPayload } from 'recharts'
+
+type LegendItemProps = LegendPayload & {
+   dataKey: string
+}
+
+type MoeLegendProps = LegendProps & {
+   payload?: LegendItemProps[]
+}
+
+export default function MoeLegend({ payload }: MoeLegendProps) {
+   payload?.sort((a, b) => Number(a.dataKey.split('.')[1]) - Number(b.dataKey.split('.')[1]))
+
    return (
       <div style={{ display: 'flex', gap: 16, justifyContent: 'center', marginTop: 8 }}>
-         {payload?.map((item) => (
-            <div key={item.dataKey || ''} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+         {payload?.map((item, index) => (
+            <div key={index} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                <span
                   style={{
                      width: 15,

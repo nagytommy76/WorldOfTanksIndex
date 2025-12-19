@@ -1,10 +1,10 @@
 'use client'
 import type { IMoe } from '@/types/MOE/moeTypes'
 import { Legend } from 'recharts'
-import LineChart from '@/Base/LineChart/LineChart'
 
 import MoeLegend from './Includes/MoeLegend'
-import LineComponent from '../Base/LineChart/Includes/LineComponent'
+import LineChart from '@/Base/LineChart/LineChart'
+import LineComponent from '@/Base/LineChart/Includes/LineComponent'
 
 const COLORS = {
    p65: '#149103',
@@ -18,6 +18,7 @@ export default function Moe({ marksOfExcellence }: { marksOfExcellence: IMoe[] }
       <LineChart
          data={marksOfExcellence}
          LegendComponent={<Legend verticalAlign='bottom' align='center' content={<MoeLegend />} />}
+         headerText='Marks of Excellence expectation values for '
          LineComponent={
             <>
                <LineComponent name='100%' color={COLORS.p100} dataKey='marks.100' />

@@ -8,6 +8,8 @@ type MoeLegendProps = LegendProps & {
 }
 
 export default function MasteryLegend({ payload }: MoeLegendProps) {
+   payload?.sort((a, b) => Number(a.value) - Number(b.value))
+
    return (
       <div style={{ display: 'flex', gap: 16, justifyContent: 'center', marginTop: 8 }}>
          {payload?.map((item, index) => (

@@ -14,15 +14,15 @@ export default function Mastery({ mastery }: { mastery: IMastery[] }) {
       <LineChart
          data={mastery}
          LegendComponent={<Legend verticalAlign='bottom' align='center' content={<MasteryLegend />} />}
-         headerText='Mastery Badge requirement values for Europe'
+         headerText='Mastery Badge requirement values for '
          YAxisLabel='Experience'
          dataMinMax='50'
          LineComponent={
             <>
-               <LineComponent name='100%' color={COLORS[3]} dataKey='mastery[3]' />
-               <LineComponent name='95%' color={COLORS[2]} dataKey='mastery[2]' />
-               <LineComponent name='85%' color={COLORS[1]} dataKey='mastery[1]' />
-               <LineComponent name='65%' color={COLORS[0]} dataKey='mastery[0]' />
+               <LineComponent name='Ace Tanker' color={COLORS[3]} dataKey='mastery[3]' />
+               <LineComponent name='1st Class' color={COLORS[2]} dataKey='mastery[2]' />
+               <LineComponent name='2nd Class' color={COLORS[1]} dataKey='mastery[1]' />
+               <LineComponent name='3rd Class' color={COLORS[0]} dataKey='mastery[0]' />
             </>
          }
       ></LineChart>

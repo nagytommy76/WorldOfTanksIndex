@@ -1,22 +1,37 @@
 'use client'
 import React from 'react'
-import { CartesianGrid, LineChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
+import type { IMoe, IMastery } from '@/types/MOE/moeTypes'
+import Link from 'next/link'
+import { CartesianGrid, LineChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts'
+
 import useSlider from './Hooks/useSlider'
+import useQueryData from './Hooks/useQueryData'
+import useSelect from './Hooks/useSelect'
+
+import SliderComponent from './Includes/SliderComponent'
+import TooltipComponent from './Includes/TooltipComponent'
+import ServerSelect from './Includes/ServerSelect'
 
 import Typography from '@mui/material/Typography'
-import Slider from '@mui/material/Slider'
-import type { IMoe, IMastery } from '@/types/MOE/moeTypes'
 
 export default function LineChartComponent({
    data,
    LegendComponent,
    LineComponent,
+   headerText,
+   YAxisLabel = 'Damage',
+   dataMinMax = '350',
 }: {
    data: IMoe[] | IMastery[]
    LegendComponent: React.ReactNode
    LineComponent: React.ReactNode
+   headerText: string
+   YAxisLabel?: string
+   dataMinMax?: string
 }) {
-   const { handleSliderChange, moe, NUMBER_OF_DAYS } = useSlider(data)
+   const { server, handleChange } = useSelect()
+   const { allData } = useQueryData(data, server)
+   const { handleSliderChange, moe, NUMBER_OF_DAYS } = useSlider(allData === undefined ? data : allData)
 
    return (
       <section
@@ -29,32 +44,29 @@ export default function LineChartComponent({
          <header style={{ textAlign: 'center', marginBottom: 12 }} className='relative'>
             <div className=''>
                <Typography gutterBottom variant='h5' fontWeight={700}>
-                  Marks of Excellence expectation values for Europe
+                  {headerText} {server === 'eu' ? 'Europe' : server === 'com' ? 'North America' : 'Asia'}
                </Typography>
                <Typography gutterBottom variant='caption'>
-                  Source of data: Poliroid
+                  Source of data:{' '}
+                  <Link href={'https://poliroid.me/'} target='_blank'>
+                     <Typography gutterBottom variant='caption' color='primary'>
+                        Poliroid
+                     </Typography>
+                  </Link>
                </Typography>
             </div>
-            <div className='w-[270px] absolute top-1 right-1'>
-               <Typography gutterBottom variant='body1'>
-                  Number of days to display: {moe.length}
-               </Typography>
-               <Slider
-                  aria-label='Days'
-                  color='info'
-                  defaultValue={NUMBER_OF_DAYS}
-                  onChange={handleSliderChange}
-                  valueLabelDisplay='auto'
-                  step={2}
-                  min={3}
-                  max={data.length}
-               />
-            </div>
+            <SliderComponent
+               NUMBER_OF_DAYS={NUMBER_OF_DAYS}
+               displayDays={moe.length}
+               data={data}
+               handleSliderChange={handleSliderChange}
+            />
+            <ServerSelect server={server} handleChange={handleChange} />
          </header>
 
          <div className={'w-full h-[360px]'}>
             <ResponsiveContainer>
-               <LineChart data={moe} margin={{ top: 10, right: 26, left: 10, bottom: 10 }}>
+               <LineChart data={moe} margin={{ top: 10, right: 26, left: 10, bottom: 10 }} responsive>
                   <CartesianGrid stroke='rgba(255,255,255,.25)' vertical={false} />
                   <XAxis
                      dataKey='date'
@@ -71,9 +83,14 @@ export default function LineChartComponent({
                      axisLine={false}
                      tick={{ fill: 'rgba(255,255,255,0.45)', fontSize: 12 }}
                      width={65}
-                     label={{ value: 'Damage', angle: -90, position: 'left' }}
-                     domain={['dataMin - 350', 'dataMax + 350']}
+                     label={{ value: YAxisLabel, angle: -90, position: 'left' }}
+                     domain={[`dataMin - ${dataMinMax}`, `dataMax + ${dataMinMax}`]}
                      dx={-15}
+                  />
+                  <Tooltip
+                     animationDuration={50}
+                     content={TooltipComponent}
+                     cursor={{ stroke: 'rgba(255,255,255,0.12)' }}
                   />
                   {LineComponent}
                   {LegendComponent}

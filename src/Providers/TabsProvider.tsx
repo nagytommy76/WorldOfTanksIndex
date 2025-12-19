@@ -23,7 +23,7 @@ const PATHS: {
    }
 } = {
    modules: { displayText: 'Modules', index: 0 },
-   excellence: { displayText: 'Marks of excellence', index: 1 },
+   gunmarks: { displayText: 'Marks of excellence', index: 1 },
    mastery: { displayText: 'Mastery Badge', index: 2 },
    wn8: { displayText: 'WN8', index: 3 },
 }

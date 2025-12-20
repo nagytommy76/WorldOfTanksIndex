@@ -120,7 +120,7 @@ export default function Mobility() {
                   `}
                unit='km/h'
             />
-            <TableRowComponent
+            {/* <TableRowComponent
                paddingLeft
                titleText='Effective traverse speed'
                valueText={`
@@ -138,8 +138,78 @@ export default function Mobility() {
                      ).toFixed(2)}
                   `}
                unit='°/s'
+            /> */}
+            <TableRowComponent
+               paddingLeft
+               titleText='Effective traverse speed'
+               valueText={`
+                     ${calculateEffectiveTraverseSpeed(
+                        vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed,
+                        vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
+                        vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
+                        0.95
+                     ).toFixed(2)} /
+                     ${calculateEffectiveTraverseSpeed(
+                        vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed,
+                        vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
+                        vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[1],
+                        0.95
+                     ).toFixed(2)} /
+                     ${calculateEffectiveTraverseSpeed(
+                        vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed,
+                        vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
+                        vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[2],
+                        0.95
+                     ).toFixed(2)}
+                  `}
+               unit='°/s'
             />
          </TableBody>
       </Table>
    )
 }
+
+// function calculateEffectiveTraverseSpeed(
+//    realHorsePower: number,
+//    terrainResistance: number,
+//    traverseSpeed: number
+// ) {
+//    const effectiveHorsePower = realHorsePower / terrainResistance
+//    console.log('Effective hp: ', effectiveHorsePower)
+//    return traverseSpeed * (effectiveHorsePower / realHorsePower)
+// }
+function calculateEffectiveTraverseSpeed(
+   traverseSpeed: number,
+   hardTerrainResistance: number,
+   targetTerrainResistance: number,
+   crewModifier: number
+) {
+   return traverseSpeed * (hardTerrainResistance / targetTerrainResistance) * crewModifier
+}
+
+// console.log('GRILLE 15 HARD TERRAIN: ', calculateEffectiveTraverseSpeed(28, 1.24, 1.24, 0.95))
+// console.log('GRILLE 15 MEDIUM TERRAIN: ', calculateEffectiveTraverseSpeed(28, 1.24, 1.49, 0.95))
+// console.log('GRILLE 15 SOFT TERRAIN: ', calculateEffectiveTraverseSpeed(28, 1.24, 4.35, 0.95))
+
+// console.log('RHM 15 HARD TERRAIN: ', 54 * (1 / 1) * 0.95)
+// console.log('RHM 15 MEDIUM TERRAIN: ', 54 * (1 / 1.12) * 0.95)
+// console.log('RHM 15 SOFT TERRAIN: ', 54 * (1 / 2.25) * 0.95)
+
+// console.log('Taschenratte HARD TERRAIN: ', calculateEffectiveTraverseSpeed(15, 1.1, 1.1, 0.95))
+// console.log('Taschenratte MEDIUM TERRAIN: ', calculateEffectiveTraverseSpeed(15, 1.1, 1.3, 0.95))
+// console.log('Taschenratte SOFT TERRAIN: ', calculateEffectiveTraverseSpeed(15, 1.1, 2.1, 0.95))
+
+/**
+ * ORD: Off road driving
+ * Hard (w/o ORD) = 15°/sec. * (1,591 / 1,750) = 13.63°/sec.
+
+Hard (w/ ORD) = 15°/sec. * (1,591 / 1,750) = 13.63°/sec.
+
+Moderate Soft (w/o ORD) = 15°/sec. * (1,346 / 1,750) = 11.54°/sec.
+
+Moderate Soft (w/ ORD) = 15°/sec. * (1,455 / 1,750) = 12.47°/sec.
+
+Soft (w/o ORD) = 15°/sec. * (980 / 1,750) = 7.14°/sec.
+
+Soft (w/ ORD) = 15°/sec. * (1,591 / 1,750) = 8.4°/sec.
+ */

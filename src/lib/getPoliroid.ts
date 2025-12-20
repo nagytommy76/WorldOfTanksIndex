@@ -2,10 +2,11 @@ import type { IMastery, IMoe } from '@/types/MOE/moeTypes'
 
 export default async function getPoliroid(
    tank_id: number,
-   type: 'gunmarks' | 'mastery'
+   type: 'gunmarks' | 'mastery',
+   server: 'eu' | 'na' | 'asia' = 'eu'
 ): Promise<IMoe[] | IMastery[] | undefined> {
    try {
-      const URL = `https://poliroid.me/${type}/api/v2/data/eu/vehicle/${tank_id}${
+      const URL = `https://poliroid.me/${type}/api/v2/data/${server}/vehicle/${tank_id}${
          type === 'gunmarks' ? '/65,85,95,100' : ''
       }`
       const vehicleMarks = await fetch(URL, { method: 'GET' })

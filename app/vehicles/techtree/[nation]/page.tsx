@@ -1,7 +1,6 @@
 import { Metadata } from 'next'
-import dynamic from 'next/dynamic'
 
-const VehiclesTable = dynamic(() => import('@/componentsVehiclesTable/VehiclesTable'))
+import VehiclesTable from '@/componentsVehiclesTable/VehiclesTable'
 
 type Props = {
    params: Promise<{ nation: string }>

@@ -3,7 +3,7 @@ import { useContext } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import useSetShells from '../../Context/Hooks/useSetShells'
 
-import type { AmmoType, ModuleType } from '@/types/VehicleDetails/module'
+import type { ModuleType } from '@/types/VehicleDetails/module'
 
 import List from '@mui/material/List'
 import ListItemButton from '@mui/material/ListItemButton'
@@ -27,7 +27,7 @@ export default function ModuleSelect() {
    }
 
    function setModuleName(moduleName: string): string {
-      return moduleName.split('_').join(' ')
+      return moduleName.toString().split('_').join(' ')
    }
 
    return (
@@ -36,7 +36,7 @@ export default function ModuleSelect() {
          {Object.entries(moduleGroup).map(([key, modules]) => (
             <List key={key} sx={{ width: '100%', maxWidth: 290 }}>
                <ReturnModuleType moduleType={key as ModuleType} />
-               {Object.values(modules as Record<string, { name: string; kind?: AmmoType }>).map((module) => (
+               {Object.values(modules as Record<string, any>).map((module) => (
                   <ListItemButton
                      key={module.name}
                      selected={module.name === selectedModuleNames[key as ModuleType]}
@@ -47,7 +47,15 @@ export default function ModuleSelect() {
                         moduleType={key as ModuleType}
                         shellImage={module.kind}
                      />
-                     <Typography variant='caption'>{setModuleName(module.name)}</Typography>
+                     {key === 'shells' ? (
+                        <Typography variant='caption'>{setModuleName(module.name)}</Typography>
+                     ) : (
+                        <Typography variant='caption'>
+                           {module.id !== undefined
+                              ? setModuleName(module.id)
+                              : setModuleName(module.name) || ''}
+                        </Typography>
+                     )}
                   </ListItemButton>
                ))}
             </List>

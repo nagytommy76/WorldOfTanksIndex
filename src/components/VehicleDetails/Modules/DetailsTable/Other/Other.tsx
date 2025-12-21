@@ -18,6 +18,12 @@ export default function Other() {
          moduleGroup: { shells, vehicleTurret, vehicleGun, vehicleEngine, vehicleRadio },
       },
    } = useContext(VehicleContext)
+
+   function calculateCamoValues(camoValue: number, firePenalty: number = 1) {
+      const calculatedCamo = camoValue * 0.57 * 100
+      return calculatedCamo * firePenalty
+   }
+
    return (
       <Table size='small' aria-label='Other table with concealment, potential damage etc...'>
          <TableHeadComponent headTitle='Other' className='bg-yellow-700' />
@@ -33,13 +39,19 @@ export default function Other() {
                unit='m'
             />
             <TableRowComponent
-               titleText='Concealment stationary vehicle'
-               valueText={camo.stationary * 100}
+               titleText='Concealment stationary vehicle / after fire'
+               valueText={`
+                  ${calculateCamoValues(camo.stationary).toFixed(2)} / 
+                  ${calculateCamoValues(camo.stationary, 0.209).toFixed(2)}
+               `}
                unit='%'
             />
             <TableRowComponent
-               titleText='Concealment moving vehicle'
-               valueText={(camo.moving + camo.camoBonus) * 100}
+               titleText='Concealment moving vehicle / after fire'
+               valueText={`
+                  ${calculateCamoValues(camo.moving).toFixed(2)} / 
+                  ${calculateCamoValues(camo.moving, camo.firePenalty).toFixed(2)}
+               `}
                unit='%'
             />
             <TableRowComponent

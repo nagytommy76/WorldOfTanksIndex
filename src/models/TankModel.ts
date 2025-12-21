@@ -87,6 +87,7 @@ const guns = {
          maxAmmo: Number,
          name: String,
          reloadTime: Number,
+         invisibilityFactorAtShot: Number,
          shells,
          twinGun: {},
          weight: Number,

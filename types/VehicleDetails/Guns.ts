@@ -36,6 +36,7 @@ export interface IGuns {
    maxAmmo: number
    name: string
    reloadTime: number
+   invisibilityFactorAtShot: number
    shells: IShells[]
    twinGun: null | ITwinGun
    weight: number

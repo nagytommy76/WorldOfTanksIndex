@@ -43,11 +43,13 @@ export default async function Header({ tank_name, tank_id }: { tank_name: string
             <Image
                src={flagSources[vehicleDetails.nation].source || ''}
                alt={flagSources[vehicleDetails.nation].alt || 'Flag'}
+               title={flagSources[vehicleDetails.nation].alt}
                width={75}
                height={75}
             />
             <Image
                src={getIcon(vehicleDetails.type || '')}
+               title={vehicleDetails.type}
                width={32}
                height={32}
                alt={vehicleDetails.tankDetails?.short_name || 'Tank'}

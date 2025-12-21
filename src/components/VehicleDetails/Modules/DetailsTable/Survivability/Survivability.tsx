@@ -37,15 +37,17 @@ export default function Survivability() {
                   unit='mm'
                />
             )}
-            <TableRowComponent
-               titleText='Turret armor'
-               valueText={`
+            {vehicleTurret[selectedModuleNames.vehicleTurret]?.armor.length > 0 && (
+               <TableRowComponent
+                  titleText='Turret armor'
+                  valueText={`
                     ${vehicleTurret[selectedModuleNames.vehicleTurret]?.armor[0]} / ${
-                  vehicleTurret[selectedModuleNames.vehicleTurret]?.armor[1]
-               } / ${vehicleTurret[selectedModuleNames.vehicleTurret]?.armor[2]}
+                     vehicleTurret[selectedModuleNames.vehicleTurret]?.armor[1]
+                  } / ${vehicleTurret[selectedModuleNames.vehicleTurret]?.armor[2]}
                 `}
-               unit='mm'
-            />
+                  unit='mm'
+               />
+            )}
             <TableRowComponent
                titleText='Track armor'
                valueText={vehicleChassis[selectedModuleNames.vehicleChassis]?.armor}

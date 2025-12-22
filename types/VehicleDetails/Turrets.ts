@@ -22,4 +22,21 @@ export interface ITurrets {
       repairCost: number
    }
    weight: number
+   secondaryGuns?: ISecondaryGuns[] | null
+}
+
+export interface ISecondaryGuns {
+   reloadTime: number
+   burst: {
+      count: number
+      rate: number
+   }
+   aimingTime: number
+   shotDispersionRadius: number
+   shotDispersionFactors: {
+      turretRotation: number
+      afterShot: number
+      whileGunDamaged: number
+   }
+   invisibilityFactorAtShot: number
 }

@@ -204,6 +204,44 @@ const stats = {
          },
          weight: Number,
          openTop: { type: Boolean, required: false, default: false },
+         secondaryGuns: {
+            type: [
+               {
+                  name: String,
+                  reloadTime: Number,
+                  burst: {
+                     count: Number,
+                     rate: Number,
+                  },
+                  aimingTime: Number,
+                  shotDispersionRadius: Number,
+                  shotDispersionFactors: {
+                     turretRotation: Number,
+                     afterShot: Number,
+                     whileGunDamaged: Number,
+                  },
+                  invisibilityFactorAtShot: Number,
+                  shells: [
+                     {
+                        name: String,
+                        id: Number,
+                        icon: String,
+                        kind: String,
+                        mechanics: String,
+                        caliber: Number,
+                        explosionRadius: Number,
+                        damage: {
+                           armor: Number,
+                           devices: Number,
+                        },
+                     },
+                  ],
+               },
+            ],
+            default: () => null,
+            required: false,
+            _id: false,
+         },
       },
    ],
    hydropneumatic: {

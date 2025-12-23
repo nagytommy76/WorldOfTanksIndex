@@ -23,29 +23,31 @@ export default function Firepower() {
 
    return (
       <Table size='small' aria-label='Firepower table with average damage and penetration'>
-         <TableHeadComponent headTitle='Firepower' />
+         <TableHeadComponent headTitle='Firepower' iconSrc='/icons/details/firepower.png' />
          <TableBody>
             <TableRowComponent
+               iconSrc='/icons/firepower/avgDamage.png'
                titleText='Average Damage'
                valueText={shells[selectedModuleNames.shells]?.damage.armor}
                unit='HP'
             />
             <TableRowComponent
-               titleText='Average Penetration (at 50 m)'
-               valueText={shells[selectedModuleNames.shells]?.piercingPower[0]}
+               iconSrc='/icons/firepower/avgPiercingPower.png'
+               titleText='Average Penetration (at 50/500 m)'
+               valueText={`
+                  ${shells[selectedModuleNames.shells]?.piercingPower[0]} /
+                  ${shells[selectedModuleNames.shells]?.piercingPower[1]}
+               `}
                unit='mm'
             />
             <TableRowComponent
-               titleText='Average Penetration (at 500 m)'
-               valueText={shells[selectedModuleNames.shells]?.piercingPower[1]}
-               unit='mm'
-            />
-            <TableRowComponent
+               iconSrc='/icons/firepower/reloadTime.png'
                titleText='Rate of Fire'
                valueText={(60 / vehicleGun[selectedModuleNames.vehicleGun]?.reloadTime).toFixed(2)}
                unit='rounds/min'
             />
             <TableRowComponent
+               iconSrc='/icons/firepower/avgDamagePerMinute.png'
                titleText='Average Damage per Minute'
                valueText={(
                   (60 / vehicleGun[selectedModuleNames.vehicleGun]?.reloadTime) *
@@ -54,11 +56,13 @@ export default function Firepower() {
                unit='HP/min'
             />
             <TableRowComponent
+               iconSrc='/icons/firepower/reloadTimeSecs.png'
                titleText='Gun Loading'
                valueText={vehicleGun[selectedModuleNames.vehicleGun]?.reloadTime}
                unit='s'
             />
             <TableRowComponent
+               iconSrc='/icons/firepower/aimingTime.png'
                titleText='Aiming Time'
                valueText={vehicleGun[selectedModuleNames.vehicleGun]?.aimTime.toFixed(2)}
                unit='s'
@@ -70,18 +74,21 @@ export default function Firepower() {
                <TableCell></TableCell>
             </TableRow>
             <TableRowComponent
+               iconSrc='/icons/firepower/shotDispersionAngle.png'
                titleText='Accuracy At 100 m'
                valueText={vehicleGun[selectedModuleNames.vehicleGun]?.accuracy}
                unit='m'
                paddingLeft
             />
             <TableRowComponent
+               iconSrc='/icons/firepower/vehicleGunShotDispersionChassisMovement.png'
                titleText='Moving'
                valueText={vehicleChassis[selectedModuleNames.vehicleChassis]?.dispersion.vehicleMovement}
                unit='m'
                paddingLeft
             />
             <TableRowComponent
+               iconSrc='/icons/firepower/vehicleGunShotDispersionChassisRotation.png'
                titleText='Tank traverse'
                valueText={
                   '+ ' + vehicleChassis[selectedModuleNames.vehicleChassis]?.dispersion.vehicleRotation
@@ -90,31 +97,46 @@ export default function Firepower() {
                paddingLeft
             />
             <TableRowComponent
+               iconSrc='/icons/firepower/vehicleGunShotDispersionTurretRotation.png'
                titleText='Turret traverse'
                valueText={'+ ' + vehicleGun[selectedModuleNames.vehicleGun]?.dispersion.turretRotation}
                unit='m'
                paddingLeft
             />
             <TableRowComponent
+               iconSrc='/icons/firepower/vehicleGunShotDispersionAfterShot.png'
                titleText='After firing'
                valueText={'* ' + vehicleGun[selectedModuleNames.vehicleGun]?.dispersion.afterShot}
                unit=''
                paddingLeft
             />
             <TableRowComponent
+               iconSrc='/icons/firepower/vehicleGunShotDispersionWhileGunDamaged.png'
                titleText='While damaged'
                valueText={'+ ' + vehicleGun[selectedModuleNames.vehicleGun]?.dispersion.whileDamaged}
                unit='m'
                paddingLeft
             />
-            <TableRowComponent titleText='Gun depression' valueText={gunDepression} unit='°' />
-            <TableRowComponent titleText='Gun elevation' valueText={gunElevation} unit='°' />
             <TableRowComponent
+               iconSrc='/icons/firepower/pitchLimits.png'
+               titleText='Gun depression'
+               valueText={gunDepression}
+               unit='°'
+            />
+            <TableRowComponent
+               iconSrc='/icons/firepower/pitchLimits.png'
+               titleText='Gun elevation'
+               valueText={gunElevation}
+               unit='°'
+            />
+            <TableRowComponent
+               iconSrc='/icons/firepower/shellModuleDamage.png'
                titleText='Module damage'
                valueText={shells[selectedModuleNames.shells]?.damage.devices}
                unit='hp'
             />
             <TableRowComponent
+               iconSrc='/icons/firepower/shellVelocity.png'
                titleText='Shell velocity'
                valueText={shells[selectedModuleNames.shells]?.speed}
                unit='m/s'
@@ -123,11 +145,6 @@ export default function Firepower() {
                titleText='Range'
                valueText={shells[selectedModuleNames.shells]?.maxDistance}
                unit='m'
-            />
-            <TableRowComponent
-               titleText='Shell cost'
-               valueText={shells[selectedModuleNames.shells]?.price}
-               unit='credits'
             />
          </TableBody>
       </Table>

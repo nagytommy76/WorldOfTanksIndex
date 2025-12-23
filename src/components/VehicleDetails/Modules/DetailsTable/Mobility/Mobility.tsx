@@ -48,8 +48,12 @@ export default function Mobility() {
    ])
 
    return (
-      <Table size='small' aria-label='Firepower table with average damage and penetration'>
-         <TableHeadComponent headTitle='Mobility' className='bg-amber-500' />
+      <Table size='small' aria-label='Mobility table with speed'>
+         <TableHeadComponent
+            headTitle='Mobility'
+            className='bg-cyan-950'
+            iconSrc='/icons/details/mobility.png'
+         />
          <TableBody>
             <TableRowComponent titleText='Forward speed' valueText={speedLimit?.forward} unit='km/h' />
             <TableRowComponent titleText='Backward speed' valueText={speedLimit?.backward} unit='km/h' />
@@ -89,12 +93,15 @@ export default function Mobility() {
             />
             <TableRow className='bg-gray-700'>
                <TableCell>
-                  <Typography variant='body1'>Terrain (hard / medium / soft)</Typography>
+                  <Typography variant='body2'>Terrain</Typography>
                </TableCell>
-               <TableCell></TableCell>
+               <TableCell>
+                  <Typography variant='body2' align='right'>
+                     (hard / medium / soft)
+                  </Typography>
+               </TableCell>
             </TableRow>
             <TableRowComponent
-               paddingLeft
                titleText='Terrain Resistance'
                valueText={`
                      ${vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0].toFixed(2)} /
@@ -104,7 +111,6 @@ export default function Mobility() {
                unit='m/s²'
             />
             <TableRowComponent
-               paddingLeft
                titleText='Effective top speed'
                valueText={`
                      ${calculateEffectiveTopSpeed(
@@ -129,7 +135,6 @@ export default function Mobility() {
                unit='km/h'
             />
             <TableRowComponent
-               paddingLeft
                titleText='Effective traverse speed'
                valueText={`
                      ${calculateEffectiveTraverseSpeed(

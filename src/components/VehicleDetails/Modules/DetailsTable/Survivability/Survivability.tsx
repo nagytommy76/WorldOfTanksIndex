@@ -21,7 +21,11 @@ export default function Survivability() {
 
    return (
       <Table size='small' aria-label='Survivability table with hit points'>
-         <TableHeadComponent headTitle='Survivability' className='bg-blue-600' />
+         <TableHeadComponent
+            headTitle='Survivability'
+            className='bg-blue-950'
+            iconSrc='/icons/details/survivability.png'
+         />
          <TableBody>
             <TableRowComponent
                titleText='Health'

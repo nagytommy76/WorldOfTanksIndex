@@ -3,6 +3,8 @@ import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
 import Image from 'next/image'
 
+const IMAGE_SIZE = 32
+
 export default function TableRowComponent({
    titleText,
    valueText,
@@ -17,7 +19,7 @@ export default function TableRowComponent({
    iconSrc?: string
 }) {
    return (
-      <TableRow className='max-h-[25px] ' hover>
+      <TableRow className='h-[20px] ' hover>
          <TableCell component='th' scope='row' className='px-1'>
             <div className={`${paddingLeft ? 'pl-7' : ''} flex felx-row items-center gap-2`}>
                {iconSrc && (
@@ -25,9 +27,9 @@ export default function TableRowComponent({
                      src={iconSrc}
                      alt={titleText}
                      title={titleText}
-                     width={35}
-                     height={35}
-                     className='object-cover w-[35px]'
+                     width={IMAGE_SIZE}
+                     height={IMAGE_SIZE}
+                     className={`object-cover w-[${IMAGE_SIZE}px]`}
                   />
                )}
                <Typography variant='body2' fontSize={14} sx={{ opacity: 0.85 }}>

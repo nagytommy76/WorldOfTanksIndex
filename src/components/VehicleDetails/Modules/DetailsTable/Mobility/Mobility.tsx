@@ -55,20 +55,44 @@ export default function Mobility() {
             iconSrc='/icons/details/mobility.png'
          />
          <TableBody>
-            <TableRowComponent titleText='Forward speed' valueText={speedLimit?.forward} unit='km/h' />
-            <TableRowComponent titleText='Backward speed' valueText={speedLimit?.backward} unit='km/h' />
             <TableRowComponent
+               iconSrc='/icons/mobility/speedLimits.png'
+               titleText='Forward speed'
+               valueText={speedLimit?.forward}
+               unit='km/h'
+            />
+            <TableRowComponent
+               iconSrc='/icons/mobility/speedLimits.png'
+               titleText='Backward speed'
+               valueText={speedLimit?.backward}
+               unit='km/h'
+            />
+            <TableRowComponent
+               iconSrc='/icons/mobility/chassisRotationSpeed.png'
                titleText='Traverse Speed'
                valueText={vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed}
                unit='deg/s'
             />
             <TableRowComponent
+               iconSrc='/icons/mobility/turretRotationSpeed.png'
                titleText='Gun Traverse Speed'
                valueText={vehicleTurret[selectedModuleNames.vehicleTurret]?.traverse}
                unit='deg/s'
             />
-            <TableRowComponent titleText='Weight' valueText={(totalWeight / 1000).toFixed(2)} unit='tn' />
             <TableRowComponent
+               iconSrc='/icons/mobility/vehicleWeight.png'
+               titleText='Weight'
+               valueText={(totalWeight / 1000).toFixed(2)}
+               unit='tn'
+            />
+            <TableRowComponent
+               iconSrc='/icons/mobility/enginePower.png'
+               titleText='Engine power'
+               valueText={vehicleEngine[selectedModuleNames.vehicleEngine]?.power}
+               unit='hp'
+            />
+            <TableRowComponent
+               iconSrc='/icons/mobility/enginePowerPerTon.png'
                titleText='Specific power'
                valueText={(
                   (vehicleEngine[selectedModuleNames.vehicleEngine]?.power / totalWeight) *
@@ -76,22 +100,7 @@ export default function Mobility() {
                ).toFixed(2)}
                unit='hp/tn'
             />
-            <TableRowComponent
-               titleText='Engine power'
-               valueText={vehicleEngine[selectedModuleNames.vehicleEngine]?.power}
-               unit='hp'
-            />
-            <TableRowComponent
-               titleText='Traverse Speed'
-               valueText={vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed}
-               unit='°/s'
-            />
-            <TableRowComponent
-               titleText='Gun Traverse Speed'
-               valueText={vehicleTurret[selectedModuleNames.vehicleTurret]?.traverse}
-               unit='°/s'
-            />
-            <TableRow className='bg-gray-700'>
+            <TableRow className='bg-gray-700 h-[20px]'>
                <TableCell>
                   <Typography variant='body2'>Terrain</Typography>
                </TableCell>
@@ -102,6 +111,7 @@ export default function Mobility() {
                </TableCell>
             </TableRow>
             <TableRowComponent
+               iconSrc='/icons/mobility/vehicleSpeedGain.png'
                titleText='Terrain Resistance'
                valueText={`
                      ${vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0].toFixed(2)} /
@@ -111,6 +121,7 @@ export default function Mobility() {
                unit='m/s²'
             />
             <TableRowComponent
+               iconSrc='/icons/mobility/speedLimits.png'
                titleText='Effective top speed'
                valueText={`
                      ${calculateEffectiveTopSpeed(
@@ -135,6 +146,7 @@ export default function Mobility() {
                unit='km/h'
             />
             <TableRowComponent
+               iconSrc='/icons/mobility/chassisRotationSpeed.png'
                titleText='Effective traverse speed'
                valueText={`
                      ${calculateEffectiveTraverseSpeed(

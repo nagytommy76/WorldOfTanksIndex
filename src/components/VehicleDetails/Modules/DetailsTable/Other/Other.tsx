@@ -26,12 +26,17 @@ export default function Miscellaneous() {
             iconSrc='/icons/details/miscellaneous.png'
          />
          <TableBody>
+            {vehicleEngine[selectedModuleNames.vehicleEngine]?.fireStartingChance && (
+               <TableRowComponent
+                  iconSrc='/icons/miscellaneous/vehicleFireChance.png'
+                  titleText='Engine fire chance'
+                  valueText={vehicleEngine[selectedModuleNames.vehicleEngine]?.fireStartingChance * 100}
+                  unit='%'
+               />
+            )}
+
             <TableRowComponent
-               titleText='Fire chance'
-               valueText={vehicleEngine[selectedModuleNames.vehicleEngine]?.fireStartingChance * 100 || 0}
-               unit='%'
-            />
-            <TableRowComponent
+               iconSrc='/icons/miscellaneous/continuousShotsPerMinute.png'
                titleText='Ammo Capacity'
                valueText={vehicleGun[selectedModuleNames.vehicleGun]?.maxAmmo}
                unit='shells'
@@ -39,6 +44,7 @@ export default function Miscellaneous() {
             {vehicleGun[selectedModuleNames.vehicleGun]?.maxAmmo &&
                shells[selectedModuleNames.shells]?.damage.armor && (
                   <TableRowComponent
+                     iconSrc='/icons/miscellaneous/avgDamage.png'
                      titleText='Potential Damage'
                      valueText={
                         vehicleGun[selectedModuleNames.vehicleGun]?.maxAmmo *
@@ -48,11 +54,13 @@ export default function Miscellaneous() {
                   />
                )}
             <TableRowComponent
+               iconSrc='/icons/money_silver.webp'
                titleText='Shell cost'
                valueText={shells[selectedModuleNames.shells]?.price}
                unit='credits'
             />
             <TableRowComponent
+               iconSrc='/icons/money_silver.webp'
                titleText='Shell Cost per 1000 HP'
                valueText={(
                   (1000 / shells[selectedModuleNames.shells]?.damage.armor) *
@@ -62,12 +70,14 @@ export default function Miscellaneous() {
             />
             {typeof tankCost === 'number' ? (
                <TableRowComponent
+                  iconSrc='/icons/money_silver.webp'
                   titleText='Tank Cost'
                   valueText={tankCost.toLocaleString()}
                   unit='Credits'
                />
             ) : (
                <TableRowComponent
+                  iconSrc='/icons/money_gold.webp'
                   titleText='Tank Cost'
                   valueText={tankCost.gold.toLocaleString()}
                   unit='gold'

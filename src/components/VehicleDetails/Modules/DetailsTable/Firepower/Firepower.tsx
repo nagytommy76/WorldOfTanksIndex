@@ -67,7 +67,7 @@ export default function Firepower() {
                valueText={vehicleGun[selectedModuleNames.vehicleGun]?.aimTime.toFixed(2)}
                unit='s'
             />
-            <TableRow className='bg-gray-700'>
+            <TableRow className='bg-gray-700 h-[20px]'>
                <TableCell>
                   <Typography variant='body1'>Gun Dispersions</Typography>
                </TableCell>
@@ -142,7 +142,8 @@ export default function Firepower() {
                unit='m/s'
             />
             <TableRowComponent
-               titleText='Range'
+               iconSrc='/icons/firepower/maxRange.png'
+               titleText='Max range'
                valueText={shells[selectedModuleNames.shells]?.maxDistance}
                unit='m'
             />

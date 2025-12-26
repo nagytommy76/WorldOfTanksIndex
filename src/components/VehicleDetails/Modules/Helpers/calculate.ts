@@ -19,3 +19,8 @@ export function calculateEffectiveTopSpeed(
 
    return Math.min(effectiveTopSpeed, topSpeed)
 }
+
+export function calculateCamoValues(camoValue: number, firePenalty: number = 1, camouflageBonus: number = 0) {
+   const calculatedCamo = camoValue * 0.57 * 100 + camouflageBonus * 100
+   return calculatedCamo * firePenalty
+}

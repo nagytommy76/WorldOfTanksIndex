@@ -10,7 +10,7 @@ export default async function layout({
 }>) {
    const { tank_id, tank_name } = await params
    return (
-      <section className='min-h-screen max-w-screen-2xl mx-auto px-5 my-10'>
+      <section className='min-h-screen max-w-[1650px] mx-auto px-3 xl:px-5 my-10'>
          <Header tank_name={tank_name} tank_id={tank_id} />
          <TabsProvider baseHref={`/${tank_id}/${tank_name}`} />
          {children}

@@ -33,7 +33,10 @@ export default async function page({ params }: { params: Params }) {
    return (
       <VehicleContextProvider tankDetails={tankStats}>
          <section
-            className={'flex w-full min-h-screen flex-col gap-0 xl:flex-row xl:gap-5 xl:justify-between'}
+            className={`
+               flex w-full min-h-screen flex-col gap-0 xl:flex-row xl:gap-5 
+               xl:justify-between bg-neutral-900 rounded-lg xl:p-6
+               `}
          >
             <ModuleSelect />
             <DetailsTable />

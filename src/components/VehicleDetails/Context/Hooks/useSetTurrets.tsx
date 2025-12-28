@@ -5,7 +5,7 @@ import type { ITurrets } from '@VehicleTypes/Turrets'
 
 export default function useSetTurrets(
    tankData: ITankData,
-   tomatoDispatch: ActionDispatch<[IVehicleContextActions]>
+   vehicleDispatch: ActionDispatch<[IVehicleContextActions]>
 ) {
    useEffect(() => {
       if (tankData) {
@@ -13,10 +13,10 @@ export default function useSetTurrets(
          for (const turret of tankData.stats.turrets) {
             helperObject[turret.name] = turret
          }
-         tomatoDispatch({ type: 'SET_TURRETS', payload: helperObject })
+         vehicleDispatch({ type: 'SET_TURRETS', payload: helperObject })
 
          const vehicleTurretKeys: string[] = Object.keys(helperObject)
-         tomatoDispatch({
+         vehicleDispatch({
             type: 'SET_MODULE_NAME_BY_TYPE',
             payload: {
                type: 'vehicleTurret',
@@ -24,6 +24,6 @@ export default function useSetTurrets(
             },
          })
       }
-   }, [tankData, tomatoDispatch])
+   }, [tankData, vehicleDispatch])
    return null
 }

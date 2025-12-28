@@ -5,7 +5,7 @@ import type { IGuns } from '@VehicleTypes/Guns'
 
 export default function useSetGuns(
    tankData: ITankData,
-   tomatoDispatch: ActionDispatch<[IVehicleContextActions]>,
+   vehicleDispatch: ActionDispatch<[IVehicleContextActions]>,
    selectedTurret: string | null
 ) {
    const [allGuns, setAllGuns] = useState<{ [gunName: string]: IGuns }>({})
@@ -17,11 +17,11 @@ export default function useSetGuns(
             for (const gun of foundSelectedTurret.guns) {
                allGuns[gun.name] = gun
             }
-            tomatoDispatch({ type: 'SET_GUNS', payload: allGuns })
+            vehicleDispatch({ type: 'SET_GUNS', payload: allGuns })
             setAllGuns(allGuns)
 
             const vehicleGunKeys: string[] = Object.keys(allGuns)
-            tomatoDispatch({
+            vehicleDispatch({
                type: 'SET_MODULE_NAME_BY_TYPE',
                payload: {
                   type: 'vehicleGun',
@@ -30,6 +30,6 @@ export default function useSetGuns(
             })
          }
       }
-   }, [tankData, tomatoDispatch, selectedTurret])
+   }, [tankData, vehicleDispatch, selectedTurret])
    return allGuns
 }

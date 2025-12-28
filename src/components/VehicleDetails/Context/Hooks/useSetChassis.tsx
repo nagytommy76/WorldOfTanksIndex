@@ -5,7 +5,7 @@ import type { IChassis } from '@VehicleTypes/Hull'
 
 export default function useSetChassis(
    tankData: ITankData,
-   tomatoDispatch: ActionDispatch<[IVehicleContextActions]>
+   vehicleDispatch: ActionDispatch<[IVehicleContextActions]>
 ) {
    useEffect(() => {
       if (tankData) {
@@ -13,10 +13,10 @@ export default function useSetChassis(
          for (const chassis of tankData.stats.chassis) {
             helperObject[chassis.name] = chassis
          }
-         tomatoDispatch({ type: 'SET_CHASSIS', payload: helperObject })
+         vehicleDispatch({ type: 'SET_CHASSIS', payload: helperObject })
 
          const vehicleChassisKeys: string[] = Object.keys(helperObject)
-         tomatoDispatch({
+         vehicleDispatch({
             type: 'SET_MODULE_NAME_BY_TYPE',
             payload: {
                type: 'vehicleChassis',
@@ -24,6 +24,6 @@ export default function useSetChassis(
             },
          })
       }
-   }, [tankData, tomatoDispatch])
+   }, [tankData, vehicleDispatch])
    return null
 }

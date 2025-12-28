@@ -5,7 +5,7 @@ import type { IRadios } from '@VehicleTypes/Other'
 
 export default function useSetRadios(
    tankData: ITankData,
-   tomatoDispatch: ActionDispatch<[IVehicleContextActions]>
+   vehicleDispatch: ActionDispatch<[IVehicleContextActions]>
 ) {
    useEffect(() => {
       if (tankData) {
@@ -13,10 +13,10 @@ export default function useSetRadios(
          for (const radio of tankData.stats.radios) {
             helperObject[radio.name] = radio
          }
-         tomatoDispatch({ type: 'SET_RADIOS', payload: helperObject })
+         vehicleDispatch({ type: 'SET_RADIOS', payload: helperObject })
 
          const vehicleRadioKeys: string[] = Object.keys(helperObject)
-         tomatoDispatch({
+         vehicleDispatch({
             type: 'SET_MODULE_NAME_BY_TYPE',
             payload: {
                type: 'vehicleRadio',
@@ -24,6 +24,6 @@ export default function useSetRadios(
             },
          })
       }
-   }, [tankData, tomatoDispatch])
+   }, [tankData, vehicleDispatch])
    return null
 }

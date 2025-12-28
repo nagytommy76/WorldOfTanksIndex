@@ -5,7 +5,7 @@ import type { IEngines } from '@VehicleTypes/Engines'
 
 export default function useSetEngines(
    tankData: ITankData,
-   tomatoDispatch: ActionDispatch<[IVehicleContextActions]>
+   vehicleDispatch: ActionDispatch<[IVehicleContextActions]>
 ) {
    useEffect(() => {
       if (tankData) {
@@ -13,10 +13,10 @@ export default function useSetEngines(
          for (const engine of tankData.stats.engines) {
             helperObject[engine.name] = engine
          }
-         tomatoDispatch({ type: 'SET_ENGINES', payload: helperObject })
+         vehicleDispatch({ type: 'SET_ENGINES', payload: helperObject })
 
          const vehicleEngineKeys: string[] = Object.keys(helperObject)
-         tomatoDispatch({
+         vehicleDispatch({
             type: 'SET_MODULE_NAME_BY_TYPE',
             payload: {
                type: 'vehicleEngine',
@@ -24,6 +24,6 @@ export default function useSetEngines(
             },
          })
       }
-   }, [tankData, tomatoDispatch])
+   }, [tankData, vehicleDispatch])
    return null
 }

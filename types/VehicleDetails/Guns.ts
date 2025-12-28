@@ -40,6 +40,10 @@ export interface IGuns {
    shells: IShells[]
    twinGun: null | ITwinGun
    weight: number
+   /**
+    * @description Tier XI tanks like usa:A179_Black_Rock
+    */
+   mechanics?: Record<string, unknown>
 }
 
 export interface IDualGun {

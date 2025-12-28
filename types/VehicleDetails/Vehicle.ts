@@ -46,7 +46,7 @@ interface ITankStats {
    speedLimit: ISpeedLimit
    turrets: ITurrets[]
    hydropneumatic?: IHydropneumatic | null
-   siegeMode?: ISiegeMode | null
+   siegeMode?: Partial<ISiegeMode> | null
 }
 
 export interface ITankData {
@@ -73,6 +73,7 @@ export interface ITankData {
    isSiegeMode: boolean
    siegeMode: null | Partial<ITankStats>
    stats: ITankStats
+   mechanics: unknown
 }
 
 export type TechTreeVehiclesType = Pick<

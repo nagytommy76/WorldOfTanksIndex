@@ -8,6 +8,9 @@ export interface ICamo {
 export interface ISiegeMode {
    switchOffTime: number
    switchOnTime: number
+   engineDamageCoeff: number
+   autoSwitchOffRequiredVehicleSpeed: number
+   autoSwitchOnRequiredVehicleSpeed: number
 }
 
 export interface IHydropneumatic {

@@ -1,4 +1,5 @@
 import type { IGuns } from './Guns'
+import type { IShells } from './Shells'
 
 export interface ITurrets {
    armor: number[]
@@ -25,6 +26,9 @@ export interface ITurrets {
    secondaryGuns?: ISecondaryGuns[] | null
 }
 
+/**
+ * @description Secondary guns used in some turrets (e.g. Tier XI Taschenratte)
+ */
 export interface ISecondaryGuns {
    reloadTime: number
    burst: {
@@ -39,4 +43,5 @@ export interface ISecondaryGuns {
       whileGunDamaged: number
    }
    invisibilityFactorAtShot: number
+   shells: Partial<IShells>[]
 }

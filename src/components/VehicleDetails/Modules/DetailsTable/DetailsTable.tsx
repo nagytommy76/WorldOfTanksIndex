@@ -7,6 +7,7 @@ import Survivability from './Survivability/Survivability'
 import Other from './Other/Other'
 import Concealment from './Concealment/Concealment'
 import Spotting from './Spotting/Spotting'
+import MechanicsContainer from './Mechanics/MechanicsContainer'
 
 export default function DetailsTable() {
    return (
@@ -24,6 +25,7 @@ export default function DetailsTable() {
             <Other />
             <Spotting />
             <Concealment />
+            <MechanicsContainer />
          </TableContainer>
       </section>
    )

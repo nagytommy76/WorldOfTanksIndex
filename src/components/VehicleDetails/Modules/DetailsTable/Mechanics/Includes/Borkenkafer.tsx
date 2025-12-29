@@ -1,20 +1,5 @@
 import TableRowComponent from '../../Includes/TableRow'
-
-type BorkenkaferMechanics = {
-   mechanics: {
-      designatorInitialCooldownS: number
-      designatorCooldownS: number
-      designatorMarkDurationS: number
-      designatorMarkedEnemiesAdditionalDamage: string
-   }
-   targetDesignator: {
-      deployTime: number
-      cooldownTime: number
-      spottedMarkedTime: number
-      unspottedMarkedTime: number
-      damageIncomeFactor: number
-   }
-}
+import type { BorkenkaferMechanics } from '../Types'
 
 export default function Borkenkafer({ mechanics }: { mechanics: BorkenkaferMechanics }) {
    const preheatDispersionCap = Number(

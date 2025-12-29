@@ -1,23 +1,5 @@
 import TableRowComponent from '../../Includes/TableRow'
-
-type HirschkaferMechanics = {
-   mechanics: {
-      preheatDmgCap: string
-      preheatDispersionCap: string
-      preheatTimeToFull: number
-      preheatTimeToZero: number
-      preheatSpeedLimit: number
-      preheatTransitionDelay: number
-   }
-   overheatStacks: {
-      heatingTime: number
-      coolingTime: number
-      dmgBonus: number
-      aimBonus: number
-      gainMaxSpd: number
-      delayTimerDuration: number
-   }
-}
+import type { HirschkaferMechanics } from '../Types'
 
 export default function Hirschkafer({ mechanics }: { mechanics: HirschkaferMechanics }) {
    const preheatDispersionCap = -Number(mechanics.mechanics.preheatDispersionCap.split('%')[0])

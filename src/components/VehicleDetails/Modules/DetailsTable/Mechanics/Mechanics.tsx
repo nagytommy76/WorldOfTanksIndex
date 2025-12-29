@@ -1,9 +1,21 @@
 'use client'
 import { useParams } from 'next/navigation'
+import type {
+   BorkenkaferMechanics,
+   HirschkaferMechanics,
+   Leo120Mechanics,
+   TaschenratteMechanics,
+   Kr1Mechanics,
+   Obj432UMechanics,
+} from './Types'
 
 import Hirschkafer from './Includes/Hirschkafer'
 import Borkenkafer from './Includes/Borkenkafer'
 import Taschenratte from './Includes/Taschenratte'
+import Leo120 from './Includes/Leo120'
+// USSR-----------
+import Kr1 from './Includes/ussr/Kr1'
+import Obj432u from './Includes/ussr/obj432u'
 
 const TIER_XI_VEHICLES = [
    'G185_Leopard_120_Verbessert',
@@ -29,13 +41,19 @@ export default function Mechanics({ mechanics }: { mechanics: Record<string, unk
 
    switch (tank_name) {
       case 'G189_Hirschkafer':
-         return <Hirschkafer mechanics={mechanics} />
+         return <Hirschkafer mechanics={mechanics as HirschkaferMechanics} />
       case 'G188_LeKpz_Borkenkafer':
-         return <Borkenkafer mechanics={mechanics} />
+         return <Borkenkafer mechanics={mechanics as BorkenkaferMechanics} />
       case 'G187_Taschenratte':
-         return <Taschenratte mechanics={mechanics} />
+         return <Taschenratte mechanics={mechanics as TaschenratteMechanics} />
+      case 'G185_Leopard_120_Verbessert':
+         return <Leo120 mechanics={mechanics as Leo120Mechanics} />
+      case 'R228_KR_1':
+         return <Kr1 mechanics={mechanics as Kr1Mechanics} />
+      case 'R230_Object_432U':
+         return <Obj432u mechanics={mechanics as Obj432UMechanics} />
 
       default:
-         break
+         return null
    }
 }

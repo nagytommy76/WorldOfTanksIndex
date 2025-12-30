@@ -91,6 +91,7 @@ const guns = {
          shells,
          twinGun: {},
          weight: Number,
+         mechanics: Schema.Types.Mixed,
       },
    ],
 }
@@ -248,10 +249,7 @@ const stats = {
       depression: { type: Number, required: false, default: () => null },
       elevation: { type: Number, required: false, default: () => null },
    },
-   siegeMode: {
-      switchOffTime: { type: Number, required: false, default: () => null },
-      switchOnTime: { type: Number, required: false, default: () => null },
-   },
+   siegeMode: Schema.Types.Mixed,
 }
 
 /**
@@ -302,6 +300,7 @@ const VehicleSchema = new Schema<ITankData, Model<ITankData>>({
       _id: false,
    },
    stats,
+   mechanics: Schema.Types.Mixed,
 })
 
 export const VehicleModel =

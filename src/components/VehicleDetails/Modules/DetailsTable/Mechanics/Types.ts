@@ -103,3 +103,47 @@ export type Obj432UMechanics = {
       shotBlockTime: number
    }
 }
+
+/** U.S.A -------------------------------------------------------------------------------------------------------- */
+
+export type T803Mechanics = {
+   mechanics: {
+      furyMaxReloadEffAvgDpm: string
+      furyMaxReloadEfficiencyLevel: number
+      furyReloadSpeedBonusPerEfficiencyLevel: string
+      furyReloadEfficiencyLevelDuration: number
+      furyReloadEfficiencyLevelPerHit: number
+      furyReloadEfficiencyLevelPerDestruction: number
+   }
+   battleFury: {
+      maxLevel: number
+      duration: number
+      reloadSpdBonus: number
+      gainPerHit: number
+      gainPerKill: number
+   }
+}
+
+export type HackerMechanics = {
+   mechanics: {
+      concentrationModeCooldown: number
+      concentrationModeDuration: number
+      vehicleGunShotDispersionChassisMovement: string
+      vehicleGunShotDispersionChassisRotation: string
+      vehicleGunShotDispersionTurretRotation: string
+      shotDispersionAngle: string
+      chassisRotationSpeed: string
+      enginePower: string
+   }
+   concentrationMode: {
+      deployTime: number
+      duration: number
+      reloadTime: number
+      modifiers: {
+         mul: Array<{
+            name: string
+            value: string
+         }>
+      }
+   }
+}

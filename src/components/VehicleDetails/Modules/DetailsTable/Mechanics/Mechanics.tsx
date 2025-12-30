@@ -7,6 +7,8 @@ import type {
    TaschenratteMechanics,
    Kr1Mechanics,
    Obj432UMechanics,
+   T803Mechanics,
+   HackerMechanics,
 } from './Types'
 
 import Hirschkafer from './Includes/Hirschkafer'
@@ -16,6 +18,9 @@ import Leo120 from './Includes/Leo120'
 // USSR-----------
 import Kr1 from './Includes/ussr/Kr1'
 import Obj432u from './Includes/ussr/obj432u'
+// USA --------------
+import T803 from './Includes/usa/T803'
+import Hacker from './Includes/usa/Hacker'
 
 const TIER_XI_VEHICLES = [
    'G185_Leopard_120_Verbessert',
@@ -52,6 +57,10 @@ export default function Mechanics({ mechanics }: { mechanics: Record<string, unk
          return <Kr1 mechanics={mechanics as Kr1Mechanics} />
       case 'R230_Object_432U':
          return <Obj432u mechanics={mechanics as Obj432UMechanics} />
+      case 'A182_T803':
+         return <T803 mechanics={mechanics as T803Mechanics} />
+      case 'A183_XM69_Hacker':
+         return <Hacker mechanics={mechanics as HackerMechanics} />
 
       default:
          return null

@@ -80,11 +80,16 @@ export const InitialState: IVehicleReducerState = {
 
 // CONTEXT
 export interface IVehicleContext {
+   vehicleName: string
    hull: IHull
    fuelTank: IFuelTank[]
    speedLimit: ISpeedLimit
    camo: ICamo
    tankCost: number | { gold: number }
+   /**
+    * @description Mechanics for TIER XI tanks
+    */
+   mechanics?: Record<string, unknown> | null
    vehicleReducer: IVehicleReducerState
    vehicleDispatch: React.Dispatch<IVehicleContextActions>
 }

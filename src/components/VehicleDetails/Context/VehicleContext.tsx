@@ -12,6 +12,7 @@ import useSetRadios from './Hooks/useSetRadios'
 import useSetGuns from './Hooks/useSetGuns'
 import useSetTurrets from './Hooks/useSetTurrets'
 import useSetEngines from './Hooks/useSetEngines'
+import useSetMechanics from './Hooks/useSetMechanics'
 
 export const VehicleContext = createContext<IVehicleContext>({
    vehicleDispatch: () => null,
@@ -21,6 +22,11 @@ export const VehicleContext = createContext<IVehicleContext>({
    speedLimit: {} as ISpeedLimit,
    camo: {} as ICamo,
    tankCost: 0,
+   vehicleName: '',
+   /**
+    * @description Mechanics for TIER XI tanks
+    */
+   mechanics: null,
 })
 
 export default function VehicleContextProvider({
@@ -37,15 +43,18 @@ export default function VehicleContextProvider({
    useSetTurrets(tankDetails, vehicleDispatch)
    useSetGuns(tankDetails, vehicleDispatch, vehicleReducer.selectedModuleNames.vehicleTurret)
    useSetEngines(tankDetails, vehicleDispatch)
+   const mechanics = useSetMechanics(tankDetails.mechanics)
 
    return (
       <VehicleContext.Provider
          value={{
+            vehicleName: tankDetails?.xmlId,
             hull: tankDetails?.stats.hull,
             fuelTank: tankDetails?.stats.fuelTank,
             speedLimit: tankDetails?.stats.speedLimit,
             camo: tankDetails?.stats.camo,
             tankCost: tankDetails?.price,
+            mechanics,
             vehicleReducer,
             vehicleDispatch,
          }}

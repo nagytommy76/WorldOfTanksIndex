@@ -1,6 +1,8 @@
 'use client'
+import type { IClip } from '@/types/VehicleDetails/Guns'
 import { useContext } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
+import returnDPM from './Includes/helper'
 
 import Typography from '@mui/material/Typography'
 import Table from '@mui/material/Table'
@@ -11,8 +13,13 @@ import TableRow from '@mui/material/TableRow'
 import TableHeadComponent from '../Includes/TableHead'
 import TableRowComponent from '../Includes/TableRow'
 
+import Penetration from './Includes/Penetration'
+import Damage from './Includes/Damage'
+import Clip from './Includes/Clip'
+
 export default function Firepower() {
    const {
+      vehicleName,
       vehicleReducer: {
          selectedModuleNames,
          moduleGroup: { vehicleChassis, vehicleGun, shells },
@@ -21,38 +28,55 @@ export default function Firepower() {
    const gunDepression = -vehicleGun[selectedModuleNames.vehicleGun]?.elevationLimits.depression[1] || 0
    const gunElevation = -vehicleGun[selectedModuleNames.vehicleGun]?.elevationLimits.elevation[1] || 0
 
+   const clipDamage =
+      (vehicleGun[selectedModuleNames.vehicleGun]?.clip?.count as number) *
+         shells[selectedModuleNames.shells]?.damage.armor || 0
+
+   const reloadBetweenShells = 60 / (vehicleGun[selectedModuleNames.vehicleGun]?.clip?.rate as number) || 0
+
+   const totalReloadTime =
+      ((vehicleGun[selectedModuleNames.vehicleGun]?.clip?.count as number) - 1) * reloadBetweenShells +
+         vehicleGun[selectedModuleNames.vehicleGun]?.reloadTime || 0
+
    return (
       <Table size='small' aria-label='Firepower table with average damage and penetration'>
          <TableHeadComponent headTitle='Firepower' iconSrc='/icons/details/firepower.png' />
          <TableBody>
-            <TableRowComponent
-               iconSrc='/icons/firepower/avgDamage.png'
-               titleText='Average Damage'
-               valueText={shells[selectedModuleNames.shells]?.damage.armor}
-               unit='HP'
+            <Damage damage={shells[selectedModuleNames.shells]?.damage.armor as number} />
+            <Penetration
+               piercingPower={(shells[selectedModuleNames.shells]?.piercingPower as number[]) || [0, 0]}
             />
-            <TableRowComponent
-               iconSrc='/icons/firepower/avgPiercingPower.png'
-               titleText='Average Penetration (at 50/500 m)'
-               valueText={`
-                  ${shells[selectedModuleNames.shells]?.piercingPower[0]} /
-                  ${shells[selectedModuleNames.shells]?.piercingPower[1]}
-               `}
-               unit='mm'
-            />
-            <TableRowComponent
-               iconSrc='/icons/firepower/reloadTime.png'
-               titleText='Rate of Fire'
-               valueText={(60 / vehicleGun[selectedModuleNames.vehicleGun]?.reloadTime).toFixed(2)}
-               unit='rounds/min'
-            />
+            {vehicleGun[selectedModuleNames.vehicleGun]?.clip ? (
+               <TableRowComponent
+                  iconSrc='/icons/firepower/reloadTime.png'
+                  titleText='Rate of Fire'
+                  valueText={(
+                     (60 / totalReloadTime) *
+                     (vehicleGun[selectedModuleNames.vehicleGun]?.clip?.count as number)
+                  ).toFixed(2)}
+                  unit='rounds/min'
+               />
+            ) : (
+               <TableRowComponent
+                  iconSrc='/icons/firepower/reloadTime.png'
+                  titleText='Rate of Fire'
+                  valueText={(60 / vehicleGun[selectedModuleNames.vehicleGun]?.reloadTime).toFixed(2)}
+                  unit='rounds/min'
+               />
+            )}
+
             <TableRowComponent
                iconSrc='/icons/firepower/avgDamagePerMinute.png'
                titleText='Average Damage per Minute'
-               valueText={(
-                  (60 / vehicleGun[selectedModuleNames.vehicleGun]?.reloadTime) *
-                  shells[selectedModuleNames.shells]?.damage.armor
-               ).toFixed(0)}
+               valueText={
+                  returnDPM(
+                     vehicleGun[selectedModuleNames.vehicleGun]?.reloadTime,
+                     shells[selectedModuleNames.shells]?.damage.armor,
+                     vehicleGun[selectedModuleNames.vehicleGun]?.clip,
+                     reloadBetweenShells,
+                     clipDamage
+                  ).toFixed(0) || 0
+               }
                unit='HP/min'
             />
             <TableRowComponent
@@ -67,6 +91,34 @@ export default function Firepower() {
                valueText={vehicleGun[selectedModuleNames.vehicleGun]?.aimTime.toFixed(2)}
                unit='s'
             />
+            {vehicleName === 'F136_AMX_67_Imbattable' && (
+               <TableRowComponent
+                  iconSrc='/icons/firepower/extraShotClipReloadTime.png'
+                  titleText='Reload Penalty'
+                  valueText={
+                     vehicleGun[selectedModuleNames.vehicleGun]?.mechanics?.extraShotClip?.extraReloadTime ||
+                     0
+                  }
+                  unit='s'
+               />
+            )}
+            {vehicleGun[selectedModuleNames.vehicleGun]?.burst && (
+               <>
+                  <TableRowComponent
+                     iconSrc='/icons/firepower/chargeableBurstSize.png'
+                     titleText='Shells in the Burst'
+                     valueText={vehicleGun[selectedModuleNames.vehicleGun]?.burst?.count || 0}
+                     unit='rounds'
+                  />
+               </>
+            )}
+            {vehicleGun[selectedModuleNames.vehicleGun]?.clip && (
+               <Clip
+                  reloadBetweenShells={reloadBetweenShells}
+                  clipDamage={clipDamage}
+                  clip={vehicleGun[selectedModuleNames.vehicleGun]?.clip as IClip}
+               />
+            )}
             <TableRow className='bg-gray-700 h-[20px]'>
                <TableCell>
                   <Typography variant='body1'>Gun Dispersions</Typography>
@@ -128,6 +180,12 @@ export default function Firepower() {
                titleText='Gun elevation'
                valueText={gunElevation}
                unit='°'
+            />
+            <TableRowComponent
+               iconSrc='/icons/firepower/caliber.png'
+               titleText='Caliber'
+               valueText={shells[selectedModuleNames.shells]?.caliber}
+               unit='mm'
             />
             <TableRowComponent
                iconSrc='/icons/firepower/shellModuleDamage.png'

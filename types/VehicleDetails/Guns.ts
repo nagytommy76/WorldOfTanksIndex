@@ -13,10 +13,7 @@ export interface IGuns {
    autoreload: {
       reloadTime: number[]
    } | null
-   clip: {
-      count: number
-      rate: number
-   } | null
+   clip: IClip | null
    depression: number
    dispersion: {
       turretRotation: number
@@ -44,6 +41,11 @@ export interface IGuns {
     * @description Tier XI tanks like usa:A179_Black_Rock
     */
    mechanics?: Record<string, unknown>
+}
+
+export interface IClip {
+   count: number
+   rate: number
 }
 
 export interface IDualGun {

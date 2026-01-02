@@ -1,4 +1,4 @@
-import Header from '@/VehicleDetails/Header'
+import Header from '@/VehicleDetails/Header/Header'
 import TabsProvider from '@/Providers/TabsProvider'
 
 export default async function layout({

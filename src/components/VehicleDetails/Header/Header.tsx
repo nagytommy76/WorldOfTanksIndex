@@ -11,6 +11,8 @@ import getIcon from '@/lib/getVehicleTypeIcon'
 import { flagSources } from '@/Base/FlagLinks/FlagLinks'
 import tiers from '@/lib/tierList'
 
+import PlaceholderImg from './PlaceholderImg'
+
 async function getHeaderData(tank_name: string, tank_id: string) {
    try {
       await dbConnect()
@@ -64,13 +66,7 @@ export default async function Header({ tank_name, tank_id }: { tank_name: string
          <Typography variant='body1' className=''>
             {vehicleDetails.tankDetails?.description}
          </Typography>
-         <Image
-            className='absolute bottom-0 lg:top-0 left-0 -z-9'
-            src={`https://eu-wotp.wgcdn.co/dcont/tankopedia_images/${tank_name.toLocaleLowerCase()}/${tank_name.toLocaleLowerCase()}_image.png`}
-            alt={tank_name}
-            width={1920}
-            height={900}
-         />
+         <PlaceholderImg tank_name={tank_name} />
          <Image
             className='absolute bottom-0 lg:top-0 left-0 object-cover -z-10'
             src={hangar.src}

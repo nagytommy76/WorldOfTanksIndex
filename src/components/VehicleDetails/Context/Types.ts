@@ -1,5 +1,5 @@
 import type { ModuleType } from '@VehicleTypes/module'
-import type { IRadios, IFuelTank, ISpeedLimit, ICamo } from '@VehicleTypes/Other'
+import type { IRadios, IFuelTank, ISpeedLimit, ICamo, ISiegeMode } from '@VehicleTypes/Other'
 import type { ITurrets } from '@VehicleTypes/Turrets'
 import type { IEngines } from '@VehicleTypes/Engines'
 import type { IChassis, IHull } from '@VehicleTypes/Hull'
@@ -30,6 +30,10 @@ interface setShellsAction {
    type: 'SET_SHELLS'
    payload: { [shellName: string]: IShells }
 }
+interface setSiegeMode {
+   type: 'SET_SIEGE_MODE'
+   payload: Partial<ISiegeMode>
+}
 
 interface setModuleIdByType {
    type: 'SET_MODULE_NAME_BY_TYPE'
@@ -44,8 +48,10 @@ export type IVehicleContextActions =
    | setGunsAction
    | setShellsAction
    | setModuleIdByType
+   | setSiegeMode
 
 export interface IVehicleReducerState {
+   siegeMode: Partial<ISiegeMode> | null
    moduleGroup: {
       vehicleChassis: { [moduleName: string]: IChassis }
       vehicleEngine: { [moduleName: string]: IEngines }
@@ -76,6 +82,7 @@ export const InitialState: IVehicleReducerState = {
       vehicleTurret: '',
       shells: '',
    },
+   siegeMode: null,
 }
 
 // CONTEXT

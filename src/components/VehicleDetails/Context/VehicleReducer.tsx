@@ -35,6 +35,11 @@ export default function VehicleReducer(
             ...state,
             moduleGroup: { ...state.moduleGroup, shells: payload },
          }
+      case 'SET_SIEGE_MODE':
+         return {
+            ...state,
+            siegeMode: payload,
+         }
       case 'SET_MODULE_NAME_BY_TYPE':
          return {
             ...state,

@@ -13,6 +13,7 @@ import useSetGuns from './Hooks/useSetGuns'
 import useSetTurrets from './Hooks/useSetTurrets'
 import useSetEngines from './Hooks/useSetEngines'
 import useSetMechanics from './Hooks/useSetMechanics'
+import useSetSiegeMode from './Hooks/useSetSiegeMode'
 
 export const VehicleContext = createContext<IVehicleContext>({
    vehicleDispatch: () => null,
@@ -43,6 +44,7 @@ export default function VehicleContextProvider({
    useSetTurrets(tankDetails, vehicleDispatch)
    useSetGuns(tankDetails, vehicleDispatch, vehicleReducer.selectedModuleNames.vehicleTurret)
    useSetEngines(tankDetails, vehicleDispatch)
+   useSetSiegeMode(tankDetails, vehicleDispatch)
    const mechanics = useSetMechanics(tankDetails.mechanics)
 
    return (

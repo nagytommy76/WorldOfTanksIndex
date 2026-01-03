@@ -14,6 +14,8 @@ import TableRow from '@mui/material/TableRow'
 
 import TableRowComponent from '../Includes/TableRow'
 
+import SiegeMode from './Includes/SiegeMode'
+
 export default function Mobility() {
    const [totalWeight, setTotalWeight] = useState<number>(0)
    const {
@@ -23,6 +25,7 @@ export default function Mobility() {
       vehicleReducer: {
          selectedModuleNames,
          moduleGroup: { vehicleChassis, vehicleTurret, vehicleGun, vehicleEngine, vehicleRadio },
+         siegeMode,
       },
    } = useContext(VehicleContext)
 
@@ -79,6 +82,7 @@ export default function Mobility() {
                valueText={vehicleTurret[selectedModuleNames.vehicleTurret]?.traverse}
                unit='deg/s'
             />
+            {siegeMode && <SiegeMode siegeMode={siegeMode} />}
             <TableRowComponent
                iconSrc='/icons/mobility/vehicleWeight.png'
                titleText='Weight'

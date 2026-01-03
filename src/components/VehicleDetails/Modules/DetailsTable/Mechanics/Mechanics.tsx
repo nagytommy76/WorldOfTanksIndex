@@ -9,6 +9,10 @@ import type {
    Obj432UMechanics,
    T803Mechanics,
    HackerMechanics,
+   BreakerMechanics,
+   Bz79Mechanics,
+   SzakalMechanics,
+   Strv107Mechanics,
 } from './Types'
 
 import Hirschkafer from './Includes/Hirschkafer'
@@ -21,6 +25,14 @@ import Obj432u from './Includes/ussr/obj432u'
 // USA --------------
 import T803 from './Includes/usa/T803'
 import Hacker from './Includes/usa/Hacker'
+// UK --------------
+import Breaker from './Includes/uk/Breaker'
+// China --------------
+import Bz79 from './Includes/china/Bz79'
+// Poland --------------
+import Szakal from './Includes/poland/Szakal'
+// Sweden --------------
+import Strv107 from './Includes/sweden/Strv107'
 
 const TIER_XI_VEHICLES = [
    'G185_Leopard_120_Verbessert',
@@ -61,6 +73,14 @@ export default function Mechanics({ mechanics }: { mechanics: Record<string, unk
          return <T803 mechanics={mechanics as T803Mechanics} />
       case 'A183_XM69_Hacker':
          return <Hacker mechanics={mechanics as HackerMechanics} />
+      case 'GB152_AT_FV230_Breaker':
+         return <Breaker mechanics={mechanics as BreakerMechanics} />
+      case 'Ch67_BZ_79':
+         return <Bz79 mechanics={mechanics as Bz79Mechanics} />
+      case 'Pl37_CS_67_Szakal':
+         return <Szakal mechanics={mechanics as SzakalMechanics} />
+      case 'S36_Strv_107_12':
+         return <Strv107 mechanics={mechanics as Strv107Mechanics} />
 
       default:
          return null

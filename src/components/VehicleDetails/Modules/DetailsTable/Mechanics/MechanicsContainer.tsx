@@ -25,6 +25,7 @@ export default function MechanicsContainer() {
    const { mechanics } = useContext(VehicleContext)
    if (!mechanics) return null
    const mechanicName = Object.keys(mechanics).find((name) => name !== 'mechanics')
+   if (!mechanicName) return null
 
    return (
       <Table size='small' aria-label='Mechanics for Tier XI vehicles like Hirschkäfer, Taschenratte etc..'>

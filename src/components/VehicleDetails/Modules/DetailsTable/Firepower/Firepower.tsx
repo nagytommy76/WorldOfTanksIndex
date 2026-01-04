@@ -1,5 +1,5 @@
 'use client'
-import type { IClip } from '@/types/VehicleDetails/Guns'
+import type { IClip, IDualAccuracy } from '@/types/VehicleDetails/Guns'
 import { useContext } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import returnDPM from './Includes/helper'
@@ -16,6 +16,7 @@ import TableRowComponent from '../Includes/TableRow'
 import Penetration from './Includes/Penetration'
 import Damage from './Includes/Damage'
 import Clip from './Includes/Clip'
+import DualAccuracy from './Includes/DualAccuracy'
 
 export default function Firepower() {
    const {
@@ -74,7 +75,8 @@ export default function Firepower() {
                      shells[selectedModuleNames.shells]?.damage.armor,
                      vehicleGun[selectedModuleNames.vehicleGun]?.clip,
                      reloadBetweenShells,
-                     clipDamage
+                     clipDamage,
+                     vehicleGun[selectedModuleNames.vehicleGun]?.autoreload?.reloadTime || []
                   ).toFixed(0) || 0
                }
                unit='HP/min'
@@ -85,6 +87,19 @@ export default function Firepower() {
                valueText={vehicleGun[selectedModuleNames.vehicleGun]?.reloadTime}
                unit='s'
             />
+            {vehicleGun[selectedModuleNames.vehicleGun]?.autoreload?.reloadTime && (
+               <TableRowComponent
+                  iconSrc='/icons/firepower/autoReloadTime.png'
+                  titleText='Autoreloading One Shell'
+                  valueText={`
+                     ${vehicleGun[selectedModuleNames.vehicleGun].autoreload?.reloadTime[2]} /
+                     ${vehicleGun[selectedModuleNames.vehicleGun].autoreload?.reloadTime[1]} /
+                     ${vehicleGun[selectedModuleNames.vehicleGun].autoreload?.reloadTime[0]}
+
+                  `}
+                  unit='s'
+               />
+            )}
             <TableRowComponent
                iconSrc='/icons/firepower/aimingTime.png'
                titleText='Aiming Time'
@@ -169,6 +184,12 @@ export default function Firepower() {
                unit='m'
                paddingLeft
             />
+            {vehicleGun[selectedModuleNames.vehicleGun]?.dualAccuracy && (
+               <DualAccuracy
+                  dualAccuracy={vehicleGun[selectedModuleNames.vehicleGun]?.dualAccuracy as IDualAccuracy}
+                  reloadTime={vehicleGun[selectedModuleNames.vehicleGun]?.reloadTime}
+               />
+            )}
             <TableRowComponent
                iconSrc='/icons/firepower/pitchLimits.png'
                titleText='Gun depression'

@@ -82,6 +82,17 @@ export default function Mobility() {
                valueText={vehicleTurret[selectedModuleNames.vehicleTurret]?.traverse}
                unit='deg/s'
             />
+            {vehicleGun[selectedModuleNames.vehicleGun]?.arc.length > 0 && (
+               <TableRowComponent
+                  iconSrc='/icons/mobility/gunYawLimits.png'
+                  titleText='Gun Traverse Limits'
+                  valueText={`
+                     ${vehicleGun[selectedModuleNames.vehicleGun]?.arc[0]} /
+                     ${vehicleGun[selectedModuleNames.vehicleGun]?.arc[1]}
+                  `}
+                  unit='deg'
+               />
+            )}
             {siegeMode && <SiegeMode siegeMode={siegeMode} />}
             <TableRowComponent
                iconSrc='/icons/mobility/vehicleWeight.png'

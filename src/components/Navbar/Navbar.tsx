@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
-import SearchBar from './includes/SearchBar'
-import DropdownMenu from './includes/Menu/DropdownMenu'
+import SearchBar from './Search/SearchBar'
+import DropdownMenu from './Menu/DropdownMenu'
 
 export default function Navbar() {
    return (

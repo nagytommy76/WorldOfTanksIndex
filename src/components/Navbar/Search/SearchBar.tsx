@@ -41,7 +41,12 @@ export default function SearchBar() {
                   <TextField
                      id='search-for-vehicles'
                      label='Search for vehicles'
+                     autoComplete='list'
                      variant='outlined'
+                     placeholder='Search for vehicles'
+                     type='search'
+                     autoFocus={true}
+                     focused
                      fullWidth
                      value={inputValue}
                      onChange={handleOnChange}

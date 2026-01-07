@@ -6,6 +6,7 @@ export interface ICamo {
 }
 
 export interface ISiegeMode {
+   device: string
    switchOffTime: number
    switchOnTime: number
    engineDamageCoeff: number

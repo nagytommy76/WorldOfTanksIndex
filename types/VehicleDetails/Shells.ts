@@ -23,6 +23,12 @@ export interface ISharedShell {
          devices: number
       }
    } | null
+   hasStun?: boolean
+   stunDuration?: number
+   /**
+    * @description stunDuration * guaranteedStunDuration = minimum stun duration
+    */
+   guaranteedStunDuration?: number
    explosionRadius: number | null
    mechanics: string | null
 }

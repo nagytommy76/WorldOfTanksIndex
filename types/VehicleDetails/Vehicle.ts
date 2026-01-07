@@ -1,4 +1,4 @@
-import type { IEngines } from './Engines'
+import type { IEngines, IRocketAcceleration } from './Engines'
 import type { IChassis, IHull } from './Hull'
 import type { ITurrets } from './Turrets'
 import type { IFuelTank, IRadios, ISpeedLimit, IHydropneumatic, ISiegeMode, VehicleTypes } from './Other'
@@ -47,6 +47,7 @@ interface ITankStats {
    turrets: ITurrets[]
    hydropneumatic?: IHydropneumatic | null
    siegeMode?: Partial<ISiegeMode> | null
+   rocketAcceleration?: IRocketAcceleration | null
 }
 
 export interface ITankData {
@@ -70,7 +71,6 @@ export interface ITankData {
       primary: string
       secondary: string[]
    }[]
-   isSiegeMode: boolean
    siegeMode: null | Partial<ITankStats>
    stats: ITankStats
    mechanics: unknown

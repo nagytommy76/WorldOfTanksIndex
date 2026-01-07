@@ -1,5 +1,34 @@
 import type { IShells } from './Shells'
 
+export interface ISecondaryGuns {
+   reloadTime: number
+   burst: {
+      count: number
+      rate: number
+   }
+   aimingTime: number
+   shotDispersionRadius: number
+   shotDispersionFactors: {
+      turretRotation: number
+      afterShot: number
+      whileGunDamaged: number
+   }
+   invisibilityFactorAtShot: number
+}
+
+export interface IAutoShoot {
+   shotDispersionPerSec: number
+   maxShotDispersion: number
+   groupSize: number
+}
+
+export interface IAutoReload {
+   reloadTime: number[]
+   boostFraction: number
+   boostResidueTime: number
+   boostStartTime: number
+}
+
 export interface IGuns {
    accuracy: number
    aimTime: number
@@ -10,10 +39,9 @@ export interface IGuns {
       rate: number
       syncReloading?: boolean
    } | null
-   autoreload: {
-      reloadTime: number[]
-   } | null
+   autoreload: IAutoReload | null
    clip: IClip | null
+   autoShoot?: IAutoShoot | null
    depression: number
    dispersion: {
       turretRotation: number

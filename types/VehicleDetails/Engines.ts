@@ -16,3 +16,14 @@ export interface IEngines {
    wwsoundNPC: string
    wwsoundPC: string
 }
+
+export interface IRocketAcceleration {
+   deployTime: number
+   reloadTime: number
+   reuseCount: number
+   duration: number
+   vehicleEnginePower: number
+   vehicleForwardMaxSpeed: number
+   vehicleBackwardMaxSpeed: number
+   vehicleAllGroundRotationSpeed: number
+}

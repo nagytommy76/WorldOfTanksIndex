@@ -2,8 +2,8 @@ import type { AmmoType } from './module'
 
 export interface ISharedShell {
    damage: {
-      armor: number
-      devices: number
+      armor: number | number[]
+      devices: number | number[]
    }
    caliber: number
    effects: string

@@ -14,7 +14,10 @@ export function returnAutoReloadDPM(
    autoReaload.reloadTime.reverse().map((time) => {
       totalReloadTime += time
    })
-   const dpm = (60 / (totalReloadTime - reloadBetweenShells)) * clipDamage
+   // console.log('TOTLA RELOAD TIME: ', totalReloadTime)
+   // const dpm = (60 / (totalReloadTime - reloadBetweenShells)) * clipDamage
+   const dpm = (60 / (totalReloadTime - 5.61)) * clipDamage
+
    // console.log('TIME: ', (60 / (totalReloadTime - 5.61)) * clipDamage)
    return dpm
 }
@@ -28,7 +31,7 @@ export function returnClipReloadTime(
    /**
     * clip.count - 1 -> the first shell is in the magazine already
     */
-   const totalReloadTime = (clip.count - 1) * reloadBetweenShells + reloadTime
+   const totalReloadTime = (clip?.count - 1) * reloadBetweenShells + reloadTime
    const dpm = (60 / totalReloadTime) * clipDamage
    return dpm
 }

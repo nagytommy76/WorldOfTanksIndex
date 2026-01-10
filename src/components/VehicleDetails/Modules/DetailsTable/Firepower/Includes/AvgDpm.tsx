@@ -22,7 +22,7 @@ export default function AvgDpm({
    const autoreload = vehicleGun[selectedModuleNames.vehicleGun]?.autoreload
 
    switch (true) {
-      case autoreload !== null && clip !== null:
+      case autoreload && clip !== null:
          return (
             <TableRowComponent
                iconSrc='/icons/firepower/avgDamagePerMinute.png'
@@ -30,7 +30,7 @@ export default function AvgDpm({
                valueText={returnAutoReloadDPM(
                   autoreload,
                   clipDamage,
-                  shells[selectedModuleNames.shells]?.damage.armor
+                  shells[selectedModuleNames.shells]?.damage.armor as number
                ).toFixed(0)}
                unit='HP/min'
             />
@@ -41,10 +41,22 @@ export default function AvgDpm({
                iconSrc='/icons/firepower/avgDamagePerMinute.png'
                titleText='Average Damage per Minute'
                valueText={returnClipReloadTime(
-                  vehicleGun[selectedModuleNames.vehicleGun].reloadTime,
+                  vehicleGun[selectedModuleNames.vehicleGun]?.reloadTime,
                   clip,
                   clipDamage,
                   reloadBetweenShells
+               ).toFixed(0)}
+               unit='HP/min'
+            />
+         )
+      case Array.isArray(shells[selectedModuleNames.shells]?.damage.armor):
+         return (
+            <TableRowComponent
+               iconSrc='/icons/firepower/avgDamagePerMinute.png'
+               titleText='Average Damage per Minute'
+               valueText={returnDPM(
+                  vehicleGun[selectedModuleNames.vehicleGun].reloadTime,
+                  (shells[selectedModuleNames.shells]?.damage.armor as number[])[0]
                ).toFixed(0)}
                unit='HP/min'
             />
@@ -57,7 +69,7 @@ export default function AvgDpm({
                titleText='Average Damage per Minute'
                valueText={returnDPM(
                   vehicleGun[selectedModuleNames.vehicleGun].reloadTime,
-                  shells[selectedModuleNames.shells]?.damage.armor
+                  shells[selectedModuleNames.shells]?.damage.armor as number
                ).toFixed(0)}
                unit='HP/min'
             />

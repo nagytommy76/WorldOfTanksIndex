@@ -1,7 +1,7 @@
 import type { ModuleType } from '@VehicleTypes/module'
 import type { IRadios, IFuelTank, ISpeedLimit, ICamo, ISiegeMode } from '@VehicleTypes/Other'
 import type { ITurrets } from '@VehicleTypes/Turrets'
-import type { IEngines } from '@VehicleTypes/Engines'
+import type { IEngines, IRocketAcceleration } from '@VehicleTypes/Engines'
 import type { IChassis, IHull } from '@VehicleTypes/Hull'
 import type { IGuns } from '@VehicleTypes/Guns'
 import type { IShells } from '@VehicleTypes/Shells'
@@ -97,6 +97,7 @@ export interface IVehicleContext {
     * @description Mechanics for TIER XI tanks
     */
    mechanics?: Record<string, unknown> | null
+   rocketAcceleration: IRocketAcceleration | null
    vehicleReducer: IVehicleReducerState
    vehicleDispatch: React.Dispatch<IVehicleContextActions>
 }

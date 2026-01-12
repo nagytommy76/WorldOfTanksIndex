@@ -16,7 +16,7 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
    },
 }))
 
-const IMAGE_SIZE = 32
+const IMAGE_SIZE = 30
 
 export default function TableRowComponent({
    titleText,
@@ -35,8 +35,8 @@ export default function TableRowComponent({
 }) {
    return (
       <HtmlTooltip title={TooltipTitle}>
-         <TableRow className='h-[20px] ' hover>
-            <TableCell component='th' scope='row' className='px-1'>
+         <TableRow className='h-[30px] ' hover>
+            <TableCell component='th' scope='row' className='px-0'>
                <div className={`${paddingLeft ? 'pl-7' : ''} flex felx-row items-center gap-2`}>
                   {iconSrc && (
                      <Image
@@ -48,7 +48,7 @@ export default function TableRowComponent({
                         className={`object-cover w-[${IMAGE_SIZE}px]`}
                      />
                   )}
-                  <Typography variant='body2' fontSize={14} sx={{ opacity: 0.85 }}>
+                  <Typography variant='body2' fontSize={13}>
                      {titleText}
                   </Typography>
                </div>

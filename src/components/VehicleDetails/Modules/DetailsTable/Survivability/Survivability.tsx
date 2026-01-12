@@ -36,7 +36,7 @@ export default function Survivability() {
             {hull && (
                <TableRowComponent
                   iconSrc='/icons/survivability/hullArmor.png'
-                  titleText='Hull armor'
+                  titleText='Hull Armor'
                   valueText={`
                      ${hull.armor[0]} / ${hull.armor[1]} / ${hull.armor[2]}
                      `}
@@ -47,7 +47,7 @@ export default function Survivability() {
                vehicleTurret[selectedModuleNames.vehicleTurret]?.armor[0] > 0 && (
                   <TableRowComponent
                      iconSrc='/icons/survivability/turretArmor.png'
-                     titleText='Turret armor'
+                     titleText='Turret Armor'
                      valueText={`
                     ${vehicleTurret[selectedModuleNames.vehicleTurret]?.armor[0]} / ${
                         vehicleTurret[selectedModuleNames.vehicleTurret]?.armor[1]
@@ -56,15 +56,17 @@ export default function Survivability() {
                      unit='mm'
                   />
                )}
-            <TableRowComponent
-               iconSrc='/icons/survivability/vehicleChassisFallDamage.png'
-               titleText='Track armor'
-               valueText={vehicleChassis[selectedModuleNames.vehicleChassis]?.armor}
-               unit='mm'
-            />
+            {vehicleChassis[selectedModuleNames.vehicleChassis]?.armor && (
+               <TableRowComponent
+                  iconSrc='/icons/survivability/vehicleChassisFallDamage.png'
+                  titleText='Track Armor'
+                  valueText={vehicleChassis[selectedModuleNames.vehicleChassis]?.armor}
+                  unit='mm'
+               />
+            )}
             <TableRowComponent
                iconSrc='/icons/survivability/vehicleChassisStrength.png'
-               titleText='Track health / Repaired'
+               titleText='Track HP / Repaired'
                valueText={
                   vehicleChassis[selectedModuleNames.vehicleChassis]?.maxHealth +
                   ' / ' +
@@ -74,25 +76,25 @@ export default function Survivability() {
             />
             <TableRowComponent
                iconSrc='/icons/survivability/vehicleChassisRepairSpeed.png'
-               titleText='Track Repair time'
+               titleText='Track Repair Time'
                valueText={vehicleChassis[selectedModuleNames.vehicleChassis]?.repairTime.toFixed(2)}
                unit='s'
             />
             <TableRowComponent
                iconSrc='/icons/survivability/vehicleAmmoBayStrength.png'
-               titleText='Ammo rack health / Repaired'
+               titleText='Ammo Rack HP / Repaired'
                valueText={hull.ammoRackHealth.maxHealth + ' / ' + hull.ammoRackHealth.maxRegenHealth}
                unit='hp'
             />
             <TableRowComponent
                iconSrc='/icons/survivability/fuelTankHP.png'
-               titleText='Fuel tank health / Repaired'
+               titleText='Fuel Tank HP / Repaired'
                valueText={fuelTank[0].maxHealth + ' / ' + fuelTank[0].maxRegenHealth}
                unit='hp'
             />
             <TableRowComponent
                iconSrc='/icons/survivability/vehicleAmmoBayEngineFuelStrength.png'
-               titleText='Engine health / Repaired'
+               titleText='Engine HP / Repaired'
                valueText={
                   vehicleEngine[selectedModuleNames.vehicleEngine]?.maxHealth +
                   ' / ' +
@@ -102,7 +104,7 @@ export default function Survivability() {
             />
             <TableRowComponent
                iconSrc='/icons/survivability/vehicleAmmoBayEngineFuelStrength.png'
-               titleText='Turret ring health / Repaired'
+               titleText='Turret Ring HP / Repaired'
                valueText={
                   vehicleTurret[selectedModuleNames.vehicleTurret]?.ringHealth.maxHealth +
                   ' / ' +
@@ -111,7 +113,7 @@ export default function Survivability() {
                unit='hp'
             />
             <TableRowComponent
-               titleText='Viewport health / Repaired'
+               titleText='Viewport HP / Repaired'
                valueText={
                   vehicleTurret[selectedModuleNames.vehicleTurret]?.viewportHealth.maxHealth +
                   ' / ' +

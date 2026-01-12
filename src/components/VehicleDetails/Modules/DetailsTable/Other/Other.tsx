@@ -18,6 +18,10 @@ export default function Miscellaneous() {
       },
    } = useContext(VehicleContext)
 
+   const armorDamage = Array.isArray(shells[selectedModuleNames.shells]?.damage.armor)
+      ? (shells[selectedModuleNames.shells]?.damage.armor as number[])[0]
+      : (shells[selectedModuleNames.shells]?.damage.armor as number)
+
    return (
       <Table size='small' aria-label='Other table with concealment, potential damage etc...'>
          <TableHeadComponent
@@ -46,10 +50,7 @@ export default function Miscellaneous() {
                   <TableRowComponent
                      iconSrc='/icons/miscellaneous/avgDamage.png'
                      titleText='Potential Damage'
-                     valueText={
-                        vehicleGun[selectedModuleNames.vehicleGun]?.maxAmmo *
-                        shells[selectedModuleNames.shells]?.damage.armor
-                     }
+                     valueText={vehicleGun[selectedModuleNames.vehicleGun]?.maxAmmo * armorDamage}
                      unit='HP'
                   />
                )}
@@ -62,10 +63,7 @@ export default function Miscellaneous() {
             <TableRowComponent
                iconSrc='/icons/money_silver.webp'
                titleText='Shell Cost per 1000 HP'
-               valueText={(
-                  (1000 / shells[selectedModuleNames.shells]?.damage.armor) *
-                  shells[selectedModuleNames.shells]?.price
-               ).toFixed(0)}
+               valueText={((1000 / armorDamage) * shells[selectedModuleNames.shells]?.price).toFixed(0)}
                unit='Credits'
             />
             {typeof tankCost === 'number' ? (

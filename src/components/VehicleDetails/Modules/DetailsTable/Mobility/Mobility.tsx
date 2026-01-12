@@ -15,6 +15,8 @@ import TableRow from '@mui/material/TableRow'
 import TableRowComponent from '../Includes/TableRow'
 
 import SiegeMode from './Includes/SiegeMode'
+import WheelAngle from './Includes/WheelAngle'
+import RocketAcceleration from './Includes/RocketAcceleration'
 
 export default function Mobility() {
    const [totalWeight, setTotalWeight] = useState<number>(0)
@@ -28,6 +30,9 @@ export default function Mobility() {
          siegeMode,
       },
    } = useContext(VehicleContext)
+
+   const gunDepression = -vehicleGun[selectedModuleNames.vehicleGun]?.elevationLimits.depression[1] || 0
+   const gunElevation = -vehicleGun[selectedModuleNames.vehicleGun]?.elevationLimits.elevation[1] || 0
 
    useEffect(() => {
       const totalWeight =
@@ -70,6 +75,11 @@ export default function Mobility() {
                valueText={speedLimit?.backward}
                unit='km/h'
             />
+            {vehicleChassis[selectedModuleNames.vehicleChassis]?.wheelAngle && (
+               <WheelAngle
+                  wheelAngle={vehicleChassis[selectedModuleNames.vehicleChassis]?.wheelAngle as number[]}
+               />
+            )}
             <TableRowComponent
                iconSrc='/icons/mobility/chassisRotationSpeed.png'
                titleText='Traverse Speed'
@@ -81,6 +91,12 @@ export default function Mobility() {
                titleText='Gun Traverse Speed'
                valueText={vehicleTurret[selectedModuleNames.vehicleTurret]?.traverse}
                unit='deg/s'
+            />
+            <TableRowComponent
+               iconSrc='/icons/firepower/pitchLimits.png'
+               titleText='Gun depression / elevation'
+               valueText={gunDepression + ' / ' + gunElevation}
+               unit='°'
             />
             {vehicleGun[selectedModuleNames.vehicleGun]?.arc.length > 0 && (
                <TableRowComponent
@@ -94,6 +110,7 @@ export default function Mobility() {
                />
             )}
             {siegeMode && <SiegeMode siegeMode={siegeMode} />}
+            <RocketAcceleration />
             <TableRowComponent
                iconSrc='/icons/mobility/vehicleWeight.png'
                titleText='Weight'

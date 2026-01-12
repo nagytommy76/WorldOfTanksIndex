@@ -2,6 +2,7 @@ import type { ISiegeMode } from '@/types/VehicleDetails/Other'
 import TableRowComponent from '../../Includes/TableRow'
 
 export default function SiegeMode({ siegeMode }: { siegeMode: Partial<ISiegeMode> }) {
+   if (siegeMode.switchOffTime === '0.0' && siegeMode.switchOnTime === '0.0') return null
    if (siegeMode.switchOffTime === 0 || siegeMode.switchOffTime === '0') {
       return (
          <>

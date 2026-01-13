@@ -42,6 +42,8 @@ export default async function Header({ tank_name, tank_id }: { tank_name: string
    const vehicleDetails = await getHeaderData(tank_name, tank_id)
    if (!vehicleDetails) return null
 
+   const foundTankRole = vehicleDetails.tags.find((tag) => tag.includes('role'))
+
    return (
       <header className='min-h-[460px] relative lg:min-h-[750px] max-w-screen'>
          <div className='flex flex-row items-center gap-3'>
@@ -52,7 +54,7 @@ export default async function Header({ tank_name, tank_id }: { tank_name: string
                width={75}
                height={75}
             />
-            <VehicleRole vehicleRole={vehicleDetails.tags[1] as VehicleRoles} />
+            {foundTankRole && <VehicleRole vehicleRole={foundTankRole as VehicleRoles} />}
             <Typography variant='h2' className='text-4xl font-semibold tracking-wide'>
                {tiers[vehicleDetails.tier - 1]}
             </Typography>

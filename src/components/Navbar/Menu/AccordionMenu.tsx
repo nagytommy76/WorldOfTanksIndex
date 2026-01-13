@@ -23,6 +23,7 @@ export default function AccordionMenu({
 }) {
    return (
       <Accordion
+         disableGutters
          expanded={expanded === accordionName.toLowerCase()}
          onChange={handleExpandChange(accordionName.toLowerCase())}
       >

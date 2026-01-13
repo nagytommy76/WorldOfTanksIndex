@@ -26,7 +26,7 @@ export default function DropdownMenu() {
    return (
       <div>
          <Button
-            variant='text'
+            variant='outlined'
             id='tech-tree-menu-button'
             aria-controls={open ? 'tech-tree-menu' : undefined}
             aria-haspopup='true'
@@ -36,7 +36,17 @@ export default function DropdownMenu() {
          >
             Vehicles
          </Button>
-         <Menu id='tech-tree-menu' anchorEl={anchorEl} open={open} onClose={handleClose}>
+         <Menu
+            id='tech-tree-menu'
+            // sx={{
+            //    '& .MuiList-root': {
+            //       padding: 0,
+            //    },
+            // }}
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+         >
             <AccordionMenu
                expanded={expanded}
                handleExpandChange={handleExpandChange}

@@ -16,7 +16,6 @@ export default function Navbar() {
             </Link>
             <section className={'flex flex-row gap-3'}>
                <DropdownMenu />
-               <h1>other menu</h1>
             </section>
             <SearchBar />
          </nav>

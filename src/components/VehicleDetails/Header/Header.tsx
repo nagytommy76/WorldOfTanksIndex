@@ -1,17 +1,19 @@
 import dbConnect from '@/lib/ConnectDB'
 import { VehicleModel } from '@Models/TankModel'
-import type { ITankData } from '@/types/VehicleDetails/Vehicle'
 import Image from 'next/image'
+
+import type { VehicleRoles } from '@Types/types'
+import type { ITankData } from '@/types/VehicleDetails/Vehicle'
 
 import hangar from '@/Imageshangar-bg.webp'
 
 import Typography from '@mui/material/Typography'
 
-import getIcon from '@/lib/getVehicleTypeIcon'
 import { flagSources } from '@/Base/FlagLinks/FlagLinks'
 import tiers from '@/lib/tierList'
 
 import PlaceholderImg from './PlaceholderImg'
+import VehicleRole from './VehicleRoles'
 
 async function getHeaderData(tank_name: string, tank_id: string) {
    try {
@@ -27,9 +29,10 @@ async function getHeaderData(tank_name: string, tank_id: string) {
          'type',
          'tier',
          'nation',
+         'tags',
       ])
 
-      return vehicleDetails as Pick<ITankData, 'tankDetails' | 'type' | 'tier' | 'nation'>
+      return vehicleDetails as Pick<ITankData, 'tankDetails' | 'type' | 'tier' | 'nation' | 'tags'>
    } catch (error) {
       console.log(error)
    }
@@ -40,8 +43,8 @@ export default async function Header({ tank_name, tank_id }: { tank_name: string
    if (!vehicleDetails) return null
 
    return (
-      <header className='min-h-[260px] relative lg:min-h-[750px] max-w-screen'>
-         <div className='flex flex-row items-center gap-3 text-[]'>
+      <header className='min-h-[460px] relative lg:min-h-[750px] max-w-screen'>
+         <div className='flex flex-row items-center gap-3'>
             <Image
                src={flagSources[vehicleDetails.nation].source || ''}
                alt={flagSources[vehicleDetails.nation].alt || 'Flag'}
@@ -49,26 +52,25 @@ export default async function Header({ tank_name, tank_id }: { tank_name: string
                width={75}
                height={75}
             />
-            <Image
-               src={getIcon(vehicleDetails.type || '')}
-               title={vehicleDetails.type}
-               width={32}
-               height={32}
-               alt={vehicleDetails.tankDetails?.short_name || 'Tank'}
-            />
-            <Typography variant='h3' className='text-4xl font-semibold tracking-wide'>
+            <VehicleRole vehicleRole={vehicleDetails.tags[1] as VehicleRoles} />
+            <Typography variant='h2' className='text-4xl font-semibold tracking-wide'>
                {tiers[vehicleDetails.tier - 1]}
             </Typography>
-            <Typography variant='h3' className='text-4xl font-semibold tracking-wide'>
+            <Typography variant='h2' className='text-4xl font-semibold tracking-wide'>
                {vehicleDetails.tankDetails?.short_name}
             </Typography>
          </div>
-         <Typography variant='body1' className=''>
-            {vehicleDetails.tankDetails?.description}
-         </Typography>
+         <div className='w-[400px] h-[400px] absolute top-5 right-5'>
+            <Typography variant='h5' gutterBottom>
+               Description
+            </Typography>
+            <Typography variant='body2' className='elipsis tracking-wider'>
+               {vehicleDetails.tankDetails?.description}
+            </Typography>
+         </div>
          <PlaceholderImg tank_name={tank_name} />
          <Image
-            className='absolute bottom-0 lg:top-0 left-0 object-cover -z-10'
+            className='absolute bottom-0 lg:top-0 left-0 -z-2 object-cover '
             src={hangar.src}
             alt={'Hangar background'}
             width={1920}

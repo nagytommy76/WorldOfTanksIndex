@@ -89,6 +89,8 @@ const guns = {
             shotDispersionPerSec: Number,
             maxShotDispersion: Number,
             groupSize: Number,
+            aimingDelay: Number,
+            shotDispersionPerShot: Number,
          },
          elevation: Number,
          elevationLimits: {
@@ -136,7 +138,7 @@ const stats = {
          terrainResistance: [Number],
          weight: Number,
          wheeled: Boolean,
-         wheelAngle: { type: Number, required: false, default: () => null },
+         wheelAngle: { type: [Number], required: false, default: () => null },
       },
    ],
    engines: [

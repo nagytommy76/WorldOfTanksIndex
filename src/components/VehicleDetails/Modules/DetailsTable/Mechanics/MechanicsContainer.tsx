@@ -8,9 +8,15 @@ import TableBody from '@mui/material/TableBody'
 import TableHeadComponent from '../Includes/TableHead'
 
 import Mechanics from './Mechanics'
+import MECHANIC_NAMES from '@/src/helpers/mechanicNames'
 
 function returnMechanicName(camel: string | undefined) {
-   if (!camel) return ''
+   if (!camel) return null
+
+   if (MECHANIC_NAMES[camel]) {
+      return MECHANIC_NAMES[camel]
+   }
+
    const camelCase = camel.replace(/([a-z])([A-Z])/g, '$1 $2').split(' ')
 
    let flat = ''
@@ -27,12 +33,22 @@ export default function MechanicsContainer() {
    const mechanicName = Object.keys(mechanics).find((name) => name !== 'mechanics')
    if (!mechanicName) return null
 
+   const mechanicExtendedName = returnMechanicName(mechanicName)
+
    return (
-      <Table size='small' aria-label='Mechanics for Tier XI vehicles like Hirschkäfer, Taschenratte etc..'>
+      <Table
+         id='mechanics'
+         size='small'
+         aria-label='Mechanics for Tier XI vehicles like Hirschkäfer, Taschenratte etc..'
+      >
          <TableHeadComponent
-            headTitle={returnMechanicName(mechanicName)}
-            iconSrc='/icons/mobility/enginePower.png'
-            className='bg-orange-600'
+            headTitle={mechanicExtendedName || ''}
+            iconSrc={
+               mechanicExtendedName
+                  ? `/icons/mechanics/x48x48/${mechanicName === 'reactiveDebuffs' ? 'overheatGun' : mechanicName}.png`
+                  : '/icons/mobility/enginePower.png'
+            }
+            className='bg-red-800'
          />
          <TableBody>
             <Mechanics mechanics={mechanics} />

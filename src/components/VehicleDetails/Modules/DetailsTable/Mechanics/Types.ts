@@ -1,3 +1,8 @@
+type MulType = {
+   name: string
+   value: string
+}
+
 export type Leo120Mechanics = {
    mechanics: {
       accuracyDispersionCap: string
@@ -78,14 +83,8 @@ export type Kr1Mechanics = {
       damageValueToShowAnimation: number
       effectSpeedThreshold: number
       modifiers: {
-         add: Array<{
-            name: string
-            value: string
-         }>
-         mul: Array<{
-            name: string
-            value: string
-         }>
+         add: Array<MulType>
+         mul: Array<MulType>
       }
    }
 }
@@ -140,10 +139,34 @@ export type HackerMechanics = {
       duration: number
       reloadTime: number
       modifiers: {
-         mul: Array<{
-            name: string
-            value: string
-         }>
+         mul: Array<MulType>
+      }
+   }
+}
+
+export type AresLineMechanics = {
+   mechanics: {
+      timeToOverheat: number
+      overheatDuration: number
+      coolingTime: number
+      coolingDelay: number
+      heatingPerShot: string
+   }
+   reactiveDebuffs: {
+      stun: {
+         mul: MulType
+      }
+      fire: {
+         mul: MulType
+      }
+      overturn: {
+         mul: MulType
+      }
+      ammoBay: {
+         mul: MulType
+      }
+      loader1: {
+         mul: MulType
       }
    }
 }
@@ -199,17 +222,46 @@ export type Bz79Mechanics = {
          duration: string
       }
       modifiers: {
-         mul: Array<{
-            name: string
-            value: string
-         }>
+         mul: Array<MulType>
       }
       kpi: {
-         mul: Array<{
-            name: string
-            value: string
-         }>
+         mul: Array<MulType>
       }
+   }
+}
+
+export type Ptz78Mechanics = {
+   mechanics: {
+      stagedJetBoostersEnginePower: string
+      stagedJetBoostersTopSpeed: string
+      stagedJetBoostersSpeedLimits: string
+      stagedJetBoostersRotationSpeed: string
+      stagedJetBoostersChargesCount: number
+      stagedJetBoostersChargeDuration: number
+      stagedJetBoostersCooldownTime: number
+   }
+   stagedJetBoosters: {
+      deployTime: number
+      reloadTime: number
+      reuseCount: number
+      duration: number
+      impulse: {
+         magnitude: string
+         applyPoint: string
+         duration: string
+      }
+      impulseSpeedLimits: string
+      customRotationPoints: {
+         minSpeedPoints: {
+            speed: string
+            rotation: string
+         }
+         maxSpeedPoints: {
+            speed: string
+            rotation: string
+         }
+      }
+      modifiers: Array<MulType>
    }
 }
 
@@ -290,10 +342,7 @@ export type Strv107Mechanics = {
       switchPillboxToSiegeTime: number
       switchPillboxToDriveTime: number
       modifiers: {
-         mul: Array<{
-            name: string
-            value: string
-         }>
+         mul: Array<MulType>
       }
    }
 }

@@ -14,6 +14,7 @@ import tiers from '@/lib/tierList'
 
 import PlaceholderImg from './PlaceholderImg'
 import VehicleRole from './VehicleRoles'
+import VehicleMechanic from './VehicleMechanic'
 
 async function getHeaderData(tank_name: string, tank_id: string) {
    try {
@@ -30,9 +31,13 @@ async function getHeaderData(tank_name: string, tank_id: string) {
          'tier',
          'nation',
          'tags',
+         'mechanics',
       ])
 
-      return vehicleDetails as Pick<ITankData, 'tankDetails' | 'type' | 'tier' | 'nation' | 'tags'>
+      return vehicleDetails as Pick<
+         ITankData,
+         'tankDetails' | 'type' | 'tier' | 'nation' | 'tags' | 'mechanics'
+      >
    } catch (error) {
       console.log(error)
    }
@@ -41,7 +46,6 @@ async function getHeaderData(tank_name: string, tank_id: string) {
 export default async function Header({ tank_name, tank_id }: { tank_name: string; tank_id: string }) {
    const vehicleDetails = await getHeaderData(tank_name, tank_id)
    if (!vehicleDetails) return null
-
    const foundTankRole = vehicleDetails.tags.find((tag) => tag.includes('role'))
 
    return (
@@ -55,13 +59,14 @@ export default async function Header({ tank_name, tank_id }: { tank_name: string
                height={75}
             />
             {foundTankRole && <VehicleRole vehicleRole={foundTankRole as VehicleRoles} />}
-            <Typography variant='h2' className='text-4xl font-semibold tracking-wide'>
+            <Typography variant='h2' className='text-5xl font-bold tracking-wide'>
                {tiers[vehicleDetails.tier - 1]}
             </Typography>
-            <Typography variant='h2' className='text-4xl font-semibold tracking-wide'>
+            <Typography variant='h1' className='text-5xl font-medium tracking-wide'>
                {vehicleDetails.tankDetails?.short_name}
             </Typography>
          </div>
+         <VehicleMechanic vehicleMechanic={vehicleDetails.mechanics} />
          <div className='w-[400px] h-[400px] absolute top-5 right-5'>
             <Typography variant='h5' gutterBottom>
                Description

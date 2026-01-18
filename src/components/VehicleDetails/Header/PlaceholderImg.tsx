@@ -6,7 +6,7 @@ export default function PlaceholderImg({ tank_name }: { tank_name: string }) {
    const [imageError, setImageError] = useState(false)
    return (
       <Image
-         className='absolute bottom-0 lg:top-0 left-0 -z-1 scale-110'
+         className='absolute bottom-0 lg:top-0 left-0 -z-1'
          src={
             imageError
                ? '/placeholder-vehicle.png'
@@ -14,7 +14,7 @@ export default function PlaceholderImg({ tank_name }: { tank_name: string }) {
          }
          alt={tank_name}
          title={tank_name}
-         sizes='120vw'
+         sizes='100vw'
          width={1920}
          height={900}
          onError={() => setImageError(true)}

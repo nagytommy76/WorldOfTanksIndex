@@ -14,7 +14,7 @@ function returnMechanicName(camel: string | undefined) {
    if (!camel) return null
 
    if (MECHANIC_NAMES[camel]) {
-      return MECHANIC_NAMES[camel]
+      return MECHANIC_NAMES[camel].name
    }
 
    const camelCase = camel.replace(/([a-z])([A-Z])/g, '$1 $2').split(' ')

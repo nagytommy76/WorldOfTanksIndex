@@ -38,11 +38,11 @@ export default function DropdownMenu() {
          </Button>
          <Menu
             id='tech-tree-menu'
-            // sx={{
-            //    '& .MuiList-root': {
-            //       padding: 0,
-            //    },
-            // }}
+            sx={{
+               '& .MuiList-root': {
+                  padding: 0,
+               },
+            }}
             anchorEl={anchorEl}
             open={open}
             onClose={handleClose}

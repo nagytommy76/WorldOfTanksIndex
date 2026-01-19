@@ -20,6 +20,8 @@ export interface IAutoShoot {
    shotDispersionPerSec: number
    maxShotDispersion: number
    groupSize: number
+   aimingDelay?: number | null
+   shotDispersionPerShot?: number | null
 }
 
 export interface IAutoReload {

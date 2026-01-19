@@ -17,6 +17,7 @@ import AvgDpm from './Includes/AvgDpm'
 import Artilerry from './Includes/Artilerry'
 import GunDispersions from './Includes/GunDispersions'
 import ArmorSpalls from './Includes/ArmorSpalls'
+import AutoCannon from './Includes/AutoCannon'
 
 export default function Firepower() {
    const {
@@ -125,6 +126,9 @@ export default function Firepower() {
                   clipDamage={clipDamage}
                   clip={vehicleGun[selectedModuleNames.vehicleGun]?.clip as IClip}
                />
+            )}
+            {vehicleGun[selectedModuleNames.vehicleGun]?.autoShoot && (
+               <AutoCannon reloadBetweenShells={reloadBetweenShells} />
             )}
             <GunDispersions />
             <Artilerry />

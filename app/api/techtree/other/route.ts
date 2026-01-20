@@ -1,0 +1,37 @@
+import { NextResponse, type NextRequest } from 'next/server'
+import dbConnect from '@/lib/ConnectDB'
+import { VehicleModel } from '@Models/TankModel'
+
+export async function GET(request: NextRequest) {
+   const nation = request.nextUrl.searchParams.get('nation')
+   if (!nation) return NextResponse.json({ error: 'Nation parameter is required' }, { status: 404 })
+
+   try {
+      await dbConnect()
+      const specialVehicles = await VehicleModel.find({
+         nation,
+         tankDetails: { $eq: null },
+      })
+         .select([
+            'tankDetails.name',
+            'tankDetails.short_name',
+            'tankDetails.images',
+            'price',
+            'type',
+            'tier',
+            'id',
+            'name',
+            'notInShop',
+            'xmlId',
+            'nation',
+         ])
+         .sort({ tier: 1, name: 1 })
+         .lean()
+      return NextResponse.json({ vehicles: specialVehicles })
+   } catch (error) {
+      return NextResponse.json(
+         { error: 'Failed to fetch tech tree vehicles', errorType: error },
+         { status: 500 },
+      )
+   }
+}

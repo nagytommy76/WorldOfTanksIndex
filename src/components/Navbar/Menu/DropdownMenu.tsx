@@ -68,6 +68,13 @@ export default function DropdownMenu() {
                path='collectors'
                accordionName='Collectors Tanks'
             />
+            <AccordionMenu
+               expanded={expanded}
+               handleExpandChange={handleExpandChange}
+               handleClose={handleClose}
+               path='other'
+               accordionName='Other/Supertest Tanks'
+            />
          </Menu>
       </div>
    )

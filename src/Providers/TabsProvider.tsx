@@ -39,7 +39,14 @@ export default function TabsProvider({ baseHref }: { baseHref: string }) {
    }
    return (
       <section className='my-7'>
-         <Tabs value={value} onChange={handleChange} aria-label='nav tabs example' role='navigation'>
+         <Tabs
+            value={value}
+            onChange={handleChange}
+            aria-label='nav tabs example'
+            role='navigation'
+            variant='scrollable'
+            scrollButtons='auto'
+         >
             {Object.entries(PATHS).map(([index, path]) => (
                <LinkTab key={path.index} label={path.displayText} href={`${baseHref}/${index}`} />
             ))}

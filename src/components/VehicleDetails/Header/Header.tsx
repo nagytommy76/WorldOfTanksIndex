@@ -49,8 +49,8 @@ export default async function Header({ tank_name, tank_id }: { tank_name: string
    const foundTankRole = vehicleDetails.tags.find((tag) => tag.includes('role'))
 
    return (
-      <header className='min-h-[460px] relative lg:min-h-[750px] max-w-screen'>
-         <div className='flex flex-row items-center gap-3'>
+      <header className='min-h-[700px] relative lg:min-h-[750px] max-w-screen'>
+         <div className='flex flex-row items-center justify-center gap-1 xl:justify-start'>
             <Image
                src={flagSources[vehicleDetails.nation].source || ''}
                alt={flagSources[vehicleDetails.nation].alt || 'Flag'}
@@ -59,19 +59,19 @@ export default async function Header({ tank_name, tank_id }: { tank_name: string
                height={75}
             />
             {foundTankRole && <VehicleRole vehicleRole={foundTankRole as VehicleRoles} />}
-            <Typography variant='h2' className='text-5xl font-bold tracking-wide'>
+            <Typography variant='h2' className='text-xl font-bold tracking-wide xl:text-5xl'>
                {tiers[vehicleDetails.tier - 1]}
             </Typography>
-            <Typography variant='h1' className='text-5xl font-medium tracking-wide'>
+            <Typography variant='h1' className='text-xl font-medium tracking-wide xl:text-5xl'>
                {vehicleDetails.tankDetails?.short_name}
             </Typography>
          </div>
          <VehicleMechanic vehicleMechanic={vehicleDetails.mechanics} />
-         <div className='w-[400px] h-[400px] absolute top-5 right-5'>
+         <div className='xl:w-[400px] xl:h-[400px] xl:absolute xl:top-5 xl:right-5'>
             <Typography variant='h5' gutterBottom>
                Description
             </Typography>
-            <Typography variant='body2' className='elipsis tracking-wider'>
+            <Typography variant='body2' className='elipsis tracking-wider text-sm'>
                {vehicleDetails.tankDetails?.description}
             </Typography>
          </div>

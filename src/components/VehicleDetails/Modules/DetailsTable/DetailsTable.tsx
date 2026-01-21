@@ -15,17 +15,18 @@ export default function DetailsTable() {
          <Typography gutterBottom variant='h5'>
             Tank specifications
          </Typography>
-         <TableContainer
-            className='min-h-screen grid grid-cols-1 grid-rows-1 xl:gap-x-5 xl:gap-y-2
-            xl:grid-cols-3 xl:grid-rows-1 bg-neutral-900'
-         >
-            <Firepower />
-            <Mobility />
-            <Survivability />
-            <Other />
-            <Spotting />
-            <Concealment />
-            <MechanicsContainer />
+         <TableContainer className='bg-neutral-900 min-h-[750px] w-full flex flex-col gap-4 sm:flex-row'>
+            <div className='xl:flex-1'>
+               <Firepower />
+               <Survivability />
+            </div>
+            <div className='xl:flex-1'>
+               <Mobility />
+               <Other />
+               <Spotting />
+               <Concealment />
+               <MechanicsContainer />
+            </div>
          </TableContainer>
       </section>
    )

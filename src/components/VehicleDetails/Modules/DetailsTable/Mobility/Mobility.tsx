@@ -151,6 +151,7 @@ export default function Mobility() {
                      ${vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[2].toFixed(2)}
                   `}
                unit='m/s²'
+               paddingLeft
             />
             <TableRowComponent
                iconSrc='/icons/mobility/speedLimits.png'
@@ -160,22 +161,23 @@ export default function Mobility() {
                         vehicleEngine[selectedModuleNames.vehicleEngine]?.power,
                         totalWeight / 1000,
                         vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
-                        speedLimit?.forward
+                        speedLimit?.forward,
                      ).toFixed(2)} /
                      ${calculateEffectiveTopSpeed(
                         vehicleEngine[selectedModuleNames.vehicleEngine]?.power,
                         totalWeight / 1000,
                         vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[1],
-                        speedLimit?.forward
+                        speedLimit?.forward,
                      ).toFixed(2)} /
                      ${calculateEffectiveTopSpeed(
                         vehicleEngine[selectedModuleNames.vehicleEngine]?.power,
                         totalWeight / 1000,
                         vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[2],
-                        speedLimit?.forward
+                        speedLimit?.forward,
                      ).toFixed(2)}
                   `}
                unit='km/h'
+               paddingLeft
             />
             <TableRowComponent
                iconSrc='/icons/mobility/chassisRotationSpeed.png'
@@ -185,22 +187,23 @@ export default function Mobility() {
                         vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed,
                         vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
                         vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
-                        0.95
+                        0.95,
                      ).toFixed(2)} /
                      ${calculateEffectiveTraverseSpeed(
                         vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed,
                         vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
                         vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[1],
-                        0.95
+                        0.95,
                      ).toFixed(2)} /
                      ${calculateEffectiveTraverseSpeed(
                         vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed,
                         vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
                         vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[2],
-                        0.95
+                        0.95,
                      ).toFixed(2)}
                   `}
                unit='°/s'
+               paddingLeft
             />
          </TableBody>
       </Table>

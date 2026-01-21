@@ -17,10 +17,12 @@ export default function TableHeadComponent({
       <TableHead className={className}>
          <TableRow>
             <TableCell variant='head' className='border-b-0'>
-               <Typography variant='h5'>{headTitle}</Typography>
+               <Typography fontSize={19} variant='h5'>
+                  {headTitle}
+               </Typography>
             </TableCell>
             <TableCell variant='head' className='h-full flex justify-end border-b-0'>
-               {iconSrc && <Image src={iconSrc} alt='headTitle' width={30} height={30} title={headTitle} />}
+               {iconSrc && <Image src={iconSrc} alt='headTitle' width={22} height={22} title={headTitle} />}
             </TableCell>
          </TableRow>
       </TableHead>

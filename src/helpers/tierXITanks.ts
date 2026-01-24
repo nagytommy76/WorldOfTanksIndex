@@ -1,0 +1,27 @@
+const TIER_XI_VEHICLES = [
+   'G185_Leopard_120_Verbessert',
+   'G187_Taschenratte',
+   'G188_LeKpz_Borkenkafer',
+   'G189_Hirschkafer',
+   'Ch67_BZ_79',
+   'Ch70_PTZ_78',
+   'J52_STK_2',
+   'F135_AS_XX_40_t',
+   'F136_AMX_67_Imbattable',
+   'Pl37_CS_67_Szakal',
+   'S36_Strv_107_12',
+   'GB147_FV4025_Contriver',
+   'GB152_AT_FV230_Breaker',
+   'R228_KR_1',
+   'R230_Object_432U',
+   'A179_Black_Rock',
+   'A182_T803',
+   'A183_XM69_Hacker',
+   'A187_Ares_75',
+   'A188_Ares_MTB',
+   'A189_Ares_90',
+   'A190_Ares_85',
+   'A191_Ares_90_C',
+] as const
+
+export default TIER_XI_VEHICLES

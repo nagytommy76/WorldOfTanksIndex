@@ -171,6 +171,15 @@ export type AresLineMechanics = {
    }
 }
 
+export type BlackRockMechanics = {
+   mechanics: {
+      chargeableBurstPenetrationCount: number
+      chargeableBurstSize: number
+      chargeableBurstReload: number
+      chargeableBurstDispersion: string
+   }
+}
+
 // U.K. --------------------------------------------------------------------------------------------------------
 export type BreakerMechanics = {
    mechanics: {
@@ -344,5 +353,27 @@ export type Strv107Mechanics = {
       modifiers: {
          mul: Array<MulType>
       }
+   }
+}
+
+// Japan --------------------------------------------------------------------------------------------------------
+export type STK2Mechanics = {
+   mechanics: {
+      coolingTime: number
+      coolingDelay: number
+      heatingPerShot: string
+   }
+}
+
+// France --------------------------------------------------------------------------------------------------------
+export type ImbattableMechanics = {
+   mechanics: {
+      extraShotClipReloadTime: number
+   }
+}
+export type Asx40TMechanics = {
+   mechanics: {
+      stationaryReloadSwitchOnTime: number
+      stationaryReloadSwitchOffTime: number
    }
 }

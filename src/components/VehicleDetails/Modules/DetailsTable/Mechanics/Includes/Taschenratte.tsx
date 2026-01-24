@@ -11,7 +11,6 @@ export default function Taschenratte({ mechanics }: { mechanics: TaschenratteMec
       },
    } = useContext(VehicleContext)
    const secondaryGuns = vehicleTurret[selectedModuleNames.vehicleTurret].secondaryGuns
-   //    console.log(secondaryGuns)
    return (
       <>
          <TableRowComponent
@@ -43,7 +42,7 @@ export default function Taschenratte({ mechanics }: { mechanics: TaschenratteMec
                <TableRowComponent
                   iconSrc='/icons/firepower/shellModuleDamage.png'
                   titleText='Module damage'
-                  valueText={secondaryGuns[0].shells[0].damage?.devices || 0}
+                  valueText={(secondaryGuns[0].shells[0].damage?.devices as number) || 0}
                   unit='hp'
                />
                <TableRowComponent

@@ -15,7 +15,12 @@ import type {
    Strv107Mechanics,
    AresLineMechanics,
    Ptz78Mechanics,
+   STK2Mechanics,
+   ImbattableMechanics,
+   Asx40TMechanics,
+   BlackRockMechanics,
 } from './Types'
+import TIER_XI_VEHICLES from '@/src/helpers/tierXITanks'
 
 import Hirschkafer from './Includes/Hirschkafer'
 import Borkenkafer from './Includes/Borkenkafer'
@@ -28,6 +33,10 @@ import Obj432u from './Includes/ussr/obj432u'
 import T803 from './Includes/usa/T803'
 import Hacker from './Includes/usa/Hacker'
 import AresLine from './Includes/usa/AresLine'
+import BlackRock from './Includes/usa/BlackRock'
+// France --------------
+import Imbattable from './Includes/france/Imbattable'
+import Asx40t from './Includes/france/Asx40t'
 // UK --------------
 import Breaker from './Includes/uk/Breaker'
 // China --------------
@@ -37,32 +46,8 @@ import PTZ78 from './Includes/china/PTZ78'
 import Szakal from './Includes/poland/Szakal'
 // Sweden --------------
 import Strv107 from './Includes/sweden/Strv107'
-
-const TIER_XI_VEHICLES = [
-   'G185_Leopard_120_Verbessert',
-   'G187_Taschenratte',
-   'G188_LeKpz_Borkenkafer',
-   'G189_Hirschkafer',
-   'Ch67_BZ_79',
-   'Ch70_PTZ_78',
-   'J52_STK_2',
-   'F135_AS_XX_40_t',
-   'F136_AMX_67_Imbattable',
-   'Pl37_CS_67_Szakal',
-   'S36_Strv_107_12',
-   'GB147_FV4025_Contriver',
-   'GB152_AT_FV230_Breaker',
-   'R228_KR_1',
-   'R230_Object_432U',
-   'A179_Black_Rock',
-   'A182_T803',
-   'A183_XM69_Hacker',
-   'A187_Ares_75',
-   'A188_Ares_MTB',
-   'A189_Ares_90',
-   'A190_Ares_85',
-   'A191_Ares_90_C',
-] as const
+// Japan --------------
+import STK2 from './Includes/japan/STK2'
 
 export default function Mechanics({ mechanics }: { mechanics: Record<string, unknown> }) {
    const { tank_name } = useParams<{ tank_name: (typeof TIER_XI_VEHICLES)[number] }>()
@@ -84,6 +69,12 @@ export default function Mechanics({ mechanics }: { mechanics: Record<string, unk
          return <T803 mechanics={mechanics as T803Mechanics} />
       case 'A183_XM69_Hacker':
          return <Hacker mechanics={mechanics as HackerMechanics} />
+      case 'A179_Black_Rock':
+         return <BlackRock mechanics={mechanics as BlackRockMechanics} />
+      case 'F136_AMX_67_Imbattable':
+         return <Imbattable mechanics={mechanics as ImbattableMechanics} />
+      case 'F135_AS_XX_40_t':
+         return <Asx40t mechanics={mechanics as Asx40TMechanics} />
       case 'GB152_AT_FV230_Breaker':
          return <Breaker mechanics={mechanics as BreakerMechanics} />
       case 'Ch67_BZ_79':
@@ -94,6 +85,8 @@ export default function Mechanics({ mechanics }: { mechanics: Record<string, unk
          return <Szakal mechanics={mechanics as SzakalMechanics} />
       case 'S36_Strv_107_12':
          return <Strv107 mechanics={mechanics as Strv107Mechanics} />
+      case 'J52_STK_2':
+         return <STK2 mechanics={mechanics as STK2Mechanics} />
       case 'A191_Ares_90_C':
       case 'A190_Ares_85':
       case 'A189_Ares_90':

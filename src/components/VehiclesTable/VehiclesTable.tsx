@@ -32,9 +32,9 @@ export default function EnhancedTable({ allVehicles }: { allVehicles: TechTreeVe
    const techTreeVehicles = useMemo(
       () =>
          [...allVehicles].sort(
-            getComparator<TechTreeVehiclesType>(order, orderBy as keyof TechTreeVehiclesType)
+            getComparator<TechTreeVehiclesType>(order, orderBy as keyof TechTreeVehiclesType),
          ),
-      [order, orderBy, allVehicles, getComparator]
+      [order, orderBy, allVehicles, getComparator],
    )
 
    return (
@@ -54,7 +54,7 @@ export default function EnhancedTable({ allVehicles }: { allVehicles: TechTreeVe
             <TableBody>
                {techTreeVehicles.map((vehicle) => {
                   return (
-                     <TableRow hover tabIndex={-1} key={vehicle.id} className='p-0'>
+                     <TableRow hover tabIndex={-1} key={vehicle.id || vehicle.xmlId} className='p-0'>
                         <TableCell padding='none'>
                            <Image
                               src={flagSources[vehicle.nation].source}
@@ -72,28 +72,38 @@ export default function EnhancedTable({ allVehicles }: { allVehicles: TechTreeVe
                         <TableCell padding='none' align='left'>
                            <Typography>{tiers[Number(vehicle.tier - 1)]}</Typography>
                         </TableCell>
-                        <TableCell padding='none' align='right'>
-                           <div className={'flex flex-row items-center '}>
-                              <Image
-                                 src={vehicle.tankDetails?.images.big_icon || ''}
-                                 width={112}
-                                 height={112}
-                                 alt={vehicle.name}
-                                 className='object-cover -translate-x-6'
-                              />
-                              <Typography variant='subtitle1'>{vehicle.tankDetails?.name}</Typography>
-                           </div>
-                        </TableCell>
+                        {vehicle.tankDetails ? (
+                           <TableCell padding='none' align='right'>
+                              <div className={'flex flex-row items-center '}>
+                                 <Image
+                                    src={vehicle.tankDetails.images.big_icon || ''}
+                                    width={112}
+                                    height={112}
+                                    alt={vehicle.name}
+                                    className='object-cover -translate-x-6'
+                                 />
+                                 <Typography variant='subtitle1'>{vehicle.tankDetails.name}</Typography>
+                              </div>
+                           </TableCell>
+                        ) : (
+                           <TableCell padding='none' align='right'>
+                              <div className={'flex flex-row items-center '}>
+                                 <Typography variant='subtitle1'>{vehicle.name}</Typography>
+                              </div>
+                           </TableCell>
+                        )}
                         <PriceCell vehiclePrice={vehicle.price} />
-                        <TableCell align='right'>
-                           <Link
-                              id={vehicle.id?.toString()}
-                              href={`/${vehicle.id}/${vehicle.xmlId}/modules`}
-                              key={vehicle.id}
-                           >
-                              <Button variant='contained'>More details</Button>
-                           </Link>
-                        </TableCell>
+                        {vehicle.tankDetails && (
+                           <TableCell align='right'>
+                              <Link
+                                 id={vehicle.id?.toString()}
+                                 href={`/${vehicle.id}/${vehicle.xmlId}/modules`}
+                                 key={vehicle.id}
+                              >
+                                 <Button variant='contained'>More details</Button>
+                              </Link>
+                           </TableCell>
+                        )}
                      </TableRow>
                   )
                })}

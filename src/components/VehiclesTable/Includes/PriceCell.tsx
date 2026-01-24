@@ -6,7 +6,7 @@ function Price({
    vehiclePrice,
    isGold = false,
 }: {
-   vehiclePrice: number | { gold: number }
+   vehiclePrice: number | { gold: number | null }
    isGold?: boolean
 }) {
    return (
@@ -27,13 +27,14 @@ function Price({
    )
 }
 
-export default function PriceCell({ vehiclePrice }: { vehiclePrice: number | { gold: number } }) {
+export default function PriceCell({ vehiclePrice }: { vehiclePrice: number | { gold: number | null } }) {
+   if (vehiclePrice === null) return null
    return (
       <TableCell padding='none'>
          {typeof vehiclePrice === 'number' ? (
             <Price vehiclePrice={vehiclePrice} />
          ) : (
-            <Price vehiclePrice={vehiclePrice} isGold />
+            vehiclePrice.gold !== null && <Price vehiclePrice={vehiclePrice} isGold />
          )}
       </TableCell>
    )

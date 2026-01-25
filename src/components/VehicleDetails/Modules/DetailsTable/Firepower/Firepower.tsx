@@ -14,6 +14,7 @@ import Damage from './Includes/Damage'
 import Clip from './Includes/Clip'
 import DualAccuracy from './Includes/DualAccuracy'
 import AvgDpm from './Includes/AvgDpm'
+import RoF from './Includes/RoF'
 import Artilerry from './Includes/Artilerry'
 import GunDispersions from './Includes/GunDispersions'
 import ArmorSpalls from './Includes/ArmorSpalls'
@@ -46,25 +47,12 @@ export default function Firepower() {
             <Penetration
                piercingPower={(shells[selectedModuleNames.shells]?.piercingPower as number[]) || [0, 0]}
             />
-            {vehicleGun[selectedModuleNames.vehicleGun]?.clip ? (
-               <TableRowComponent
-                  iconSrc='/icons/firepower/reloadTime.png'
-                  titleText='Rate of Fire'
-                  valueText={(
-                     (60 / totalReloadTime) *
-                     (vehicleGun[selectedModuleNames.vehicleGun]?.clip?.count as number)
-                  ).toFixed(2)}
-                  unit='rounds/min'
-               />
-            ) : (
-               <TableRowComponent
-                  iconSrc='/icons/firepower/reloadTime.png'
-                  titleText='Rate of Fire'
-                  valueText={(60 / vehicleGun[selectedModuleNames.vehicleGun]?.reloadTime).toFixed(2)}
-                  unit='rounds/min'
-               />
-            )}
-            <AvgDpm clipDamage={clipDamage} reloadBetweenShells={reloadBetweenShells} />
+            <RoF totalReloadTime={totalReloadTime} />
+            <AvgDpm
+               totalReloadTime={totalReloadTime}
+               clipDamage={clipDamage}
+               reloadBetweenShells={reloadBetweenShells}
+            />
             <TableRowComponent
                iconSrc='/icons/firepower/reloadTimeSecs.png'
                titleText='Gun Loading'
@@ -76,6 +64,7 @@ export default function Firepower() {
                   iconSrc='/icons/firepower/autoReloadTime.png'
                   titleText='Autoreloading One Shell'
                   valueText={`
+                     ${vehicleGun[selectedModuleNames.vehicleGun].autoreload?.reloadTime[3] ? vehicleGun[selectedModuleNames.vehicleGun].autoreload?.reloadTime[3] + ' /' : ''}
                      ${vehicleGun[selectedModuleNames.vehicleGun].autoreload?.reloadTime[2]} /
                      ${vehicleGun[selectedModuleNames.vehicleGun].autoreload?.reloadTime[1]} /
                      ${vehicleGun[selectedModuleNames.vehicleGun].autoreload?.reloadTime[0]}

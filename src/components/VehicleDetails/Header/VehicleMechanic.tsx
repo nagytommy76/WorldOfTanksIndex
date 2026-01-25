@@ -1,12 +1,12 @@
 'use client'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import MECHANIC_NAMES from '@/src/helpers/mechanicNames'
+import MECHANIC_NAMES, { type MechanicNameKey } from '@/src/helpers/mechanicNames'
 
 import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip'
 
-function DisplayMechanic({ mechanicName }: { mechanicName: string }) {
+function DisplayMechanic({ mechanicName }: { mechanicName: MechanicNameKey }) {
    return (
       <div className='w-screen h-[100px] mt-4 flex flex-row items-center gap-2 xl:w-[500px]'>
          <Tooltip title={<Typography variant='body2'>{MECHANIC_NAMES[mechanicName].description}</Typography>}>
@@ -67,7 +67,7 @@ export default function VehicleMechanic({ vehicleMechanic }: { vehicleMechanic: 
          break
    }
    if (!vehicleMechanic) return null
-   const mechanicName = Object.keys(vehicleMechanic).find((name) => name !== 'mechanics')
+   const mechanicName = Object.keys(vehicleMechanic).find((name) => name !== 'mechanics') as MechanicNameKey
    if (!mechanicName) return null
 
    return <DisplayMechanic mechanicName={mechanicName} />

@@ -33,7 +33,7 @@ export default function Miscellaneous() {
             {vehicleEngine[selectedModuleNames.vehicleEngine]?.fireStartingChance && (
                <TableRowComponent
                   iconSrc='/icons/miscellaneous/vehicleFireChance.png'
-                  titleText='Engine fire chance'
+                  titleText='Engine Fire Chance'
                   valueText={vehicleEngine[selectedModuleNames.vehicleEngine]?.fireStartingChance * 100}
                   unit='%'
                />
@@ -56,7 +56,7 @@ export default function Miscellaneous() {
                )}
             <TableRowComponent
                iconSrc='/icons/money_silver.webp'
-               titleText='Shell cost'
+               titleText='Shell Cost'
                valueText={shells[selectedModuleNames.shells]?.price}
                unit='credits'
             />

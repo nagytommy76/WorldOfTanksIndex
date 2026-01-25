@@ -65,13 +65,13 @@ export default function Mobility() {
          <TableBody>
             <TableRowComponent
                iconSrc='/icons/mobility/speedLimits.png'
-               titleText='Forward speed'
+               titleText='Forward Speed'
                valueText={speedLimit?.forward}
                unit='km/h'
             />
             <TableRowComponent
                iconSrc='/icons/mobility/speedLimits.png'
-               titleText='Backward speed'
+               titleText='Backward Speed'
                valueText={speedLimit?.backward}
                unit='km/h'
             />
@@ -94,7 +94,7 @@ export default function Mobility() {
             />
             <TableRowComponent
                iconSrc='/icons/firepower/pitchLimits.png'
-               titleText='Gun depression / elevation'
+               titleText='Gun Depression / Elevation'
                valueText={gunDepression + ' / ' + gunElevation}
                unit='°'
             />
@@ -125,7 +125,7 @@ export default function Mobility() {
             />
             <TableRowComponent
                iconSrc='/icons/mobility/enginePowerPerTon.png'
-               titleText='Specific power'
+               titleText='Specific Power'
                valueText={(
                   (vehicleEngine[selectedModuleNames.vehicleEngine]?.power / totalWeight) *
                   1000
@@ -155,7 +155,7 @@ export default function Mobility() {
             />
             <TableRowComponent
                iconSrc='/icons/mobility/speedLimits.png'
-               titleText='Effective top speed'
+               titleText='Effective Top Speed'
                valueText={`
                      ${calculateEffectiveTopSpeed(
                         vehicleEngine[selectedModuleNames.vehicleEngine]?.power,
@@ -181,7 +181,7 @@ export default function Mobility() {
             />
             <TableRowComponent
                iconSrc='/icons/mobility/chassisRotationSpeed.png'
-               titleText='Effective traverse speed'
+               titleText='Effective Traverse Speed'
                valueText={`
                      ${calculateEffectiveTraverseSpeed(
                         vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed,

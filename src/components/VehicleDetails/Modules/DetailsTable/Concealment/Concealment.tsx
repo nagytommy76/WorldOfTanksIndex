@@ -29,24 +29,24 @@ export default function Concealment() {
          <TableBody>
             <TableRowComponent
                iconSrc='/icons/concealment/invisibilityStillFactor.png'
-               titleText='stationary / after fire'
+               titleText='Stationary / After Fire'
                valueText={`
                 ${calculateCamoValues(camo.stationary).toFixed(2)} / 
                 ${calculateCamoValues(
                    camo.stationary,
-                   vehicleGun[selectedModuleNames.vehicleGun]?.invisibilityFactorAtShot
+                   vehicleGun[selectedModuleNames.vehicleGun]?.invisibilityFactorAtShot,
                 ).toFixed(2)}
             `}
                unit='%'
             />
             <TableRowComponent
                iconSrc='/icons/concealment/invisibilityMovingFactor.png'
-               titleText='moving / after fire'
+               titleText='Moving / After Fire'
                valueText={`
                     ${calculateCamoValues(camo.moving).toFixed(2)} / 
                     ${calculateCamoValues(
                        camo.moving,
-                       vehicleGun[selectedModuleNames.vehicleGun]?.invisibilityFactorAtShot
+                       vehicleGun[selectedModuleNames.vehicleGun]?.invisibilityFactorAtShot,
                     ).toFixed(2)}
                 `}
                unit='%'

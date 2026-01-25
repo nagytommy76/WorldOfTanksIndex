@@ -48,10 +48,10 @@ export default function HeaderTitle() {
                {pathname && title[pathname.replace(`/vehicles/${vehicleType}/`, '')].title}
             </TypeText>
          )
-      case 'specials':
+      case 'other':
          return (
             <TypeText>
-               Special vehicles of{' '}
+               Supertest vehicles of{' '}
                {pathname && title[pathname.replace(`/vehicles/${vehicleType}/`, '')].title}
             </TypeText>
          )

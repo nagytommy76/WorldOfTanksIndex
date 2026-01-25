@@ -72,38 +72,38 @@ export default function EnhancedTable({ allVehicles }: { allVehicles: TechTreeVe
                         <TableCell padding='none' align='left'>
                            <Typography>{tiers[Number(vehicle.tier - 1)]}</Typography>
                         </TableCell>
-                        {vehicle.tankDetails ? (
-                           <TableCell padding='none' align='right'>
-                              <div className={'flex flex-row items-center '}>
-                                 <Image
-                                    src={vehicle.tankDetails.images.big_icon || ''}
-                                    width={112}
-                                    height={112}
-                                    alt={vehicle.name}
-                                    className='object-cover -translate-x-6'
-                                 />
-                                 <Typography variant='subtitle1'>{vehicle.tankDetails.name}</Typography>
-                              </div>
-                           </TableCell>
-                        ) : (
-                           <TableCell padding='none' align='right'>
-                              <div className={'flex flex-row items-center '}>
-                                 <Typography variant='subtitle1'>{vehicle.name}</Typography>
-                              </div>
-                           </TableCell>
-                        )}
+                        <TableCell padding='none' align='right'>
+                           <div className={'flex flex-row items-center '}>
+                              <Image
+                                 src={
+                                    vehicle.tankDetails?.images.big_icon ||
+                                    `
+                                       http://api.worldoftanks.eu/static/2.77.0/wot/encyclopedia/vehicle/${vehicle.nation}-${vehicle.xmlId}.png
+                                       `.trim() ||
+                                    ''
+                                 }
+                                 width={112}
+                                 height={112}
+                                 alt={vehicle.name}
+                                 className='object-cover -translate-x-6'
+                              />
+                              <Typography variant='subtitle1'>
+                                 {vehicle.tankDetails?.name || vehicle.name}
+                              </Typography>
+                           </div>
+                        </TableCell>
                         <PriceCell vehiclePrice={vehicle.price} />
-                        {vehicle.tankDetails && (
-                           <TableCell align='right'>
-                              <Link
-                                 id={vehicle.id?.toString()}
-                                 href={`/${vehicle.id}/${vehicle.xmlId}/modules`}
-                                 key={vehicle.id}
-                              >
-                                 <Button variant='contained'>More details</Button>
-                              </Link>
-                           </TableCell>
-                        )}
+                        {/* {vehicle.tankDetails && ( */}
+                        <TableCell align='right'>
+                           <Link
+                              id={vehicle.id?.toString()}
+                              href={`/${vehicle.id}/${vehicle.xmlId}/modules`}
+                              key={vehicle.id}
+                           >
+                              <Button variant='contained'>More details</Button>
+                           </Link>
+                        </TableCell>
+                        {/* )} */}
                      </TableRow>
                   )
                })}

@@ -21,6 +21,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function page({ params }: { params: Promise<{ nation: string }> }) {
    const { nation } = await params
    const allPremiumVehicles = await returnVehicles(nation, '/other')
-   console.log(allPremiumVehicles)
+
    return <VehiclesTable allVehicles={allPremiumVehicles} />
 }

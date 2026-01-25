@@ -50,8 +50,8 @@ export default function Survivability() {
                      titleText='Turret Armor'
                      valueText={`
                     ${vehicleTurret[selectedModuleNames.vehicleTurret]?.armor[0]} / ${
-                        vehicleTurret[selectedModuleNames.vehicleTurret]?.armor[1]
-                     } / ${vehicleTurret[selectedModuleNames.vehicleTurret]?.armor[2]}
+                       vehicleTurret[selectedModuleNames.vehicleTurret]?.armor[1]
+                    } / ${vehicleTurret[selectedModuleNames.vehicleTurret]?.armor[2]}
                 `}
                      unit='mm'
                   />
@@ -119,6 +119,7 @@ export default function Survivability() {
                   ' / ' +
                   vehicleTurret[selectedModuleNames.vehicleTurret]?.viewportHealth.maxRegenHealth
                }
+               iconSrc='/icons/spot/circularVisionRadius.png'
                unit='hp'
             />
          </TableBody>

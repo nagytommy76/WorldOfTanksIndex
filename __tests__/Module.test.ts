@@ -1,39 +1,52 @@
 import { NextRequest } from 'next/server'
+import { VehicleModel } from '@Models/TankModel'
 import { GET } from '@/app/api/[tank_id]/[tank_name]/route'
 import * as mockDB from './lib/db'
+import MockHirschkafer from './mocks/Hirschkafer'
 
-// Mock the actual DB connection used by your route handlers
-// jest.mock('../src/lib/ConnectDB', () => ({
-//    connectDB: jest.fn().mockResolvedValue(undefined),
-//    // Add other exports from your mongodb file
-// }))
+beforeAll(async () => {
+   await mockDB.startMongoMemoryServer()
+   // 1. Seed the in-memory DB with a test tank
+   await VehicleModel.create(MockHirschkafer)
+})
+afterEach(async () => {
+   await mockDB.clearDatabase()
+})
+afterAll(async () => {
+   await mockDB.stopMongoMemoryServer()
+})
 
-// beforeAll(async () => {
-//    await mockDB.startMongoMemoryServer()
-// })
-// afterEach(async () => {
-//    await mockDB.clearDatabase()
-// })
-// afterAll(async () => {
-//    await mockDB.stopMongoMemoryServer()
-// })
 describe('Modules Page', () => {
-   it('should query Grille15 with status code of 200', async () => {
+   it('should query Tier XI Hirschkafer with status code of 200', async () => {
       // 2. Mock the NextRequest
-      const req = new NextRequest(new URL(`http://localhost:3000/api/19217/G121_Grille_15_L63`), {
+      const req = new NextRequest(new URL(`http://localhost:3000/api/40977/G189_Hirschkafer`), {
          method: 'GET',
       })
 
       // 3. Call the handler directly
-      const response = await GET(req, { params: { tank_id: '19217', tank_name: 'G121_Grille_15_L63' } })
+      const response = await GET(req, {
+         params: Promise.resolve({
+            tank_id: '40977',
+            tank_name: 'G189_Hirschkafer',
+         }),
+      })
+
       expect(response.status).toBe(200)
    })
-   it('should query Grille15 with status code of 404', async () => {
-      const req = new NextRequest(new URL(`http://localhost:3000/api/19217/G121_Grille_15_L63`), {
+   it('should not return Tier XI Hirschkafer with status code of 404', async () => {
+      // 2. Mock the NextRequest
+      const req = new NextRequest(new URL(`http://localhost:3000/api/40977/G189_Hirschkafer`), {
          method: 'GET',
       })
 
-      const response = await GET(req, { params: { tank_id: '1900000', tank_name: 'G121_Grille_15_L63' } })
+      // 3. Call the handler directly
+      const response = await GET(req, {
+         params: Promise.resolve({
+            tank_id: '40977',
+            tank_name: 'WRONG_TANK_NAME',
+         }),
+      })
+
       expect(response.status).toBe(404)
    })
 })

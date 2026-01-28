@@ -1,3 +1,6 @@
+/**
+ * @jest-environment node
+ */
 import { NextRequest } from 'next/server'
 import { VehicleModel } from '@Models/TankModel'
 import { GET } from '@/app/api/[tank_id]/[tank_name]/route'

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 export default async function dbConnect() {
    const MONGODB_URI = process.env.NEXT_PUBLIC_MONGO_CONNECTION_STRING!
-
+   if (process.env.NODE_ENV === 'test') return
    try {
       if (!MONGODB_URI) {
          throw new Error('Please define the MONGODB_URI environment variable')

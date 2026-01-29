@@ -23,7 +23,10 @@ export default function Miscellaneous() {
       : (shells[selectedModuleNames.shells]?.damage.armor as number)
 
    return (
-      <Table size='small' aria-label='Other table with concealment, potential damage etc...'>
+      <Table
+         size='small'
+         aria-label='Miscellaneous table with engine fire chance, ammo capacity, shell cost and tank cost'
+      >
          <TableHeadComponent
             headTitle='Miscellaneous'
             className='bg-yellow-900'

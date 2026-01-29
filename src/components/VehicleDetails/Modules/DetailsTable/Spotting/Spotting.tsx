@@ -17,7 +17,7 @@ export default function Spotting() {
    } = useContext(VehicleContext)
 
    return (
-      <Table size='small' aria-label='Other table with concealment, potential damage etc...'>
+      <Table size='small' aria-label='Spotting table with view range and signal range'>
          <TableHeadComponent
             headTitle='Spotting'
             className='bg-lime-950'

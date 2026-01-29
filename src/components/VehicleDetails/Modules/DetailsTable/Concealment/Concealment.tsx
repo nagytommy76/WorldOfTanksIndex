@@ -20,7 +20,7 @@ export default function Concealment() {
    } = useContext(VehicleContext)
 
    return (
-      <Table size='small' aria-label='Other table with concealment, potential damage etc...'>
+      <Table size='small' aria-label='Concealment table with camouflage values (moving, stationary)'>
          <TableHeadComponent
             headTitle='Concealment'
             className='bg-yellow-900'

@@ -19,6 +19,8 @@ const config: Config = {
 
    preset: 'ts-jest',
 
+   testEnvironment: 'jsdom',
+
    setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
 
    // Automatically clear mock calls, instances, contexts and results before every test

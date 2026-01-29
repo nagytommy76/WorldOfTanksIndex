@@ -1,6 +1,6 @@
 import type { ITankData } from '@Types/VehicleDetails/Vehicle'
 const MockHirschkafer: ITankData = {
-   _id: '40977',
+   _id: '696b559aef3bb87118039d0f',
    role: 'AT-SPG',
    shortName: 'Hirschkafer',
    siegeMode: null,

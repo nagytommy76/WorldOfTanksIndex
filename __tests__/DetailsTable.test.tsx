@@ -11,7 +11,7 @@ jest.mock('next/navigation', () => ({
    useParams: jest.fn(),
 }))
 
-beforeAll(() => {
+beforeEach(() => {
    jest
       .mocked(useParams)
       .mockReturnValue({ tank_name: MockHirschkafer.xmlId, tank_id: MockHirschkafer._id.toString() })
@@ -38,9 +38,13 @@ describe('Testing DetailsTable component', () => {
       //   const rows = screen.getAllByRole('cell')
       //   console.log(rows)
       //   expect(screen.getAllByRole('row'))
-      const tables = await screen.findAllByRole('table')
+      // const tables = screen.getByLabelText(/Firepower table with average damage and penetration/i)
 
-      console.log(tables[0].outerText)
+      const firepowerTable = screen.getByRole('table', {
+         name: /firepower/i,
+      })
+
+      // console.log(firepowerTable)
       // first rowgroup is for the thead second is for tbody
       //   const tbody = within(table).getAllByRole('rowgroup')[1]
       //   const rows = within(tbody).getAllByRole('row')

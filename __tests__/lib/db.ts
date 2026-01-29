@@ -7,7 +7,7 @@ export async function startMongoMemoryServer() {
    if (mongoose.connection.readyState === 0) {
       mongoServer = await MongoMemoryServer.create()
       await mongoose.connect(mongoServer.getUri())
-      console.log('Connected to in-memory database')
+      // console.log('Connected to in-memory database')
    }
    return mongoServer
 }
@@ -16,7 +16,7 @@ export async function stopMongoMemoryServer() {
    await mongoose.disconnect()
    await mongoose.connection.close()
    await mongoServer.stop()
-   console.log('MongoDB has stopped (stopMongoMemoryServer)')
+   // console.log('MongoDB has stopped (stopMongoMemoryServer)')
 }
 
 export async function clearDatabase() {

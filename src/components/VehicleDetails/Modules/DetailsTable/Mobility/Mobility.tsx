@@ -1,6 +1,8 @@
 'use client'
-import { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
+
+import useSetTotalWeight from '../../../Hooks/useSetTotalWeight'
 
 import { calculateEffectiveTopSpeed, calculateEffectiveTraverseSpeed } from '../../Helpers/calculate'
 
@@ -19,41 +21,18 @@ import WheelAngle from './Includes/WheelAngle'
 import RocketAcceleration from './Includes/RocketAcceleration'
 
 export default function Mobility() {
-   const [totalWeight, setTotalWeight] = useState<number>(0)
+   const totalWeight = useSetTotalWeight()
    const {
       speedLimit,
-      hull,
-      fuelTank,
       vehicleReducer: {
          selectedModuleNames,
-         moduleGroup: { vehicleChassis, vehicleTurret, vehicleGun, vehicleEngine, vehicleRadio },
+         moduleGroup: { vehicleChassis, vehicleTurret, vehicleGun, vehicleEngine },
          siegeMode,
       },
    } = useContext(VehicleContext)
 
    const gunDepression = -vehicleGun[selectedModuleNames.vehicleGun]?.elevationLimits.depression[1] || 0
    const gunElevation = -vehicleGun[selectedModuleNames.vehicleGun]?.elevationLimits.elevation[1] || 0
-
-   useEffect(() => {
-      const totalWeight =
-         fuelTank[0]?.weight +
-         hull?.weight +
-         vehicleChassis[selectedModuleNames.vehicleChassis]?.weight +
-         vehicleEngine[selectedModuleNames.vehicleEngine]?.weight +
-         vehicleTurret[selectedModuleNames.vehicleTurret]?.weight +
-         vehicleGun[selectedModuleNames.vehicleGun]?.weight +
-         vehicleRadio[selectedModuleNames.vehicleRadio]?.weight
-      if (totalWeight) setTotalWeight(totalWeight)
-   }, [
-      selectedModuleNames,
-      hull,
-      fuelTank,
-      vehicleChassis,
-      vehicleEngine,
-      vehicleTurret,
-      vehicleGun,
-      vehicleRadio,
-   ])
 
    return (
       <Table size='small' aria-label='Mobility table with speed'>

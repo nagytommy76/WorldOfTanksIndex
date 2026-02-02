@@ -10,7 +10,7 @@ export default function Taschenratte({ mechanics }: { mechanics: TaschenratteMec
          moduleGroup: { vehicleTurret },
       },
    } = useContext(VehicleContext)
-   const secondaryGuns = vehicleTurret[selectedModuleNames.vehicleTurret].secondaryGuns
+   const secondaryGuns = vehicleTurret[selectedModuleNames.vehicleTurret]?.secondaryGuns
    return (
       <>
          <TableRowComponent

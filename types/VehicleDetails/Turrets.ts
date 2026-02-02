@@ -30,6 +30,7 @@ export interface ITurrets {
  * @description Secondary guns used in some turrets (e.g. Tier XI Taschenratte)
  */
 export interface ISecondaryGuns {
+   name: string
    reloadTime: number
    burst: {
       count: number

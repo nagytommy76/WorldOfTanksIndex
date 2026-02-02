@@ -7,8 +7,8 @@ export interface ICamo {
 
 export interface ISiegeMode {
    device: string
-   switchOffTime: number
-   switchOnTime: number
+   switchOffTime: number | string
+   switchOnTime: number | string
    engineDamageCoeff: number
    autoSwitchOffRequiredVehicleSpeed: number
    autoSwitchOnRequiredVehicleSpeed: number

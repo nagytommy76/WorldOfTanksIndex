@@ -52,4 +52,20 @@ describe('Modules Page', () => {
 
       expect(response.status).toBe(404)
    })
+   it('should not return Supertest vehicle | G98_Waffentrager_E100 | with status code of 200', async () => {
+      // 2. Mock the NextRequest
+      const req = new NextRequest(new URL(`http://localhost:3000/api/null/G98_Waffentrager_E100`), {
+         method: 'GET',
+      })
+
+      // 3. Call the handler directly
+      const response = await GET(req, {
+         params: Promise.resolve({
+            tank_id: 'null',
+            tank_name: 'G98_Waffentrager_E100',
+         }),
+      })
+
+      expect(response.status).toBe(200)
+   })
 })

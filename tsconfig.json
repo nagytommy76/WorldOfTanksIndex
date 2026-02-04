@@ -32,7 +32,9 @@
          "@Types/*": ["./types/*"],
          "@VehicleTypes/*": ["./types/VehicleDetails/*"],
          // Contexts
-         "@/VehicleContext/*": ["./src/components/VehicleDetails/Context/*"]
+         "@/VehicleContext/*": ["./src/components/VehicleDetails/Context/*"],
+         // MECHANICS
+         "@/Mechanics/*": ["./src/components/VehicleDetails/Modules/DetailsTable/Mechanics/*"]
       }
    },
    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

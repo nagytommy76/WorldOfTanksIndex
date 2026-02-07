@@ -6,59 +6,29 @@ import type { IChassis, IHull } from '@VehicleTypes/Hull'
 import type { IGuns } from '@VehicleTypes/Guns'
 import type { IShells } from '@VehicleTypes/Shells'
 
-interface setChassisAction {
-   type: 'SET_CHASSIS'
-   payload: { [moduleName: string]: IChassis }
-}
-interface setEnginesAction {
-   type: 'SET_ENGINES'
-   payload: { [moduleName: string]: IEngines }
-}
-interface setRadiosAction {
-   type: 'SET_RADIOS'
-   payload: { [moduleName: string]: IRadios }
-}
-interface setTurretsAction {
-   type: 'SET_TURRETS'
-   payload: { [moduleName: string]: ITurrets }
-}
-interface setGunsAction {
-   type: 'SET_GUNS'
-   payload: { [moduleName: string]: IGuns }
-}
-interface setShellsAction {
-   type: 'SET_SHELLS'
-   payload: { [shellName: string]: IShells }
-}
-interface setSiegeMode {
-   type: 'SET_SIEGE_MODE'
-   payload: Partial<ISiegeMode>
-}
-
-interface setModuleIdByType {
-   type: 'SET_MODULE_NAME_BY_TYPE'
-   payload: { type: ModuleType; value: string }
+export type ModuleTypeMap = {
+   vehicleChassis: IChassis
+   vehicleEngine: IEngines
+   vehicleRadio: IRadios
+   vehicleTurret: ITurrets
+   vehicleGun: IGuns
+   shells: IShells
 }
 
 export type IVehicleContextActions =
-   | setChassisAction
-   | setEnginesAction
-   | setRadiosAction
-   | setTurretsAction
-   | setGunsAction
-   | setShellsAction
-   | setModuleIdByType
-   | setSiegeMode
+   | { type: 'SET_CHASSIS'; payload: { [moduleName: string]: IChassis } }
+   | { type: 'SET_ENGINES'; payload: { [moduleName: string]: IEngines } }
+   | { type: 'SET_RADIOS'; payload: { [moduleName: string]: IRadios } }
+   | { type: 'SET_TURRETS'; payload: { [moduleName: string]: ITurrets } }
+   | { type: 'SET_GUNS'; payload: { [moduleName: string]: IGuns } }
+   | { type: 'SET_SHELLS'; payload: { [shellName: string]: IShells } }
+   | { type: 'SET_SIEGE_MODE'; payload: Partial<ISiegeMode> | null }
+   | { type: 'SET_MODULE_NAME_BY_TYPE'; payload: { type: ModuleType; value: string } }
 
 export interface IVehicleReducerState {
    siegeMode: Partial<ISiegeMode> | null
    moduleGroup: {
-      vehicleChassis: { [moduleName: string]: IChassis }
-      vehicleEngine: { [moduleName: string]: IEngines }
-      vehicleRadio: { [moduleName: string]: IRadios }
-      vehicleTurret: { [moduleName: string]: ITurrets }
-      vehicleGun: { [moduleName: string]: IGuns }
-      shells: { [shellName: string]: IShells }
+      [K in keyof ModuleTypeMap]: { [moduleName: string]: ModuleTypeMap[K] }
    }
    selectedModuleNames: {
       [moduleType in ModuleType]: string

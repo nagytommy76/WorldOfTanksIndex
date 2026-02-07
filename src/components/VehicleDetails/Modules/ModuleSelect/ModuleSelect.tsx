@@ -12,7 +12,6 @@ import Typography from '@mui/material/Typography'
 
 import ReturnModuleType from '../Includes/ModuleType'
 import ModuleImage from '../Includes/ModuleImage'
-import { ITankData } from '@/types/VehicleDetails/Vehicle'
 
 export default function ModuleSelect() {
    const {
@@ -32,26 +31,45 @@ export default function ModuleSelect() {
       return moduleName.toString().split('_').join(' ')
    }
 
+   type Entries<T> = {
+      [K in keyof T]: [K, T[K]]
+   }[keyof T][]
+
    return (
       <aside className={'w-full flex flex-col items-center xl:w-[300px]'}>
          <Typography variant='h5'>Modules</Typography>
-         {Object.entries(moduleGroup).map(([key, modules]) => (
+         {(Object.entries(moduleGroup) as Entries<typeof moduleGroup>).map(([key, modules]) => (
             <List key={key} sx={{ width: '100%', maxWidth: 290 }}>
-               <ReturnModuleType moduleType={key as ModuleType} />
-               {Object.entries(modules as Record<string, any>).map(([moduleKey, module]) => (
+               <ReturnModuleType moduleType={key} />
+               {Object.entries(modules).map(([moduleKey, module]) => (
                   <ListItemButton
                      className='h-10 rounded-sm'
                      key={module.name}
-                     selected={module.name === selectedModuleNames[key as ModuleType]}
-                     onClick={() => setModuleNameByType(key as ModuleType, module.name)}
+                     selected={module.name === selectedModuleNames[key]}
+                     onClick={() => setModuleNameByType(key, module.name)}
                      onMouseEnter={() => {
-                        // console.log('Hovered module name: ', moduleGroup[key as ModuleType][moduleKey])
-                        // console.log('Active Selected module name: ', selectedModuleNames[key as ModuleType])
-                        // const T = vehicleDifferences(
-                        //    module,
-                        //    moduleGroup[key as ModuleType][selectedModuleNames[key as ModuleType]]
+                        // console.log('Hovered module name: ', moduleGroup[key][moduleKey])
+                        // // console.log('Active Selected module name: ', selectedModuleNames[key ])
+                        // console.log(
+                        //    'Active Selected module name: ',
+                        //    moduleGroup[key][selectedModuleNames[key]],
                         // )
-                        // console.log(T)
+                        // const hoveredModule = moduleGroup[key][moduleKey]
+                        // const currentModule = moduleGroup[key][selectedModuleNames[key]]
+                        // console.log('Avarage dmg difference: ', currentModule.name)
+                        /**
+                         * differences:
+                         * - Avarage Damage
+                         * - Average Penetration
+                         * - Shell Velocity
+                         * - Potential Damage
+                         * - Shell Cost
+                         * - Shell cost/ 1000 hp damage
+                         *
+                         * ARTY HIGH EXPLOSIVE:
+                         * - Explosion Radius
+                         * -
+                         * */
                      }}
                      sx={{
                         '&.Mui-selected': {
@@ -84,6 +102,11 @@ export default function ModuleSelect() {
    )
 }
 
+/**
+ *
+ *
+ */
+
 type JsonPrimitive = string | number | boolean | null
 type JsonValue = JsonPrimitive | JsonObject | JsonArray
 interface JsonObject {
@@ -103,76 +126,76 @@ interface JsonArray extends Array<JsonValue> {}
  *
  * If there is no difference at all, returns `undefined`.
  */
-function vehicleDifferences<T extends JsonValue>(base: T, changed: T): Partial<ITankData> | undefined {
-   // Fast path for identical values, including NaN handling
-   if (Object.is(base, changed)) {
-      return undefined
-   }
+// function vehicleDifferences<T extends JsonValue>(base: T, changed: T): Partial<ITankData> | undefined {
+//    // Fast path for identical values, including NaN handling
+//    if (Object.is(base, changed)) {
+//       return undefined
+//    }
 
-   const baseIsArray = Array.isArray(base)
-   const changedIsArray = Array.isArray(changed)
+//    const baseIsArray = Array.isArray(base)
+//    const changedIsArray = Array.isArray(changed)
 
-   const baseIsObject = typeof base === 'object' && base !== null && !baseIsArray
-   const changedIsObject = typeof changed === 'object' && changed !== null && !changedIsArray
+//    const baseIsObject = typeof base === 'object' && base !== null && !baseIsArray
+//    const changedIsObject = typeof changed === 'object' && changed !== null && !changedIsArray
 
-   // If types differ, or one side is primitive, just return the changed value
-   if (
-      (!baseIsObject && !baseIsArray) ||
-      (!changedIsObject && !changedIsArray) ||
-      baseIsArray !== changedIsArray ||
-      baseIsObject !== changedIsObject
-   ) {
-      return changed as Partial<T>
-   }
+//    // If types differ, or one side is primitive, just return the changed value
+//    if (
+//       (!baseIsObject && !baseIsArray) ||
+//       (!changedIsObject && !changedIsArray) ||
+//       baseIsArray !== changedIsArray ||
+//       baseIsObject !== changedIsObject
+//    ) {
+//       return changed as Partial<T>
+//    }
 
-   // Both are arrays
-   if (baseIsArray && changedIsArray) {
-      const baseArr = base as JsonArray
-      const changedArr = changed as JsonArray
+//    // Both are arrays
+//    if (baseIsArray && changedIsArray) {
+//       const baseArr = base as JsonArray
+//       const changedArr = changed as JsonArray
 
-      const maxLen = Math.max(baseArr.length, changedArr.length)
-      const result: Array<Partial<JsonValue> | undefined> = []
-      let hasChanges = false
+//       const maxLen = Math.max(baseArr.length, changedArr.length)
+//       const result: Array<Partial<JsonValue> | undefined> = []
+//       let hasChanges = false
 
-      for (let i = 0; i < maxLen; i += 1) {
-         const childDiff = vehicleDifferences(baseArr[i] as JsonValue, changedArr[i] as JsonValue)
+//       for (let i = 0; i < maxLen; i += 1) {
+//          const childDiff = vehicleDifferences(baseArr[i] as JsonValue, changedArr[i] as JsonValue)
 
-         if (childDiff !== undefined) {
-            result[i] = childDiff
-            hasChanges = true
-         }
-      }
+//          if (childDiff !== undefined) {
+//             result[i] = childDiff
+//             hasChanges = true
+//          }
+//       }
 
-      return hasChanges ? (result as any) : undefined
-   }
+//       return hasChanges ? (result as any) : undefined
+//    }
 
-   // Both are plain objects
-   if (baseIsObject && changedIsObject) {
-      const baseObj = base as JsonObject
-      const changedObj = changed as JsonObject
+//    // Both are plain objects
+//    if (baseIsObject && changedIsObject) {
+//       const baseObj = base as JsonObject
+//       const changedObj = changed as JsonObject
 
-      const result: { [key: string]: Partial<JsonValue> | undefined } = {}
-      let hasChanges = false
+//       const result: { [key: string]: Partial<JsonValue> | undefined } = {}
+//       let hasChanges = false
 
-      const keys = new Set<string>([...Object.keys(baseObj), ...Object.keys(changedObj)])
+//       const keys = new Set<string>([...Object.keys(baseObj), ...Object.keys(changedObj)])
 
-      for (const key of keys) {
-         // If the key does not exist in `changed`, ignore it.
-         if (!(key in changedObj)) {
-            continue
-         }
+//       for (const key of keys) {
+//          // If the key does not exist in `changed`, ignore it.
+//          if (!(key in changedObj)) {
+//             continue
+//          }
 
-         const childDiff = vehicleDifferences(baseObj[key] as JsonValue, changedObj[key] as JsonValue)
+//          const childDiff = vehicleDifferences(baseObj[key] as JsonValue, changedObj[key] as JsonValue)
 
-         if (childDiff !== undefined) {
-            result[key] = childDiff
-            hasChanges = true
-         }
-      }
+//          if (childDiff !== undefined) {
+//             result[key] = childDiff
+//             hasChanges = true
+//          }
+//       }
 
-      return hasChanges ? (result as Partial<T>) : undefined
-   }
+//       return hasChanges ? (result as Partial<T>) : undefined
+//    }
 
-   // Fallback, should not really hit here, but for safety
-   return changed as Partial<T>
-}
+//    // Fallback, should not really hit here, but for safety
+//    return changed as Partial<T>
+// }

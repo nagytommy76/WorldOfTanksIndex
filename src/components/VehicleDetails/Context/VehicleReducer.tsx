@@ -1,49 +1,43 @@
-import type { IVehicleReducerState, IVehicleContextActions } from './Types'
+import type { IVehicleReducerState, IVehicleContextActions, ModuleTypeMap } from './Types'
+
+// Generic helper for module updates
+function updateModuleGroup<K extends keyof ModuleTypeMap>(
+   state: IVehicleReducerState,
+   key: K,
+   payload: { [moduleName: string]: ModuleTypeMap[K] },
+): IVehicleReducerState {
+   return {
+      ...state,
+      moduleGroup: { ...state.moduleGroup, [key]: payload },
+   }
+}
 
 export default function VehicleReducer(
    state: IVehicleReducerState,
-   { payload, type }: IVehicleContextActions
+   { payload, type }: IVehicleContextActions,
 ) {
    switch (type) {
       case 'SET_CHASSIS':
-         return {
-            ...state,
-            moduleGroup: { ...state.moduleGroup, vehicleChassis: payload },
-         }
+         return updateModuleGroup(state, 'vehicleChassis', payload)
       case 'SET_ENGINES':
-         return {
-            ...state,
-            moduleGroup: { ...state.moduleGroup, vehicleEngine: payload },
-         }
+         return updateModuleGroup(state, 'vehicleEngine', payload)
       case 'SET_GUNS':
-         return {
-            ...state,
-            moduleGroup: { ...state.moduleGroup, vehicleGun: payload },
-         }
+         return updateModuleGroup(state, 'vehicleGun', payload)
       case 'SET_RADIOS':
-         return {
-            ...state,
-            moduleGroup: { ...state.moduleGroup, vehicleRadio: payload },
-         }
+         return updateModuleGroup(state, 'vehicleRadio', payload)
       case 'SET_TURRETS':
-         return {
-            ...state,
-            moduleGroup: { ...state.moduleGroup, vehicleTurret: payload },
-         }
+         return updateModuleGroup(state, 'vehicleTurret', payload)
       case 'SET_SHELLS':
-         return {
-            ...state,
-            moduleGroup: { ...state.moduleGroup, shells: payload },
-         }
+         return updateModuleGroup(state, 'shells', payload)
       case 'SET_SIEGE_MODE':
-         return {
-            ...state,
-            siegeMode: payload,
-         }
+         return { ...state, siegeMode: payload }
       case 'SET_MODULE_NAME_BY_TYPE':
          return {
             ...state,
-            selectedModuleNames: { ...state.selectedModuleNames, [payload.type]: payload.value },
+            selectedModuleNames: {
+               ...state.selectedModuleNames,
+               [payload.type]: payload.value,
+            },
          }
       default:
          return state

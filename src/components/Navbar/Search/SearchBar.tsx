@@ -24,6 +24,7 @@ export default function SearchBar() {
             Search for Vehicles
          </Button>
          <Modal
+            disableRestoreFocus
             aria-labelledby='transition-modal-title'
             aria-describedby='transition-modal-description'
             open={open}
@@ -51,8 +52,12 @@ export default function SearchBar() {
                      value={inputValue}
                      onChange={handleOnChange}
                   />
-                  {data && data.foundTanks.length > 0 && (
+                  {data && data.foundTanks.length > 0 ? (
                      <VehicleElements handleClose={handleClose} foundTanks={data.foundTanks} />
+                  ) : (
+                     <>
+                        <p className='mt-4 text-center'>No vehicles found.</p>
+                     </>
                   )}
                </Paper>
             </Fade>

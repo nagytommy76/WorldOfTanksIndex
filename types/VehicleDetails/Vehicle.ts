@@ -80,3 +80,8 @@ export type TechTreeVehiclesType = Pick<
    ITankData,
    'id' | 'name' | 'tier' | 'type' | 'xmlId' | 'notInShop' | 'tankDetails' | 'price' | 'nation'
 >
+
+export type PopularTanksType = Pick<
+   ITankData,
+   '_id' | 'id' | 'xmlId' | 'name' | 'type' | 'tier' | 'nation' | 'tags' | 'tankDetails'
+>

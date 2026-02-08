@@ -10,6 +10,7 @@ import Modal from '@mui/material/Modal'
 import Fade from '@mui/material/Fade'
 import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
+import SearchIcon from '@mui/icons-material/Search'
 
 import VehicleElements from './Includes/VehicleElements'
 
@@ -20,8 +21,17 @@ export default function SearchBar() {
 
    return (
       <section>
-         <Button onClick={handleOpen} variant='contained' color='primary'>
-            Search for Vehicles
+         <Button
+            sx={{
+               textTransform: 'none',
+               fontSize: '1rem',
+            }}
+            startIcon={<SearchIcon />}
+            onClick={handleOpen}
+            variant='contained'
+            color='primary'
+         >
+            Search for vehicles: Leopard 1, EBR 105...
          </Button>
          <Modal
             disableRestoreFocus

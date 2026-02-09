@@ -14,7 +14,7 @@ import SearchIcon from '@mui/icons-material/Search'
 
 import VehicleElements from './Includes/VehicleElements'
 
-export default function SearchBar() {
+export default function SearchBar({ searchText = 'Search for vehicles' }: { searchText?: string }) {
    const { open, handleOpen, handleClose } = useModal()
    const { inputValue, isEnabled, debouncedInputValue, handleOnChange } = useHandleTextField()
    const data = useSendRequest(debouncedInputValue, isEnabled)
@@ -31,7 +31,7 @@ export default function SearchBar() {
             variant='contained'
             color='primary'
          >
-            Search for vehicles: Leopard 1, EBR 105...
+            {searchText}
          </Button>
          <Modal
             disableRestoreFocus

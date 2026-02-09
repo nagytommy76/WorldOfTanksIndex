@@ -90,7 +90,15 @@ const roles: Record<VehicleRoles, { name: string; description: string }> = {
    },
 }
 
-export default function VehicleRoles({ vehicleRole }: { vehicleRole: VehicleRoles }) {
+export default function VehicleRoles({
+   vehicleRole,
+   roleHeight = 70,
+   roleWidth = 70,
+}: {
+   vehicleRole: VehicleRoles
+   roleWidth?: number
+   roleHeight?: number
+}) {
    return (
       <HtmlTooltip
          title={
@@ -120,8 +128,8 @@ export default function VehicleRoles({ vehicleRole }: { vehicleRole: VehicleRole
          <Image
             className='cursor-pointer'
             src={`/roles/icons/${vehicleRole}.png`}
-            width={70}
-            height={70}
+            width={roleWidth}
+            height={roleHeight}
             alt={vehicleRole || 'Role icon'}
          />
       </HtmlTooltip>

@@ -19,7 +19,9 @@ export async function GET(request: NextRequest) {
             'price',
             'type',
             'tier',
+            'tags',
             'id',
+            '_id',
             'name',
             'notInShop',
             'xmlId',
@@ -31,7 +33,7 @@ export async function GET(request: NextRequest) {
    } catch (error) {
       return NextResponse.json(
          { error: 'Failed to fetch tech tree vehicles', errorType: error },
-         { status: 500 }
+         { status: 500 },
       )
    }
 }

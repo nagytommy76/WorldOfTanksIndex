@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import type { PopularTanksType } from '@Types/VehicleDetails/Vehicle'
+import type { CardTanksType } from '@Types/VehicleDetails/Vehicle'
 import type { VehicleRoles } from '@Types/types'
 
 import Typography from '@mui/material/Typography'
@@ -8,9 +8,11 @@ import Typography from '@mui/material/Typography'
 import { flagSources } from '@/Base/FlagLinks/FlagLinks'
 import getIcon from '@/lib/getVehicleTypeIcon'
 import tiers from '@/lib/tierList'
-import VehicleRolesComponent from '../../VehicleDetails/Header/VehicleRoles'
+import VehicleRolesComponent from '@/Base/VehicleRoles'
+import PriceCell from './PriceCell'
 
-export default function TankCard({ singleVehicle }: { singleVehicle: PopularTanksType }) {
+export default function TankCard({ singleVehicle }: { singleVehicle: CardTanksType }) {
+   const foundTankRole = singleVehicle.tags.find((tag) => tag.includes('role')) as VehicleRoles | undefined
    return (
       <Link
          href={`/${singleVehicle.id}/${singleVehicle.xmlId}/modules`}
@@ -19,12 +21,24 @@ export default function TankCard({ singleVehicle }: { singleVehicle: PopularTank
          '
       >
          <div className='w-full p-3 flex items-center justify-center gap-2 relative'>
-            <Image
-               src={singleVehicle.tankDetails?.images.big_icon || ''}
-               alt={singleVehicle.name}
-               width={150}
-               height={150}
-            />
+            {singleVehicle.tankDetails?.images.big_icon ? (
+               <Image
+                  src={singleVehicle.tankDetails.images.big_icon}
+                  alt={singleVehicle.name}
+                  width={150}
+                  height={150}
+               />
+            ) : (
+               <Image
+                  src={
+                     `http://api.worldoftanks.eu/static/2.77.0/wot/encyclopedia/vehicle/${singleVehicle.nation}-${singleVehicle.xmlId}.png`.trim() ||
+                     '/placeholder-vehicle.png'
+                  }
+                  alt={singleVehicle.name}
+                  width={150}
+                  height={150}
+               />
+            )}
             <Image
                src={flagSources[singleVehicle.nation].source || ''}
                alt={flagSources[singleVehicle.nation].alt}
@@ -33,11 +47,15 @@ export default function TankCard({ singleVehicle }: { singleVehicle: PopularTank
                className='absolute top-2 right-2'
             />
             <div className='absolute top-2 left-2'>
-               <VehicleRolesComponent
-                  vehicleRole={singleVehicle.tags.find((tag) => tag.includes('role')) as VehicleRoles}
-                  roleWidth={30}
-                  roleHeight={30}
-               />
+               {foundTankRole ? (
+                  <VehicleRolesComponent
+                     vehicleRole={singleVehicle.tags.find((tag) => tag.includes('role')) as VehicleRoles}
+                     roleWidth={30}
+                     roleHeight={30}
+                  />
+               ) : (
+                  <Image src={getIcon(singleVehicle.type)} alt={singleVehicle.name} width={15} height={15} />
+               )}
             </div>
          </div>
          <div
@@ -57,6 +75,7 @@ export default function TankCard({ singleVehicle }: { singleVehicle: PopularTank
                {singleVehicle.tankDetails?.short_name || singleVehicle.name}
             </Typography>
          </div>
+         <PriceCell vehiclePrice={singleVehicle.price} />
       </Link>
    )
 }

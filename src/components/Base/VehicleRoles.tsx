@@ -95,10 +95,11 @@ export default function VehicleRoles({
    roleHeight = 70,
    roleWidth = 70,
 }: {
-   vehicleRole: VehicleRoles
+   vehicleRole: VehicleRoles | undefined
    roleWidth?: number
    roleHeight?: number
 }) {
+   if (!vehicleRole) return null
    return (
       <HtmlTooltip
          title={

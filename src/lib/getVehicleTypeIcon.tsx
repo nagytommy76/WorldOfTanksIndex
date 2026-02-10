@@ -4,6 +4,8 @@ import lightTank from '@/ImagesTankIcons/lightTank.svg'
 import mediumTank from '@/ImagesTankIcons/mediumTank.svg'
 import SPG from '@/ImagesTankIcons/SPG.svg'
 
+export const vehicleTypes = ['AT-SPG', 'SPG', 'heavyTank', 'mediumTank', 'lightTank'] as const
+
 function getIcon(type: string) {
    switch (type) {
       case 'AT-SPG':

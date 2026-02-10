@@ -1,10 +1,10 @@
-import type { TechTreeVehiclesType } from '@/types/VehicleDetails/Vehicle'
+import type { CardTanksType } from '@/types/VehicleDetails/Vehicle'
 
 async function getAllVehicles(nation: string, prefixUrl: string = '') {
    const URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
    const filteredData = await fetch(`${URL}/api/techtree${prefixUrl}/?nation=${nation}`, { method: 'GET' })
    const response = (await filteredData.json()) as Promise<{
-      vehicles: TechTreeVehiclesType[]
+      vehicles: CardTanksType[]
    }>
 
    return (await response).vehicles
@@ -18,8 +18,8 @@ async function getAllVehicles(nation: string, prefixUrl: string = '') {
  */
 export default async function returnVehicles(
    nation: string,
-   prefixUrl: string = ''
-): Promise<TechTreeVehiclesType[]> {
+   prefixUrl: string = '',
+): Promise<CardTanksType[]> {
    const collectorsVehicles = await getAllVehicles(nation, prefixUrl)
    return collectorsVehicles
 }

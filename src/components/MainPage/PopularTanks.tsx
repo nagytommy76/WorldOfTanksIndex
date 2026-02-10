@@ -1,12 +1,12 @@
 import dbConnect from '@/lib/ConnectDB'
 import { VehicleModel } from '@Models/TankModel'
 
-import type { PopularTanksType } from '@Types/VehicleDetails/Vehicle'
+import type { CardTanksType } from '@Types/VehicleDetails/Vehicle'
 
 import TankCard from '@/Base/TankCard/TankCard'
 import Typography from '@mui/material/Typography'
 
-async function getPopularTanks(): Promise<PopularTanksType[] | undefined> {
+async function getPopularTanks(): Promise<CardTanksType[] | undefined> {
    try {
       await dbConnect()
 
@@ -64,6 +64,7 @@ async function getPopularTanks(): Promise<PopularTanksType[] | undefined> {
             'type',
             'tier',
             'nation',
+            'price',
             'tags',
             'tankDetails.images',
             'tankDetails.short_name',

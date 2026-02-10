@@ -11,7 +11,7 @@ import hangar from '@/Imageshangar-bg.webp'
 import Typography from '@mui/material/Typography'
 
 import PlaceholderImg from './PlaceholderImg'
-import VehicleRole from './VehicleRoles'
+import VehicleRole from '@/Base/VehicleRoles'
 import VehicleMechanic from './VehicleMechanic'
 
 export default async function Header({ tank_name, tank_id }: { tank_name: string; tank_id: string }) {

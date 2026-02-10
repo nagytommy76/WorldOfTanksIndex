@@ -76,12 +76,7 @@ export interface ITankData {
    mechanics: unknown
 }
 
-export type TechTreeVehiclesType = Pick<
+export type CardTanksType = Pick<
    ITankData,
-   'id' | 'name' | 'tier' | 'type' | 'xmlId' | 'notInShop' | 'tankDetails' | 'price' | 'nation'
->
-
-export type PopularTanksType = Pick<
-   ITankData,
-   '_id' | 'id' | 'xmlId' | 'name' | 'type' | 'tier' | 'nation' | 'tags' | 'tankDetails'
+   '_id' | 'id' | 'xmlId' | 'name' | 'type' | 'tier' | 'price' | 'nation' | 'tags' | 'tankDetails'
 >

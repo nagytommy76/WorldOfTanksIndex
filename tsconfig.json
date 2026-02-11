@@ -23,6 +23,7 @@
          "@/lib/*": ["./src/lib/*"],
          "@/Base/*": ["./src/components/Base/*"],
          "@/components*": ["./src/components/*"],
+         "@/helpers/*": ["./src/helpers/*"],
          "@/VehicleDetails/*": ["./src/components/VehicleDetails/*"],
          "@/Providers*": ["./src/Providers/*"],
          "@/Images*": ["./src/assets/images/*"],

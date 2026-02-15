@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { useContext } from 'react'
-import { OrderContext } from '@/OrderContext/OrderContext'
+import { OrderContext, OrderDispatchContext } from '@/OrderContext/OrderContext'
 
 import getIcon, { vehicleTypes } from '@/lib/getVehicleTypeIcon'
 import retrunVehicleType from '@/helpers/returnVehicleType'
@@ -11,9 +11,9 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 
 export default function ToggleVehicleType() {
    const {
-      orderDispatch,
       orderReducer: { vehicleTypesToggle },
    } = useContext(OrderContext)
+   const { orderDispatch } = useContext(OrderDispatchContext)
 
    return (
       <ToggleButtonGroup

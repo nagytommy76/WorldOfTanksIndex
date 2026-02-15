@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { OrderContext } from '@/OrderContext/OrderContext'
+import { OrderContext, OrderDispatchContext } from '@/OrderContext/OrderContext'
 
 import Typography from '@mui/material/Typography'
 import ToggleButton from '@mui/material/ToggleButton'
@@ -9,9 +9,10 @@ import tiers from '@/lib/tierList'
 
 export default function ToogleTier() {
    const {
-      orderDispatch,
       orderReducer: { vehicleTierToggle },
    } = useContext(OrderContext)
+   const { orderDispatch } = useContext(OrderDispatchContext)
+
    return (
       <ToggleButtonGroup
          value={vehicleTierToggle}

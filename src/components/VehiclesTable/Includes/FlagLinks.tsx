@@ -8,7 +8,7 @@ import { flagSources } from '@/Base/FlagLinks/FlagLinks'
 export default function FlagLinks({
    vehicleTypeProp = null,
    flagSize = 70,
-   opacity = 70,
+   opacity = 50,
 }: {
    vehicleTypeProp?: string | null
    flagSize?: number
@@ -16,6 +16,8 @@ export default function FlagLinks({
 }) {
    const pathname = usePathname()
    const vehicleType = pathname && pathname.split('/')[2]
+   const isVehicleTypeInPath = vehicleType === undefined ? vehicleTypeProp : vehicleType
+
    return (
       <section
          className={
@@ -26,8 +28,7 @@ export default function FlagLinks({
             return (
                <Link
                   className={
-                     pathname ===
-                     `/vehicles/${vehicleType === undefined ? vehicleTypeProp : vehicleType}/${key}`
+                     pathname === `/vehicles/${isVehicleTypeInPath}/${key}`
                         ? 'opacity-100'
                         : `opacity-${opacity} hover:opacity-100 transition-all duration-150`
                   }

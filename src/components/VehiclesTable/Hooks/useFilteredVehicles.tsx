@@ -1,13 +1,20 @@
-import { useMemo } from 'react'
-import { useContext } from 'react'
+import { useMemo, useContext } from 'react'
 import { OrderContext } from '@/OrderContext/OrderContext'
 
-export default function useFilteredVehicles() {
+import type { CardTanksType } from '@/types/VehicleDetails/Vehicle'
+
+export default function useFilteredVehicles(orderVehicles: CardTanksType[]) {
    const {
-      orderReducer: { vehicleTierToggle, vehicleTypesToggle, orderVehicles },
+      orderReducer: { vehicleTierToggle, vehicleTypesToggle, vehicleByName },
    } = useContext(OrderContext)
 
    const filteredVehicles = useMemo(() => {
+      // If a vehicle name is selected, filter by name
+      if (vehicleByName && vehicleByName.length > 0) {
+         return orderVehicles.filter(
+            (vehicle) => vehicle.tankDetails?.short_name === vehicleByName || vehicle.name === vehicleByName,
+         )
+      }
       // If no filters selected, return all
       if (vehicleTierToggle.length === 0 && vehicleTypesToggle.length === 0) {
          return orderVehicles
@@ -19,7 +26,7 @@ export default function useFilteredVehicles() {
 
          return tierMatch && typeMatch
       })
-   }, [orderVehicles, vehicleTierToggle, vehicleTypesToggle])
+   }, [orderVehicles, vehicleTierToggle, vehicleTypesToggle, vehicleByName])
 
    return filteredVehicles
 }

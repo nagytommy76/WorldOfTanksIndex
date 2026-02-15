@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 
 import VehiclesTable from '@/componentsVehiclesTable/VehiclesTable'
+import OrderContextProvider from '@/componentsVehiclesTable/Context/OrderContext'
 
 type Props = {
    params: Promise<{ nation: string }>
@@ -21,5 +22,9 @@ import { flagSources } from '@/Base/FlagLinks/FlagLinks'
 export default async function page({ params }: { params: Promise<{ nation: string }> }) {
    const { nation } = await params
    const allTechTreeVehicles = await returnVehicles(nation)
-   return <VehiclesTable allVehicles={allTechTreeVehicles} />
+   return (
+      <OrderContextProvider>
+         <VehiclesTable allVehicles={allTechTreeVehicles} />
+      </OrderContextProvider>
+   )
 }

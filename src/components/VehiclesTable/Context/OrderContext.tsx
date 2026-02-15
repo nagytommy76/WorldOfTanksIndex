@@ -1,39 +1,27 @@
 'use client'
-import type { IOrderContext, IOrderReducerState } from './Types'
-import type { CardTanksType } from '@/types/VehicleDetails/Vehicle'
+import type { IOrderContext, IOrderDispatchContext, IOrderReducerState } from './Types'
 import { InitialReducerState } from './Types'
 
-import { createContext, useReducer, useEffect } from 'react'
+import { createContext, useReducer } from 'react'
 import OrderReducer from './OrderReducer'
 
 export const OrderContext = createContext<IOrderContext>({
    orderReducer: {} as IOrderReducerState,
+})
+export const OrderDispatchContext = createContext<IOrderDispatchContext>({
    orderDispatch: () => {},
 })
 
-export default function OrderContextProvider({
-   children,
-   allVehicles,
-}: {
-   children: React.ReactNode
-   allVehicles: CardTanksType[]
-}) {
+export default function OrderContextProvider({ children }: { children: React.ReactNode }) {
    const [orderReducer, orderDispatch] = useReducer(OrderReducer, InitialReducerState)
-
-   useEffect(() => {
-      if (allVehicles) {
-         orderDispatch({ type: 'SET_ORDER_VEHICLES', payload: allVehicles })
-      }
-   }, [allVehicles])
 
    return (
       <OrderContext.Provider
          value={{
             orderReducer,
-            orderDispatch,
          }}
       >
-         {children}
+         <OrderDispatchContext.Provider value={{ orderDispatch }}>{children}</OrderDispatchContext.Provider>
       </OrderContext.Provider>
    )
 }

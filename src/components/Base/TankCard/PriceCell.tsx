@@ -32,8 +32,10 @@ export default function PriceCell({ vehiclePrice }: { vehiclePrice: number | { g
       <>
          {typeof vehiclePrice === 'number' ? (
             <Price vehiclePrice={vehiclePrice} />
+         ) : vehiclePrice.gold !== null ? (
+            <Price vehiclePrice={vehiclePrice} isGold />
          ) : (
-            vehiclePrice.gold !== null && <Price vehiclePrice={vehiclePrice} isGold />
+            <Price vehiclePrice={0} />
          )}
       </>
    )

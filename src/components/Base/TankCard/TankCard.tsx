@@ -17,7 +17,7 @@ export default function TankCard({ singleVehicle }: { singleVehicle: CardTanksTy
       <Link
          href={`/${singleVehicle.id}/${singleVehicle.xmlId}/modules`}
          className='w-full h-full bg-neutral-950
-         flex flex-col items-center justify-center rounded-lg hover:bg-[rgba(65,65,65,0.55)] transition-all duration-300
+         flex flex-col items-center justify-between rounded-lg hover:bg-[rgba(65,65,65,0.55)] transition-all duration-300
          '
       >
          <div className='w-full p-3 flex items-center justify-center gap-2 relative'>

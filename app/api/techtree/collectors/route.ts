@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
             'xmlId',
             'nation',
          ])
-         .sort({ tier: 1, name: 1 })
+         .sort({ tier: -1, name: 1 })
          .lean()
 
       return NextResponse.json({ vehicles: collectorsVehicles }, { status: 200 })

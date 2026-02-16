@@ -7,6 +7,27 @@ export async function GET(request: NextRequest) {
    if (!nation) return NextResponse.json({ error: 'Nation parameter is required' }, { status: 404 })
    try {
       await dbConnect()
+      const tier1Tank = await VehicleModel.find({
+         nation,
+         tier: 1,
+      })
+         .select([
+            'tankDetails.name',
+            'tankDetails.short_name',
+            'tankDetails.images',
+            'price',
+            'type',
+            'tier',
+            'tags',
+            'id',
+            '_id',
+            'name',
+            'notInShop',
+            'xmlId',
+            'nation',
+         ])
+         .lean()
+
       const techTreeVehicles = await VehicleModel.find({
          nation,
          notInShop: false,
@@ -34,6 +55,12 @@ export async function GET(request: NextRequest) {
          ])
          .sort({ tier: -1, type: 1 })
          .lean()
+
+      if (!tier1Tank && !techTreeVehicles) {
+         return NextResponse.json({ error: 'Cannot find tech tree vehicles' }, { status: 500 })
+      }
+
+      techTreeVehicles.push(tier1Tank[0])
 
       return NextResponse.json({ vehicles: techTreeVehicles })
    } catch (err) {

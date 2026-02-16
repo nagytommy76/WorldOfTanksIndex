@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic'
 
 import { flagSources } from '@/Base/FlagLinks/FlagLinks'
 import returnVehicles from '@/lib/getVehicles'
+import OrderContextProvider from '@/componentsVehiclesTable/Context/OrderContext'
 
 const VehiclesTable = dynamic(() => import('@/componentsVehiclesTable/VehiclesTable'))
 
@@ -22,5 +23,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function page({ params }: { params: Promise<{ nation: string }> }) {
    const { nation } = await params
    const allCollectorsVehicles = await returnVehicles(nation, '/collectors')
-   return <VehiclesTable allVehicles={allCollectorsVehicles} />
+   return (
+      <OrderContextProvider>
+         <VehiclesTable allVehicles={allCollectorsVehicles} />
+      </OrderContextProvider>
+   )
 }

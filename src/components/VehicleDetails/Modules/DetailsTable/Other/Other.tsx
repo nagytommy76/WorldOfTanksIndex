@@ -80,7 +80,7 @@ export default function Miscellaneous() {
                <TableRowComponent
                   iconSrc='/icons/money_gold.webp'
                   titleText='Tank Cost'
-                  valueText={tankCost.gold.toLocaleString()}
+                  valueText={tankCost.gold?.toLocaleString() || 0}
                   unit='gold'
                />
             )}

@@ -4,7 +4,9 @@ import lightTank from '@/ImagesTankIcons/lightTank.svg'
 import mediumTank from '@/ImagesTankIcons/mediumTank.svg'
 import SPG from '@/ImagesTankIcons/SPG.svg'
 
-export const vehicleTypes = ['AT-SPG', 'SPG', 'heavyTank', 'mediumTank', 'lightTank'] as const
+import type { VehicleTypes } from '@/types/VehicleDetails/Other'
+
+export const vehicleTypes = ['AT-SPG', 'SPG', 'heavyTank', 'mediumTank', 'lightTank'] satisfies VehicleTypes[]
 
 function getIcon(type: string) {
    switch (type) {

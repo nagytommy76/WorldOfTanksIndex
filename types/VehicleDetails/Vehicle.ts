@@ -78,5 +78,15 @@ export interface ITankData {
 
 export type CardTanksType = Pick<
    ITankData,
-   '_id' | 'id' | 'xmlId' | 'name' | 'type' | 'tier' | 'price' | 'nation' | 'tags' | 'tankDetails'
+   | '_id'
+   | 'id'
+   | 'xmlId'
+   | 'name'
+   | 'type'
+   | 'tier'
+   | 'price'
+   | 'nation'
+   | 'tags'
+   | 'tankDetails'
+   | 'notInShop'
 >

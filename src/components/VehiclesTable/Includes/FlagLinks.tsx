@@ -26,12 +26,11 @@ export default function FlagLinks({
       >
          {Object.keys(flagSources).map((key) => {
             const isActive = pathname === `/vehicles/${isVehicleTypeInPath}/${key}`
+            const opacityClass = isActive ? `` : ` opacity-${opacity} `
+
             return (
                <Link
-                  className={
-                     `hover:opacity-100 transition-all duration-150` +
-                     (isActive ? `` : ` opacity-${opacity} `)
-                  }
+                  className={`${opacityClass} hover:opacity-100 transition-all duration-150`}
                   href={`/vehicles/${vehicleType === undefined ? vehicleTypeProp : vehicleType}/${key}`}
                   key={key}
                >

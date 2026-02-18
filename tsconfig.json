@@ -34,6 +34,7 @@
          "@VehicleTypes/*": ["./types/VehicleDetails/*"],
          // Contexts
          "@/VehicleContext/*": ["./src/components/VehicleDetails/Context/*"],
+         "@/OrderContext/*": ["./src/components/VehiclesTable/Context/*"],
          // MECHANICS
          "@/Mechanics/*": ["./src/components/VehicleDetails/Modules/DetailsTable/Mechanics/*"]
       }

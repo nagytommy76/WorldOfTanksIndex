@@ -23,7 +23,12 @@ export default function ToogleTier() {
       >
          {tiers.map((tier, index) => {
             return (
-               <ToggleButton key={index} value={index + 1} aria-label='Vehicle tier'>
+               <ToggleButton
+                  data-testid={`tier-${index + 1}`}
+                  key={index}
+                  value={index + 1}
+                  aria-label='Vehicle tier'
+               >
                   <Typography variant='caption'>{tier}</Typography>
                </ToggleButton>
             )

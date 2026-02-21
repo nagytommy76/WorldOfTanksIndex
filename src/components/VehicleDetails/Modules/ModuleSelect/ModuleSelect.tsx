@@ -12,13 +12,23 @@ import Typography from '@mui/material/Typography'
 
 import ReturnModuleType from '../Includes/ModuleType'
 import ModuleImage from '../Includes/ModuleImage'
+import type { IShells } from '@/types/VehicleDetails/Shells'
+import type {
+   ShellComparableField,
+   DiffDirection,
+   IFieldDifferences,
+   ShellDiffMap,
+} from '@/types/VehicleDetails/Modifiers'
 
 export default function ModuleSelect() {
    const {
       vehicleReducer: { selectedModuleNames, moduleGroup },
       vehicleDispatch,
+      modifiersDispatch,
    } = useContext(VehicleContext)
    useSetShells()
+
+   const defaultShellName: string = selectedModuleNames['shells']
 
    function setModuleNameByType(moduleType: ModuleType, moduleName: string) {
       vehicleDispatch({
@@ -46,31 +56,44 @@ export default function ModuleSelect() {
                      className='h-10 rounded-sm'
                      key={module.name}
                      selected={module.name === selectedModuleNames[key]}
-                     onClick={() => setModuleNameByType(key, module.name)}
+                     onClick={() => {
+                        setModuleNameByType(key, module.name)
+
+                        switch (key) {
+                           case 'shells':
+                              const hoveredModule = moduleGroup[key][moduleKey]
+                              // const currentModule = moduleGroup[key][selectedModuleNames[key]]
+                              const currentModule = moduleGroup[key][defaultShellName]
+
+                              const comparedShells = compareShells(
+                                 currentModule as IShells,
+                                 hoveredModule as IShells,
+                              )
+                              console.log(comparedShells)
+
+                              modifiersDispatch({
+                                 type: 'SET_SHELLS_MODIFIERS',
+                                 payload: comparedShells,
+                              })
+                              break
+
+                           default:
+                              break
+                        }
+                     }}
                      onMouseEnter={() => {
-                        // console.log('Hovered module name: ', moduleGroup[key][moduleKey])
-                        // // console.log('Active Selected module name: ', selectedModuleNames[key ])
-                        // console.log(
-                        //    'Active Selected module name: ',
-                        //    moduleGroup[key][selectedModuleNames[key]],
-                        // )
-                        // const hoveredModule = moduleGroup[key][moduleKey]
-                        // const currentModule = moduleGroup[key][selectedModuleNames[key]]
-                        // console.log('Avarage dmg difference: ', currentModule.name)
                         /**
                          * differences:
                          * - Avarage Damage
-                         * - Average Penetration
+                         * - Average Penetration (at 500m as well)
+                         * - Damage per minute (DPM)
                          * - Shell Velocity
                          * - Potential Damage
                          * - Shell Cost
                          * - Shell cost/ 1000 hp damage
-                         *
-                         * ARTY HIGH EXPLOSIVE:
-                         * - Explosion Radius
-                         * -
-                         * */
+                         */
                      }}
+                     // onMouseLeave={() => modifiersDispatch({ type: 'RESET_SHELLS_MODIFIERS', payload: null })}
                      sx={{
                         '&.Mui-selected': {
                            backgroundColor: 'rgba(63, 63, 63, 0.925)',
@@ -102,100 +125,61 @@ export default function ModuleSelect() {
    )
 }
 
-/**
- *
- *
- */
-
-type JsonPrimitive = string | number | boolean | null
-type JsonValue = JsonPrimitive | JsonObject | JsonArray
-interface JsonObject {
-   [key: string]: JsonValue
+const FIELD_DIRECTIONS: Record<ShellComparableField, DiffDirection> = {
+   'piercingPower[0]': 'higher-is-better',
+   'piercingPower[1]': 'higher-is-better',
+   'damage.armor': 'higher-is-better',
+   speed: 'higher-is-better',
+   maxDistance: 'higher-is-better',
+   price: 'lower-is-better',
 }
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-interface JsonArray extends Array<JsonValue> {}
 
-/**
- * Returns an object/array that has the same structure as `changed`,
- * but only contains values that are different from `base`.
- *
- * For primitives: returns `changed` if it differs from `base`.
- * For objects: returns only keys that changed.
- * For arrays: returns an array of the same length, with entries only
- * where something changed (other entries are left `undefined`).
- *
- * If there is no difference at all, returns `undefined`.
- */
-// function vehicleDifferences<T extends JsonValue>(base: T, changed: T): Partial<ITankData> | undefined {
-//    // Fast path for identical values, including NaN handling
-//    if (Object.is(base, changed)) {
-//       return undefined
-//    }
+function extractValue(shell: IShells, field: ShellComparableField): number | null {
+   switch (field) {
+      case 'piercingPower[0]':
+         return shell.piercingPower[0]
+      case 'piercingPower[1]':
+         return shell.piercingPower[1]
+      case 'damage.armor':
+         return typeof shell.damage.armor === 'number' ? shell.damage.armor : shell.damage.armor[0]
+      case 'speed':
+         return shell.speed
+      case 'maxDistance':
+         return shell.maxDistance
+      case 'price':
+         return shell.price
+      default:
+         return null
+   }
+}
 
-//    const baseIsArray = Array.isArray(base)
-//    const changedIsArray = Array.isArray(changed)
+function buildFieldDiff(base: number, compared: number, direction: DiffDirection): IFieldDifferences {
+   const difference = compared - base
+   const percentDifference: number = base !== 0 ? (difference / base) * 100 : 0 // delta / base * 100
+   const improved = direction === 'higher-is-better' ? difference > 0 : difference < 0
 
-//    const baseIsObject = typeof base === 'object' && base !== null && !baseIsArray
-//    const changedIsObject = typeof changed === 'object' && changed !== null && !changedIsArray
+   return {
+      base,
+      compared,
+      difference,
+      percentDifference,
+      improved,
+      neutral: difference === 0,
+   }
+}
 
-//    // If types differ, or one side is primitive, just return the changed value
-//    if (
-//       (!baseIsObject && !baseIsArray) ||
-//       (!changedIsObject && !changedIsArray) ||
-//       baseIsArray !== changedIsArray ||
-//       baseIsObject !== changedIsObject
-//    ) {
-//       return changed as Partial<T>
-//    }
+function compareShells(base: IShells, compared: IShells): ShellDiffMap {
+   const diff: ShellDiffMap = {} as ShellDiffMap
 
-//    // Both are arrays
-//    if (baseIsArray && changedIsArray) {
-//       const baseArr = base as JsonArray
-//       const changedArr = changed as JsonArray
+   for (const field of Object.keys(FIELD_DIRECTIONS) as ShellComparableField[]) {
+      const baseVal = extractValue(base, field)
+      const compVal = extractValue(compared, field)
 
-//       const maxLen = Math.max(baseArr.length, changedArr.length)
-//       const result: Array<Partial<JsonValue> | undefined> = []
-//       let hasChanges = false
+      // Skip fields where either shell has no data (e.g. explosionRadius on AP)
+      if (baseVal === null || compVal === null) continue
 
-//       for (let i = 0; i < maxLen; i += 1) {
-//          const childDiff = vehicleDifferences(baseArr[i] as JsonValue, changedArr[i] as JsonValue)
+      diff[field] = buildFieldDiff(baseVal, compVal, FIELD_DIRECTIONS[field])
+   }
 
-//          if (childDiff !== undefined) {
-//             result[i] = childDiff
-//             hasChanges = true
-//          }
-//       }
-
-//       return hasChanges ? (result as any) : undefined
-//    }
-
-//    // Both are plain objects
-//    if (baseIsObject && changedIsObject) {
-//       const baseObj = base as JsonObject
-//       const changedObj = changed as JsonObject
-
-//       const result: { [key: string]: Partial<JsonValue> | undefined } = {}
-//       let hasChanges = false
-
-//       const keys = new Set<string>([...Object.keys(baseObj), ...Object.keys(changedObj)])
-
-//       for (const key of keys) {
-//          // If the key does not exist in `changed`, ignore it.
-//          if (!(key in changedObj)) {
-//             continue
-//          }
-
-//          const childDiff = vehicleDifferences(baseObj[key] as JsonValue, changedObj[key] as JsonValue)
-
-//          if (childDiff !== undefined) {
-//             result[key] = childDiff
-//             hasChanges = true
-//          }
-//       }
-
-//       return hasChanges ? (result as Partial<T>) : undefined
-//    }
-
-//    // Fallback, should not really hit here, but for safety
-//    return changed as Partial<T>
-// }
+   return diff
+}

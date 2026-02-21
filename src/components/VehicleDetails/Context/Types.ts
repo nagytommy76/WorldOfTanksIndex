@@ -1,3 +1,4 @@
+import type { IModifiersReducerState, IModifiersContextActions } from './ModifiersTypes'
 import type { ModuleType } from '@VehicleTypes/module'
 import type { IRadios, IFuelTank, ISpeedLimit, ICamo, ISiegeMode } from '@VehicleTypes/Other'
 import type { ITurrets } from '@VehicleTypes/Turrets'
@@ -70,4 +71,6 @@ export interface IVehicleContext {
    rocketAcceleration: IRocketAcceleration | null
    vehicleReducer: IVehicleReducerState
    vehicleDispatch: React.Dispatch<IVehicleContextActions>
+   modifiersReducer: IModifiersReducerState
+   modifiersDispatch: React.Dispatch<IModifiersContextActions>
 }

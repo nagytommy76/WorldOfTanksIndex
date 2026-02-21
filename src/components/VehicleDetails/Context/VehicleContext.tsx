@@ -1,10 +1,13 @@
 'use client'
 import { createContext, useReducer } from 'react'
 import VehicleReducer from './VehicleReducer'
+import ModifiersReducer from './ModifiersReducer'
+
 import type { ICamo, IFuelTank, ISpeedLimit } from '@VehicleTypes/Other'
 import type { IHull } from '@VehicleTypes/Hull'
 import type { ITankData } from '@VehicleTypes/Vehicle'
 
+import { modifiersInitialState } from './ModifiersTypes'
 import { InitialState, IVehicleContext } from './Types'
 
 import useSetChassis from './Hooks/useSetChassis'
@@ -19,6 +22,8 @@ import useSetBooster from './Hooks/useSetBooster'
 export const VehicleContext = createContext<IVehicleContext>({
    vehicleDispatch: () => null,
    vehicleReducer: InitialState,
+   modifiersDispatch: () => null,
+   modifiersReducer: modifiersInitialState,
    hull: {} as IHull,
    fuelTank: {} as IFuelTank[],
    speedLimit: {} as ISpeedLimit,
@@ -40,6 +45,7 @@ export default function VehicleContextProvider({
    tankDetails: ITankData
 }) {
    const [vehicleReducer, vehicleDispatch] = useReducer(VehicleReducer, InitialState)
+   const [modifiersReducer, modifiersDispatch] = useReducer(ModifiersReducer, modifiersInitialState)
 
    useSetChassis(tankDetails, vehicleDispatch)
    useSetRadios(tankDetails, vehicleDispatch)
@@ -63,6 +69,8 @@ export default function VehicleContextProvider({
             rocketAcceleration: rocketBooser,
             vehicleReducer,
             vehicleDispatch,
+            modifiersDispatch,
+            modifiersReducer,
          }}
       >
          {children}

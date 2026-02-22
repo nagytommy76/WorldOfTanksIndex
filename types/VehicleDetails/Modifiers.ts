@@ -17,7 +17,17 @@ export interface IFieldDifferences {
    improved: boolean // delta is in the "good" direction
    neutral: boolean // delta === 0
 }
+// A diff map where every field has a real value
 export type ShellDiffMap = Record<ShellComparableField, IFieldDifferences>
+
+// A diff map where every field is null (initial/reset state)
+export type ShellDiffMapNull = Record<ShellComparableField, null>
+
+// Union of both — this is what lives in your reducer
+export type ShellDiffMapState = ShellDiffMap | ShellDiffMapNull
+
+// Utility: a single field is either populated or null
+export type NullableShellDiffMap = Record<ShellComparableField, IFieldDifferences | null>
 
 // Only the fields that make sense to compare
 export type ShellComparableField =

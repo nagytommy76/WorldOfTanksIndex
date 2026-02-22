@@ -1,7 +1,14 @@
 import TableRowComponent from '../../Includes/TableRow'
 import Typography from '@mui/material/Typography'
+import type { ShellDiffMapState } from '@/types/VehicleDetails/Modifiers'
 
-export default function Damage({ damage }: { damage: number | number[] }) {
+export default function Damage({
+   damage,
+   shellDamageDiff,
+}: {
+   damage: number | number[]
+   shellDamageDiff: ShellDiffMapState['damage.armor']
+}) {
    if (Array.isArray(damage)) {
       return (
          <TableRowComponent
@@ -31,6 +38,12 @@ export default function Damage({ damage }: { damage: number | number[] }) {
          titleText='Damage'
          valueText={damage}
          unit='HP'
+         modifiers={[
+            {
+               difference: shellDamageDiff?.difference || 0,
+               improved: shellDamageDiff?.improved || false,
+            },
+         ]}
          TooltipTitle={
             <section className='w-[220px] h-[90px] flex flex-col gap-2'>
                <Typography variant='body1'>Avarage Damage +/- 25%</Typography>

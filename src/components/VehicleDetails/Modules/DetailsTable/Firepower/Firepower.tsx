@@ -27,6 +27,9 @@ export default function Firepower() {
          selectedModuleNames,
          moduleGroup: { vehicleGun, shells },
       },
+      modifiersReducer: {
+         modifiers: { shells: shellsModifiers },
+      },
    } = useContext(VehicleContext)
 
    const clipDamage =
@@ -43,9 +46,13 @@ export default function Firepower() {
       <Table size='small' aria-label='Firepower table with average damage and penetration'>
          <TableHeadComponent headTitle='Firepower' iconSrc='/icons/details/firepower.png' />
          <TableBody>
-            <Damage damage={shells[selectedModuleNames.shells]?.damage.armor} />
+            <Damage
+               damage={shells[selectedModuleNames.shells]?.damage.armor}
+               shellDamageDiff={shellsModifiers['damage.armor']}
+            />
             <Penetration
                piercingPower={(shells[selectedModuleNames.shells]?.piercingPower as number[]) || [0, 0]}
+               shellDamageDiff={shellsModifiers}
             />
             <RoF totalReloadTime={totalReloadTime} />
             <AvgDpm
@@ -155,6 +162,12 @@ export default function Firepower() {
                iconSrc='/icons/firepower/shellVelocity.png'
                titleText='Shell velocity'
                valueText={shells[selectedModuleNames.shells]?.speed}
+               modifiers={[
+                  {
+                     difference: shellsModifiers.speed?.difference ?? 0,
+                     improved: shellsModifiers.speed?.improved || false,
+                  },
+               ]}
                unit='m/s'
             />
             <TableRowComponent

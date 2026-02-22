@@ -1,7 +1,14 @@
+import type { ShellDiffMapState } from '@/types/VehicleDetails/Modifiers'
 import TableRowComponent from '../../Includes/TableRow'
 import Typography from '@mui/material/Typography'
 
-export default function Penetration({ piercingPower }: { piercingPower: number[] }) {
+export default function Penetration({
+   piercingPower,
+   shellDamageDiff,
+}: {
+   piercingPower: number[]
+   shellDamageDiff: ShellDiffMapState
+}) {
    return (
       <TableRowComponent
          iconSrc='/icons/firepower/avgPiercingPower.png'
@@ -11,6 +18,18 @@ export default function Penetration({ piercingPower }: { piercingPower: number[]
                   ${piercingPower[1]}
                `}
          unit='mm'
+         modifiers={
+            shellDamageDiff && [
+               {
+                  difference: shellDamageDiff['piercingPower[0]']?.difference ?? 0,
+                  improved: shellDamageDiff?.['piercingPower[0]']?.improved || false,
+               },
+               {
+                  difference: shellDamageDiff?.['piercingPower[1]']?.difference ?? 0,
+                  improved: shellDamageDiff?.['piercingPower[1]']?.improved || false,
+               },
+            ]
+         }
          TooltipTitle={
             <section className='min-w-[220px] min-h-[90px] flex flex-col gap-2'>
                <Typography variant='body1'>Avarage Penetration +/- 25%</Typography>

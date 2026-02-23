@@ -9,11 +9,12 @@ export default function useSetShells() {
          selectedModuleNames: { vehicleTurret: selectedTurretName, vehicleGun: selectedGun },
       },
       vehicleDispatch,
+      modifiersDispatch,
    } = useContext(VehicleContext)
 
    useEffect(() => {
       const foundSelectedTurret = Object.values(vehicleTurret).find(
-         (turret) => turret.name === selectedTurretName
+         (turret) => turret.name === selectedTurretName,
       )
       const foundSelectedGun = foundSelectedTurret?.guns.find((gun) => gun.name === selectedGun)
 
@@ -35,8 +36,14 @@ export default function useSetShells() {
                value: helperObjectShells[vehiclShellsKeys[0]]?.name || '',
             },
          })
+         modifiersDispatch({
+            type: 'SET_DEFAULT_SHELL_NAME',
+            payload: {
+               shells: helperObjectShells[vehiclShellsKeys[0]]?.name || '',
+            },
+         })
       }
-   }, [selectedTurretName, selectedGun, vehicleTurret, vehicleDispatch])
+   }, [selectedTurretName, selectedGun, vehicleTurret, vehicleDispatch, modifiersDispatch])
 
    return null
 }

@@ -8,13 +8,18 @@ import TableBody from '@mui/material/TableBody'
 import TableHeadComponent from '../Includes/TableHead'
 import TableRowComponent from '../Includes/TableRow'
 
+import ShellCost from './Includes/ShellCost'
+import PotentialDmg from './Includes/PotentialDmg'
+
 export default function Miscellaneous() {
    const {
       tankCost,
       vehicleReducer: {
          selectedModuleNames,
-
          moduleGroup: { shells, vehicleGun, vehicleEngine },
+      },
+      modifiersReducer: {
+         modifiers: { shells: shellsModifiers },
       },
    } = useContext(VehicleContext)
 
@@ -48,27 +53,20 @@ export default function Miscellaneous() {
                valueText={vehicleGun[selectedModuleNames.vehicleGun]?.maxAmmo}
                unit='shells'
             />
-            {vehicleGun[selectedModuleNames.vehicleGun]?.maxAmmo &&
-               shells[selectedModuleNames.shells]?.damage.armor && (
-                  <TableRowComponent
-                     iconSrc='/icons/miscellaneous/avgDamage.png'
-                     titleText='Potential Damage'
-                     valueText={vehicleGun[selectedModuleNames.vehicleGun]?.maxAmmo * armorDamage}
-                     unit='HP'
-                  />
-               )}
+            <PotentialDmg armorDamage={armorDamage} />
             <TableRowComponent
                iconSrc='/icons/money_silver.webp'
                titleText='Shell Cost'
                valueText={shells[selectedModuleNames.shells]?.price}
                unit='credits'
+               modifiers={[
+                  {
+                     difference: shellsModifiers?.price?.difference ?? 0,
+                     improved: shellsModifiers?.price?.improved || false,
+                  },
+               ]}
             />
-            <TableRowComponent
-               iconSrc='/icons/money_silver.webp'
-               titleText='Shell Cost per 1000 HP'
-               valueText={((1000 / armorDamage) * shells[selectedModuleNames.shells]?.price).toFixed(0)}
-               unit='Credits'
-            />
+            <ShellCost armorDamage={armorDamage} />
             {typeof tankCost === 'number' ? (
                <TableRowComponent
                   iconSrc='/icons/money_silver.webp'

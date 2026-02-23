@@ -6,6 +6,8 @@ import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip'
 
+import Modifiers from './Modifiers'
+
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
    <Tooltip {...props} classes={{ popper: className }} />
 ))(({}) => ({
@@ -25,6 +27,7 @@ export default function TableRowComponent({
    paddingLeft,
    iconSrc,
    TooltipTitle,
+   modifiers = null,
 }: {
    titleText: string
    valueText: string | number
@@ -32,10 +35,16 @@ export default function TableRowComponent({
    paddingLeft?: boolean
    iconSrc?: string
    TooltipTitle?: React.ReactNode
+   modifiers?:
+      | {
+           difference: number
+           improved: boolean
+        }[]
+      | null
 }) {
    return (
       <HtmlTooltip title={TooltipTitle}>
-         <TableRow className='h-[30px] ' hover>
+         <TableRow className={'h-[30px]'} hover>
             <TableCell component='th' scope='row' className='px-0 py-1'>
                <div className={`${paddingLeft ? 'pl-7' : ''} flex felx-row items-center gap-2`}>
                   {iconSrc && (
@@ -53,8 +62,9 @@ export default function TableRowComponent({
                   </Typography>
                </div>
             </TableCell>
-            <TableCell align='right' className='px-1 py-1'>
+            <TableCell align='right' className='px-1 py-1 '>
                <div className='flex flex-row justify-end gap-1 items-center'>
+                  {modifiers && <Modifiers modifiers={modifiers} />}
                   <Typography className='text-white font-semibold' variant='subtitle1' fontSize={15}>
                      {valueText}
                   </Typography>

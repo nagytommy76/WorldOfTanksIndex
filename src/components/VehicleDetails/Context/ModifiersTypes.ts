@@ -1,8 +1,16 @@
-import type { IFieldDifferences, ShellComparableField, ShellDiffMap } from '@/types/VehicleDetails/Modifiers'
+import type {
+   IFieldDifferences,
+   ShellComparableField,
+   ShellDiffMapState,
+} from '@/types/VehicleDetails/Modifiers'
+import { ModuleTypeMap } from './Types'
 
 export interface IModifiersReducerState {
    modifiers: {
-      shells: ShellDiffMap
+      shells: ShellDiffMapState
+   }
+   defaultModuleNames: {
+      [K in keyof ModuleTypeMap]: string
    }
 }
 
@@ -12,17 +20,26 @@ export type IModifiersContextActions =
         payload: { [Field in ShellComparableField]: IFieldDifferences }
      }
    | { type: 'RESET_SHELLS_MODIFIERS'; payload: null }
+   | { type: 'SET_DEFAULT_SHELL_NAME'; payload: { shells: string } }
 
-const moduleModifier: IFieldDifferences = {
-   base: 0,
-   compared: 0,
-   difference: 0,
-   percentDifference: 0,
-   improved: false,
-   neutral: false,
-}
+// const moduleModifier: IFieldDifferences = {
+//    base: 0,
+//    compared: 0,
+//    difference: 0,
+//    percentDifference: 0,
+//    improved: false,
+//    neutral: false,
+// }
 
 export const modifiersInitialState: IModifiersReducerState = {
+   defaultModuleNames: {
+      vehicleChassis: '',
+      vehicleEngine: '',
+      vehicleRadio: '',
+      vehicleTurret: '',
+      vehicleGun: '',
+      shells: '',
+   },
    modifiers: {
       //   vehicleChassis: moduleModifier,
       //   vehicleEngine: moduleModifier,
@@ -30,12 +47,12 @@ export const modifiersInitialState: IModifiersReducerState = {
       //   vehicleTurret: moduleModifier,
       //   vehicleGun: moduleModifier,
       shells: {
-         'damage.armor': moduleModifier,
-         speed: moduleModifier,
-         maxDistance: moduleModifier,
-         price: moduleModifier,
-         'piercingPower[0]': moduleModifier,
-         'piercingPower[1]': moduleModifier,
+         'damage.armor': null,
+         speed: null,
+         maxDistance: null,
+         price: null,
+         'piercingPower[0]': null,
+         'piercingPower[1]': null,
       },
    },
 }

@@ -16,10 +16,7 @@ export default function Navbar() {
                   alt={'WoT Index Logo'}
                   width={120}
                   height={120}
-                  style={{
-                     filter:
-                        'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(2%) hue-rotate(318deg) brightness(109%) contrast(101%)',
-                  }}
+                  className={`filter-white`}
                />
             </Link>
             <section className={'flex flex-row gap-3'}>

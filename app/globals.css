@@ -28,18 +28,13 @@ body {
    background-size: auto;
 }
 
-.heavyTank {
-   @apply bg-gradient-to-b from-[#530179] to-[#1c1c1e];
+.filter-white {
+   transition: all 0.2s ease;
+   filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(2%) hue-rotate(318deg)
+      brightness(109%) contrast(101%);
 }
-.mediumTank {
-   @apply bg-gradient-to-b from-[#4a3829] to-[#1c1c1e];
-}
-.SPG {
-   @apply bg-gradient-to-b from-[#203c4e] to-[#1c1c1e];
-}
-.AT-SPG {
-   @apply bg-gradient-to-b from-[#16194a] to-[#1c1c1e];
-}
-.lightTank {
-   @apply bg-gradient-to-b from-[#29492b] to-[#1c1c1e];
+
+.filter-white:hover {
+   filter: brightness(0) saturate(100%) invert(66%) sepia(32%) saturate(1900%) hue-rotate(352deg)
+      brightness(103%) contrast(98%);
 }

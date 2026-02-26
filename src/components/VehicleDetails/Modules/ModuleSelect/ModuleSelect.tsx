@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 import { useContext } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
@@ -23,12 +22,13 @@ import type {
 export default function ModuleSelect() {
    const {
       vehicleReducer: { selectedModuleNames, moduleGroup },
+      modifiersReducer: {
+         defaultModuleNames: { shells: defaultShellName },
+      },
       vehicleDispatch,
       modifiersDispatch,
    } = useContext(VehicleContext)
    useSetShells()
-
-   const defaultShellName: string = selectedModuleNames['shells']
 
    function setModuleNameByType(moduleType: ModuleType, moduleName: string) {
       vehicleDispatch({

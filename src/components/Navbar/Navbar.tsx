@@ -1,77 +1,57 @@
 'use client'
-import { useState } from 'react'
-
-import Link from 'next/link'
-import Image from 'next/image'
+import useNavbar from './Hooks/useNavbar'
 
 import SearchBar from './Search/SearchBar'
 import DropdownMenu from './Menu/DropdownMenu'
 
-function NavbarLogoLink() {
-   return (
-      <Link href={'/'} className={''}>
-         <Image
-            src={'/world_of_tanks_logo.svg'}
-            alt={'WoT Index Logo'}
-            width={120}
-            height={120}
-            className={`filter-white`}
-         />
-      </Link>
-   )
-}
+import HamburgerBtn from './Includes/HamburgerBtn'
+import NavbarLogoLink from './Includes/NavbarLogoLink'
+import LinkElement from './Includes/LinkElement'
 
 export default function Navbar() {
-   const [isNavOpen, setIsNavOpen] = useState<boolean>(false)
+   const { closeNav, isNavOpen, toggleIsNavOpen } = useNavbar()
+
    return (
       <header
          className={`
-         w-full sticky top-0 bg-neutral-950/50 transition-all hover:bg-neutral-950 z-10
-         ${isNavOpen ? 'h-screen' : 'h-18'}
+         h-18 w-full sticky top-0  transition-all hover:bg-neutral-950 z-10 xl:bg-neutral-950/50
+         ${isNavOpen ? 'bg-neutral-950' : 'bg-neutral-950/50'}
       `}
       >
          <nav
             className={`
-               px-5 max-w-screen-2xl h-full mx-auto flex justify-between items-center
-               
+               px-5 max-w-[1650px] h-full mx-auto flex justify-between items-center
             `}
          >
-            <NavbarLogoLink />
-            {/* Desktop NavBar */}
-            <section className='hidden md:flex flex-row gap-3 w-full '>
-               <DropdownMenu />
+            <section className='xl:hidden'>
+               <NavbarLogoLink />
+            </section>
+            {/* Desktop Nav */}
+            <section className='hidden md:flex flex-row order-2 gap-3 items-center justify-between w-full'>
+               <NavbarLogoLink />
+               <div className='flex flex-row items-center gap-4'>
+                  <DropdownMenu />
+                  <LinkElement href='/' text='About' />
+               </div>
                <SearchBar />
             </section>
 
             {/* Hamburger Button (mobile only) */}
-            <button
-               className='md:hidden flex flex-col justify-center items-center gap-1.5 p-2'
-               onClick={() => setIsNavOpen((prev) => !prev)}
-               aria-label='Toggle menu'
-            >
-               <span
-                  className={`block h-0.5 w-6 bg-white transition-transform duration-300 ${isNavOpen ? 'translate-y-2 rotate-45' : ''}`}
-               />
-               <span
-                  className={`block h-0.5 w-6 bg-white transition-opacity duration-300 ${isNavOpen ? 'opacity-0' : ''}`}
-               />
-               <span
-                  className={`block h-0.5 w-6 bg-white transition-transform duration-300 ${isNavOpen ? '-translate-y-2 -rotate-45' : ''}`}
-               />
-            </button>
+            <HamburgerBtn isNavOpen={isNavOpen} toggleIsNavOpen={toggleIsNavOpen} />
          </nav>
-         {/* Mobile Dropdown Panel */}
-         {/* <div
-            className={`md:hidden overflow-hidden transition-all duration-300 bg-neutral-950 
-               
-               ${isNavOpen ? 'h-screen py-4' : 'h-0'}
+
+         <section
+            className={`md:hidden overflow-hidden h-[calc(100vh-72px)] py-5 transition-all duration-200 bg-neutral-950
+                ${isNavOpen ? '-translate-x-0' : '-translate-x-120'}
+              flex flex-col gap-4 items-center justify-between
                `}
          >
-            <div className='flex flex-col gap-4 px-5'>
-               <DropdownMenu />
-               <SearchBar />
+            <div className='flex flex-col items-center gap-4'>
+               <DropdownMenu onClose={closeNav} />
+               <LinkElement href='/' text='About' onClose={closeNav} />
             </div>
-         </div> */}
+            <SearchBar />
+         </section>
       </header>
    )
 }

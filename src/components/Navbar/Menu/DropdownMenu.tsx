@@ -7,7 +7,7 @@ import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrow
 
 import AccordionMenu from './AccordionMenu'
 
-export default function DropdownMenu() {
+export default function DropdownMenu({ onClose }: { onClose?: () => void }) {
    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
    const open = Boolean(anchorEl)
    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -15,6 +15,7 @@ export default function DropdownMenu() {
    }
    const handleClose = () => {
       setAnchorEl(null)
+      if (onClose) onClose()
    }
 
    const [expanded, setExpanded] = useState<string | false>(false)
@@ -24,9 +25,9 @@ export default function DropdownMenu() {
    }
 
    return (
-      <div>
+      <>
          <Button
-            variant='outlined'
+            variant='contained'
             id='tech-tree-menu-button'
             aria-controls={open ? 'tech-tree-menu' : undefined}
             aria-haspopup='true'
@@ -34,7 +35,7 @@ export default function DropdownMenu() {
             onClick={handleClick}
             endIcon={<KeyboardDoubleArrowDownIcon />}
          >
-            Vehicles
+            Vehicles by nation
          </Button>
          <Menu
             id='tech-tree-menu'
@@ -46,6 +47,14 @@ export default function DropdownMenu() {
             anchorEl={anchorEl}
             open={open}
             onClose={handleClose}
+            anchorOrigin={{
+               vertical: 'bottom',
+               horizontal: 'center',
+            }}
+            transformOrigin={{
+               vertical: 'top',
+               horizontal: 'center',
+            }}
          >
             <AccordionMenu
                expanded={expanded}
@@ -76,6 +85,6 @@ export default function DropdownMenu() {
                accordionName='Other/Supertest Tanks'
             />
          </Menu>
-      </div>
+      </>
    )
 }

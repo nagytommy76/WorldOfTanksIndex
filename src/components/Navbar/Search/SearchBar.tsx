@@ -20,7 +20,7 @@ export default function SearchBar({ searchText = 'Search for vehicles' }: { sear
    const data = useSendRequest(debouncedInputValue, isEnabled)
 
    return (
-      <section>
+      <>
          <Button
             sx={{
                textTransform: 'none',
@@ -28,7 +28,7 @@ export default function SearchBar({ searchText = 'Search for vehicles' }: { sear
             }}
             startIcon={<SearchIcon />}
             onClick={handleOpen}
-            variant='contained'
+            variant='text'
             color='primary'
          >
             {searchText}
@@ -72,6 +72,6 @@ export default function SearchBar({ searchText = 'Search for vehicles' }: { sear
                </Paper>
             </Fade>
          </Modal>
-      </section>
+      </>
    )
 }

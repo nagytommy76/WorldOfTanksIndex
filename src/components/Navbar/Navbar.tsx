@@ -31,7 +31,7 @@ export default function Navbar() {
                <NavbarLogoLink />
                <div className='flex flex-row items-center gap-4'>
                   <DropdownMenu />
-                  <LinkElement href='/' text='About' />
+                  <LinkElement href='/about' text='About' />
                </div>
                <SearchBar />
             </section>
@@ -48,7 +48,7 @@ export default function Navbar() {
          >
             <div className='flex flex-col items-center gap-4'>
                <DropdownMenu onClose={closeNav} />
-               <LinkElement href='/' text='About' onClose={closeNav} />
+               <LinkElement href='/about' text='About' onClose={closeNav} />
             </div>
             <SearchBar />
          </section>

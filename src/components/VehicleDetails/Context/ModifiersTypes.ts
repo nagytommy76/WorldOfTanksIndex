@@ -22,15 +22,6 @@ export type IModifiersContextActions =
    | { type: 'RESET_SHELLS_MODIFIERS'; payload: null }
    | { type: 'SET_DEFAULT_SHELL_NAME'; payload: { shells: string } }
 
-// const moduleModifier: IFieldDifferences = {
-//    base: 0,
-//    compared: 0,
-//    difference: 0,
-//    percentDifference: 0,
-//    improved: false,
-//    neutral: false,
-// }
-
 export const modifiersInitialState: IModifiersReducerState = {
    defaultModuleNames: {
       vehicleChassis: '',

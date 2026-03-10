@@ -64,6 +64,7 @@ export interface IVehicleContext {
    speedLimit: ISpeedLimit
    camo: ICamo
    tankCost: number | { gold: number }
+   provisions: string[]
    /**
     * @description Mechanics for TIER XI tanks
     */

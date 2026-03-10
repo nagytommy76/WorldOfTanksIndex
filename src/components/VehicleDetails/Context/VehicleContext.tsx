@@ -18,6 +18,7 @@ import useSetEngines from './Hooks/useSetEngines'
 import useSetMechanics from './Hooks/useSetMechanics'
 import useSetSiegeMode from './Hooks/useSetSiegeMode'
 import useSetBooster from './Hooks/useSetBooster'
+import useSetProvisions from './Hooks/useSetProvisions'
 
 export const VehicleContext = createContext<IVehicleContext>({
    vehicleDispatch: () => null,
@@ -30,6 +31,7 @@ export const VehicleContext = createContext<IVehicleContext>({
    camo: {} as ICamo,
    tankCost: 0,
    vehicleName: '',
+   provisions: [],
    /**
     * @description Mechanics for TIER XI tanks
     */
@@ -55,6 +57,7 @@ export default function VehicleContextProvider({
    useSetSiegeMode(tankDetails, vehicleDispatch)
    const mechanics = useSetMechanics(tankDetails.mechanics)
    const rocketBooser = useSetBooster(tankDetails.stats.rocketAcceleration)
+   const provisions = useSetProvisions(tankDetails.tankDetails?.provisions)
 
    return (
       <VehicleContext.Provider
@@ -67,6 +70,7 @@ export default function VehicleContextProvider({
             tankCost: tankDetails?.price,
             mechanics,
             rocketAcceleration: rocketBooser,
+            provisions,
             vehicleReducer,
             vehicleDispatch,
             modifiersDispatch,

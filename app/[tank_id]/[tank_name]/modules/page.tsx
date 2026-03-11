@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 // Big tank image: Vehicle tag: "tag": "G89_Leopard1" -> .toLocaleLowerCase() method needed
 // https://eu-wotp.wgcdn.co/dcont/tankopedia_images/g89_leopard1/g89_leopard1_image.png
 
-export async function getTankDetails(tank_id: string, tank_name: string) {
+async function getTankDetails(tank_id: string, tank_name: string) {
    const URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
    const vehicleStats = await fetch(`${URL}/api/${tank_id}/${tank_name}`, { method: 'GET' })
    const response = (await vehicleStats.json()) as Promise<{ vehicleStats: ITankData }>
@@ -27,15 +27,26 @@ export async function getTankDetails(tank_id: string, tank_name: string) {
    return (await response).vehicleStats
 }
 
+async function getDevices() {
+   const URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+   const vehicleStats = await fetch(`${URL}/api/devices`, { method: 'GET' })
+   const response = (await vehicleStats.json()) as Promise<{ devices: string[] }>
+
+   return await response
+}
+
 export default async function page({ params }: { params: Params }) {
    const { tank_id, tank_name } = await params
    const tankStats = await getTankDetails(tank_id, tank_name)
+   const devices = await getDevices()
+
+   console.log(devices)
    return (
       <VehicleContextProvider tankDetails={tankStats}>
          <section
             className={`
-               flex w-full min-h-screen flex-col gap-0 xl:flex-row xl:gap-5 
-               xl:justify-between bg-neutral-900 rounded-lg xl:p-6
+               flex w-full min-h-screen flex-col gap-0 p-2 xl:flex-row xl:gap-5 
+               xl:justify-between bg-neutral-900 rounded-lg xl:p-3
                `}
          >
             <ModuleSelect />

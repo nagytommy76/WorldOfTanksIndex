@@ -29,6 +29,7 @@ export interface ITankDetails {
    short_name: string
    description: string
    name: string
+   provisions: string[]
 }
 
 interface ITankStats {

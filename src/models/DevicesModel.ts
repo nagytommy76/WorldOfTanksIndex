@@ -6,7 +6,15 @@ const DeviceSchema = new Schema({
    name: String,
    displayName: String,
    modifiers: {
-      type: [{ type: { name: String, value: Number } }],
+      type: [
+         {
+            type: {
+               name: String,
+               value: Number,
+               specValue: { type: Number, required: false, default: null },
+            },
+         },
+      ],
       required: false,
       default: null,
       _id: false,

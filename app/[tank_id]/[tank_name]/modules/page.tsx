@@ -27,20 +27,10 @@ async function getTankDetails(tank_id: string, tank_name: string) {
    return (await response).vehicleStats
 }
 
-async function getDevices() {
-   const URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-   const vehicleStats = await fetch(`${URL}/api/devices`, { method: 'GET' })
-   const response = (await vehicleStats.json()) as Promise<{ devices: string[] }>
-
-   return await response
-}
-
 export default async function page({ params }: { params: Params }) {
    const { tank_id, tank_name } = await params
    const tankStats = await getTankDetails(tank_id, tank_name)
-   const devices = await getDevices()
 
-   console.log(devices)
    return (
       <VehicleContextProvider tankDetails={tankStats}>
          <section

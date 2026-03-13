@@ -35,6 +35,7 @@ const DeviceSchema = new Schema({
    vehicleExcludeFilterTags: { type: [String], required: false, default: null },
    incompatibleTags: { type: [String], required: false, default: null },
    tags: { type: [String], required: false, default: null },
+   deviceType: { type: String, required: true },
 })
 
 export const DeviceModel = models.Devices || model('Devices', DeviceSchema)

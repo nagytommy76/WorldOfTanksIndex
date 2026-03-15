@@ -1,10 +1,12 @@
-import { Schema, model, models } from 'mongoose'
+import { Schema, model, models, type Model } from 'mongoose'
 
-const DeviceSchema = new Schema({
+import type { IDevice } from '@/types/Devices/Devices'
+
+const DeviceSchema = new Schema<IDevice, Model<IDevice>>({
    id: { type: Number, required: true },
-   icon: String,
-   name: String,
-   displayName: String,
+   icon: { type: String, required: true },
+   name: { type: String, required: true },
+   displayName: { type: String, required: true },
    modifiers: {
       type: [
          {
@@ -36,6 +38,8 @@ const DeviceSchema = new Schema({
    incompatibleTags: { type: [String], required: false, default: null },
    tags: { type: [String], required: false, default: null },
    deviceType: { type: String, required: true },
+   archeType: { type: String, required: true },
 })
 
-export const DeviceModel = models.Devices || model('Devices', DeviceSchema)
+export const DeviceModel =
+   (models.Devices as Model<IDevice>) || model<IDevice, Model<IDevice>>('Devices', DeviceSchema)

@@ -14,14 +14,25 @@ export async function GET(req: NextRequest) {
          {
             $match: {
                id: { $in: provisionsArray },
-               deviceType: {
-                  $in: ['deluxe', 'tiers', 'trophy', 'modernized'],
-               },
             },
+         },
+         {
+            $group: {
+               _id: '$archeType',
+               devices: { $push: '$$ROOT' },
+            },
+         },
+         {
+            $sort: { archeType: 1 },
          },
       ])
 
-      return NextResponse.json({ compatibleDevices }, { status: 200 })
+      const groupedDevices = compatibleDevices.reduce((acc, group) => {
+         acc[group._id] = group.devices
+         return acc
+      }, {})
+
+      return NextResponse.json({ groupedDevices }, { status: 200 })
    } catch (error) {
       console.log(`Error during get devices: `, error)
       return NextResponse.json({ error: 'Error during get devices', errorType: error }, { status: 500 })

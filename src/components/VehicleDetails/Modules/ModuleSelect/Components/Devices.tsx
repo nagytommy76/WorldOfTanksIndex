@@ -11,6 +11,30 @@ import ReturnTypography from '../Includes/ModuleType'
 
 import Tooltip from '@mui/material/Tooltip'
 
+function DeviceGroup({ devices }: { devices: IDevice[] }) {
+   const foundTiers = devices.find((device) => device.deviceType === 'tiers')
+   const foundDeluxe = devices.find((device) => device.deviceType === 'deluxe')
+   const foundTrophy = devices.find((device) => device.deviceType === 'trophy')
+
+   // if (!foundTiers || !foundDeluxe || !foundTrophy) return null
+
+   if (foundTiers)
+      return (
+         <>
+            <Tooltip title={foundTiers.displayName}>
+               <div className='bg-neutral-600/40 rounded-md p-1'>
+                  <Image
+                     src={`/icons/vehicle_modifiers/equipments/${foundTiers.icon}.png`}
+                     alt={foundTiers.name}
+                     width={50}
+                     height={50}
+                  />
+               </div>
+            </Tooltip>
+         </>
+      )
+}
+
 export default function Devices() {
    const { provisions } = useContext(VehicleContext)
 
@@ -22,9 +46,8 @@ export default function Devices() {
          }),
    })
 
-   console.log(data?.data.groupedDevices)
-
    if (!data?.data) return null
+   console.log(data.data.groupedDevices)
 
    return (
       <>
@@ -32,7 +55,8 @@ export default function Devices() {
          <section className='grid grid-cols-4 gap-2'>
             {Object.entries(data.data.groupedDevices).map(([deviceArcheType, devices]) => (
                <>
-                  {devices.map((device) => (
+                  <DeviceGroup devices={devices} />
+                  {/* {devices.map((device) => (
                      <Tooltip key={device.id} title={device.displayName}>
                         <div className='bg-neutral-600/40 rounded-md p-1'>
                            <Image
@@ -40,13 +64,10 @@ export default function Devices() {
                               alt={device.name}
                               width={50}
                               height={50}
-                              onError={(error) => {
-                                 console.log('error:::: ', error)
-                              }}
                            />
                         </div>
                      </Tooltip>
-                  ))}
+                  ))} */}
                </>
             ))}
          </section>

@@ -23,13 +23,13 @@ export async function GET(req: NextRequest) {
             },
          },
          {
-            $sort: { archeType: 1 },
+            $sort: { _id: 1 },
          },
       ])
 
-      const groupedDevices = compatibleDevices.reduce((acc, group) => {
-         acc[group._id] = group.devices
-         return acc
+      const groupedDevices = compatibleDevices.reduce((accumulator, currentValue) => {
+         accumulator[currentValue._id] = currentValue.devices
+         return accumulator
       }, {})
 
       return NextResponse.json({ groupedDevices }, { status: 200 })

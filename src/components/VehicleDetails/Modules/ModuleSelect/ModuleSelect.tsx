@@ -2,7 +2,7 @@
 
 import Modules from './Components/Modules'
 import Shells from './Components/Shells'
-import Devices from './Components/Devices'
+import Devices from './Components/Devices/Devices'
 
 export default function ModuleSelect() {
    return (

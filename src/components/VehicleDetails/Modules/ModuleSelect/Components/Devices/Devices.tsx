@@ -4,6 +4,7 @@ import { useContext, useState } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 
 import type { IDevice } from '@/types/Devices/Devices'
+import type { OverlayTypes } from './Types'
 
 import { useQuery } from '@tanstack/react-query'
 import axiosInstance from '@/Providers/AxiosProvider'
@@ -16,8 +17,10 @@ import Button from '@mui/material/Button'
 import Menu from '@mui/material/Menu'
 
 import MenuItemOverlay from './Includes/MenuItemOverlay'
+import SingleMenuItem from './Includes/SingleMenuItem'
 
 function DeviceGroup({ devices }: { devices: IDevice[] }) {
+   // const foundModernized = devices.find((device) => device.deviceType === 'modernized')
    const foundTiers = devices.find((device) => device.deviceType === 'tiers')
    const foundDeluxe = devices.find((device) => device.deviceType === 'deluxe')
    const foundBasicTrophy = devices.find(
@@ -27,32 +30,67 @@ function DeviceGroup({ devices }: { devices: IDevice[] }) {
       (device) => device.deviceType === 'trophy' && device.tags?.includes('trophyUpgraded'),
    )
 
+   // const foundDevices = {
+   //    tiers: { foundTiers, overlayType: 'none' } satisfies {
+   //       foundTiers: IDevice | undefined
+   //       overlayType: OverlayTypes
+   //    },
+   //    deluxe: { foundDeluxe, overlayType: 'equipmentPlus' } satisfies {
+   //       foundDeluxe: IDevice | undefined
+   //       overlayType: OverlayTypes
+   //    },
+   //    trophyBasic: { foundBasicTrophy, overlayType: 'equipmentTrophyBasic' } satisfies {
+   //       foundBasicTrophy: IDevice | undefined
+   //       overlayType: OverlayTypes
+   //    },
+   //    trophyUpgraded: { foundUpgradedTrophy, overlayType: 'equipmentTrophyUpgraded' } satisfies {
+   //       foundUpgradedTrophy: IDevice | undefined
+   //       overlayType: OverlayTypes
+   //    },
+   // }
+
+   const [selectedDeviceType, setSelectedDeviceType] = useState<OverlayTypes>('none')
+
    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
    const open = Boolean(anchorEl)
    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       setAnchorEl(event.currentTarget)
    }
-   const handleClose = () => {
+   const handleClose = (deviceType: OverlayTypes) => {
       setAnchorEl(null)
+      setSelectedDeviceType(deviceType)
    }
 
    if (!foundTiers) return null
 
    return (
       <>
-         <Tooltip title={foundTiers.displayName}>
+         <Tooltip
+            title={
+               <>
+                  <Typography textAlign={'center'} variant='h6' fontSize={12}>
+                     {foundTiers.displayName}
+                  </Typography>
+                  <div className=''>
+                     here comes the modifiers, and aggregateModifiers vehicleCamouflage: value: 1.06
+                  </div>
+               </>
+            }
+         >
             <Button
-               id='basic-button'
-               aria-controls={open ? 'basic-menu' : undefined}
+               id='equipment-button'
+               aria-controls={open ? 'equipment-menu' : undefined}
                aria-haspopup='true'
                aria-expanded={open ? 'true' : undefined}
                onClick={handleClick}
+               sx={{
+                  border: selectedDeviceType !== 'none' ? '1px solid #e6c40360' : '1px solid transparent',
+               }}
             >
-               <Image
-                  src={`/icons/vehicle_modifiers/equipments/${foundTiers.icon}.png`}
-                  alt={foundTiers.name}
-                  width={50}
-                  height={50}
+               <MenuItemOverlay
+                  overlayType={selectedDeviceType}
+                  altName={foundTiers.name}
+                  icon={foundTiers.icon}
                />
             </Button>
          </Tooltip>
@@ -60,45 +98,55 @@ function DeviceGroup({ devices }: { devices: IDevice[] }) {
             id='equipment-selection-menu'
             anchorEl={anchorEl}
             open={open}
-            onClose={handleClose}
+            onClose={() => handleClose('none')}
             slotProps={{
                list: {
                   'aria-labelledby': 'Equipment selection',
                },
             }}
          >
-            <MenuItemOverlay
-               overlayType='none'
-               displayName={foundTiers.displayName}
-               altName={foundTiers.name}
-               icon={foundTiers.icon}
-               handleClose={handleClose}
-            />
+            <SingleMenuItem displayName={'Deselect equipment'} handleClose={() => handleClose('none')}>
+               <MenuItemOverlay overlayType='none' altName={'empty_loadout'} icon={'empty_loadout'} />
+            </SingleMenuItem>
+            <SingleMenuItem displayName={foundTiers.displayName} handleClose={() => handleClose('tiers')}>
+               <MenuItemOverlay overlayType='none' altName={foundTiers.name} icon={foundTiers.icon} />
+            </SingleMenuItem>
+
             {foundBasicTrophy && (
-               <MenuItemOverlay
+               <SingleMenuItem
                   displayName={foundBasicTrophy.displayName}
-                  altName={foundBasicTrophy.name}
-                  icon={foundBasicTrophy.icon}
-                  handleClose={handleClose}
-               />
+                  handleClose={() => handleClose('equipmentTrophyBasic')}
+               >
+                  <MenuItemOverlay
+                     overlayType='equipmentTrophyBasic'
+                     altName={foundBasicTrophy.name}
+                     icon={foundBasicTrophy.icon}
+                  />
+               </SingleMenuItem>
             )}
             {foundUpgradedTrophy && (
-               <MenuItemOverlay
-                  overlayType='equipmentTrophyUpgraded'
+               <SingleMenuItem
                   displayName={foundUpgradedTrophy.displayName}
-                  altName={foundUpgradedTrophy.name}
-                  icon={foundUpgradedTrophy.icon}
-                  handleClose={handleClose}
-               />
+                  handleClose={() => handleClose('equipmentTrophyUpgraded')}
+               >
+                  <MenuItemOverlay
+                     overlayType='equipmentTrophyUpgraded'
+                     altName={foundUpgradedTrophy.name}
+                     icon={foundUpgradedTrophy.icon}
+                  />
+               </SingleMenuItem>
             )}
             {foundDeluxe && (
-               <MenuItemOverlay
-                  overlayType='equipmentPlus'
-                  altName={foundDeluxe.name}
+               <SingleMenuItem
                   displayName={foundDeluxe.displayName}
-                  icon={foundDeluxe.icon}
-                  handleClose={handleClose}
-               />
+                  handleClose={() => handleClose('equipmentPlus')}
+               >
+                  <MenuItemOverlay
+                     overlayType='equipmentPlus'
+                     altName={foundDeluxe.name}
+                     icon={foundDeluxe.icon}
+                  />
+               </SingleMenuItem>
             )}
          </Menu>
       </>

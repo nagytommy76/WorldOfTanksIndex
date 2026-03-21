@@ -1,5 +1,5 @@
 'use client'
-import Image from 'next/image'
+// import Image from 'next/image'
 import { useContext, useState } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 
@@ -20,8 +20,8 @@ import MenuItemOverlay from './Includes/MenuItemOverlay'
 import SingleMenuItem from './Includes/SingleMenuItem'
 
 function DeviceGroup({ devices }: { devices: IDevice[] }) {
-   // const foundModernized = devices.find((device) => device.deviceType === 'modernized')
-   const foundTiers = devices.find((device) => device.deviceType === 'tiers')
+   const foundModernized = devices.find((device) => device.deviceType === 'modernized')
+   const foundTiers = devices.find((device) => device.deviceType === 'tiers') as IDevice
    const foundDeluxe = devices.find((device) => device.deviceType === 'deluxe')
    const foundBasicTrophy = devices.find(
       (device) => device.deviceType === 'trophy' && device.tags?.includes('trophyBasic'),
@@ -30,38 +30,38 @@ function DeviceGroup({ devices }: { devices: IDevice[] }) {
       (device) => device.deviceType === 'trophy' && device.tags?.includes('trophyUpgraded'),
    )
 
-   // const foundDevices = {
-   //    tiers: { foundTiers, overlayType: 'none' } satisfies {
-   //       foundTiers: IDevice | undefined
-   //       overlayType: OverlayTypes
-   //    },
-   //    deluxe: { foundDeluxe, overlayType: 'equipmentPlus' } satisfies {
-   //       foundDeluxe: IDevice | undefined
-   //       overlayType: OverlayTypes
-   //    },
-   //    trophyBasic: { foundBasicTrophy, overlayType: 'equipmentTrophyBasic' } satisfies {
-   //       foundBasicTrophy: IDevice | undefined
-   //       overlayType: OverlayTypes
-   //    },
-   //    trophyUpgraded: { foundUpgradedTrophy, overlayType: 'equipmentTrophyUpgraded' } satisfies {
-   //       foundUpgradedTrophy: IDevice | undefined
-   //       overlayType: OverlayTypes
-   //    },
-   // }
+   const foundDevices = {
+      tiers: foundTiers,
+      equipmentPlus: foundDeluxe,
+      equipmentTrophyBasic: foundBasicTrophy,
+      equipmentTrophyUpgraded: foundUpgradedTrophy,
+      equipmentModernized_1: foundModernized,
+      equipmentModernized_2: foundModernized,
+      equipmentModernized_3: foundModernized,
+   }
 
    const [selectedDeviceType, setSelectedDeviceType] = useState<OverlayTypes>('none')
+   const [selectedDevice, setSelectedDevice] = useState(foundDevices.tiers)
 
    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
    const open = Boolean(anchorEl)
    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       setAnchorEl(event.currentTarget)
    }
-   const handleClose = (deviceType: OverlayTypes) => {
+
+   function handleClose(deviceType: OverlayTypes) {
       setAnchorEl(null)
+      setSelectedDeviceType(deviceType)
+      setSelectedDevice(foundDevices[deviceType])
+   }
+
+   const handleSelectAndClose = (deviceType: OverlayTypes, reason: 'backdropClick' | 'escapeKeyDown') => {
+      setAnchorEl(null)
+      if (reason === 'backdropClick') return
       setSelectedDeviceType(deviceType)
    }
 
-   if (!foundTiers) return null
+   if (!selectedDevice) return null
 
    return (
       <>
@@ -69,7 +69,7 @@ function DeviceGroup({ devices }: { devices: IDevice[] }) {
             title={
                <>
                   <Typography textAlign={'center'} variant='h6' fontSize={12}>
-                     {foundTiers.displayName}
+                     {selectedDevice.displayName}
                   </Typography>
                   <div className=''>
                      here comes the modifiers, and aggregateModifiers vehicleCamouflage: value: 1.06
@@ -89,8 +89,8 @@ function DeviceGroup({ devices }: { devices: IDevice[] }) {
             >
                <MenuItemOverlay
                   overlayType={selectedDeviceType}
-                  altName={foundTiers.name}
-                  icon={foundTiers.icon}
+                  altName={selectedDevice.name}
+                  icon={selectedDevice.icon}
                />
             </Button>
          </Tooltip>
@@ -98,7 +98,7 @@ function DeviceGroup({ devices }: { devices: IDevice[] }) {
             id='equipment-selection-menu'
             anchorEl={anchorEl}
             open={open}
-            onClose={() => handleClose('none')}
+            onClose={(event, reason) => handleSelectAndClose('none', reason)}
             slotProps={{
                list: {
                   'aria-labelledby': 'Equipment selection',
@@ -169,7 +169,7 @@ export default function Devices() {
 
    return (
       <>
-         <ReturnTypography text='Devices' />
+         <ReturnTypography text='Compatible Devices' />
          <section className='grid grid-cols-4 gap-2'>
             {Object.entries(data.data.groupedDevices).map(([deviceArcheType, devices]) => (
                <DeviceGroup key={deviceArcheType} devices={devices} />

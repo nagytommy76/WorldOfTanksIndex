@@ -51,7 +51,7 @@ export default async function Header({ tank_name, tank_id }: { tank_name: string
          )}
          <PlaceholderImg tank_name={tank_name} />
          <Image
-            className='absolute bottom-0 lg:top-0 left-0 -z-2 object-cover '
+            className='absolute bottom-0 lg:-top-0 left-0 -z-2 xl:max-w-[115vw]'
             src={hangar.src}
             alt={'Hangar background'}
             width={1920}

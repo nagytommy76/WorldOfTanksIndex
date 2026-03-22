@@ -1,3 +1,5 @@
+export type DeviceTypes = Omit<OverlayTypes, 'none'>
+
 export type OverlayTypes =
    | 'equipmentTrophyBasic'
    | 'equipmentTrophyUpgraded'

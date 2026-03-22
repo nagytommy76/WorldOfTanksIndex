@@ -79,7 +79,7 @@ export interface IDevice {
    /**
     * @param {string[] |null} tags The tags of the device
     */
-   tags: string[] | null
+   tags: string[]
    /**
     * @param {string} deviceType The type of the device (deluxe, trophy, tier, boost, modernized)
     */

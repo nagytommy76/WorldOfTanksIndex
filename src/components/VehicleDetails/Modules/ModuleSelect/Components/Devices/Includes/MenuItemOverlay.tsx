@@ -20,7 +20,7 @@ export default function MenuItemOverlay({
                alt={altName}
                width={100}
                height={100}
-               className='absolute z-1 w-[85px] h-[85px] -top-6 -left-5'
+               className='absolute z-1 max-w-[85px] h-[85px] -top-6 -left-5'
             />
          )}
          <Image
@@ -28,6 +28,7 @@ export default function MenuItemOverlay({
             alt={altName}
             width={50}
             height={50}
+            className='max-w-[50px]'
          />
       </div>
    )

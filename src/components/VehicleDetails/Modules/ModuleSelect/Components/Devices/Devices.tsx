@@ -1,13 +1,9 @@
 'use client'
-// import Image from 'next/image'
-import { useContext, useState } from 'react'
-import { VehicleContext } from '@/VehicleContext/VehicleContext'
+import { useState } from 'react'
 
 import type { IDevice } from '@/types/Devices/Devices'
 import type { OverlayTypes } from './Types'
 
-import { useQuery } from '@tanstack/react-query'
-import axiosInstance from '@/Providers/AxiosProvider'
 import ReturnTypography from '../../Includes/ModuleType'
 
 import Tooltip from '@mui/material/Tooltip'
@@ -19,8 +15,20 @@ import Menu from '@mui/material/Menu'
 import MenuItemOverlay from './Includes/MenuItemOverlay'
 import SingleMenuItem from './Includes/SingleMenuItem'
 
-function DeviceGroup({ devices }: { devices: IDevice[] }) {
-   const foundModernized = devices.find((device) => device.deviceType === 'modernized')
+import useGetDevices from './Hooks/useGetDevices'
+
+function DeviceGroup({
+   devices,
+   // selectedDevices,
+   // addDeviceToMap,
+   addSelectedDevice,
+}: {
+   devices: IDevice[]
+   // selectedDevices: Map<string, IDevice>
+   // addDeviceToMap(device: IDevice): void
+   addSelectedDevice(deviceId: number, deviceCategory: string): void
+}) {
+   // const foundModernized = devices.find((device) => device.deviceType === 'modernized')
    const foundTiers = devices.find((device) => device.deviceType === 'tiers') as IDevice
    const foundDeluxe = devices.find((device) => device.deviceType === 'deluxe')
    const foundBasicTrophy = devices.find(
@@ -32,12 +40,9 @@ function DeviceGroup({ devices }: { devices: IDevice[] }) {
 
    const foundDevices = {
       tiers: foundTiers,
-      equipmentPlus: foundDeluxe,
       equipmentTrophyBasic: foundBasicTrophy,
       equipmentTrophyUpgraded: foundUpgradedTrophy,
-      equipmentModernized_1: foundModernized,
-      equipmentModernized_2: foundModernized,
-      equipmentModernized_3: foundModernized,
+      equipmentPlus: foundDeluxe,
    }
 
    const [selectedDeviceType, setSelectedDeviceType] = useState<OverlayTypes>('none')
@@ -49,13 +54,22 @@ function DeviceGroup({ devices }: { devices: IDevice[] }) {
       setAnchorEl(event.currentTarget)
    }
 
-   function handleClose(deviceType: OverlayTypes) {
+   function handleSelectAndClose(deviceType: OverlayTypes) {
       setAnchorEl(null)
+
+      if (deviceType === 'none') {
+         setSelectedDevice(foundDevices['tiers'])
+         // addDeviceToMap(foundDevices['tiers'])
+         // addSelectedDevice(0, foundDevices[deviceType].tags[0])
+      } else {
+         setSelectedDevice(foundDevices[deviceType])
+         // addDeviceToMap(foundDevices[deviceType])
+         addSelectedDevice(foundDevices[deviceType].id, foundDevices[deviceType].tags[0])
+      }
       setSelectedDeviceType(deviceType)
-      setSelectedDevice(foundDevices[deviceType])
    }
 
-   const handleSelectAndClose = (deviceType: OverlayTypes, reason: 'backdropClick' | 'escapeKeyDown') => {
+   const handleClose = (deviceType: OverlayTypes, reason: 'backdropClick' | 'escapeKeyDown') => {
       setAnchorEl(null)
       if (reason === 'backdropClick') return
       setSelectedDeviceType(deviceType)
@@ -98,55 +112,34 @@ function DeviceGroup({ devices }: { devices: IDevice[] }) {
             id='equipment-selection-menu'
             anchorEl={anchorEl}
             open={open}
-            onClose={(event, reason) => handleSelectAndClose('none', reason)}
+            onClose={(event, reason) => handleClose('none', reason)}
             slotProps={{
                list: {
                   'aria-labelledby': 'Equipment selection',
                },
             }}
          >
-            <SingleMenuItem displayName={'Deselect equipment'} handleClose={() => handleClose('none')}>
+            <SingleMenuItem
+               displayName={'Deselect equipment'}
+               handleClose={() => handleSelectAndClose('none')}
+            >
                <MenuItemOverlay overlayType='none' altName={'empty_loadout'} icon={'empty_loadout'} />
             </SingleMenuItem>
-            <SingleMenuItem displayName={foundTiers.displayName} handleClose={() => handleClose('tiers')}>
-               <MenuItemOverlay overlayType='none' altName={foundTiers.name} icon={foundTiers.icon} />
-            </SingleMenuItem>
-
-            {foundBasicTrophy && (
-               <SingleMenuItem
-                  displayName={foundBasicTrophy.displayName}
-                  handleClose={() => handleClose('equipmentTrophyBasic')}
-               >
-                  <MenuItemOverlay
-                     overlayType='equipmentTrophyBasic'
-                     altName={foundBasicTrophy.name}
-                     icon={foundBasicTrophy.icon}
-                  />
-               </SingleMenuItem>
-            )}
-            {foundUpgradedTrophy && (
-               <SingleMenuItem
-                  displayName={foundUpgradedTrophy.displayName}
-                  handleClose={() => handleClose('equipmentTrophyUpgraded')}
-               >
-                  <MenuItemOverlay
-                     overlayType='equipmentTrophyUpgraded'
-                     altName={foundUpgradedTrophy.name}
-                     icon={foundUpgradedTrophy.icon}
-                  />
-               </SingleMenuItem>
-            )}
-            {foundDeluxe && (
-               <SingleMenuItem
-                  displayName={foundDeluxe.displayName}
-                  handleClose={() => handleClose('equipmentPlus')}
-               >
-                  <MenuItemOverlay
-                     overlayType='equipmentPlus'
-                     altName={foundDeluxe.name}
-                     icon={foundDeluxe.icon}
-                  />
-               </SingleMenuItem>
+            {Object.entries(foundDevices).map(
+               ([deviceType, device]) =>
+                  device !== undefined && (
+                     <SingleMenuItem
+                        key={deviceType}
+                        displayName={device.displayName}
+                        handleClose={() => handleSelectAndClose(deviceType as OverlayTypes)}
+                     >
+                        <MenuItemOverlay
+                           overlayType={deviceType as OverlayTypes}
+                           altName={device.name}
+                           icon={device.icon}
+                        />
+                     </SingleMenuItem>
+                  ),
             )}
          </Menu>
       </>
@@ -154,25 +147,56 @@ function DeviceGroup({ devices }: { devices: IDevice[] }) {
 }
 
 export default function Devices() {
-   const { provisions } = useContext(VehicleContext)
+   const allGroupedDevices = useGetDevices()
+   // const [selectedDevices, setSelectedDevices] = useState<Map<string, IDevice>>(new Map())
+   const [selectedDevices, setSelectedDevices] = useState<{
+      [key: string]: number
+   }>({})
+   if (!allGroupedDevices) return null
 
-   const { data } = useQuery<{ data: { groupedDevices: { [deviceArcheType: string]: IDevice[] } } }>({
-      queryKey: ['provisions', provisions],
-      queryFn: () =>
-         axiosInstance.get('/devices', {
-            params: { provisions: JSON.stringify(provisions) },
-         }),
-   })
+   function addSelectedDevice(deviceId: number, deviceCategory: string) {
+      if (deviceId === 0 && deviceCategory === 'none') {
+         delete selectedDevices[deviceCategory]
+         setSelectedDevices(selectedDevices)
+      }
 
-   if (!data?.data) return null
-   console.log(data.data.groupedDevices)
+      setSelectedDevices({
+         ...selectedDevices,
+         [deviceCategory]: deviceId,
+      })
+   }
+
+   // function addDeviceToMap(device: IDevice | undefined) {
+   //    const newSelectedDevicesMap = new Map(selectedDevices)
+
+   //    if (!device) {
+   //       setSelectedDevices(newSelectedDevicesMap)
+   //       newSelectedDevicesMap.clear()
+   //       return
+   //    }
+
+   //    if (newSelectedDevicesMap.size >= 3) {
+   //       return
+   //    } else {
+   //       setSelectedDevices(selectedDevices.set(device.tags[0], device))
+   //    }
+   //    setSelectedDevices(newSelectedDevicesMap)
+   // }
+
+   console.log(allGroupedDevices)
 
    return (
       <>
          <ReturnTypography text='Compatible Devices' />
          <section className='grid grid-cols-4 gap-2'>
-            {Object.entries(data.data.groupedDevices).map(([deviceArcheType, devices]) => (
-               <DeviceGroup key={deviceArcheType} devices={devices} />
+            {Object.entries(allGroupedDevices).map(([deviceArcheType, devices]) => (
+               <DeviceGroup
+                  key={deviceArcheType}
+                  devices={devices}
+                  addSelectedDevice={addSelectedDevice}
+                  // addDeviceToMap={addDeviceToMap}
+                  // selectedDevices={selectedDevices}
+               />
             ))}
          </section>
       </>

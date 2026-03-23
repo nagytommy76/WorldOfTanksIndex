@@ -1,7 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 
-import type { OverlayTypes } from '../Types'
+import type { OverlayTypes } from '../../Types'
 
 export default function MenuItemOverlay({
    overlayType = 'equipmentTrophyBasic',

@@ -1,6 +1,6 @@
 import type { IModifiersReducerState, IModifiersContextActions } from './ModifiersTypes'
 import type { ModuleType } from '@VehicleTypes/module'
-import type { IRadios, IFuelTank, ISpeedLimit, ICamo, ISiegeMode } from '@VehicleTypes/Other'
+import type { IRadios, IFuelTank, ISpeedLimit, ICamo, ISiegeMode, VehicleTypes } from '@VehicleTypes/Other'
 import type { ITurrets } from '@VehicleTypes/Turrets'
 import type { IEngines, IRocketAcceleration } from '@VehicleTypes/Engines'
 import type { IChassis, IHull } from '@VehicleTypes/Hull'
@@ -65,6 +65,7 @@ export interface IVehicleContext {
    camo: ICamo
    tankCost: number | { gold: number }
    provisions: string[]
+   vehicleType: VehicleTypes
    /**
     * @description Mechanics for TIER XI tanks
     */

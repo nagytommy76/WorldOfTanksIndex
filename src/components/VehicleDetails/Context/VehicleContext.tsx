@@ -32,6 +32,7 @@ export const VehicleContext = createContext<IVehicleContext>({
    tankCost: 0,
    vehicleName: '',
    provisions: [],
+   vehicleType: 'SPG',
    /**
     * @description Mechanics for TIER XI tanks
     */
@@ -62,16 +63,17 @@ export default function VehicleContextProvider({
    return (
       <VehicleContext.Provider
          value={{
-            vehicleName: tankDetails?.xmlId,
-            hull: tankDetails?.stats.hull,
-            fuelTank: tankDetails?.stats.fuelTank,
-            speedLimit: tankDetails?.stats.speedLimit,
-            camo: tankDetails?.stats.camo,
-            tankCost: tankDetails?.price,
+            vehicleName: tankDetails.xmlId,
+            hull: tankDetails.stats.hull,
+            fuelTank: tankDetails.stats.fuelTank,
+            speedLimit: tankDetails.stats.speedLimit,
+            camo: tankDetails.stats.camo,
+            tankCost: tankDetails.price,
             mechanics,
             rocketAcceleration: rocketBooser,
             provisions,
             vehicleReducer,
+            vehicleType: tankDetails.type,
             vehicleDispatch,
             modifiersDispatch,
             modifiersReducer,

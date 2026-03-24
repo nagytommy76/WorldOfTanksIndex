@@ -5,7 +5,7 @@
  */
 type IDevicePrice = { crystal: number } | { credits: number } | { equipCoin: number }
 
-interface IModifier {
+export interface IModifier {
    /**
     * @param {string} name The name of the modifier
     */
@@ -20,7 +20,7 @@ interface IModifier {
    specValue: number | null // required: false, default: null
 }
 
-interface IAggregateModifier {
+export interface IAggregateModifier {
    /**
     * @param {string} name The name of the modifier
     */

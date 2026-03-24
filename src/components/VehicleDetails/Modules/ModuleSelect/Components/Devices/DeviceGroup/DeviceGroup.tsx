@@ -13,6 +13,7 @@ import Menu from '@mui/material/Menu'
 import MenuItemOverlay from './Includes/MenuItemOverlay'
 import SingleMenuItem from './Includes/SingleMenuItem'
 import DeviceButton from './Includes/DeviceButton'
+import TooltipTitle from './Includes/TooltipTitle'
 
 /**
  * @description Renders a single equipment slot button + its dropdown menu.
@@ -75,14 +76,14 @@ export default function DeviceGroup({
             open={open}
             handleButtonClick={handleButtonClick}
             TooltipTitle={
-               <>
+               <TooltipTitle
+                  modifiers={selectedDevice.modifiers}
+                  aggregateModifiers={selectedDevice.aggregateModifiers}
+               >
                   <Typography textAlign={'center'} variant='h6' fontSize={12}>
                      {selectedDevice.displayName}
                   </Typography>
-                  <div className=''>
-                     here comes the modifiers, and aggregateModifiers vehicleCamouflage: value: 1.06
-                  </div>
-               </>
+               </TooltipTitle>
             }
          >
             <MenuItemOverlay

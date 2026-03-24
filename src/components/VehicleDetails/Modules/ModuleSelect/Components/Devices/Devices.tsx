@@ -1,198 +1,79 @@
 'use client'
 import { useState } from 'react'
 
-import type { IDevice } from '@/types/Devices/Devices'
-import type { OverlayTypes } from './Types'
-
-import ReturnTypography from '../../Includes/ModuleType'
-
-import Tooltip from '@mui/material/Tooltip'
-import Typography from '@mui/material/Typography'
-
-import Button from '@mui/material/Button'
-import Menu from '@mui/material/Menu'
-
-import MenuItemOverlay from './Includes/MenuItemOverlay'
-import SingleMenuItem from './Includes/SingleMenuItem'
-
 import useGetDevices from './Hooks/useGetDevices'
 
-function DeviceGroup({
-   devices,
-   // selectedDevices,
-   // addDeviceToMap,
-   addSelectedDevice,
-}: {
-   devices: IDevice[]
-   // selectedDevices: Map<string, IDevice>
-   // addDeviceToMap(device: IDevice): void
-   addSelectedDevice(deviceId: number, deviceCategory: string): void
-}) {
-   // const foundModernized = devices.find((device) => device.deviceType === 'modernized')
-   const foundTiers = devices.find((device) => device.deviceType === 'tiers') as IDevice
-   const foundDeluxe = devices.find((device) => device.deviceType === 'deluxe')
-   const foundBasicTrophy = devices.find(
-      (device) => device.deviceType === 'trophy' && device.tags?.includes('trophyBasic'),
-   )
-   const foundUpgradedTrophy = devices.find(
-      (device) => device.deviceType === 'trophy' && device.tags?.includes('trophyUpgraded'),
-   )
+import Typography from '@mui/material/Typography'
 
-   const foundDevices = {
-      tiers: foundTiers,
-      equipmentTrophyBasic: foundBasicTrophy,
-      equipmentTrophyUpgraded: foundUpgradedTrophy,
-      equipmentPlus: foundDeluxe,
-   }
+import ReturnTypography from '../../Includes/ModuleType'
+import DeviceGroup from './DeviceGroup/DeviceGroup'
 
-   const [selectedDeviceType, setSelectedDeviceType] = useState<OverlayTypes>('none')
-   const [selectedDevice, setSelectedDevice] = useState(foundDevices.tiers)
-
-   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-   const open = Boolean(anchorEl)
-   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-      setAnchorEl(event.currentTarget)
-   }
-
-   function handleSelectAndClose(deviceType: OverlayTypes) {
-      setAnchorEl(null)
-
-      if (deviceType === 'none') {
-         setSelectedDevice(foundDevices['tiers'])
-         // addDeviceToMap(foundDevices['tiers'])
-         // addSelectedDevice(0, foundDevices[deviceType].tags[0])
-      } else {
-         setSelectedDevice(foundDevices[deviceType])
-         // addDeviceToMap(foundDevices[deviceType])
-         addSelectedDevice(foundDevices[deviceType].id, foundDevices[deviceType].tags[0])
-      }
-      setSelectedDeviceType(deviceType)
-   }
-
-   const handleClose = (deviceType: OverlayTypes, reason: 'backdropClick' | 'escapeKeyDown') => {
-      setAnchorEl(null)
-      if (reason === 'backdropClick') return
-      setSelectedDeviceType(deviceType)
-   }
-
-   if (!selectedDevice) return null
-
-   return (
-      <>
-         <Tooltip
-            title={
-               <>
-                  <Typography textAlign={'center'} variant='h6' fontSize={12}>
-                     {selectedDevice.displayName}
-                  </Typography>
-                  <div className=''>
-                     here comes the modifiers, and aggregateModifiers vehicleCamouflage: value: 1.06
-                  </div>
-               </>
-            }
-         >
-            <Button
-               id='equipment-button'
-               aria-controls={open ? 'equipment-menu' : undefined}
-               aria-haspopup='true'
-               aria-expanded={open ? 'true' : undefined}
-               onClick={handleClick}
-               sx={{
-                  border: selectedDeviceType !== 'none' ? '1px solid #e6c40360' : '1px solid transparent',
-               }}
-            >
-               <MenuItemOverlay
-                  overlayType={selectedDeviceType}
-                  altName={selectedDevice.name}
-                  icon={selectedDevice.icon}
-               />
-            </Button>
-         </Tooltip>
-         <Menu
-            id='equipment-selection-menu'
-            anchorEl={anchorEl}
-            open={open}
-            onClose={(event, reason) => handleClose('none', reason)}
-            slotProps={{
-               list: {
-                  'aria-labelledby': 'Equipment selection',
-               },
-            }}
-         >
-            <SingleMenuItem
-               displayName={'Deselect equipment'}
-               handleClose={() => handleSelectAndClose('none')}
-            >
-               <MenuItemOverlay overlayType='none' altName={'empty_loadout'} icon={'empty_loadout'} />
-            </SingleMenuItem>
-            {Object.entries(foundDevices).map(
-               ([deviceType, device]) =>
-                  device !== undefined && (
-                     <SingleMenuItem
-                        key={deviceType}
-                        displayName={device.displayName}
-                        handleClose={() => handleSelectAndClose(deviceType as OverlayTypes)}
-                     >
-                        <MenuItemOverlay
-                           overlayType={deviceType as OverlayTypes}
-                           altName={device.name}
-                           icon={device.icon}
-                        />
-                     </SingleMenuItem>
-                  ),
-            )}
-         </Menu>
-      </>
-   )
-}
+/**
+ * @description Maximum number of devices a player can equip
+ */
+const MAX_DEVICES = 3
 
 export default function Devices() {
    const allGroupedDevices = useGetDevices()
-   // const [selectedDevices, setSelectedDevices] = useState<Map<string, IDevice>>(new Map())
-   const [selectedDevices, setSelectedDevices] = useState<{
-      [key: string]: number
-   }>({})
+   // Record<archeType, deviceId> — at most MAX_DEVICES (3) entries at any time
+   const [selectedDevices, setSelectedDevices] = useState<Record<string, number>>({})
+
    if (!allGroupedDevices) return null
 
-   function addSelectedDevice(deviceId: number, deviceCategory: string) {
-      if (deviceId === 0 && deviceCategory === 'none') {
-         delete selectedDevices[deviceCategory]
-         setSelectedDevices(selectedDevices)
+   // ── How many slots are currently filled ───────────────────────────────────
+   const selectedCount = Object.keys(selectedDevices).length
+
+   /**
+    * @description The single source of truth for adding/removing a device.
+    * Rules enforced here:
+    * 1. deviceId === 0  → deselect (remove the entry for this archeType)
+    * 2. already at MAX_DEVICES AND this archeType isn't selected yet → block
+    * 3. otherwise → add or replace the entry for this archeType
+    * @param archeType which group this action belongs to (e.g. "turbocharger")
+    * @param deviceId the device's database id, OR 0 to signal deselection
+    */
+   function addSelectedDevice(archeType: string, deviceId: number) {
+      // ── Rule 1: Deselect ──────────────────────────────────────────────────
+      if (deviceId === 0) {
+         // Destructure to remove the key without mutating state directly.
+         // The underscore variable (_removed) is intentionally unused.
+         // eslint-disable-next-line @typescript-eslint/no-unused-vars
+         const { [archeType]: _removed, ...rest } = selectedDevices
+         setSelectedDevices(rest)
+         return
       }
 
-      setSelectedDevices({
-         ...selectedDevices,
-         [deviceCategory]: deviceId,
-      })
+      const hasCurrentSelection = archeType in selectedDevices
+
+      // ── Rule 2: Block if at capacity and this slot is empty ───────────────
+      if (selectedCount >= MAX_DEVICES && !hasCurrentSelection) return
+
+      // ── Rule 3: Add or swap ───────────────────────────────────────────────
+      // Using the functional updater form of setState is safer here because
+      // React batches state updates — this guarantees we always read the
+      // latest snapshot of selectedDevices.
+      setSelectedDevices((prev) => ({ ...prev, [archeType]: deviceId }))
    }
-
-   // function addDeviceToMap(device: IDevice | undefined) {
-   //    const newSelectedDevicesMap = new Map(selectedDevices)
-
-   //    if (!device) {
-   //       setSelectedDevices(newSelectedDevicesMap)
-   //       newSelectedDevicesMap.clear()
-   //       return
-   //    }
-
-   //    if (newSelectedDevicesMap.size >= 3) {
-   //       return
-   //    } else {
-   //       setSelectedDevices(selectedDevices.set(device.tags[0], device))
-   //    }
-   //    setSelectedDevices(newSelectedDevicesMap)
-   // }
-
-   console.log(allGroupedDevices)
 
    return (
       <>
          <ReturnTypography text='Compatible Devices' />
+         <Typography
+            variant='caption'
+            color='text.secondary'
+            className={`text-center mb-2
+            ${selectedCount >= MAX_DEVICES ? 'text-red-400' : 'text-green-400'}
+            `}
+         >
+            {selectedCount} / {MAX_DEVICES} devices selected
+         </Typography>
          <section className='grid grid-cols-4 gap-2'>
             {Object.entries(allGroupedDevices).map(([deviceArcheType, devices]) => (
                <DeviceGroup
                   key={deviceArcheType}
+                  archeType={deviceArcheType}
                   devices={devices}
+                  isBlocked={selectedCount >= MAX_DEVICES && !(deviceArcheType in selectedDevices)}
                   addSelectedDevice={addSelectedDevice}
                   // addDeviceToMap={addDeviceToMap}
                   // selectedDevices={selectedDevices}

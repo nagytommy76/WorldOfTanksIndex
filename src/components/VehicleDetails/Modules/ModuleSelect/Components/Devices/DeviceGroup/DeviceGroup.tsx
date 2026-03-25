@@ -80,7 +80,7 @@ export default function DeviceGroup({
                   modifiers={selectedDevice.modifiers}
                   aggregateModifiers={selectedDevice.aggregateModifiers}
                >
-                  <Typography textAlign={'center'} variant='h6' fontSize={12}>
+                  <Typography textAlign={'center'} variant='body1' gutterBottom>
                      {selectedDevice.displayName}
                   </Typography>
                </TooltipTitle>

@@ -3,6 +3,13 @@ import Image from 'next/image'
 
 import type { OverlayTypes } from '../../Types'
 
+/**
+ * @param {OverlayTypes} overlayType Determines which overlay icon to show (e.g. "equipmentTrophyUpgraded" shows the "U" overlay). "none" means no overlay at all, and "tiers" means the default tiers icon with no overlay.
+ * @param {string} altName The alt text for the image, used for accessibility and SEO.
+ * @param {string} icon The base icon name for the device (e.g. "enhancedAimDrives"). The component will automatically look for this icon in the /public/icons/vehicle_modifiers/equipments/ folder and append ".png".
+ * @description The overlay image shown on the dropdown menu items. Depends on the device type (e.g. EquipmentPlus_overlay.png).
+ * @returns Image container
+ */
 export default function MenuItemOverlay({
    overlayType = 'equipmentTrophyBasic',
    altName,
@@ -13,22 +20,22 @@ export default function MenuItemOverlay({
    icon: string
 }) {
    return (
-      <div className='relative w-[50px] h-[50px]'>
+      <div className='relative w-[60px] h-[60px] flex items-center justify-center'>
          {overlayType !== 'none' && overlayType !== 'tiers' && (
             <Image
                src={`/icons/vehicle_modifiers/equipments/${overlayType}_overlay.png`}
                alt={altName}
                width={100}
                height={100}
-               className='absolute z-1 max-w-[85px] h-[85px] -top-6 -left-5'
+               className='absolute z-1 max-w-[90px] h-[90px] -top-5 -left-5'
             />
          )}
          <Image
             src={`/icons/vehicle_modifiers/equipments/${icon}.png`}
             alt={altName}
-            width={50}
-            height={50}
-            className='max-w-[50px]'
+            width={65}
+            height={65}
+            className='max-w-[60px] w-[65px]'
          />
       </div>
    )

@@ -1,8 +1,17 @@
 import React from 'react'
 import type { OverlayTypes } from '../../Types'
+import { styled } from '@mui/material/styles'
 
-import Tooltip from '@mui/material/Tooltip'
+import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip'
 import Button from '@mui/material/Button'
+
+const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
+   <Tooltip {...props} classes={{ popper: className }} />
+))(() => ({
+   [`& .${tooltipClasses.tooltip}`]: {
+      padding: 0,
+   },
+}))
 
 export default function DeviceButton({
    children,
@@ -18,7 +27,7 @@ export default function DeviceButton({
    handleButtonClick: (event: React.MouseEvent<HTMLButtonElement>) => void
 }) {
    return (
-      <Tooltip title={TooltipTitle}>
+      <HtmlTooltip placement='top' title={TooltipTitle}>
          <Button
             id='equipment-button'
             aria-controls={open ? 'equipment-menu' : undefined}
@@ -27,10 +36,13 @@ export default function DeviceButton({
             onClick={handleButtonClick}
             sx={{
                border: selectedDeviceTypeOverlay !== 'none' ? '1px solid #e6c40360' : '1px solid transparent',
+               padding: 0,
+               width: 65,
+               height: 65,
             }}
          >
             {children}
          </Button>
-      </Tooltip>
+      </HtmlTooltip>
    )
 }

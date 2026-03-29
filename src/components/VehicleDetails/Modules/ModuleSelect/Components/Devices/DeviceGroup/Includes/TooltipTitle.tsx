@@ -15,11 +15,11 @@ export default function TooltipTitle({
 }) {
    const { vehicleType } = useContext(VehicleContext)
    return (
-      <section className='min-w-[260px] min-h-[100px] p-1'>
+      <section className='min-w-[260px] min-h-[100px] p-3 bg-[#222222]'>
          {children}
          <div>
             {aggregateModifiers && (
-               <div>
+               <>
                   {aggregateModifiers.map((aggregateModifier, index) => (
                      <div key={index}>
                         {aggregateModifier.vehicleTypes.includes(vehicleType) && (
@@ -29,10 +29,10 @@ export default function TooltipTitle({
                         )}
                      </div>
                   ))}
-               </div>
+               </>
             )}
             {modifiers && (
-               <div>
+               <>
                   {modifiers.map((modifier, index) => (
                      <div key={index}>
                         <Typography variant='body2'>
@@ -40,7 +40,7 @@ export default function TooltipTitle({
                         </Typography>
                      </div>
                   ))}
-               </div>
+               </>
             )}
          </div>
       </section>
@@ -50,7 +50,8 @@ type ModifierDisplayString = {
    [key: string]: string
 }
 
-function ReturnModifierDisplayString(value: number): ModifierDisplayString {
+function ReturnModifierDisplayString(value: number | string): ModifierDisplayString {
+   if (typeof value === 'string') value = Number(value)
    const percentValue = (value - 1) * 100
    const transformValue = Math.round(percentValue * 100) / 100
    return {
@@ -90,8 +91,8 @@ function ReturnModifierDisplayString(value: number): ModifierDisplayString {
       /**
        * @description Improved Radio Set
        */
-      vehicleEnemySpottingTime: `+${transformValue}s duration an enemy vehicle is visible`,
-      vehicleOwnSpottingTime: `${transformValue}s duration you are visible to enemy vehicles`,
+      vehicleEnemySpottingTime: `+${value}s duration an enemy vehicle is visible`,
+      vehicleOwnSpottingTime: `${value}s duration you are visible to enemy vehicles`,
       /**
        * @description Gun laying drive
        */
@@ -132,7 +133,7 @@ function ReturnModifierDisplayString(value: number): ModifierDisplayString {
        * @description Turbocharger
        */
       vehicleEnginePower: `+${transformValue}% to engine power`,
-      vehicleForwardMaxSpeed: `+${transformValue}% to top forward speed`,
-      vehicleBackwardMaxSpeed: `+${transformValue}% to top backward speed`,
+      vehicleForwardMaxSpeed: `+${value}km/h to top forward speed`,
+      vehicleBackwardMaxSpeed: `+${value}km/h to top backward speed`,
    }
 }

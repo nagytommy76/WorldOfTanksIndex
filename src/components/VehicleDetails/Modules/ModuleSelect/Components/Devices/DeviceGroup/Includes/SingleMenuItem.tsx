@@ -15,7 +15,7 @@ export default function SingleMenuItem({
    return (
       <MenuItem className='flex flex-row gap-2' onClick={handleClose}>
          {children}
-         <Typography variant='body1' fontSize={11}>
+         <Typography variant='body1' fontSize={12}>
             {displayName}
          </Typography>
       </MenuItem>

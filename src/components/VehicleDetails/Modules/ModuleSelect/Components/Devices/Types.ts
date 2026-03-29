@@ -1,5 +1,7 @@
 export type DeviceTypes = Omit<OverlayTypes, 'none'>
 
+export type SupplySlotTypes = 'mobility' | 'survivability' | 'firepower' | 'stealth'
+
 export type OverlayTypes =
    | 'equipmentTrophyBasic'
    | 'equipmentTrophyUpgraded'

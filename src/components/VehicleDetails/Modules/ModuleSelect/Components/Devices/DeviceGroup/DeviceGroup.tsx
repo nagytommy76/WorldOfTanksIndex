@@ -80,8 +80,10 @@ export default function DeviceGroup({
                   modifiers={selectedDevice.modifiers}
                   aggregateModifiers={selectedDevice.aggregateModifiers}
                >
-                  <Typography textAlign={'center'} variant='body1' gutterBottom>
-                     {selectedDevice.displayName}
+                  <Typography textAlign={'center'} variant='body1' gutterBottom className='font-bold'>
+                     {selectedDeviceTypeOverlay === 'equipmentTrophyUpgraded'
+                        ? `Upgraded ${selectedDevice.displayName}`
+                        : selectedDevice.displayName}
                   </Typography>
                </TooltipTitle>
             }
@@ -114,7 +116,10 @@ export default function DeviceGroup({
                   device !== undefined && (
                      <SingleMenuItem
                         key={deviceType}
-                        displayName={device.displayName}
+                        displayName={`
+                           ${deviceType === 'equipmentTrophyUpgraded' ? 'Upgraded ' : ''}
+                           ${device.displayName}
+                           `}
                         handleClose={() => handleSelectAndClose(deviceType as OverlayTypes)}
                      >
                         <MenuItemOverlay

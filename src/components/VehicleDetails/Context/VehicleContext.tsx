@@ -19,6 +19,7 @@ import useSetMechanics from './Hooks/useSetMechanics'
 import useSetSiegeMode from './Hooks/useSetSiegeMode'
 import useSetBooster from './Hooks/useSetBooster'
 import useSetProvisions from './Hooks/useSetProvisions'
+import useSetRoles from './Hooks/useSetRoles'
 
 export const VehicleContext = createContext<IVehicleContext>({
    vehicleDispatch: () => null,
@@ -33,6 +34,9 @@ export const VehicleContext = createContext<IVehicleContext>({
    vehicleName: '',
    provisions: [],
    vehicleType: 'SPG',
+   vehicleTier: 1,
+   supplySlotCategory: null,
+   customRoleSlotOptions: null,
    /**
     * @description Mechanics for TIER XI tanks
     */
@@ -59,6 +63,7 @@ export default function VehicleContextProvider({
    const mechanics = useSetMechanics(tankDetails.mechanics)
    const rocketBooser = useSetBooster(tankDetails.stats.rocketAcceleration)
    const provisions = useSetProvisions(tankDetails.tankDetails?.provisions)
+   const supplySlotCategory = useSetRoles(tankDetails.supplySlotCategory)
 
    return (
       <VehicleContext.Provider
@@ -72,8 +77,10 @@ export default function VehicleContextProvider({
             mechanics,
             rocketAcceleration: rocketBooser,
             provisions,
+            supplySlotCategory,
             vehicleReducer,
             vehicleType: tankDetails.type,
+            vehicleTier: tankDetails.tier,
             vehicleDispatch,
             modifiersDispatch,
             modifiersReducer,

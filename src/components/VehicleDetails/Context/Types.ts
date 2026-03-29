@@ -66,6 +66,9 @@ export interface IVehicleContext {
    tankCost: number | { gold: number }
    provisions: string[]
    vehicleType: VehicleTypes
+   vehicleTier: number
+   supplySlotCategory?: string | null
+   customRoleSlotOptions?: string[] | null
    /**
     * @description Mechanics for TIER XI tanks
     */

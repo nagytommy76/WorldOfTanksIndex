@@ -21,7 +21,7 @@ export default function Spotting() {
          <TableHeadComponent
             headTitle='Spotting'
             className='bg-lime-950'
-            iconSrc='/icons/details/spotting.png'
+            iconSrc='/icons/details/stealth.png'
          />
          <TableBody>
             <TableRowComponent

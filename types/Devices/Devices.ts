@@ -88,4 +88,8 @@ export interface IDevice {
     * @param {string} archeType Can be groupped by it. (turbocharger, )
     */
    archeType: string
+   /**
+    * @param {string[] | null} categories only for tiers devices. firepower | mobility | stealth | survivability
+    */
+   categories?: string[] | null
 }

@@ -332,6 +332,8 @@ const VehicleSchema = new Schema<ITankData, Model<ITankData>>({
    },
    stats,
    mechanics: Schema.Types.Mixed,
+   supplySlotCategory: { type: String, required: false, default: null },
+   customRoleSlotOptions: { type: [String], required: false, default: null },
 })
 
 export const VehicleModel =

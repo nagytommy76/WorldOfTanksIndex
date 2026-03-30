@@ -39,6 +39,7 @@ const DeviceSchema = new Schema<IDevice, Model<IDevice>>({
    tags: { type: [String], required: false, default: null },
    deviceType: { type: String, required: true },
    archeType: { type: String, required: true },
+   categories: { type: [String], required: false, default: null },
 })
 
 export const DeviceModel =

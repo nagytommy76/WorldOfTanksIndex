@@ -1,4 +1,4 @@
-export type DeviceTypes = Omit<OverlayTypes, 'none'>
+export type DeviceTypes = Exclude<OverlayTypes, 'none' | 'supplySlotActive'>
 
 export type SupplySlotTypes = 'mobility' | 'survivability' | 'firepower' | 'stealth'
 
@@ -11,3 +11,4 @@ export type OverlayTypes =
    | 'equipmentModernized_3'
    | 'none'
    | 'tiers'
+   | 'supplySlotActive'

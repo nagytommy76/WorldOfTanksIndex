@@ -33,6 +33,10 @@ export interface IAggregateModifier {
     * @param {string[]} vehicleTypes Compatible with vehicle types
     */
    vehicleTypes: string[]
+   /**
+    * @param {number | undefined} specValue Tiers devices have this value -> if put in the correct slot
+    */
+   specValue?: number | undefined // required: false, default: null
 }
 
 interface IVehicleLevel {

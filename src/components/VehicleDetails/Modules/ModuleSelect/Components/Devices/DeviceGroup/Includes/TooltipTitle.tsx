@@ -3,8 +3,10 @@ import { VehicleContext } from '@/VehicleContext/VehicleContext'
 
 import Typography from '@mui/material/Typography'
 import type { IAggregateModifier, IModifier } from '@/types/Devices/Devices'
+import type { OverlayTypes } from '../../Types'
 
 export default function TooltipTitle({
+   selectedDeviceTypeOverlay,
    aggregateModifiers,
    modifiers,
    children,
@@ -12,6 +14,7 @@ export default function TooltipTitle({
    modifiers: IModifier[] | null
    aggregateModifiers: IAggregateModifier[] | null
    children: React.ReactNode
+   selectedDeviceTypeOverlay: OverlayTypes
 }) {
    const { vehicleType } = useContext(VehicleContext)
    return (
@@ -23,9 +26,26 @@ export default function TooltipTitle({
                   {aggregateModifiers.map((aggregateModifier, index) => (
                      <div key={index}>
                         {aggregateModifier.vehicleTypes.includes(vehicleType) && (
-                           <Typography variant='body2'>
-                              {ReturnModifierDisplayString(aggregateModifier.value)[aggregateModifier.name]}
-                           </Typography>
+                           <>
+                              {aggregateModifier.specValue &&
+                              selectedDeviceTypeOverlay === 'supplySlotActive' ? (
+                                 <Typography variant='body2'>
+                                    {
+                                       ReturnModifierDisplayString(aggregateModifier.specValue)[
+                                          aggregateModifier.name
+                                       ]
+                                    }
+                                 </Typography>
+                              ) : (
+                                 <Typography variant='body2'>
+                                    {
+                                       ReturnModifierDisplayString(aggregateModifier.value)[
+                                          aggregateModifier.name
+                                       ]
+                                    }
+                                 </Typography>
+                              )}
+                           </>
                         )}
                      </div>
                   ))}
@@ -35,9 +55,15 @@ export default function TooltipTitle({
                <>
                   {modifiers.map((modifier, index) => (
                      <div key={index}>
-                        <Typography variant='body2'>
-                           {ReturnModifierDisplayString(modifier.value)[modifier.name]}
-                        </Typography>
+                        {modifier.specValue && selectedDeviceTypeOverlay === 'supplySlotActive' ? (
+                           <Typography variant='body2'>
+                              {ReturnModifierDisplayString(modifier.specValue)[modifier.name]}
+                           </Typography>
+                        ) : (
+                           <Typography variant='body2'>
+                              {ReturnModifierDisplayString(modifier.value)[modifier.name]}
+                           </Typography>
+                        )}
                      </div>
                   ))}
                </>

@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import ModuleSelect from '@/VehicleDetails/Modules/ModuleSelect/ModuleSelect'
 import DetailsTable from '@/VehicleDetails/Modules/DetailsTable/DetailsTable'
 import VehicleContextProvider from '@/VehicleContext/VehicleContext'
+import DeviceContextProvider from '@/VehicleContext/DevicesContext/DeviceContext'
 
 type Params = Promise<{ tank_id: string; tank_name: string }>
 
@@ -33,15 +34,17 @@ export default async function page({ params }: { params: Params }) {
 
    return (
       <VehicleContextProvider tankDetails={tankStats}>
-         <section
-            className={`
+         <DeviceContextProvider>
+            <section
+               className={`
                flex w-full min-h-screen flex-col gap-0 p-2 xl:flex-row xl:gap-5 
                xl:justify-between bg-neutral-900 rounded-lg xl:p-3
                `}
-         >
-            <ModuleSelect />
-            <DetailsTable />
-         </section>
+            >
+               <ModuleSelect />
+               <DetailsTable />
+            </section>
+         </DeviceContextProvider>
       </VehicleContextProvider>
    )
 }

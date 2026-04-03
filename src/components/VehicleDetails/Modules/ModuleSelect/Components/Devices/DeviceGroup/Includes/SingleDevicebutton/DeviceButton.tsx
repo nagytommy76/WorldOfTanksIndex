@@ -1,5 +1,5 @@
 import React from 'react'
-import type { OverlayTypes } from '../../Types'
+import type { OverlayTypes } from '../../../Types'
 import { styled } from '@mui/material/styles'
 
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip'
@@ -27,7 +27,7 @@ export default function DeviceButton({
    handleButtonClick: (event: React.MouseEvent<HTMLButtonElement>) => void
 }) {
    return (
-      <HtmlTooltip placement='top' title={TooltipTitle}>
+      <HtmlTooltip placement='top' title={TooltipTitle} disableInteractive>
          <Button
             id='equipment-button'
             aria-controls={open ? 'equipment-menu' : undefined}

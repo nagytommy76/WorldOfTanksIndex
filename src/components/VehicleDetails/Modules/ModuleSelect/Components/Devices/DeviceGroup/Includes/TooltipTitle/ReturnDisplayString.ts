@@ -1,11 +1,11 @@
+import ReturnPercentValue from '@/helpers/returnPercentValue'
+
 type ModifierDisplayString = {
    [key: string]: string
 }
 
 export default function ReturnModifierDisplayString(value: number | string): ModifierDisplayString {
-   if (typeof value === 'string') value = Number(value)
-   const percentValue = (value - 1) * 100
-   const transformValue = Math.round(percentValue * 100) / 100
+   const transformValue = ReturnPercentValue(value)
    return {
       vehicleCamouflage: `+${transformValue}% to concealment`,
       vehicleStillCamouflage: `+${transformValue}% to concealment while stationary`,

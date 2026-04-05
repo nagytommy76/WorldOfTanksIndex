@@ -1,18 +1,6 @@
 'use client'
 import { createContext, useState } from 'react'
-
-/**
- * @param name Name of the equipment modifier, e.g: vehicleCircularVisionRadius
- * @param value The actual modifier value, e.g: 10% view range increase = 1.1 (or specValue: 1.115)
- */
-interface IAppliedDeviceModifier {
-   name: string
-   value: number
-}
-
-type DeviceModifiers = {
-   [archeType: string]: IAppliedDeviceModifier[]
-}
+import type { DeviceModifiers } from './Types'
 
 interface IDeviceContext {
    appliedDevicesModifiers: DeviceModifiers | null
@@ -59,4 +47,64 @@ export default function DeviceContextProvider({ children }: { children: React.Re
          {children}
       </DeviceContext.Provider>
    )
+}
+
+const deviceModifierNames = {
+   tankRammer: ['vehicleGunReloadTime'],
+   antifragmentationLining: [
+      'vehicleHEShellDamageResistance',
+      'vehicleRamDamageResistance',
+      'crewHitChance',
+      'crewStunDuration',
+      'crewRepeatedStunDuration',
+   ],
+   aimingStabilizer: ['vehicleGunShotDispersion'],
+   additionalInvisibilityDevice: ['vehicleCamouflage', 'vehicleCamouflage', 'vehicleCamouflage'],
+   enhancedAimDrives: ['vehicleGunAimSpeed'],
+   extraHealthReserve: [
+      'vehicleStrength',
+      'vehicleChassisStrength',
+      'vehicleChassisRepairSpeed',
+      'vehicleChassisFallDamage',
+   ],
+   improvedRotationMechanism: [
+      'vehicleTurretOrCuttingRotationSpeed',
+      'vehicleAllGroundRotationSpeed',
+      'vehicleGunShotDispersion',
+   ],
+   improvedSights: ['vehicleGunShotFullDispersion'],
+   commandersView: ['demaskFoliageFactor', 'demaskMovingFactor'],
+   grousers: ['vehicleAllGroundRotationSpeed', 'vehicleSpeedGain'],
+   coatedOptics: ['vehicleCircularVisionRadius'],
+   camouflageNet: ['vehicleStillCamouflageDeluxe'],
+   improvedVentilation: ['crewLevel'],
+   turbocharger: ['vehicleEnginePower', 'vehicleForwardMaxSpeed', 'vehicleBackwardMaxSpeed'],
+   improvedConfiguration: [
+      'vehicleRepairSpeed',
+      'vehicleAmmoBayEngineFuelStrength',
+      'vehPenaltyForDamagedEngine',
+      'vehPenaltyForDamagedAmmorack',
+      'vehicleFireChance',
+   ],
+   improvedRadioCommunication: ['vehicleEnemySpottingTime', 'vehicleOwnSpottingTime'],
+   stereoscope: ['vehicleStillCircularVisionRadiusDeluxe, vehicleStillCircularVisionRadius'],
+
+   modernizedTurbochargerRotationMechanism: [
+      'vehicleEnginePower',
+      'vehicleTurretOrCuttingRotationSpeed',
+      'vehicleAllGroundRotationSpeed',
+      'vehicleGunShotDispersion',
+      'vehicleForwardMaxSpeed',
+      'vehicleBackwardMaxSpeed',
+   ],
+   modernizedExtraHealthReserveAntifragmentationLining: [
+      'vehicleStrength',
+      'vehicleAmmoBayEngineFuelStrength',
+      'vehicleChassisStrength',
+      'vehicleChassisRepairSpeed',
+      'vehPenaltyForDamagedEngine',
+      'vehPenaltyForDamagedAmmorack',
+   ],
+   modernizedAimDrivesAimingStabilizer: ['vehicleGunAimSpeed', 'vehicleGunShotDispersion'],
+   modernizedImprovedSightsEnhancedAimDrives: ['vehicleGunShotFullDispersion', 'vehicleGunAimSpeed'],
 }

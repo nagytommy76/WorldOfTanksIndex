@@ -9,6 +9,7 @@ import ReturnFoundDevices from './Functions/ReturnFoundDevices'
 
 import type { IDevice } from '@/types/Devices/Devices'
 import type { OverlayTypes, DeviceTypes } from '../Types'
+import type { DeviceModifierKeys } from '@/VehicleContext/DevicesContext/Types'
 
 import Menu from '@mui/material/Menu'
 
@@ -32,13 +33,13 @@ export default function DeviceGroup({
    isBlocked,
    addSelectedDevice,
 }: {
-   archeType: string
+   archeType: DeviceModifierKeys
    devices: IDevice[]
    isBlocked: boolean
    addSelectedDevice(archeType: string, deviceId: number): void
 }) {
    const { supplySlotCategory, vehicleType } = useContext(VehicleContext)
-   const { setDeviceModifier, removeDeviceModifier } = useContext(DeviceContext)
+   const { deviceDispatch } = useContext(DeviceContext)
    // ── Local state ──────────────────────────────────────────────────────────
    const foundDevices = ReturnFoundDevices(devices)
 
@@ -55,27 +56,39 @@ export default function DeviceGroup({
       setSelectedDeviceTypeOverlay('none')
       // Notify parent: deviceId 0 means "remove this slot"
       addSelectedDevice(archeType, 0)
-      removeDeviceModifier(archeType)
+      deviceDispatch({
+         type: 'REMOVE_DEVICE_MODIFIER',
+         payload: { archeType },
+      })
    }
 
    function supplySlotActiveSelectAndClose() {
       setAnchorEl(null)
-
       setSelectedDevice(foundDevices.tiers)
       setSelectedDeviceTypeOverlay('supplySlotActive')
       addSelectedDevice(archeType, foundDevices.tiers?.id ?? 0)
       if (foundDevices.tiers?.modifiers) {
          foundDevices.tiers.modifiers.forEach((modifier) => {
-            setDeviceModifier(modifier.name, modifier.specValue ?? modifier.value, archeType)
+            deviceDispatch({
+               type: 'SET_DEVICE_MODIFIER',
+               payload: {
+                  archeType,
+                  name: modifier.name,
+                  value: modifier.specValue ?? modifier.value,
+               },
+            })
          })
       } else if (foundDevices.tiers?.aggregateModifiers) {
          foundDevices.tiers.aggregateModifiers.forEach((aggregatedModifier) => {
             if (aggregatedModifier.vehicleTypes.includes(vehicleType)) {
-               setDeviceModifier(
-                  aggregatedModifier.name,
-                  aggregatedModifier.specValue ?? aggregatedModifier.value,
-                  archeType,
-               )
+               deviceDispatch({
+                  type: 'SET_DEVICE_MODIFIER',
+                  payload: {
+                     archeType,
+                     name: aggregatedModifier.name,
+                     value: aggregatedModifier.specValue ?? aggregatedModifier.value,
+                  },
+               })
             }
          })
       }
@@ -94,12 +107,26 @@ export default function DeviceGroup({
 
       if (device?.modifiers) {
          device.modifiers.forEach((modifier) => {
-            setDeviceModifier(modifier.name, modifier.value, archeType)
+            deviceDispatch({
+               type: 'SET_DEVICE_MODIFIER',
+               payload: {
+                  archeType,
+                  name: modifier.name,
+                  value: modifier.value,
+               },
+            })
          })
       } else if (device?.aggregateModifiers) {
          device.aggregateModifiers.forEach((aggregatedModifier) => {
             if (aggregatedModifier.vehicleTypes.includes(vehicleType)) {
-               setDeviceModifier(aggregatedModifier.name, aggregatedModifier.value, archeType)
+               deviceDispatch({
+                  type: 'SET_DEVICE_MODIFIER',
+                  payload: {
+                     archeType,
+                     name: aggregatedModifier.name,
+                     value: aggregatedModifier.value,
+                  },
+               })
             }
          })
       }

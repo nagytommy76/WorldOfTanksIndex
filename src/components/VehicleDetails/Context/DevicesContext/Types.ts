@@ -1,3 +1,5 @@
+import type { SetStateAction } from 'react'
+
 /**
  * @param name Name of the equipment modifier, e.g: vehicleCircularVisionRadius
  * @param value The actual modifier value, e.g: 10% view range increase = 1.1 (or specValue: 1.115)
@@ -40,6 +42,22 @@ export interface IDeviceContext {
            improved: boolean
         }[]
       | null
+   /**
+    *
+    * @param {number} baseValue The original value of the vehicle component (e.g: vehicleTurret[selectedModuleNames.vehicleTurret].viewRange)
+    * @param {DeviceModifierKeys} deviceNamme selected device name (e.g tankRammer | coatedOptics)
+    * @param {string} modifierName e.g: vehicleCircularVisionRadius | vehicleChassisStrength | ehicleChassisRepairSpeed
+    * @param setBaseValue State set function
+    * @description This function checks if there are any applied modifiers for the selected device.
+    * If there are, it finds the relevant modifier for the specific vehicle component and applies it to the base value,
+    * updating the state with the new modified value.
+    */
+   setAppliedDeviceModifier(
+      baseValue: number,
+      deviceNamme: DeviceModifierKeys,
+      modifierName: string,
+      setBaseValue: (value: SetStateAction<number>) => void,
+   ): void
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

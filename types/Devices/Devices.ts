@@ -15,9 +15,9 @@ export interface IModifier {
     */
    value: number
    /**
-    * @param {number | null} specValue Tiers devices have this value -> if put in the correct slot
+    * @param {number} specValue Tiers devices have this value -> if put in the correct slot
     */
-   specValue: number | null // required: false, default: null
+   specValue: number | null
 }
 
 export interface IAggregateModifier {

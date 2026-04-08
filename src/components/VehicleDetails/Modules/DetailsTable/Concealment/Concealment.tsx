@@ -16,17 +16,27 @@ export default function Concealment() {
       camo,
       vehicleReducer: {
          selectedModuleNames,
-
          moduleGroup: { vehicleGun },
       },
    } = useContext(VehicleContext)
 
    const {
       deviceReducer: { appliedDevicesModifiers },
-      // returnAppliedModifierDiplayValue,
    } = useContext(DeviceContext)
-   const [stationaryCamoValue, setStationaryCamoValue] = useState(0)
-   const [movingCamoValue, setMovingCamoValue] = useState(0)
+   const [stationaryCamoValue, setStationaryCamoValue] = useState(calculateCamoValues(camo.stationary))
+   const [movingCamoValue, setMovingCamoValue] = useState(calculateCamoValues(camo.moving))
+
+   // useEffect(() => {
+   //    const baseCamoValue = calculateCamoValues(camo.stationary)
+   //    if (!appliedDevicesModifiers || !appliedDevicesModifiers['camouflageNet']) {
+   //       setStationaryCamoValue(baseCamoValue)
+   //    } else {
+   //       if (!appliedDevicesModifiers || !appliedDevicesModifiers['camouflageNet']) return
+   //       const modifiersForInvisibilityDevice = appliedDevicesModifiers['camouflageNet']
+   //       const percentValue = ReturnPercentValue(modifiersForInvisibilityDevice[0].value)
+   //       setStationaryCamoValue(stationaryCamoValue + percentValue)
+   //    }
+   // }, [appliedDevicesModifiers, camo.stationary])
 
    useEffect(() => {
       const baseCamoValue = calculateCamoValues(camo.stationary)
@@ -40,9 +50,16 @@ export default function Concealment() {
    }, [camo.stationary, vehicleGun, selectedModuleNames.vehicleGun, appliedDevicesModifiers])
 
    useEffect(() => {
-      const camoValue = camo.moving
-      setMovingCamoValue(calculateCamoValues(camoValue))
-   }, [camo.moving, vehicleGun, selectedModuleNames.vehicleGun])
+      const camoValue = calculateCamoValues(camo.moving)
+
+      if (!appliedDevicesModifiers || !appliedDevicesModifiers['additionalInvisibilityDevice']) {
+         setMovingCamoValue(camoValue)
+      } else {
+         const modifiersForInvisibilityDevice = appliedDevicesModifiers['additionalInvisibilityDevice']
+         const percentValue = ReturnPercentValue(modifiersForInvisibilityDevice[0].value)
+         setMovingCamoValue(camoValue + percentValue)
+      }
+   }, [camo.moving, vehicleGun, selectedModuleNames.vehicleGun, appliedDevicesModifiers])
 
    return (
       <Table size='small' aria-label='Concealment table with camouflage values (moving, stationary)'>
@@ -64,7 +81,8 @@ export default function Concealment() {
             `}
                unit='%'
                modifiers={
-                  appliedDevicesModifiers && [
+                  appliedDevicesModifiers &&
+                  appliedDevicesModifiers['additionalInvisibilityDevice'] && [
                      {
                         // ez a kiszámolt érték
                         difference: ReturnPercentValue(
@@ -86,6 +104,18 @@ export default function Concealment() {
                     ).toFixed(2)}
                 `}
                unit='%'
+               modifiers={
+                  appliedDevicesModifiers &&
+                  appliedDevicesModifiers['additionalInvisibilityDevice'] && [
+                     {
+                        // ez a kiszámolt érték
+                        difference: ReturnPercentValue(
+                           appliedDevicesModifiers['additionalInvisibilityDevice'][0].value || 1,
+                        ),
+                        improved: true,
+                     },
+                  ]
+               }
             />
          </TableBody>
       </Table>

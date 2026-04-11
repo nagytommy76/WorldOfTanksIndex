@@ -8,7 +8,7 @@ import type { IHull } from '@VehicleTypes/Hull'
 import type { ITankData } from '@VehicleTypes/Vehicle'
 
 import { modifiersInitialState } from './ModifiersTypes'
-import { InitialState, IVehicleContext } from './Types'
+import { InitialState, IVehicleContext, isVehicleReady, ReadyVehicleReducerState } from './Types'
 
 import useSetChassis from './Hooks/useSetChassis'
 import useSetRadios from './Hooks/useSetRadios'
@@ -20,10 +20,11 @@ import useSetSiegeMode from './Hooks/useSetSiegeMode'
 import useSetBooster from './Hooks/useSetBooster'
 import useSetProvisions from './Hooks/useSetProvisions'
 import useSetRoles from './Hooks/useSetRoles'
+import useSetShells from './Hooks/useSetShells'
 
 export const VehicleContext = createContext<IVehicleContext>({
    vehicleDispatch: () => null,
-   vehicleReducer: InitialState,
+   vehicleReducer: InitialState as ReadyVehicleReducerState,
    modifiersDispatch: () => null,
    modifiersReducer: modifiersInitialState,
    hull: {} as IHull,
@@ -60,10 +61,21 @@ export default function VehicleContextProvider({
    useSetGuns(tankDetails, vehicleDispatch, vehicleReducer.selectedModuleNames.vehicleTurret)
    useSetEngines(tankDetails, vehicleDispatch)
    useSetSiegeMode(tankDetails, vehicleDispatch)
+   useSetShells(
+      tankDetails,
+      vehicleDispatch,
+      modifiersDispatch,
+      vehicleReducer.selectedModuleNames.vehicleTurret,
+      vehicleReducer.selectedModuleNames.vehicleGun,
+   )
    const mechanics = useSetMechanics(tankDetails.mechanics)
    const rocketBooser = useSetBooster(tankDetails.stats.rocketAcceleration)
    const provisions = useSetProvisions(tankDetails.tankDetails?.provisions)
    const supplySlotCategory = useSetRoles(tankDetails.supplySlotCategory)
+
+   if (!isVehicleReady(vehicleReducer)) {
+      return <h1>LOADING...</h1> // or your spinner component
+   }
 
    return (
       <VehicleContext.Provider
@@ -78,7 +90,7 @@ export default function VehicleContextProvider({
             rocketAcceleration: rocketBooser,
             provisions,
             supplySlotCategory,
-            vehicleReducer,
+            vehicleReducer: vehicleReducer as ReadyVehicleReducerState,
             vehicleType: tankDetails.type,
             vehicleTier: tankDetails.tier,
             vehicleDispatch,

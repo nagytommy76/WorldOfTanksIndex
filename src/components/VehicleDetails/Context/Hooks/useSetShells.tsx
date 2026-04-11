@@ -1,19 +1,19 @@
-import { useContext, useEffect } from 'react'
-import { VehicleContext } from '../VehicleContext'
+import { ActionDispatch, useEffect } from 'react'
 import type { IShells } from '@VehicleTypes/Shells'
+import type { ITankData } from '@VehicleTypes/Vehicle'
+import type { IVehicleContextActions } from '../Types'
+import type { IModifiersContextActions } from '../ModifiersTypes'
 
-export default function useSetShells() {
-   const {
-      vehicleReducer: {
-         moduleGroup: { vehicleTurret },
-         selectedModuleNames: { vehicleTurret: selectedTurretName, vehicleGun: selectedGun },
-      },
-      vehicleDispatch,
-      modifiersDispatch,
-   } = useContext(VehicleContext)
-
+export default function useSetShells(
+   tankData: ITankData,
+   vehicleDispatch: ActionDispatch<[IVehicleContextActions]>,
+   modifiersDispatch: ActionDispatch<[IModifiersContextActions]>,
+   selectedTurretName: string | null,
+   selectedGun: string | null,
+) {
    useEffect(() => {
-      const foundSelectedTurret = Object.values(vehicleTurret).find(
+      if (!tankData) return
+      const foundSelectedTurret = Object.values(tankData.stats.turrets).find(
          (turret) => turret.name === selectedTurretName,
       )
       const foundSelectedGun = foundSelectedTurret?.guns.find((gun) => gun.name === selectedGun)
@@ -43,7 +43,7 @@ export default function useSetShells() {
             },
          })
       }
-   }, [selectedTurretName, selectedGun, vehicleTurret, vehicleDispatch, modifiersDispatch])
+   }, [selectedTurretName, selectedGun, vehicleDispatch, modifiersDispatch, tankData])
 
    return null
 }

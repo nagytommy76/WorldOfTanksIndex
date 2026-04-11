@@ -1,6 +1,5 @@
 import { useContext } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
-import useSetShells from '@/VehicleContext/Hooks/useSetShells'
 
 import ShellModifier from '@/VehicleContext/Modifiers/ShellModifier'
 
@@ -19,7 +18,6 @@ export default function Shells() {
       vehicleDispatch,
       modifiersDispatch,
    } = useContext(VehicleContext)
-   useSetShells()
    const { setModuleName, setModuleNameByType } = useSetModuleName(vehicleDispatch)
 
    return (

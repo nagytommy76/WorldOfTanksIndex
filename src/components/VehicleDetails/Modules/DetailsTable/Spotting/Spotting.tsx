@@ -28,7 +28,6 @@ export default function Spotting() {
 
    useEffect(() => {
       const viewRangeBase = vehicleTurret[selectedModuleNames.vehicleTurret]?.viewRange
-      if (!viewRangeBase) return
       setAppliedDeviceModifier(viewRangeBase, 'coatedOptics', 'vehicleCircularVisionRadius', setViewRange)
    }, [selectedModuleNames, vehicleTurret, appliedDevicesModifiers, setAppliedDeviceModifier])
 
@@ -55,6 +54,18 @@ export default function Spotting() {
                titleText='Signal range'
                valueText={vehicleRadio[selectedModuleNames.vehicleRadio]?.distance}
                unit='m'
+            />
+            <TableRowComponent
+               iconSrc='/icons/spot/vehicleOwnSpottingTime.png'
+               titleText='Time being spotted'
+               valueText={10}
+               unit='seconds'
+            />
+            <TableRowComponent
+               iconSrc='/icons/spot/vehicleEnemySpottingTime.png'
+               titleText='Time enemy remains spotted'
+               valueText={10}
+               unit='seconds'
             />
          </TableBody>
       </Table>

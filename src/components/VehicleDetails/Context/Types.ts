@@ -29,21 +29,43 @@ export type IVehicleContextActions =
 export interface IVehicleReducerState {
    siegeMode: Partial<ISiegeMode> | null
    moduleGroup: {
-      [K in keyof ModuleTypeMap]: { [moduleName: string]: ModuleTypeMap[K] }
+      [K in keyof ModuleTypeMap]: { [moduleName: string]: ModuleTypeMap[K] } | null
    }
    selectedModuleNames: {
       [moduleType in ModuleType]: string
    }
 }
 
+export type ReadyVehicleReducerState = Omit<IVehicleReducerState, 'moduleGroup'> & {
+   moduleGroup: IVehicleReducerState['moduleGroup'] & {
+      vehicleChassis: NonNullable<IVehicleReducerState['moduleGroup']['vehicleChassis']>
+      vehicleEngine: NonNullable<IVehicleReducerState['moduleGroup']['vehicleEngine']>
+      vehicleGun: NonNullable<IVehicleReducerState['moduleGroup']['vehicleGun']>
+      vehicleRadio: NonNullable<IVehicleReducerState['moduleGroup']['vehicleRadio']>
+      vehicleTurret: NonNullable<IVehicleReducerState['moduleGroup']['vehicleTurret']>
+      shells: NonNullable<IVehicleReducerState['moduleGroup']['shells']>
+   }
+}
+
+export function isVehicleReady(state: IVehicleReducerState): state is ReadyVehicleReducerState {
+   return (
+      state.moduleGroup.vehicleChassis !== null &&
+      state.moduleGroup.vehicleEngine !== null &&
+      state.moduleGroup.vehicleGun !== null &&
+      state.moduleGroup.vehicleRadio !== null &&
+      state.moduleGroup.vehicleTurret !== null &&
+      state.moduleGroup.shells !== null
+   )
+}
+
 export const InitialState: IVehicleReducerState = {
    moduleGroup: {
-      vehicleChassis: {},
-      vehicleEngine: {},
-      vehicleRadio: {},
-      vehicleTurret: {},
-      vehicleGun: {},
-      shells: {},
+      vehicleChassis: null,
+      vehicleEngine: null,
+      vehicleRadio: null,
+      vehicleTurret: null,
+      vehicleGun: null,
+      shells: null,
    },
    selectedModuleNames: {
       vehicleChassis: '',
@@ -74,7 +96,7 @@ export interface IVehicleContext {
     */
    mechanics?: Record<string, unknown> | null
    rocketAcceleration: IRocketAcceleration | null
-   vehicleReducer: IVehicleReducerState
+   vehicleReducer: ReadyVehicleReducerState
    vehicleDispatch: React.Dispatch<IVehicleContextActions>
    modifiersReducer: IModifiersReducerState
    modifiersDispatch: React.Dispatch<IModifiersContextActions>

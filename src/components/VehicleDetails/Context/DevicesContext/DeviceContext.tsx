@@ -33,7 +33,6 @@ export default function DeviceContextProvider({ children }: { children: React.Re
       modifierName: string,
       setBaseValue: (value: SetStateAction<number>) => void,
    ) {
-      if (!baseValue) return
       if (!appliedDevicesModifiers || !appliedDevicesModifiers[deviceNamme]) {
          setBaseValue(baseValue)
       } else {
@@ -48,18 +47,20 @@ export default function DeviceContextProvider({ children }: { children: React.Re
    function returnAppliedModifierDiplayValue(
       deviceNamme: DeviceModifierKeys,
       selectedSpecificationValue: string | number,
+      isBetter?: boolean,
+      isMultiplier: boolean = true,
    ) {
       if (!appliedDevicesModifiers || !appliedDevicesModifiers[deviceNamme]) return null
       if (typeof selectedSpecificationValue === 'string')
          selectedSpecificationValue = parseFloat(selectedSpecificationValue)
 
       return appliedDevicesModifiers[deviceNamme].map((modifier) => {
-         const difference = Number(
-            (modifier.value * selectedSpecificationValue - selectedSpecificationValue).toFixed(2),
-         )
+         const difference = isMultiplier
+            ? Number((modifier.value * selectedSpecificationValue - selectedSpecificationValue).toFixed(4))
+            : modifier.value - selectedSpecificationValue
          return {
             difference: difference,
-            improved: modifier.value > 0,
+            improved: isBetter || modifier.value > 0,
          }
       })
    }

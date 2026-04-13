@@ -36,6 +36,7 @@ export interface IDeviceContext {
    returnAppliedModifierDiplayValue(
       deviceNamme: DeviceModifierKeys,
       selectedSpecification: string | number,
+      isBetter?: boolean,
    ):
       | {
            difference: number
@@ -60,8 +61,7 @@ export interface IDeviceContext {
    ): void
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const deviceModifierNames = {
+export const deviceModifierNames = {
    tankRammer: ['vehicleGunReloadTime'],
    antifragmentationLining: [
       'vehicleHEShellDamageResistance',

@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from 'react'
+import { useContext, useState, useEffect, SetStateAction } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
 
@@ -7,6 +7,7 @@ import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 
 import TableRowComponent from '../../Includes/TableRow'
+import type { DeviceModifierKeys } from '@/DevicesContext/Types'
 
 export default function GunDispersions() {
    const {
@@ -19,7 +20,7 @@ export default function GunDispersions() {
    const {
       deviceReducer: { appliedDevicesModifiers },
       returnAppliedModifierDiplayValue,
-      setAppliedDeviceModifier,
+      // setAppliedDeviceModifier,
    } = useContext(DeviceContext)
 
    const vehicleMovementBase = vehicleChassis[selectedModuleNames.vehicleChassis].dispersion.vehicleMovement
@@ -32,34 +33,123 @@ export default function GunDispersions() {
    const [turretRotation, setTurretRotation] = useState(turretRotationBase)
    const [afterShot, setAfterShot] = useState(afterShotBase)
 
+   /**
+    *
+    * @param {number} baseValue The original value of the vehicle component (e.g: vehicleTurret[selectedModuleNames.vehicleTurret].viewRange)
+    * @param {DeviceModifierKeys} deviceNamme selected device name (e.g tankRammer | coatedOptics)
+    * @param {string} modifierName e.g: vehicleCircularVisionRadius | vehicleChassisStrength | ehicleChassisRepairSpeed
+    * @param setBaseValue State set function
+    * @description This function checks if there are any applied modifiers for the selected device.
+    * If there are, it finds the relevant modifier for the specific vehicle component and applies it to the base value,
+    * updating the state with the new modified value.
+    */
+   function setAppliedDeviceModifier(
+      baseValue: number,
+      deviceNamme: DeviceModifierKeys,
+      modifierName: string,
+      setBaseValue: (value: SetStateAction<number>) => void,
+   ) {
+      if (!appliedDevicesModifiers || !appliedDevicesModifiers[deviceNamme]) {
+         setBaseValue(baseValue)
+      } else {
+         const modifiersForDevice = appliedDevicesModifiers[deviceNamme]
+         const foundModifier = modifiersForDevice.find((modifier) => modifier.name === modifierName)
+         if (foundModifier) {
+            setBaseValue(baseValue * foundModifier.value)
+         }
+      }
+   }
+
    useEffect(() => {
-      setAppliedDeviceModifier(
-         vehicleMovementBase,
-         'aimingStabilizer',
-         'vehicleGunShotDispersion',
-         setVehicleMovement,
-      )
-      setAppliedDeviceModifier(
-         vehicleRotationBase,
-         'aimingStabilizer',
-         'vehicleGunShotDispersion',
-         setVehicleRotation,
-      )
-      setAppliedDeviceModifier(
-         turretRotationBase,
-         'aimingStabilizer',
-         'vehicleGunShotDispersion',
-         setTurretRotation,
-      )
-      setAppliedDeviceModifier(afterShotBase, 'aimingStabilizer', 'vehicleGunShotDispersion', setAfterShot)
+      // setVehicleMovement(vehicleMovementBase)
+      // setVehicleRotation(vehicleRotationBase)
+      // setTurretRotation(turretRotationBase)
+      // setAfterShot(afterShotBase)
+
+      // console.log('vehicleMovement: ', vehicleMovement)
+      // console.log('vehicleRotation: ', vehicleRotation)
+      if (appliedDevicesModifiers) {
+         let vehicleGunShotDispersionModified = 0
+         for (const [deviceName, modifiers] of Object.entries(appliedDevicesModifiers)) {
+            // itt ráteszem a modifiereket
+            for (const modifier of modifiers) {
+               switch (modifier.name) {
+                  case 'vehicleGunShotDispersion':
+                     vehicleGunShotDispersionModified = vehicleMovement * modifier.value
+                     console.count('vehicleGunShotDispersionModified')
+                  // setVehicleMovement((previousMovement) => {
+                  //    console.log('previousMovement: ', previousMovement)
+                  //    return previousMovement * modifier.value
+                  // })
+                  // console.log('vehicleMovement: ', vehicleMovement)
+
+                  // setAppliedDeviceModifier(
+                  //    vehicleMovementBase,
+                  //    deviceName as DeviceModifierKeys,
+                  //    modifier.name,
+                  //    setVehicleMovement,
+                  // )
+                  // setAppliedDeviceModifier(
+                  //    vehicleRotationBase,
+                  //    deviceName as DeviceModifierKeys,
+                  //    modifier.name,
+                  //    setVehicleRotation,
+                  // )
+                  // setAppliedDeviceModifier(
+                  //    turretRotationBase,
+                  //    deviceName as DeviceModifierKeys,
+                  //    modifier.name,
+                  //    setTurretRotation,
+                  // )
+                  // setAppliedDeviceModifier(
+                  //    afterShotBase,
+                  //    deviceName as DeviceModifierKeys,
+                  //    modifier.name,
+                  //    setAfterShot,
+                  // )
+               }
+            }
+         }
+         setVehicleMovement(vehicleGunShotDispersionModified)
+         // console.log('vehicleGunShotDispersionModfied: ', vehicleGunShotDispersionModified)
+      } else {
+         setVehicleMovement(vehicleMovementBase)
+         setVehicleRotation(vehicleRotationBase)
+         setTurretRotation(turretRotationBase)
+         setAfterShot(afterShotBase)
+      }
+
+      // setAppliedDeviceModifier(
+      //    vehicleMovementBase,
+      //    'aimingStabilizer',
+      //    'vehicleGunShotDispersion',
+      //    setVehicleMovement,
+      // )
+      // setAppliedDeviceModifier(
+      //    vehicleRotationBase,
+      //    'aimingStabilizer',
+      //    'vehicleGunShotDispersion',
+      //    setVehicleRotation,
+      // )
+      // setAppliedDeviceModifier(
+      //    turretRotationBase,
+      //    'aimingStabilizer',
+      //    'vehicleGunShotDispersion',
+      //    setTurretRotation,
+      // )
+      // setAppliedDeviceModifier(afterShotBase, 'aimingStabilizer', 'vehicleGunShotDispersion', setAfterShot)
    }, [
       selectedModuleNames,
       appliedDevicesModifiers,
-      setAppliedDeviceModifier,
+      // setAppliedDeviceModifier,
       vehicleMovementBase,
       vehicleRotationBase,
       turretRotationBase,
       afterShotBase,
+      // vehicleMovement,
+      // vehicleRotation,
+      // turretRotation,
+      // afterShot,
    ])
 
    return (
@@ -80,7 +170,7 @@ export default function GunDispersions() {
          <TableRowComponent
             iconSrc='/icons/firepower/vehicleGunShotDispersionChassisMovement.png'
             titleText='Moving'
-            valueText={vehicleMovement.toFixed(4)}
+            valueText={parseFloat(vehicleMovement.toFixed(4))}
             unit='m'
             paddingLeft
             modifiers={returnAppliedModifierDiplayValue('aimingStabilizer', vehicleMovementBase, true)}
@@ -88,7 +178,7 @@ export default function GunDispersions() {
          <TableRowComponent
             iconSrc='/icons/firepower/vehicleGunShotDispersionChassisRotation.png'
             titleText='Tank traverse'
-            valueText={'+ ' + vehicleRotation.toFixed(4)}
+            valueText={'+ ' + parseFloat(vehicleRotation.toFixed(4))}
             unit='m'
             paddingLeft
             modifiers={returnAppliedModifierDiplayValue('aimingStabilizer', vehicleRotationBase, true)}
@@ -96,7 +186,7 @@ export default function GunDispersions() {
          <TableRowComponent
             iconSrc='/icons/firepower/vehicleGunShotDispersionTurretRotation.png'
             titleText='Turret traverse'
-            valueText={'+ ' + turretRotation.toFixed(4)}
+            valueText={'+ ' + parseFloat(turretRotation.toFixed(4))}
             unit='m'
             paddingLeft
             modifiers={returnAppliedModifierDiplayValue('aimingStabilizer', turretRotationBase, true)}
@@ -104,7 +194,7 @@ export default function GunDispersions() {
          <TableRowComponent
             iconSrc='/icons/firepower/vehicleGunShotDispersionAfterShot.png'
             titleText='After firing'
-            valueText={'* ' + afterShot.toFixed(4)}
+            valueText={'* ' + parseFloat(afterShot.toFixed(4))}
             unit=''
             paddingLeft
             modifiers={returnAppliedModifierDiplayValue('aimingStabilizer', afterShotBase, true)}

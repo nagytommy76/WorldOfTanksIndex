@@ -45,14 +45,14 @@ export default function DeviceGroup({
 
    // selectedDeviceType drives which overlay icon is shown on the button
    const { selectedDeviceTypeOverlay, setSelectedDeviceTypeOverlay, selectedDevice, setSelectedDevice } =
-      useDeviceStates(foundDevices.tiers)
+      useDeviceStates(foundDevices.tiers || foundDevices.equipmentModernized_1)
    const { anchorEl, setAnchorEl, open, handleMenuClose } = useMenuHandler()
 
    function selectAndCloseNoneDeviceType() {
       setAnchorEl(null)
       // ── Deselect ──────────────────────────────────────────────────────
       // Reset the button back to the default tiers icon
-      setSelectedDevice(foundDevices.tiers)
+      setSelectedDevice(foundDevices.equipmentModernized_1 || foundDevices.tiers)
       setSelectedDeviceTypeOverlay('none')
       // Notify parent: deviceId 0 means "remove this slot"
       addSelectedDevice(archeType, 0)

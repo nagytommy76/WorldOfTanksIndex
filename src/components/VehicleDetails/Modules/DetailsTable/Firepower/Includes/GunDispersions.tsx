@@ -2,7 +2,7 @@ import { useContext, useMemo } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
 
-import { applyDispersionModifiers } from '../utils/ApplyDispersionModifiers'
+import applyModifiersOnVehicleDetails from '../utils/ApplyDispersionModifiers'
 
 import Typography from '@mui/material/Typography'
 import TableCell from '@mui/material/TableCell'
@@ -20,24 +20,24 @@ export default function GunDispersions() {
 
    const {
       deviceReducer: { appliedDevicesModifiers },
-      returnAppliedModifierDiplayValue,
    } = useContext(DeviceContext)
 
+   const accuracyBase = vehicleGun[selectedModuleNames.vehicleGun].accuracy
    const vehicleMovementBase = vehicleChassis[selectedModuleNames.vehicleChassis].dispersion.vehicleMovement
    const vehicleRotationBase = vehicleChassis[selectedModuleNames.vehicleChassis].dispersion.vehicleRotation
    const turretRotationBase = vehicleGun[selectedModuleNames.vehicleGun].dispersion.turretRotation
    const afterShotBase = vehicleGun[selectedModuleNames.vehicleGun].dispersion.afterShot
 
    // Grab base values from selected modules
-
    const baseDispersionValues = useMemo(
       () => ({
-         vehicleMovement: vehicleChassis[selectedModuleNames.vehicleChassis].dispersion.vehicleMovement,
-         vehicleRotation: vehicleChassis[selectedModuleNames.vehicleChassis].dispersion.vehicleRotation,
-         turretRotation: vehicleGun[selectedModuleNames.vehicleGun].dispersion.turretRotation,
-         afterShot: vehicleGun[selectedModuleNames.vehicleGun].dispersion.afterShot,
+         accuracy: accuracyBase,
+         vehicleMovement: vehicleMovementBase,
+         vehicleRotation: vehicleRotationBase,
+         turretRotation: turretRotationBase,
+         afterShot: afterShotBase,
       }),
-      [selectedModuleNames, vehicleGun, vehicleChassis],
+      [vehicleMovementBase, vehicleRotationBase, turretRotationBase, afterShotBase, accuracyBase],
    )
 
    /**
@@ -45,8 +45,8 @@ export default function GunDispersions() {
     * No useState/useEffect needed — this is purely derived data.
     * Stacks multiplicatively if multiple devices share the same modifier name.
     */
-   const { vehicleMovement, vehicleRotation, turretRotation, afterShot } = useMemo(
-      () => applyDispersionModifiers(baseDispersionValues, appliedDevicesModifiers),
+   const { vehicleMovement, vehicleRotation, turretRotation, afterShot, accuracy } = useMemo(
+      () => applyModifiersOnVehicleDetails(baseDispersionValues, appliedDevicesModifiers),
       [baseDispersionValues, appliedDevicesModifiers],
    )
 
@@ -61,14 +61,20 @@ export default function GunDispersions() {
          <TableRowComponent
             iconSrc='/icons/firepower/shotDispersionAngle.png'
             titleText='Accuracy At 100 m'
-            valueText={vehicleGun[selectedModuleNames.vehicleGun].accuracy}
+            valueText={accuracy}
             unit='m'
             paddingLeft
+            modifiers={[
+               {
+                  difference: parseFloat((accuracy - accuracyBase).toFixed(4)),
+                  improved: true,
+               },
+            ]}
          />
          <TableRowComponent
             iconSrc='/icons/firepower/vehicleGunShotDispersionChassisMovement.png'
             titleText='Moving'
-            valueText={parseFloat(vehicleMovement.toFixed(4))}
+            valueText={vehicleMovement}
             unit='m'
             paddingLeft
             modifiers={[
@@ -81,31 +87,46 @@ export default function GunDispersions() {
          <TableRowComponent
             iconSrc='/icons/firepower/vehicleGunShotDispersionChassisRotation.png'
             titleText='Tank traverse'
-            valueText={'+ ' + parseFloat(vehicleRotation.toFixed(4))}
+            valueText={vehicleRotation}
             unit='m'
             paddingLeft
-            modifiers={returnAppliedModifierDiplayValue('aimingStabilizer', vehicleRotationBase, true)}
+            modifiers={[
+               {
+                  difference: parseFloat((vehicleRotation - vehicleRotationBase).toFixed(4)),
+                  improved: true,
+               },
+            ]}
          />
          <TableRowComponent
             iconSrc='/icons/firepower/vehicleGunShotDispersionTurretRotation.png'
             titleText='Turret traverse'
-            valueText={'+ ' + parseFloat(turretRotation.toFixed(4))}
+            valueText={turretRotation}
             unit='m'
             paddingLeft
-            modifiers={returnAppliedModifierDiplayValue('aimingStabilizer', turretRotationBase, true)}
+            modifiers={[
+               {
+                  difference: parseFloat((turretRotation - turretRotationBase).toFixed(4)),
+                  improved: true,
+               },
+            ]}
          />
          <TableRowComponent
             iconSrc='/icons/firepower/vehicleGunShotDispersionAfterShot.png'
             titleText='After firing'
-            valueText={'* ' + parseFloat(afterShot.toFixed(4))}
+            valueText={afterShot}
             unit=''
             paddingLeft
-            modifiers={returnAppliedModifierDiplayValue('aimingStabilizer', afterShotBase, true)}
+            modifiers={[
+               {
+                  difference: parseFloat((afterShot - afterShotBase).toFixed(4)),
+                  improved: true,
+               },
+            ]}
          />
          <TableRowComponent
             iconSrc='/icons/firepower/vehicleGunShotDispersionWhileGunDamaged.png'
             titleText='While damaged'
-            valueText={'+ ' + vehicleGun[selectedModuleNames.vehicleGun].dispersion.whileDamaged}
+            valueText={vehicleGun[selectedModuleNames.vehicleGun].dispersion.whileDamaged}
             unit='m'
             paddingLeft
          />

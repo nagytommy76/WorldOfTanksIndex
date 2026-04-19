@@ -72,13 +72,14 @@ export default function Concealment() {
             <TableRowComponent
                iconSrc='/icons/concealment/invisibilityStillFactor.png'
                titleText='Stationary / After Fire'
-               valueText={`
-                ${stationaryCamoValue.toFixed(2)} / 
-                ${calculateCamoValues(
-                   camo.stationary,
-                   vehicleGun[selectedModuleNames.vehicleGun]?.invisibilityFactorAtShot,
-                ).toFixed(2)}
-            `}
+               valueText={[
+                  stationaryCamoValue,
+                  calculateCamoValues(
+                     camo.stationary,
+                     vehicleGun[selectedModuleNames.vehicleGun]?.invisibilityFactorAtShot,
+                  ),
+               ]}
+               toFixed={2}
                unit='%'
                modifiers={
                   appliedDevicesModifiers &&
@@ -96,13 +97,14 @@ export default function Concealment() {
             <TableRowComponent
                iconSrc='/icons/concealment/invisibilityMovingFactor.png'
                titleText='Moving / After Fire'
-               valueText={`
-                    ${movingCamoValue.toFixed(2)} / 
-                    ${calculateCamoValues(
-                       camo.moving,
-                       vehicleGun[selectedModuleNames.vehicleGun]?.invisibilityFactorAtShot,
-                    ).toFixed(2)}
-                `}
+               valueText={[
+                  movingCamoValue,
+                  calculateCamoValues(
+                     camo.moving,
+                     vehicleGun[selectedModuleNames.vehicleGun]?.invisibilityFactorAtShot,
+                  ),
+               ]}
+               toFixed={2}
                unit='%'
                modifiers={
                   appliedDevicesModifiers &&

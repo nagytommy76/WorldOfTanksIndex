@@ -37,9 +37,7 @@ export default function Survivability() {
                <TableRowComponent
                   iconSrc='/icons/survivability/hullArmor.png'
                   titleText='Hull Armor'
-                  valueText={`
-                     ${hull.armor[0]} / ${hull.armor[1]} / ${hull.armor[2]}
-                     `}
+                  valueText={[hull.armor[0], hull.armor[1], hull.armor[2]]}
                   unit='mm'
                />
             )}
@@ -48,11 +46,11 @@ export default function Survivability() {
                   <TableRowComponent
                      iconSrc='/icons/survivability/turretArmor.png'
                      titleText='Turret Armor'
-                     valueText={`
-                    ${vehicleTurret[selectedModuleNames.vehicleTurret]?.armor[0]} / ${
-                       vehicleTurret[selectedModuleNames.vehicleTurret]?.armor[1]
-                    } / ${vehicleTurret[selectedModuleNames.vehicleTurret]?.armor[2]}
-                `}
+                     valueText={[
+                        vehicleTurret[selectedModuleNames.vehicleTurret]?.armor[0],
+                        vehicleTurret[selectedModuleNames.vehicleTurret]?.armor[1],
+                        vehicleTurret[selectedModuleNames.vehicleTurret]?.armor[2],
+                     ]}
                      unit='mm'
                   />
                )}
@@ -67,58 +65,55 @@ export default function Survivability() {
             <TableRowComponent
                iconSrc='/icons/survivability/vehicleChassisStrength.png'
                titleText='Track HP / Repaired'
-               valueText={
-                  vehicleChassis[selectedModuleNames.vehicleChassis]?.maxHealth +
-                  ' / ' +
-                  vehicleChassis[selectedModuleNames.vehicleChassis]?.maxRegenHealth
-               }
+               valueText={[
+                  vehicleChassis[selectedModuleNames.vehicleChassis]?.maxHealth,
+                  vehicleChassis[selectedModuleNames.vehicleChassis]?.maxRegenHealth,
+               ]}
                unit='hp'
             />
             <TableRowComponent
                iconSrc='/icons/survivability/vehicleChassisRepairSpeed.png'
                titleText='Track Repair Time'
-               valueText={vehicleChassis[selectedModuleNames.vehicleChassis]?.repairTime.toFixed(2)}
+               valueText={vehicleChassis[selectedModuleNames.vehicleChassis]?.repairTime}
+               toFixed={2}
                unit='s'
             />
             <TableRowComponent
                iconSrc='/icons/survivability/vehicleAmmoBayStrength.png'
                titleText='Ammo Rack HP / Repaired'
-               valueText={hull.ammoRackHealth.maxHealth + ' / ' + hull.ammoRackHealth.maxRegenHealth}
+               valueText={[hull.ammoRackHealth.maxHealth, hull.ammoRackHealth.maxRegenHealth]}
                unit='hp'
             />
             <TableRowComponent
                iconSrc='/icons/survivability/fuelTankHP.png'
                titleText='Fuel Tank HP / Repaired'
-               valueText={fuelTank[0].maxHealth + ' / ' + fuelTank[0].maxRegenHealth}
+               valueText={[fuelTank[0].maxHealth, fuelTank[0].maxRegenHealth]}
                unit='hp'
             />
             <TableRowComponent
                iconSrc='/icons/survivability/vehicleAmmoBayEngineFuelStrength.png'
                titleText='Engine HP / Repaired'
-               valueText={
-                  vehicleEngine[selectedModuleNames.vehicleEngine]?.maxHealth +
-                  ' / ' +
-                  vehicleEngine[selectedModuleNames.vehicleEngine]?.maxRegenHealth
-               }
+               valueText={[
+                  vehicleEngine[selectedModuleNames.vehicleEngine]?.maxHealth,
+                  vehicleEngine[selectedModuleNames.vehicleEngine]?.maxRegenHealth,
+               ]}
                unit='hp'
             />
             <TableRowComponent
                iconSrc='/icons/survivability/vehicleAmmoBayEngineFuelStrength.png'
                titleText='Turret Ring HP / Repaired'
-               valueText={
-                  vehicleTurret[selectedModuleNames.vehicleTurret]?.ringHealth.maxHealth +
-                  ' / ' +
-                  vehicleTurret[selectedModuleNames.vehicleTurret]?.ringHealth.maxRegenHealth
-               }
+               valueText={[
+                  vehicleTurret[selectedModuleNames.vehicleTurret]?.ringHealth.maxHealth,
+                  vehicleTurret[selectedModuleNames.vehicleTurret]?.ringHealth.maxRegenHealth,
+               ]}
                unit='hp'
             />
             <TableRowComponent
                titleText='Viewport HP / Repaired'
-               valueText={
-                  vehicleTurret[selectedModuleNames.vehicleTurret]?.viewportHealth.maxHealth +
-                  ' / ' +
-                  vehicleTurret[selectedModuleNames.vehicleTurret]?.viewportHealth.maxRegenHealth
-               }
+               valueText={[
+                  vehicleTurret[selectedModuleNames.vehicleTurret]?.viewportHealth.maxHealth,
+                  vehicleTurret[selectedModuleNames.vehicleTurret]?.viewportHealth.maxRegenHealth,
+               ]}
                iconSrc='/icons/spot/circularVisionRadius.png'
                unit='hp'
             />

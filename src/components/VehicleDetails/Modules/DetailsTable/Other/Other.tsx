@@ -71,14 +71,14 @@ export default function Miscellaneous() {
                <TableRowComponent
                   iconSrc='/icons/money_silver.webp'
                   titleText='Tank Cost'
-                  valueText={tankCost.toLocaleString()}
+                  valueText={tankCost}
                   unit='Credits'
                />
             ) : (
                <TableRowComponent
                   iconSrc='/icons/money_gold.webp'
                   titleText='Tank Cost'
-                  valueText={tankCost.gold?.toLocaleString() || 0}
+                  valueText={tankCost.gold || 0}
                   unit='gold'
                />
             )}

@@ -74,17 +74,17 @@ export default function Mobility() {
             <TableRowComponent
                iconSrc='/icons/firepower/pitchLimits.png'
                titleText='Gun Depression / Elevation'
-               valueText={gunDepression + ' / ' + gunElevation}
+               valueText={[gunDepression, gunElevation]}
                unit='°'
             />
             {vehicleGun[selectedModuleNames.vehicleGun]?.arc.length > 0 && (
                <TableRowComponent
                   iconSrc='/icons/mobility/gunYawLimits.png'
                   titleText='Gun Traverse Limits'
-                  valueText={`
-                     ${vehicleGun[selectedModuleNames.vehicleGun]?.arc[0]} /
-                     ${vehicleGun[selectedModuleNames.vehicleGun]?.arc[1]}
-                  `}
+                  valueText={[
+                     vehicleGun[selectedModuleNames.vehicleGun]?.arc[0],
+                     vehicleGun[selectedModuleNames.vehicleGun]?.arc[1],
+                  ]}
                   unit='deg'
                />
             )}
@@ -93,7 +93,8 @@ export default function Mobility() {
             <TableRowComponent
                iconSrc='/icons/mobility/vehicleWeight.png'
                titleText='Weight'
-               valueText={(totalWeight / 1000).toFixed(2)}
+               valueText={totalWeight / 1000}
+               toFixed={2}
                unit='tn'
             />
             <TableRowComponent
@@ -105,10 +106,8 @@ export default function Mobility() {
             <TableRowComponent
                iconSrc='/icons/mobility/enginePowerPerTon.png'
                titleText='Specific Power'
-               valueText={(
-                  (vehicleEngine[selectedModuleNames.vehicleEngine]?.power / totalWeight) *
-                  1000
-               ).toFixed(2)}
+               valueText={(vehicleEngine[selectedModuleNames.vehicleEngine]?.power / totalWeight) * 1000}
+               toFixed={2}
                unit='hp/tn'
             />
             <TableRow className='bg-gray-700 h-[20px]'>
@@ -124,63 +123,66 @@ export default function Mobility() {
             <TableRowComponent
                iconSrc='/icons/mobility/vehicleSpeedGain.png'
                titleText='Terrain Resistance'
-               valueText={`
-                     ${vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0].toFixed(2)} /
-                     ${vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[1].toFixed(2)} /
-                     ${vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[2].toFixed(2)}
-                  `}
+               valueText={[
+                  vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
+                  vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[1],
+                  vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[2],
+               ]}
+               toFixed={2}
                unit='m/s²'
                paddingLeft
             />
             <TableRowComponent
                iconSrc='/icons/mobility/speedLimits.png'
                titleText='Effective Top Speed'
-               valueText={`
-                     ${calculateEffectiveTopSpeed(
-                        vehicleEngine[selectedModuleNames.vehicleEngine]?.power,
-                        totalWeight / 1000,
-                        vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
-                        speedLimit?.forward,
-                     ).toFixed(2)} /
-                     ${calculateEffectiveTopSpeed(
-                        vehicleEngine[selectedModuleNames.vehicleEngine]?.power,
-                        totalWeight / 1000,
-                        vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[1],
-                        speedLimit?.forward,
-                     ).toFixed(2)} /
-                     ${calculateEffectiveTopSpeed(
-                        vehicleEngine[selectedModuleNames.vehicleEngine]?.power,
-                        totalWeight / 1000,
-                        vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[2],
-                        speedLimit?.forward,
-                     ).toFixed(2)}
-                  `}
+               valueText={[
+                  calculateEffectiveTopSpeed(
+                     vehicleEngine[selectedModuleNames.vehicleEngine]?.power,
+                     totalWeight / 1000,
+                     vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
+                     speedLimit?.forward,
+                  ),
+                  calculateEffectiveTopSpeed(
+                     vehicleEngine[selectedModuleNames.vehicleEngine]?.power,
+                     totalWeight / 1000,
+                     vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[1],
+                     speedLimit?.forward,
+                  ),
+                  calculateEffectiveTopSpeed(
+                     vehicleEngine[selectedModuleNames.vehicleEngine]?.power,
+                     totalWeight / 1000,
+                     vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[2],
+                     speedLimit?.forward,
+                  ),
+               ]}
                unit='km/h'
+               toFixed={2}
                paddingLeft
             />
             <TableRowComponent
                iconSrc='/icons/mobility/chassisRotationSpeed.png'
                titleText='Effective Traverse Speed'
-               valueText={`
-                     ${calculateEffectiveTraverseSpeed(
-                        vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed,
-                        vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
-                        vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
-                        0.95,
-                     ).toFixed(2)} /
-                     ${calculateEffectiveTraverseSpeed(
-                        vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed,
-                        vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
-                        vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[1],
-                        0.95,
-                     ).toFixed(2)} /
-                     ${calculateEffectiveTraverseSpeed(
-                        vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed,
-                        vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
-                        vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[2],
-                        0.95,
-                     ).toFixed(2)}
-                  `}
+               valueText={[
+                  calculateEffectiveTraverseSpeed(
+                     vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed,
+                     vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
+                     vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
+                     0.95,
+                  ),
+                  calculateEffectiveTraverseSpeed(
+                     vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed,
+                     vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
+                     vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[1],
+                     0.95,
+                  ),
+                  calculateEffectiveTraverseSpeed(
+                     vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed,
+                     vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
+                     vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[2],
+                     0.95,
+                  ),
+               ]}
+               toFixed={2}
                unit='°/s'
                paddingLeft
             />

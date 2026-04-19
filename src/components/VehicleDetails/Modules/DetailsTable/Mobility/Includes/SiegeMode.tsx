@@ -26,13 +26,13 @@ export default function SiegeMode({ siegeMode }: { siegeMode: Partial<ISiegeMode
             <TableRowComponent
                iconSrc='/icons/mobility/switchOnTime.png'
                titleText='Switching to Siege Mode'
-               valueText={siegeMode.switchOnTime || 0}
+               valueText={Number(siegeMode.switchOnTime) || 0}
                unit='s'
             />
             <TableRowComponent
                iconSrc='/icons/mobility/switchOffTime.png'
                titleText='Switching to Travel Mode'
-               valueText={siegeMode.switchOffTime || 0}
+               valueText={Number(siegeMode.switchOffTime) || 0}
                unit='s'
             />
          </>

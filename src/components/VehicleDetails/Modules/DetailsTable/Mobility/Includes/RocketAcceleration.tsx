@@ -30,7 +30,7 @@ export default function RocketAcceleration() {
          <TableRowComponent
             iconSrc='/icons/mobility/rocketAccelerationEnginePower.png'
             titleText='Booster Duration / Reload Time'
-            valueText={rocketAcceleration.duration + ' / ' + rocketAcceleration.reloadTime}
+            valueText={[rocketAcceleration.duration, rocketAcceleration.reloadTime]}
             unit='s'
             paddingLeft
          />

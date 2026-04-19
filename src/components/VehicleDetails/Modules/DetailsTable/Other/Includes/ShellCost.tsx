@@ -29,7 +29,8 @@ export default function ShellCost({ armorDamage }: { armorDamage: number }) {
       <TableRowComponent
          iconSrc='/icons/money_silver.webp'
          titleText='Shell Cost per 1000 HP'
-         valueText={((1000 / armorDamage) * shells[selectedModuleNames.shells]?.price).toFixed(0)}
+         valueText={(1000 / armorDamage) * shells[selectedModuleNames.shells]?.price}
+         toFixed={0}
          unit='Credits'
          modifiers={[
             {

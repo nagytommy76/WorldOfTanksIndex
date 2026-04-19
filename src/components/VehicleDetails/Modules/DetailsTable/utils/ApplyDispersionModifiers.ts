@@ -1,9 +1,11 @@
 import type { DeviceModifiers } from '@/DevicesContext/Types'
+import ReturnPercentValue from '@/helpers/returnPercentValue'
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
-type ModifierOperation = 'mul' | 'add'
+type ModifierOperation = 'mul' | 'add' | 'mulAdd'
 
 interface IModifierConfig {
    /** Which field names in your flat object this modifier affects */
@@ -95,13 +97,25 @@ export const MODIFIER_CONFIG: Record<string, IModifierConfig> = {
       fields: ['stillViewRange'],
       operation: 'mul',
    },
+   vehicleStillCircularVisionRadiusDeluxe: {
+      fields: ['stillViewRange'],
+      operation: 'mul',
+   },
    vehicleStillCamouflage: {
       fields: ['camouflageStill'],
       operation: 'mul',
    },
    vehicleCamouflage: {
-      fields: ['camouflageMoving'],
-      operation: 'mul',
+      fields: ['camouflageMoving', 'camouflageStill'],
+      operation: 'mulAdd',
+   },
+   vehicleEnemySpottingTime: {
+      fields: ['enemySpottingTime'],
+      operation: 'add',
+   },
+   vehicleOwnSpottingTime: {
+      fields: ['ownSpottingTime'],
+      operation: 'add',
    },
 }
 
@@ -158,12 +172,20 @@ export default function applyModifiersOnVehicleDetails<T extends Record<string, 
 
             const key = configField as keyof T
 
-            if (config.operation === 'mul') {
-               // e.g. reloadTime: 7.8 * 0.9 = 7.02
-               ;(result[key] as number) *= modifier.value
-            } else {
-               // e.g. forwardSpeed: 72 + 4 = 76
-               ;(result[key] as number) += modifier.value
+            switch (config.operation) {
+               case 'mul':
+                  ;(result[key] as number) *= modifier.value
+                  break
+               case 'mulAdd':
+                  const percentValue = ReturnPercentValue(modifier.value)
+                  // let camo = calculateCamoValues(result[key])
+                  // console.log(percentValue)
+                  ;(result[key] as number) += percentValue
+
+                  break
+               default:
+                  ;(result[key] as number) += modifier.value
+                  break
             }
          }
       }

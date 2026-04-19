@@ -26,12 +26,14 @@ export default function TableRowComponent({
    unit,
    paddingLeft,
    iconSrc,
+   toFixed = 4,
    TooltipTitle,
    modifiers = null,
 }: {
    titleText: string
-   valueText: string | number
+   valueText: number[] | number
    unit?: string
+   toFixed?: number
    paddingLeft?: boolean
    iconSrc?: string
    TooltipTitle?: React.ReactNode
@@ -66,7 +68,14 @@ export default function TableRowComponent({
                <div className='flex flex-row justify-end gap-1 items-center'>
                   {modifiers && <Modifiers modifiers={modifiers} />}
                   <Typography className='text-white font-semibold' variant='subtitle1' fontSize={15}>
-                     {valueText}
+                     {typeof valueText === 'number' && parseFloat(valueText.toFixed(toFixed))}
+                     {typeof valueText === 'object' &&
+                        valueText.map((value, index) => (
+                           <span key={index}>
+                              {parseFloat(value.toFixed(toFixed))}{' '}
+                              {index !== valueText.length - 1 && ' / '}{' '}
+                           </span>
+                        ))}
                   </Typography>
                   <Typography className='opacity-65' variant='subtitle2' fontSize={10}>
                      {unit}

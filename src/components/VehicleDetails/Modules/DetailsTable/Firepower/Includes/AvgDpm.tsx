@@ -31,11 +31,12 @@ export default function AvgDpm({
                <TableRowComponent
                   iconSrc='/icons/firepower/avgDamagePerMinute.png'
                   titleText='Average Damage per Minute'
-                  valueText={(
+                  valueText={
                      ((shells[selectedModuleNames.shells]?.damage.armor as number) /
                         autoreload.reloadTime[autoreload.reloadTime.length - 1]) *
                      60
-                  ).toFixed(0)}
+                  }
+                  toFixed={0}
                   unit='HP/min'
                   TooltipTitle={
                      <>
@@ -54,7 +55,8 @@ export default function AvgDpm({
                <TableRowComponent
                   iconSrc='/icons/firepower/avgDamagePerMinute.png'
                   titleText='Continuous Autoreloader DPM'
-                  valueText={returnAutoReloadDPM(autoreload, clipDamage).toFixed(0)}
+                  valueText={returnAutoReloadDPM(autoreload, clipDamage)}
+                  toFixed={0}
                   unit='HP/min'
                   TooltipTitle={
                      <>
@@ -83,7 +85,8 @@ export default function AvgDpm({
                   clip,
                   clipDamage,
                   reloadBetweenShells,
-               ).toFixed(0)}
+               )}
+               toFixed={0}
                unit='HP/min'
             />
          )
@@ -95,7 +98,8 @@ export default function AvgDpm({
                valueText={returnDPM(
                   vehicleGun[selectedModuleNames.vehicleGun].reloadTime,
                   (shells[selectedModuleNames.shells]?.damage.armor as number[])[0],
-               ).toFixed(0)}
+               )}
+               toFixed={0}
                unit='HP/min'
             />
          )
@@ -108,7 +112,8 @@ export default function AvgDpm({
                valueText={returnDPM(
                   vehicleGun[selectedModuleNames.vehicleGun].reloadTime,
                   shells[selectedModuleNames.shells]?.damage.armor as number,
-               ).toFixed(0)}
+               )}
+               toFixed={0}
                unit='HP/min'
             />
          )

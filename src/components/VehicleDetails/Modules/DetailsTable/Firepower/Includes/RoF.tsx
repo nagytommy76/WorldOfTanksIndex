@@ -21,7 +21,8 @@ export default function RoF({ totalReloadTime }: { totalReloadTime: number }) {
             <TableRowComponent
                iconSrc='/icons/firepower/reloadTime.png'
                titleText='Rate of Fire'
-               valueText={((1 / autoReload?.reloadTime[0]) * 60).toFixed(2)}
+               valueText={(1 / autoReload?.reloadTime[0]) * 60}
+               toFixed={2}
                unit='rounds/min'
             />
          )
@@ -30,7 +31,8 @@ export default function RoF({ totalReloadTime }: { totalReloadTime: number }) {
             <TableRowComponent
                iconSrc='/icons/firepower/reloadTime.png'
                titleText='Rate of Fire'
-               valueText={((60 / totalReloadTime) * (selectedGun.clip?.count as number)).toFixed(2)}
+               valueText={(60 / totalReloadTime) * (selectedGun.clip?.count as number)}
+               toFixed={2}
                unit='rounds/min'
             />
          )
@@ -39,7 +41,8 @@ export default function RoF({ totalReloadTime }: { totalReloadTime: number }) {
             <TableRowComponent
                iconSrc='/icons/firepower/reloadTime.png'
                titleText='Rate of Fire'
-               valueText={(60 / selectedGun.reloadTime).toFixed(2)}
+               valueText={60 / selectedGun.reloadTime}
+               toFixed={2}
                unit='rounds/min'
             />
          )

@@ -14,7 +14,7 @@ export default function Damage({
          <TableRowComponent
             iconSrc='/icons/firepower/avgDamage.png'
             titleText='Damage'
-            valueText={`${damage[0]} / ${damage[1]}`}
+            valueText={[damage[0], damage[1]]}
             unit='HP'
             TooltipTitle={
                <section className='w-[250px] h-[110px] flex flex-col gap-2'>

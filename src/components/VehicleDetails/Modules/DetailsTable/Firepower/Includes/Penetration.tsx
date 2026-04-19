@@ -13,10 +13,7 @@ export default function Penetration({
       <TableRowComponent
          iconSrc='/icons/firepower/avgPiercingPower.png'
          titleText='Penetration (at 50/500 m)'
-         valueText={`
-                  ${piercingPower[0]} /
-                  ${piercingPower[1]}
-               `}
+         valueText={[piercingPower[0], piercingPower[1]]}
          unit='mm'
          modifiers={
             shellDamageDiff && [

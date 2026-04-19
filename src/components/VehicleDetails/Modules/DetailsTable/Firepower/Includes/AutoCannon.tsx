@@ -27,7 +27,7 @@ export default function AutoCannon({ reloadBetweenShells }: { reloadBetweenShell
          <TableRowComponent
             iconSrc='/icons/firepower/avgDamagePerMinute.png'
             titleText='Damage per Second'
-            valueText={((1 / reloadBetweenShells) * armorDamage).toFixed(0)}
+            valueText={(1 / reloadBetweenShells) * armorDamage}
             unit='HP'
             paddingLeft
          />

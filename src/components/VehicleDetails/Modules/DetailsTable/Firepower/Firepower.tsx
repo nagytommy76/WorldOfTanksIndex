@@ -42,6 +42,8 @@ export default function Firepower() {
       ((vehicleGun[selectedModuleNames.vehicleGun]?.clip?.count as number) - 1) * reloadBetweenShells +
          vehicleGun[selectedModuleNames.vehicleGun]?.reloadTime || 0
 
+   const vehicleGunAutoReload = vehicleGun[selectedModuleNames.vehicleGun].autoreload
+
    return (
       <Table size='small' aria-label='Firepower table with average damage and penetration'>
          <TableHeadComponent headTitle='Firepower' iconSrc='/icons/details/firepower.png' />
@@ -66,24 +68,19 @@ export default function Firepower() {
                valueText={vehicleGun[selectedModuleNames.vehicleGun]?.reloadTime}
                unit='s'
             />
-            {vehicleGun[selectedModuleNames.vehicleGun]?.autoreload?.reloadTime && (
+            {vehicleGunAutoReload && vehicleGunAutoReload.reloadTime && (
                <TableRowComponent
                   iconSrc='/icons/firepower/autoReloadTime.png'
                   titleText='Autoreloading One Shell'
-                  valueText={`
-                     ${vehicleGun[selectedModuleNames.vehicleGun].autoreload?.reloadTime[3] ? vehicleGun[selectedModuleNames.vehicleGun].autoreload?.reloadTime[3] + ' /' : ''}
-                     ${vehicleGun[selectedModuleNames.vehicleGun].autoreload?.reloadTime[2]} /
-                     ${vehicleGun[selectedModuleNames.vehicleGun].autoreload?.reloadTime[1]} /
-                     ${vehicleGun[selectedModuleNames.vehicleGun].autoreload?.reloadTime[0]}
-
-                  `}
+                  valueText={[...vehicleGunAutoReload.reloadTime]}
                   unit='s'
                />
             )}
             <TableRowComponent
                iconSrc='/icons/firepower/aimingTime.png'
                titleText='Aiming Time'
-               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.aimTime.toFixed(2)}
+               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.aimTime}
+               toFixed={2}
                unit='s'
             />
             {vehicleName === 'F136_AMX_67_Imbattable' && (
@@ -145,9 +142,10 @@ export default function Firepower() {
                <TableRowComponent
                   iconSrc='/icons/firepower/shellModuleDamage.png'
                   titleText='Module damage (50/500m)'
-                  valueText={`${(shells[selectedModuleNames.shells]?.damage.devices as number[])[0]} / ${
-                     (shells[selectedModuleNames.shells]?.damage.devices as number[])[1]
-                  }`}
+                  valueText={[
+                     (shells[selectedModuleNames.shells]?.damage.devices as number[])[0],
+                     (shells[selectedModuleNames.shells]?.damage.devices as number[])[1],
+                  ]}
                   unit='hp'
                />
             ) : (

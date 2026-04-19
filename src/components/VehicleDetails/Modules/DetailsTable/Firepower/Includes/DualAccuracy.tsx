@@ -27,7 +27,8 @@ export default function DualAccuracy({
          <TableRowComponent
             iconSrc='/icons/firepower/dualAccuracyCoolingDelay.png'
             titleText='Gun Cooling Time After Reload'
-            valueText={(dualAccuracy.coolingDelay - reloadTime).toFixed(2)}
+            valueText={dualAccuracy.coolingDelay - reloadTime}
+            toFixed={2}
             unit='s'
             paddingLeft
          />

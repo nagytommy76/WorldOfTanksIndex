@@ -30,7 +30,7 @@ export default function Artilerry() {
          <TableRowComponent
             iconSrc='/icons/firepower/stunMinDuration.png'
             titleText='Minimum Stun Duration'
-            valueText={(stunDuration * guaranteedStunDuration).toFixed(2)}
+            valueText={stunDuration * guaranteedStunDuration}
             unit='s'
             paddingLeft
          />

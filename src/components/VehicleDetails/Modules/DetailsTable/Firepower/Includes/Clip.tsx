@@ -21,7 +21,8 @@ export default function Clip({
          <TableRowComponent
             iconSrc='/icons/firepower/burstFireRate.png'
             titleText='Reload between shells'
-            valueText={reloadBetweenShells.toFixed(2)}
+            valueText={reloadBetweenShells}
+            toFixed={2}
             unit='s'
          />
          <TableRowComponent

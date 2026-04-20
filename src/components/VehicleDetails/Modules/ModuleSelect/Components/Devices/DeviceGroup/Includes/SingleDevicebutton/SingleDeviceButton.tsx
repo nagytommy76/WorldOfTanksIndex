@@ -30,6 +30,7 @@ export default function SingleDeviceButton({
    return (
       <DeviceButton
          selectedDeviceTypeOverlay={selectedDeviceTypeOverlay}
+         isBlocked={isBlocked}
          open={open}
          handleButtonClick={handleButtonClick}
          TooltipTitle={

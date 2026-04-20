@@ -17,6 +17,7 @@ export type DeviceModifiers = {
 
 export interface IDevicesReducerState {
    appliedDevicesModifiers: DeviceModifiers | null
+   incompatibleDevices: string[] | null
 }
 
 export type IDevicesContextActions =
@@ -25,9 +26,12 @@ export type IDevicesContextActions =
         payload: { name: string; value: number; archeType: DeviceModifierKeys }
      }
    | { type: 'REMOVE_DEVICE_MODIFIER'; payload: { archeType: DeviceModifierKeys } }
+   | { type: 'SET_INCOMPATIBLE_DEVICES'; payload: string[] }
+   | { type: 'REMOVE_INCOMPATIBLE_DEVICE'; payload: string }
 
 export const devicesInitialState: IDevicesReducerState = {
    appliedDevicesModifiers: null,
+   incompatibleDevices: null,
 }
 
 export interface IDeviceContext {

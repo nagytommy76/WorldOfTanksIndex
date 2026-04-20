@@ -1,5 +1,5 @@
 'use client'
-import { useContext, useState, useEffect } from 'react'
+import { useContext, useMemo } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
 
@@ -8,6 +8,7 @@ import TableBody from '@mui/material/TableBody'
 
 import TableHeadComponent from '../Includes/TableHead'
 import TableRowComponent from '../Includes/TableRow'
+import applyModifiersOnVehicleDetails from '../utils/ApplyDispersionModifiers'
 
 const SPOTTED_TIME = 10
 export default function Spotting() {
@@ -19,29 +20,24 @@ export default function Spotting() {
    } = useContext(VehicleContext)
    const {
       deviceReducer: { appliedDevicesModifiers },
-      returnAppliedModifierDiplayValue,
-      setAppliedDeviceModifier,
    } = useContext(DeviceContext)
 
    const viewRangeBase = vehicleTurret[selectedModuleNames.vehicleTurret].viewRange
+   const viewRangeStillBase = vehicleTurret[selectedModuleNames.vehicleTurret].viewRange
 
-   const [viewRange, setViewRange] = useState(vehicleTurret[selectedModuleNames.vehicleTurret].viewRange)
-   const [timeBeingSpotted, setTimeBeingSpotted] = useState(SPOTTED_TIME)
-   const [timeEnemySpotted, setTimeEnemySpotted] = useState(SPOTTED_TIME)
-
-   useEffect(() => {
-      setAppliedDeviceModifier(viewRangeBase, 'coatedOptics', 'vehicleCircularVisionRadius', setViewRange)
-   }, [selectedModuleNames, vehicleTurret, viewRangeBase, appliedDevicesModifiers, setAppliedDeviceModifier])
-
-   useEffect(() => {
-      if (!appliedDevicesModifiers || !appliedDevicesModifiers['improvedRadioCommunication']) {
-         setTimeBeingSpotted(SPOTTED_TIME)
-         setTimeEnemySpotted(SPOTTED_TIME)
-         return
-      }
-      setTimeBeingSpotted(SPOTTED_TIME - appliedDevicesModifiers['improvedRadioCommunication'][0].value)
-      setTimeEnemySpotted(SPOTTED_TIME + appliedDevicesModifiers['improvedRadioCommunication'][0].value)
-   }, [appliedDevicesModifiers])
+   const { enemySpottingTime, ownSpottingTime, viewRange, stillViewRange } = useMemo(
+      () =>
+         applyModifiersOnVehicleDetails(
+            {
+               enemySpottingTime: SPOTTED_TIME,
+               ownSpottingTime: SPOTTED_TIME,
+               viewRange: viewRangeBase,
+               stillViewRange: viewRangeStillBase,
+            },
+            appliedDevicesModifiers,
+         ),
+      [viewRangeBase, viewRangeStillBase, appliedDevicesModifiers],
+   )
 
    return (
       <Table size='small' aria-label='Spotting table with view range and signal range'>
@@ -51,16 +47,33 @@ export default function Spotting() {
             iconSrc='/icons/details/stealth.png'
          />
          <TableBody>
-            <TableRowComponent
-               iconSrc='/icons/spot/circularVisionRadius.png'
-               titleText='View range'
-               valueText={parseFloat(viewRange.toFixed(2))}
-               unit='m'
-               modifiers={returnAppliedModifierDiplayValue(
-                  'coatedOptics',
-                  vehicleTurret[selectedModuleNames.vehicleTurret]?.viewRange,
-               )}
-            />
+            {appliedDevicesModifiers && appliedDevicesModifiers['stereoscope'] ? (
+               <TableRowComponent
+                  iconSrc='/icons/spot/circularVisionRadius.png'
+                  titleText='View range'
+                  valueText={stillViewRange}
+                  unit='m'
+                  modifiers={[
+                     {
+                        difference: parseFloat((stillViewRange - viewRangeStillBase).toFixed(2)),
+                        improved: true,
+                     },
+                  ]}
+               />
+            ) : (
+               <TableRowComponent
+                  iconSrc='/icons/spot/circularVisionRadius.png'
+                  titleText='View range'
+                  valueText={viewRange}
+                  unit='m'
+                  modifiers={[
+                     {
+                        difference: parseFloat((viewRange - viewRangeBase).toFixed(2)),
+                        improved: true,
+                     },
+                  ]}
+               />
+            )}
             <TableRowComponent
                iconSrc='/icons/spot/radioDistance.png'
                titleText='Signal range'
@@ -70,11 +83,11 @@ export default function Spotting() {
             <TableRowComponent
                iconSrc='/icons/spot/vehicleOwnSpottingTime.png'
                titleText='Time being spotted'
-               valueText={timeBeingSpotted}
+               valueText={ownSpottingTime}
                unit='seconds'
                modifiers={[
                   {
-                     difference: timeBeingSpotted - SPOTTED_TIME,
+                     difference: ownSpottingTime - SPOTTED_TIME,
                      improved: true,
                   },
                ]}
@@ -82,11 +95,11 @@ export default function Spotting() {
             <TableRowComponent
                iconSrc='/icons/spot/vehicleEnemySpottingTime.png'
                titleText='Time enemy remains spotted'
-               valueText={timeEnemySpotted}
+               valueText={enemySpottingTime}
                unit='seconds'
                modifiers={[
                   {
-                     difference: timeEnemySpotted - SPOTTED_TIME,
+                     difference: enemySpottingTime - SPOTTED_TIME,
                      improved: true,
                   },
                ]}

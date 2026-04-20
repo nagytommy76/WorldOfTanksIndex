@@ -33,6 +33,19 @@ export default function DevicesReducer(
             appliedDevicesModifiers: rest as DeviceModifiers,
          }
       }
+      case 'SET_INCOMPATIBLE_DEVICES': {
+         const incompatibleDevices = state.incompatibleDevices ?? []
+         return {
+            ...state,
+            incompatibleDevices: incompatibleDevices.concat(payload),
+         }
+      }
+      case 'REMOVE_INCOMPATIBLE_DEVICE': {
+         return {
+            ...state,
+            incompatibleDevices: state.incompatibleDevices?.filter((d) => d !== payload),
+         }
+      }
       default: {
          return state
       }

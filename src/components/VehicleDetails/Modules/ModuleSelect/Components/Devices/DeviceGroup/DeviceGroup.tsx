@@ -39,7 +39,10 @@ export default function DeviceGroup({
    addSelectedDevice(archeType: string, deviceId: number): void
 }) {
    const { supplySlotCategory, vehicleType } = useContext(VehicleContext)
-   const { deviceDispatch } = useContext(DeviceContext)
+   const {
+      deviceDispatch,
+      deviceReducer: { incompatibleDevices },
+   } = useContext(DeviceContext)
    // ── Local state ──────────────────────────────────────────────────────────
    const foundDevices = ReturnFoundDevices(devices)
 
@@ -48,6 +51,11 @@ export default function DeviceGroup({
       useDeviceStates(foundDevices.tiers || foundDevices.equipmentModernized_1)
    const { anchorEl, setAnchorEl, open, handleMenuClose } = useMenuHandler()
 
+   /**
+    * @description
+    * Called ONLY when Deselect equipment is selected from the dropdown.
+    * selectedDeviceTypeOverlay set to none, selectedDevice set to tiers
+    */
    function selectAndCloseNoneDeviceType() {
       setAnchorEl(null)
       // ── Deselect ──────────────────────────────────────────────────────
@@ -60,6 +68,14 @@ export default function DeviceGroup({
          type: 'REMOVE_DEVICE_MODIFIER',
          payload: { archeType },
       })
+      if (foundDevices.tiers?.incompatibleTags && foundDevices.equipmentModernized_1?.incompatibleTags) {
+         deviceDispatch({
+            type: 'REMOVE_INCOMPATIBLE_DEVICE',
+            payload:
+               foundDevices.tiers.incompatibleTags?.[0] ??
+               foundDevices.equipmentModernized_1.incompatibleTags?.[0],
+         })
+      }
    }
 
    function supplySlotActiveSelectAndClose() {
@@ -67,6 +83,14 @@ export default function DeviceGroup({
       setSelectedDevice(foundDevices.tiers)
       setSelectedDeviceTypeOverlay('supplySlotActive')
       addSelectedDevice(archeType, foundDevices.tiers?.id ?? 0)
+
+      if (foundDevices.tiers?.incompatibleTags) {
+         deviceDispatch({
+            type: 'SET_INCOMPATIBLE_DEVICES',
+            payload: foundDevices.tiers.incompatibleTags,
+         })
+      }
+
       if (foundDevices.tiers?.modifiers) {
          foundDevices.tiers.modifiers.forEach((modifier) => {
             deviceDispatch({
@@ -104,19 +128,35 @@ export default function DeviceGroup({
       setSelectedDeviceTypeOverlay(deviceType)
       // Notify parent with the real device id so it can track the selection
       addSelectedDevice(archeType, device.id)
-
-      if (device?.modifiers) {
-         device.modifiers.forEach((modifier) => {
-            deviceDispatch({
-               type: 'SET_DEVICE_MODIFIER',
-               payload: {
-                  archeType,
-                  name: modifier.name,
-                  value: modifier.value,
-               },
-            })
+      if (device.incompatibleTags) {
+         deviceDispatch({
+            type: 'SET_INCOMPATIBLE_DEVICES',
+            payload: device.incompatibleTags,
          })
-      } else if (device?.aggregateModifiers) {
+      }
+      if (device.modifiers) {
+         device.modifiers.forEach((modifier) => {
+            if (modifier.name === 'vehicleStillCircularVisionRadiusDeluxe') {
+               deviceDispatch({
+                  type: 'SET_DEVICE_MODIFIER',
+                  payload: {
+                     archeType,
+                     name: 'vehicleStillCircularVisionRadius',
+                     value: modifier.value,
+                  },
+               })
+            } else {
+               deviceDispatch({
+                  type: 'SET_DEVICE_MODIFIER',
+                  payload: {
+                     archeType,
+                     name: modifier.name,
+                     value: modifier.value,
+                  },
+               })
+            }
+         })
+      } else if (device.aggregateModifiers) {
          device.aggregateModifiers.forEach((aggregatedModifier) => {
             if (aggregatedModifier.vehicleTypes.includes(vehicleType)) {
                deviceDispatch({
@@ -136,7 +176,12 @@ export default function DeviceGroup({
    return (
       <>
          <SingleDeviceButton
-            isBlocked={isBlocked}
+            isBlocked={
+               isBlocked ||
+               (incompatibleDevices?.includes(selectedDevice.tags[0]) &&
+                  selectedDeviceTypeOverlay === 'none') ||
+               false
+            }
             selectedDevice={selectedDevice}
             selectedDeviceTypeOverlay={selectedDeviceTypeOverlay}
             open={open}

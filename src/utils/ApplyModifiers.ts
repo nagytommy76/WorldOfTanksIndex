@@ -5,7 +5,7 @@ import ReturnPercentValue from '@/helpers/returnPercentValue'
 // Types
 // ---------------------------------------------------------------------------
 
-type ModifierOperation = 'mul' | 'add' | 'mulAdd'
+type ModifierOperation = 'mul' | 'add' | 'mulAdd' | 'mulSubtract'
 
 interface IModifierConfig {
    /** Which field names in your flat object this modifier affects */
@@ -37,7 +37,7 @@ export const MODIFIER_CONFIG: Record<string, IModifierConfig> = {
    },
    vehicleGunAimSpeed: {
       fields: ['aimingTime'],
-      operation: 'mul',
+      operation: 'mulSubtract',
    },
 
    // --- Mobility ---
@@ -182,6 +182,10 @@ export default function applyModifiersOnVehicleDetails<T extends Record<string, 
                   // console.log(percentValue)
                   ;(result[key] as number) += percentValue
 
+                  break
+               case 'mulSubtract':
+                  const percentValue2 = 1 - (modifier.value - 1)
+                  ;(result[key] as number) *= percentValue2
                   break
                default:
                   ;(result[key] as number) += modifier.value

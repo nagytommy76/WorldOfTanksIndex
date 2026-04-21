@@ -3,7 +3,13 @@ import { VehicleContext } from '@/VehicleContext/VehicleContext'
 
 import TableRowComponent from '../../Includes/TableRow'
 
-export default function RoF({ totalReloadTime }: { totalReloadTime: number }) {
+export default function RoF({
+   totalReloadTime,
+   reloadTime,
+}: {
+   totalReloadTime: number
+   reloadTime: number
+}) {
    const {
       vehicleReducer: {
          selectedModuleNames,
@@ -13,6 +19,8 @@ export default function RoF({ totalReloadTime }: { totalReloadTime: number }) {
 
    const selectedGun = vehicleGun[selectedModuleNames.vehicleGun]
    if (!selectedGun) return null
+   const baseRateOfFire = 60 / selectedGun.reloadTime
+   const rateOfFire = 60 / reloadTime
 
    switch (true) {
       case selectedGun.clip !== null && selectedGun.autoreload !== null:
@@ -41,9 +49,15 @@ export default function RoF({ totalReloadTime }: { totalReloadTime: number }) {
             <TableRowComponent
                iconSrc='/icons/firepower/reloadTime.png'
                titleText='Rate of Fire'
-               valueText={60 / selectedGun.reloadTime}
+               valueText={rateOfFire}
                toFixed={2}
                unit='rounds/min'
+               modifiers={[
+                  {
+                     difference: parseFloat((baseRateOfFire - rateOfFire).toFixed(2)),
+                     improved: true,
+                  },
+               ]}
             />
          )
    }

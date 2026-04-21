@@ -1,7 +1,9 @@
 'use client'
+import { useContext, useMemo } from 'react'
 import type { IClip, IDualAccuracy } from '@/types/VehicleDetails/Guns'
-import { useContext } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
+import { DeviceContext } from '@/DevicesContext/DeviceContext'
+import applyModifiersOnVehicleDetails from '@/src/utils/ApplyModifiers'
 
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -31,6 +33,9 @@ export default function Firepower() {
          modifiers: { shells: shellsModifiers },
       },
    } = useContext(VehicleContext)
+   const {
+      deviceReducer: { appliedDevicesModifiers },
+   } = useContext(DeviceContext)
 
    const clipDamage =
       (vehicleGun[selectedModuleNames.vehicleGun]?.clip?.count as number) *
@@ -38,11 +43,25 @@ export default function Firepower() {
 
    const reloadBetweenShells = 60 / (vehicleGun[selectedModuleNames.vehicleGun]?.clip?.rate as number) || 0
 
+   const vehicleReloadTime = vehicleGun[selectedModuleNames.vehicleGun].reloadTime
    const totalReloadTime =
-      ((vehicleGun[selectedModuleNames.vehicleGun]?.clip?.count as number) - 1) * reloadBetweenShells +
-         vehicleGun[selectedModuleNames.vehicleGun]?.reloadTime || 0
+      ((vehicleGun[selectedModuleNames.vehicleGun].clip?.count as number) - 1) * reloadBetweenShells +
+         vehicleReloadTime || 0
 
    const vehicleGunAutoReload = vehicleGun[selectedModuleNames.vehicleGun].autoreload
+   const vehicleAimTime = vehicleGun[selectedModuleNames.vehicleGun].aimTime
+
+   const { aimingTime, reloadTime } = useMemo(
+      () =>
+         applyModifiersOnVehicleDetails(
+            {
+               aimingTime: vehicleAimTime,
+               reloadTime: vehicleReloadTime,
+            },
+            appliedDevicesModifiers,
+         ),
+      [vehicleAimTime, vehicleReloadTime, appliedDevicesModifiers],
+   )
 
    return (
       <Table size='small' aria-label='Firepower table with average damage and penetration'>
@@ -56,17 +75,24 @@ export default function Firepower() {
                piercingPower={(shells[selectedModuleNames.shells]?.piercingPower as number[]) || [0, 0]}
                shellDamageDiff={shellsModifiers}
             />
-            <RoF totalReloadTime={totalReloadTime} />
+            <RoF totalReloadTime={totalReloadTime} reloadTime={reloadTime} />
             <AvgDpm
                totalReloadTime={totalReloadTime}
                clipDamage={clipDamage}
                reloadBetweenShells={reloadBetweenShells}
+               reloadTime={reloadTime}
             />
             <TableRowComponent
                iconSrc='/icons/firepower/reloadTimeSecs.png'
                titleText='Gun Loading'
-               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.reloadTime}
+               valueText={reloadTime}
                unit='s'
+               modifiers={[
+                  {
+                     difference: parseFloat((reloadTime - vehicleReloadTime).toFixed(4)),
+                     improved: true,
+                  },
+               ]}
             />
             {vehicleGunAutoReload && vehicleGunAutoReload.reloadTime && (
                <TableRowComponent
@@ -79,9 +105,15 @@ export default function Firepower() {
             <TableRowComponent
                iconSrc='/icons/firepower/aimingTime.png'
                titleText='Aiming Time'
-               valueText={vehicleGun[selectedModuleNames.vehicleGun]?.aimTime}
+               valueText={aimingTime}
                toFixed={2}
                unit='s'
+               modifiers={[
+                  {
+                     difference: parseFloat((aimingTime - vehicleAimTime).toFixed(4)),
+                     improved: true,
+                  },
+               ]}
             />
             {vehicleName === 'F136_AMX_67_Imbattable' && (
                <TableRowComponent

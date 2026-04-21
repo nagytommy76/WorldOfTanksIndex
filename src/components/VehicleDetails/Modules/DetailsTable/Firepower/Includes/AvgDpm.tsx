@@ -9,10 +9,12 @@ export default function AvgDpm({
    clipDamage,
    reloadBetweenShells,
    totalReloadTime,
+   reloadTime,
 }: {
    clipDamage: number
    reloadBetweenShells: number
    totalReloadTime: number
+   reloadTime: number
 }) {
    const {
       vehicleReducer: {
@@ -24,6 +26,12 @@ export default function AvgDpm({
    const clip = vehicleGun[selectedModuleNames.vehicleGun]?.clip
    const autoreload = vehicleGun[selectedModuleNames.vehicleGun]?.autoreload
 
+   const avarageDPM = returnDPM(
+      vehicleGun[selectedModuleNames.vehicleGun].reloadTime,
+      shells[selectedModuleNames.shells].damage.armor as number,
+   )
+   const baseAvarageDPM = returnDPM(reloadTime, shells[selectedModuleNames.shells].damage.armor as number)
+
    switch (true) {
       case autoreload && clip !== null:
          return (
@@ -32,7 +40,7 @@ export default function AvgDpm({
                   iconSrc='/icons/firepower/avgDamagePerMinute.png'
                   titleText='Average Damage per Minute'
                   valueText={
-                     ((shells[selectedModuleNames.shells]?.damage.armor as number) /
+                     ((shells[selectedModuleNames.shells].damage.armor as number) /
                         autoreload.reloadTime[autoreload.reloadTime.length - 1]) *
                      60
                   }
@@ -52,6 +60,9 @@ export default function AvgDpm({
                      </>
                   }
                />
+               {/**
+                * Italian autoloader line
+                */}
                <TableRowComponent
                   iconSrc='/icons/firepower/avgDamagePerMinute.png'
                   titleText='Continuous Autoreloader DPM'
@@ -80,41 +91,51 @@ export default function AvgDpm({
             <TableRowComponent
                iconSrc='/icons/firepower/avgDamagePerMinute.png'
                titleText='Average Damage per Minute'
-               valueText={returnClipReloadTime(
-                  vehicleGun[selectedModuleNames.vehicleGun]?.reloadTime,
-                  clip,
-                  clipDamage,
-                  reloadBetweenShells,
-               )}
+               valueText={returnClipReloadTime(reloadTime, clip, clipDamage, reloadBetweenShells)}
                toFixed={0}
                unit='HP/min'
             />
          )
-      case Array.isArray(shells[selectedModuleNames.shells]?.damage.armor):
+      // Polish Błyskawica line
+      case Array.isArray(shells[selectedModuleNames.shells].damage.armor):
+         const bliskawicaDPM = returnDPM(
+            reloadTime,
+            (shells[selectedModuleNames.shells].damage.armor as number[])[0],
+         )
+         const baseBliskawicaDPM1 = returnDPM(
+            vehicleGun[selectedModuleNames.vehicleGun].reloadTime,
+            (shells[selectedModuleNames.shells].damage.armor as number[])[0],
+         )
          return (
             <TableRowComponent
                iconSrc='/icons/firepower/avgDamagePerMinute.png'
                titleText='Average Damage per Minute'
-               valueText={returnDPM(
-                  vehicleGun[selectedModuleNames.vehicleGun].reloadTime,
-                  (shells[selectedModuleNames.shells]?.damage.armor as number[])[0],
-               )}
+               valueText={bliskawicaDPM}
                toFixed={0}
                unit='HP/min'
+               modifiers={[
+                  {
+                     difference: parseFloat((bliskawicaDPM - baseBliskawicaDPM1).toFixed(4)),
+                     improved: true,
+                  },
+               ]}
             />
          )
-
+      // every other single shooter tanks
       default:
          return (
             <TableRowComponent
                iconSrc='/icons/firepower/avgDamagePerMinute.png'
                titleText='Average Damage per Minute'
-               valueText={returnDPM(
-                  vehicleGun[selectedModuleNames.vehicleGun].reloadTime,
-                  shells[selectedModuleNames.shells]?.damage.armor as number,
-               )}
+               valueText={baseAvarageDPM}
                toFixed={0}
                unit='HP/min'
+               modifiers={[
+                  {
+                     difference: parseFloat((baseAvarageDPM - avarageDPM).toFixed(4)),
+                     improved: true,
+                  },
+               ]}
             />
          )
    }

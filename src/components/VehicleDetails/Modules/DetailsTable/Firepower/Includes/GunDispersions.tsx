@@ -1,8 +1,4 @@
-import { useContext, useMemo } from 'react'
-import { VehicleContext } from '@/VehicleContext/VehicleContext'
-import { DeviceContext } from '@/DevicesContext/DeviceContext'
-
-import applyModifiersOnVehicleDetails from '../utils/ApplyDispersionModifiers'
+import useDispersion from './Hooks/useDispersion'
 
 import Typography from '@mui/material/Typography'
 import TableCell from '@mui/material/TableCell'
@@ -12,43 +8,18 @@ import TableRowComponent from '../../Includes/TableRow'
 
 export default function GunDispersions() {
    const {
-      vehicleReducer: {
-         selectedModuleNames,
-         moduleGroup: { vehicleGun, vehicleChassis },
-      },
-   } = useContext(VehicleContext)
-
-   const {
-      deviceReducer: { appliedDevicesModifiers },
-   } = useContext(DeviceContext)
-
-   const accuracyBase = vehicleGun[selectedModuleNames.vehicleGun].accuracy
-   const vehicleMovementBase = vehicleChassis[selectedModuleNames.vehicleChassis].dispersion.vehicleMovement
-   const vehicleRotationBase = vehicleChassis[selectedModuleNames.vehicleChassis].dispersion.vehicleRotation
-   const turretRotationBase = vehicleGun[selectedModuleNames.vehicleGun].dispersion.turretRotation
-   const afterShotBase = vehicleGun[selectedModuleNames.vehicleGun].dispersion.afterShot
-
-   // Grab base values from selected modules
-   const baseDispersionValues = useMemo(
-      () => ({
-         accuracy: accuracyBase,
-         vehicleMovement: vehicleMovementBase,
-         vehicleRotation: vehicleRotationBase,
-         turretRotation: turretRotationBase,
-         afterShot: afterShotBase,
-      }),
-      [vehicleMovementBase, vehicleRotationBase, turretRotationBase, afterShotBase, accuracyBase],
-   )
-
-   /**
-    * Recomputes dispersion values whenever base values OR applied devices change.
-    * No useState/useEffect needed — this is purely derived data.
-    * Stacks multiplicatively if multiple devices share the same modifier name.
-    */
-   const { vehicleMovement, vehicleRotation, turretRotation, afterShot, accuracy } = useMemo(
-      () => applyModifiersOnVehicleDetails(baseDispersionValues, appliedDevicesModifiers),
-      [baseDispersionValues, appliedDevicesModifiers],
-   )
+      accuracy,
+      vehicleMovement,
+      vehicleRotation,
+      turretRotation,
+      afterShot,
+      accuracyBase,
+      vehicleMovementBase,
+      vehicleRotationBase,
+      turretRotationBase,
+      afterShotBase,
+      accuracyWhileDamagedBase,
+   } = useDispersion()
 
    return (
       <>
@@ -126,7 +97,7 @@ export default function GunDispersions() {
          <TableRowComponent
             iconSrc='/icons/firepower/vehicleGunShotDispersionWhileGunDamaged.png'
             titleText='While damaged'
-            valueText={vehicleGun[selectedModuleNames.vehicleGun].dispersion.whileDamaged}
+            valueText={accuracyWhileDamagedBase}
             unit='m'
             paddingLeft
          />

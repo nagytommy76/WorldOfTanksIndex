@@ -7,41 +7,26 @@ type ModifiersType = {
    improved: boolean
 }
 
-function ReturnTypography({
-   children,
-   modifiersDifference,
-}: {
-   children: React.ReactNode
-   modifiersDifference: number
-}) {
+function ReturnTypography({ children, improved = true }: { children: React.ReactNode; improved: boolean }) {
    return (
-      <>
-         {modifiersDifference > 0 ? (
-            <Typography className='text-green-600 mr-2' variant='body1'>
-               {children}
-            </Typography>
-         ) : (
-            <Typography className='text-red-600 mr-2' variant='body1'>
-               {children}
-            </Typography>
-         )}
-      </>
+      <Typography
+         className={`${improved ? 'text-green-600' : 'text-red-600'} font-semibold tracking-wider text-sm`}
+         variant='body1'
+      >
+         {children}
+      </Typography>
    )
 }
 
 export default function Modifiers({ modifiers }: { modifiers: ModifiersType[] }) {
    if (modifiers[0].difference === 0) return
    if (modifiers.length === 1) {
-      return (
-         <ReturnTypography modifiersDifference={modifiers[0].difference}>
-            {modifiers[0].difference}
-         </ReturnTypography>
-      )
+      return <ReturnTypography improved={modifiers[0].improved}>{modifiers[0].difference}</ReturnTypography>
    } else {
-      return (
-         <ReturnTypography modifiersDifference={modifiers[0].difference}>
-            {modifiers[0].difference} / {modifiers[1].difference}
+      return modifiers.map((modifier: ModifiersType, index: number) => (
+         <ReturnTypography key={index} improved={modifier.improved}>
+            {modifier.difference} {index === modifiers.length - 1 ? ' ' : '/ '}
          </ReturnTypography>
-      )
+      ))
    }
 }

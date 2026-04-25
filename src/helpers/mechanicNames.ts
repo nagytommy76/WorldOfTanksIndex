@@ -18,6 +18,9 @@ export type MechanicNameKey =
    | 'stationaryReload'
    | 'extraShotClip'
    | 'heatingZonesGun'
+   | 'wheeledDash'
+   | 'lowChargeShot'
+   | 'propellantAfterburnerGun'
 
 const MECHANIC_NAMES: Record<
    MechanicNameKey,
@@ -136,6 +139,15 @@ const MECHANIC_NAMES: Record<
       icon: 'chargeableBurst',
    },
    /**
+    * @description American A195_Gorilla
+    */
+   lowChargeShot: {
+      name: 'Multi-Pack Charge System',
+      description:
+         "The vehicle's gun can fire early: single-charge shots, fired during reload, have reduces effectiveness, while regular full-charge shots fires after reloading have optimal ballistic parameters.",
+      icon: 'lowChargeShot',
+   },
+   /**
     * @description UK GB152_AT_FV230_Breaker
     */
    powerMode: {
@@ -152,6 +164,15 @@ const MECHANIC_NAMES: Record<
       description:
          'Offers double damage and improved stabilization at the cost of mobility, accuracy, turret traverse speed, and aiming time. Best used in close combat.',
       icon: 'twinGun',
+   },
+   /**
+    * @description UK GB158_Executor
+    */
+   wheeledDash: {
+      name: 'High-Pressure Turbocharger Assist',
+      description:
+         "Significantly boosts the vehicle's RocketAcceleration, engine power, and top forward and reverse speed for a short time. Maintaining a high movement speed accelerates the mechanic's cooldown.",
+      icon: 'wheeledDash',
    },
    /**
     * @description Polish Pl37_CS_67_Szakal
@@ -188,6 +209,15 @@ const MECHANIC_NAMES: Record<
       description:
          'The system automatically begins loading a new cassette when one shell remains in the current one, keeping you ready to engage. You can still fire the final shell during this process, but doing so adds several seconds to the remaining reload time.',
       icon: 'extraShotClip',
+   },
+   /**
+    * @description France F143_Fauteur
+    */
+   propellantAfterburnerGun: {
+      name: 'Induction Propellant Afterburner',
+      description:
+         ' Over time, the sístem automatically accumulates a charge, which is partially consumed to boost damage when firing. The higher the charge, the greater the bonus damage. By default the system only stores the charge up to a certain limit. Disabling the limit lets it accumulate even higher. ',
+      icon: 'propellantAfterburnerGun',
    },
    /**
     * @description Japan J52_STK_2

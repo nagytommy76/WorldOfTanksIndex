@@ -55,6 +55,8 @@ export default function VehicleMechanic({ vehicleMechanic }: { vehicleMechanic: 
          return <DisplayMechanic mechanicName={'supportWeapon'} />
       case 'F136_AMX_67_Imbattable':
          return <DisplayMechanic mechanicName={'extraShotClip'} />
+      case 'F143_Fauteur':
+         return <DisplayMechanic mechanicName={'propellantAfterburnerGun'} />
       case 'F135_AS_XX_40_t':
          return <DisplayMechanic mechanicName={'stationaryReload'} />
       case 'J52_STK_2':
@@ -63,6 +65,8 @@ export default function VehicleMechanic({ vehicleMechanic }: { vehicleMechanic: 
          return <DisplayMechanic mechanicName={'chargeableBurst'} />
       case 'GB147_FV4025_Contriver':
          return <DisplayMechanic mechanicName={'twinGun'} />
+      case 'A195_Gorilla':
+         return <DisplayMechanic mechanicName={'lowChargeShot'} />
       default:
          break
    }

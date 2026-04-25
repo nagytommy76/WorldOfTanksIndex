@@ -19,6 +19,9 @@ import type {
    ImbattableMechanics,
    Asx40TMechanics,
    BlackRockMechanics,
+   ExecutorMechanics,
+   GorillaMechanics,
+   FauteurMechanics,
 } from './Types'
 import TIER_XI_VEHICLES from '@/src/helpers/tierXITanks'
 
@@ -34,11 +37,14 @@ import T803 from './Includes/usa/T803'
 import Hacker from './Includes/usa/Hacker'
 import AresLine from './Includes/usa/AresLine'
 import BlackRock from './Includes/usa/BlackRock'
+import Gorilla from './Includes/usa/Gorilla'
 // France --------------
 import Imbattable from './Includes/france/Imbattable'
 import Asx40t from './Includes/france/Asx40t'
+import Fauteur from './Includes/france/Fauteur'
 // UK --------------
 import Breaker from './Includes/uk/Breaker'
+import Executor from './Includes/uk/Executor'
 // China --------------
 import Bz79 from './Includes/china/Bz79'
 import PTZ78 from './Includes/china/PTZ78'
@@ -71,12 +77,18 @@ export default function Mechanics({ mechanics }: { mechanics: Record<string, unk
          return <Hacker mechanics={mechanics as HackerMechanics} />
       case 'A179_Black_Rock':
          return <BlackRock mechanics={mechanics as BlackRockMechanics} />
+      case 'A195_Gorilla':
+         return <Gorilla mechanics={mechanics as GorillaMechanics} />
       case 'F136_AMX_67_Imbattable':
          return <Imbattable mechanics={mechanics as ImbattableMechanics} />
       case 'F135_AS_XX_40_t':
          return <Asx40t mechanics={mechanics as Asx40TMechanics} />
+      case 'F143_Fauteur':
+         return <Fauteur mechanics={mechanics as FauteurMechanics} />
       case 'GB152_AT_FV230_Breaker':
          return <Breaker mechanics={mechanics as BreakerMechanics} />
+      case 'GB158_Executor':
+         return <Executor mechanics={mechanics as ExecutorMechanics} />
       case 'Ch67_BZ_79':
          return <Bz79 mechanics={mechanics as Bz79Mechanics} />
       case 'Ch70_PTZ_78':

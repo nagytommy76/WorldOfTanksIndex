@@ -24,10 +24,14 @@ function returnMechanicName(
             return MECHANIC_NAMES['supportWeapon']
          case 'F136_AMX_67_Imbattable':
             return MECHANIC_NAMES['extraShotClip']
+         case 'F143_Fauteur':
+            return MECHANIC_NAMES['propellantAfterburnerGun']
          case 'F135_AS_XX_40_t':
             return MECHANIC_NAMES['stationaryReload']
          case 'A179_Black_Rock':
             return MECHANIC_NAMES['chargeableBurst']
+         case 'A195_Gorilla':
+            return MECHANIC_NAMES['lowChargeShot']
          default:
             return null
       }

@@ -180,6 +180,17 @@ export type BlackRockMechanics = {
    }
 }
 
+export type GorillaMechanics = {
+   mechanics: {
+      lowChargeShotAvgDamage: number
+      lowChargeShotPenetration: number
+      lowChargeShotRateOfFire: string
+      lowChargeShotDispertion: string
+      lowChargeShotVelocity: number
+      lowChargeShotBlockDuration: number
+   }
+}
+
 // U.K. --------------------------------------------------------------------------------------------------------
 export type BreakerMechanics = {
    mechanics: {
@@ -200,6 +211,37 @@ export type BreakerMechanics = {
          rotationSpeed: string
          dispersion: string
          enginePower: string
+      }
+   }
+}
+
+export type ExecutorMechanics = {
+   mechanics: {
+      wheeledDashEnginePower: string
+      wheeledDashTopSpeed: string
+      wheeledDashReverseSpeed: string
+      wheeledDashAbilityDuration: number
+      wheeledDashAbilityReloadTime: number
+      wheeledDashAbilityReloadTimeBonus: string
+      wheeledDashSpeedLimits: number
+   }
+   wheeledDash: {
+      deployTime: number
+      duration: number
+      reloadTime: number
+      reloadTimeBoost: {
+         minSpeed: string
+         hysteresisSpeed: string
+         reloadTimeFactor: string
+      }
+      tickedImpulse: {
+         cooldown: string
+         magnitudePerTick: string
+         applyPoint: string
+      }
+      modifiers: {
+         mul: Array<MulType>
+         add: Array<MulType>
       }
    }
 }
@@ -375,5 +417,20 @@ export type Asx40TMechanics = {
    mechanics: {
       stationaryReloadSwitchOnTime: number
       stationaryReloadSwitchOffTime: number
+   }
+}
+
+export type FauteurMechanics = {
+   mechanics: {
+      propellantPreLimitDamageBonus: number
+      propellantPostLimitDamageSpike: number
+      propellantPostLimitDamageBonus: number
+      propellantChargingPerSec: number
+      propellantChargeSpendingAfterShot: number
+      propellantChargeLimit: number
+      propellantDischargingPerSec: number
+      propellantPostLimitDispersion: string
+      propellantPostLimitAimingTime: string
+      propellantOverchargeSwitchCooldown: number
    }
 }

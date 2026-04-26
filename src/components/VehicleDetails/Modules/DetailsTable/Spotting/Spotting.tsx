@@ -8,7 +8,7 @@ import TableBody from '@mui/material/TableBody'
 
 import TableHeadComponent from '../Includes/TableHead'
 import TableRowComponent from '../Includes/TableRow'
-import applyModifiersOnVehicleDetails from '../utils/ApplyDispersionModifiers'
+import applyModifiersOnVehicleDetails from '@/src/utils/ApplyModifiers'
 
 const SPOTTED_TIME = 10
 export default function Spotting() {

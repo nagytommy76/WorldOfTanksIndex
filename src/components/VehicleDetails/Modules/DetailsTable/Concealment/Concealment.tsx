@@ -1,7 +1,9 @@
 'use client'
-import { useContext, useState, useEffect } from 'react'
+import { useContext, useMemo } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
+
+import applyModifiersOnVehicleDetails from '@/src/utils/ApplyModifiers'
 
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -9,7 +11,6 @@ import TableBody from '@mui/material/TableBody'
 import TableHeadComponent from '../Includes/TableHead'
 import TableRowComponent from '../Includes/TableRow'
 import { calculateCamoValues } from '../../Helpers/calculate'
-import ReturnPercentValue from '@/helpers/returnPercentValue'
 
 export default function Concealment() {
    const {
@@ -19,47 +20,41 @@ export default function Concealment() {
          moduleGroup: { vehicleGun },
       },
    } = useContext(VehicleContext)
-
    const {
       deviceReducer: { appliedDevicesModifiers },
    } = useContext(DeviceContext)
-   const [stationaryCamoValue, setStationaryCamoValue] = useState(calculateCamoValues(camo.stationary))
-   const [movingCamoValue, setMovingCamoValue] = useState(calculateCamoValues(camo.moving))
 
-   // useEffect(() => {
-   //    const baseCamoValue = calculateCamoValues(camo.stationary)
-   //    if (!appliedDevicesModifiers || !appliedDevicesModifiers['camouflageNet']) {
-   //       setStationaryCamoValue(baseCamoValue)
-   //    } else {
-   //       if (!appliedDevicesModifiers || !appliedDevicesModifiers['camouflageNet']) return
-   //       const modifiersForInvisibilityDevice = appliedDevicesModifiers['camouflageNet']
-   //       const percentValue = ReturnPercentValue(modifiersForInvisibilityDevice[0].value)
-   //       setStationaryCamoValue(stationaryCamoValue + percentValue)
-   //    }
-   // }, [appliedDevicesModifiers, camo.stationary])
+   const vehicleStillCamoflageBase = useMemo(() => calculateCamoValues(camo.stationary), [camo])
+   const vehicleStillCamoflageAfterFireBase = useMemo(
+      () =>
+         calculateCamoValues(
+            camo.stationary,
+            vehicleGun[selectedModuleNames.vehicleGun].invisibilityFactorAtShot,
+         ),
+      [camo, vehicleGun, selectedModuleNames.vehicleGun],
+   )
 
-   useEffect(() => {
-      const baseCamoValue = calculateCamoValues(camo.stationary)
-      if (!appliedDevicesModifiers || !appliedDevicesModifiers['additionalInvisibilityDevice']) {
-         setStationaryCamoValue(baseCamoValue)
-      } else {
-         const modifiersForInvisibilityDevice = appliedDevicesModifiers['additionalInvisibilityDevice']
-         const percentValue = ReturnPercentValue(modifiersForInvisibilityDevice[0].value)
-         setStationaryCamoValue(baseCamoValue + percentValue)
-      }
-   }, [camo.stationary, vehicleGun, selectedModuleNames.vehicleGun, appliedDevicesModifiers])
+   const vehicleMovingCamoflageBase = useMemo(() => calculateCamoValues(camo.moving), [camo])
+   const vehicleMovingCamoflageAfterFireBase = useMemo(
+      () =>
+         calculateCamoValues(
+            camo.moving,
+            vehicleGun[selectedModuleNames.vehicleGun].invisibilityFactorAtShot,
+         ),
+      [camo, vehicleGun, selectedModuleNames.vehicleGun],
+   )
 
-   useEffect(() => {
-      const camoValue = calculateCamoValues(camo.moving)
-
-      if (!appliedDevicesModifiers || !appliedDevicesModifiers['additionalInvisibilityDevice']) {
-         setMovingCamoValue(camoValue)
-      } else {
-         const modifiersForInvisibilityDevice = appliedDevicesModifiers['additionalInvisibilityDevice']
-         const percentValue = ReturnPercentValue(modifiersForInvisibilityDevice[0].value)
-         setMovingCamoValue(camoValue + percentValue)
-      }
-   }, [camo.moving, vehicleGun, selectedModuleNames.vehicleGun, appliedDevicesModifiers])
+   const { camouflageMoving, camouflageStill } = useMemo(
+      () =>
+         applyModifiersOnVehicleDetails(
+            {
+               camouflageStill: vehicleStillCamoflageBase,
+               camouflageMoving: vehicleMovingCamoflageBase,
+            },
+            appliedDevicesModifiers,
+         ),
+      [appliedDevicesModifiers, vehicleMovingCamoflageBase, vehicleStillCamoflageBase],
+   )
 
    return (
       <Table size='small' aria-label='Concealment table with camouflage values (moving, stationary)'>
@@ -72,52 +67,28 @@ export default function Concealment() {
             <TableRowComponent
                iconSrc='/icons/concealment/invisibilityStillFactor.png'
                titleText='Stationary / After Fire'
-               valueText={[
-                  stationaryCamoValue,
-                  calculateCamoValues(
-                     camo.stationary,
-                     vehicleGun[selectedModuleNames.vehicleGun]?.invisibilityFactorAtShot,
-                  ),
-               ]}
+               valueText={[camouflageStill, vehicleStillCamoflageAfterFireBase]}
                toFixed={2}
                unit='%'
-               modifiers={
-                  appliedDevicesModifiers &&
-                  appliedDevicesModifiers['additionalInvisibilityDevice'] && [
-                     {
-                        // ez a kiszámolt érték
-                        difference: ReturnPercentValue(
-                           appliedDevicesModifiers['additionalInvisibilityDevice'][0].value || 1,
-                        ),
-                        improved: true,
-                     },
-                  ]
-               }
+               modifiers={[
+                  {
+                     difference: camouflageStill - vehicleStillCamoflageBase,
+                     improved: true,
+                  },
+               ]}
             />
             <TableRowComponent
                iconSrc='/icons/concealment/invisibilityMovingFactor.png'
                titleText='Moving / After Fire'
-               valueText={[
-                  movingCamoValue,
-                  calculateCamoValues(
-                     camo.moving,
-                     vehicleGun[selectedModuleNames.vehicleGun]?.invisibilityFactorAtShot,
-                  ),
-               ]}
+               valueText={[camouflageMoving, vehicleMovingCamoflageAfterFireBase]}
                toFixed={2}
                unit='%'
-               modifiers={
-                  appliedDevicesModifiers &&
-                  appliedDevicesModifiers['additionalInvisibilityDevice'] && [
-                     {
-                        // ez a kiszámolt érték
-                        difference: ReturnPercentValue(
-                           appliedDevicesModifiers['additionalInvisibilityDevice'][0].value || 1,
-                        ),
-                        improved: true,
-                     },
-                  ]
-               }
+               modifiers={[
+                  {
+                     difference: camouflageMoving - vehicleMovingCamoflageBase,
+                     improved: true,
+                  },
+               ]}
             />
          </TableBody>
       </Table>

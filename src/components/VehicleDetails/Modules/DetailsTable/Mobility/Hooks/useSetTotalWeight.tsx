@@ -14,13 +14,13 @@ export default function useSetTotalWeight() {
 
    useEffect(() => {
       const totalWeight =
-         fuelTank[0]?.weight +
-         hull?.weight +
-         vehicleChassis[selectedModuleNames.vehicleChassis]?.weight +
-         vehicleEngine[selectedModuleNames.vehicleEngine]?.weight +
-         vehicleTurret[selectedModuleNames.vehicleTurret]?.weight +
-         vehicleGun[selectedModuleNames.vehicleGun]?.weight +
-         vehicleRadio[selectedModuleNames.vehicleRadio]?.weight
+         fuelTank[0].weight +
+         hull.weight +
+         vehicleChassis[selectedModuleNames.vehicleChassis].weight +
+         vehicleEngine[selectedModuleNames.vehicleEngine].weight +
+         vehicleTurret[selectedModuleNames.vehicleTurret].weight +
+         vehicleGun[selectedModuleNames.vehicleGun].weight +
+         vehicleRadio[selectedModuleNames.vehicleRadio].weight
       if (totalWeight) setTotalWeight(totalWeight)
    }, [
       selectedModuleNames,

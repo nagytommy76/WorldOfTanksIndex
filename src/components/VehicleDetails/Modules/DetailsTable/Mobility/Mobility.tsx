@@ -1,10 +1,12 @@
 'use client'
-import { useContext } from 'react'
+import { useContext, useMemo } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
+import { DeviceContext } from '@/DevicesContext/DeviceContext'
 
-import useSetTotalWeight from '../../../Hooks/useSetTotalWeight'
+import useSetTotalWeight from './Hooks/useSetTotalWeight'
+import applyModifiersOnVehicleDetails from '@/utils/ApplyModifiers'
 
-import { calculateEffectiveTopSpeed, calculateEffectiveTraverseSpeed } from '../../Helpers/calculate'
+// import { calculateEffectiveTraverseSpeed } from '../../Helpers/calculate'
 
 import TableHeadComponent from '../Includes/TableHead'
 
@@ -19,6 +21,10 @@ import TableRowComponent from '../Includes/TableRow'
 import SiegeMode from './Includes/SiegeMode'
 import WheelAngle from './Includes/WheelAngle'
 import RocketAcceleration from './Includes/RocketAcceleration'
+import EffectiveTopSpeed from './Includes/EffectiveTopSpeed'
+import EffectiveTraverseSpeed from './Includes/EffectiveTraverseSpeed'
+import TerrainResistance from './Includes/TerrainResistance'
+import SpecificPower from './Includes/SpecificPower'
 
 export default function Mobility() {
    const totalWeight = useSetTotalWeight()
@@ -30,9 +36,54 @@ export default function Mobility() {
          siegeMode,
       },
    } = useContext(VehicleContext)
+   const {
+      deviceReducer: { appliedDevicesModifiers },
+   } = useContext(DeviceContext)
 
-   const gunDepression = -vehicleGun[selectedModuleNames.vehicleGun]?.elevationLimits.depression[1] || 0
-   const gunElevation = -vehicleGun[selectedModuleNames.vehicleGun]?.elevationLimits.elevation[1] || 0
+   const gunDepression = -vehicleGun[selectedModuleNames.vehicleGun].elevationLimits.depression[1] || 0
+   const gunElevation = -vehicleGun[selectedModuleNames.vehicleGun].elevationLimits.elevation[1] || 0
+
+   const vehicleEnginePowerBase = vehicleEngine[selectedModuleNames.vehicleEngine].power
+   const forwardSpeedBase = speedLimit.forward
+   const backwardSpeedBase = speedLimit.backward
+   const vehicleChassisRotationSpeedBase = vehicleChassis[selectedModuleNames.vehicleChassis].rotationSpeed
+   const vehicleGunRotationSpeedBase = vehicleTurret[selectedModuleNames.vehicleTurret].traverse
+   const vehicleTerrainResistanceBase = vehicleChassis[selectedModuleNames.vehicleChassis].terrainResistance
+
+   const {
+      backwardSpeed,
+      forwardSpeed,
+      enginePower,
+      traverseSpeed,
+      turretTraverseSpeed,
+      terrainResistance1,
+      terrainResistance2,
+      terrainResistance3,
+   } = useMemo(
+      () =>
+         applyModifiersOnVehicleDetails(
+            {
+               enginePower: vehicleEnginePowerBase,
+               forwardSpeed: forwardSpeedBase,
+               backwardSpeed: backwardSpeedBase,
+               traverseSpeed: vehicleChassisRotationSpeedBase,
+               turretTraverseSpeed: vehicleGunRotationSpeedBase,
+               terrainResistance1: vehicleTerrainResistanceBase[0],
+               terrainResistance2: vehicleTerrainResistanceBase[1],
+               terrainResistance3: vehicleTerrainResistanceBase[2],
+            },
+            appliedDevicesModifiers,
+         ),
+      [
+         vehicleEnginePowerBase,
+         forwardSpeedBase,
+         backwardSpeedBase,
+         vehicleChassisRotationSpeedBase,
+         vehicleGunRotationSpeedBase,
+         appliedDevicesModifiers,
+         vehicleTerrainResistanceBase,
+      ],
+   )
 
    return (
       <Table size='small' aria-label='Mobility table with speed'>
@@ -45,14 +96,26 @@ export default function Mobility() {
             <TableRowComponent
                iconSrc='/icons/mobility/speedLimits.png'
                titleText='Forward Speed'
-               valueText={speedLimit?.forward}
+               valueText={forwardSpeed}
                unit='km/h'
+               modifiers={[
+                  {
+                     difference: forwardSpeed - forwardSpeedBase,
+                     improved: true,
+                  },
+               ]}
             />
             <TableRowComponent
                iconSrc='/icons/mobility/speedLimits.png'
                titleText='Backward Speed'
-               valueText={speedLimit?.backward}
+               valueText={backwardSpeed}
                unit='km/h'
+               modifiers={[
+                  {
+                     difference: backwardSpeed - backwardSpeedBase,
+                     improved: true,
+                  },
+               ]}
             />
             {vehicleChassis[selectedModuleNames.vehicleChassis]?.wheelAngle && (
                <WheelAngle
@@ -61,15 +124,27 @@ export default function Mobility() {
             )}
             <TableRowComponent
                iconSrc='/icons/mobility/chassisRotationSpeed.png'
-               titleText='Traverse Speed'
-               valueText={vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed}
+               titleText='Hull Traverse Speed'
+               valueText={traverseSpeed}
                unit='deg/s'
+               modifiers={[
+                  {
+                     difference: parseFloat((traverseSpeed - vehicleChassisRotationSpeedBase).toFixed(2)),
+                     improved: true,
+                  },
+               ]}
             />
             <TableRowComponent
                iconSrc='/icons/mobility/turretRotationSpeed.png'
                titleText='Gun Traverse Speed'
-               valueText={vehicleTurret[selectedModuleNames.vehicleTurret]?.traverse}
+               valueText={turretTraverseSpeed}
                unit='deg/s'
+               modifiers={[
+                  {
+                     difference: parseFloat((turretTraverseSpeed - vehicleGunRotationSpeedBase).toFixed(2)),
+                     improved: true,
+                  },
+               ]}
             />
             <TableRowComponent
                iconSrc='/icons/firepower/pitchLimits.png'
@@ -100,16 +175,16 @@ export default function Mobility() {
             <TableRowComponent
                iconSrc='/icons/mobility/enginePower.png'
                titleText='Engine power'
-               valueText={vehicleEngine[selectedModuleNames.vehicleEngine]?.power}
+               valueText={enginePower}
                unit='hp'
+               modifiers={[
+                  {
+                     difference: parseFloat((enginePower - vehicleEnginePowerBase).toFixed(2)),
+                     improved: true,
+                  },
+               ]}
             />
-            <TableRowComponent
-               iconSrc='/icons/mobility/enginePowerPerTon.png'
-               titleText='Specific Power'
-               valueText={(vehicleEngine[selectedModuleNames.vehicleEngine]?.power / totalWeight) * 1000}
-               toFixed={2}
-               unit='hp/tn'
-            />
+            <SpecificPower enginePower={enginePower} vehicleEnginePowerBase={vehicleEnginePowerBase} />
             <TableRow className='bg-gray-700 h-[20px]'>
                <TableCell>
                   <Typography variant='body2'>Terrain</Typography>
@@ -120,72 +195,20 @@ export default function Mobility() {
                   </Typography>
                </TableCell>
             </TableRow>
-            <TableRowComponent
-               iconSrc='/icons/mobility/vehicleSpeedGain.png'
-               titleText='Terrain Resistance'
-               valueText={[
-                  vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
-                  vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[1],
-                  vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[2],
-               ]}
-               toFixed={2}
-               unit='m/s²'
-               paddingLeft
+            <TerrainResistance
+               terrainResistance1={terrainResistance1}
+               terrainResistance2={terrainResistance2}
+               terrainResistance3={terrainResistance3}
+               vehicleTerrainResistanceBase={vehicleTerrainResistanceBase}
             />
-            <TableRowComponent
-               iconSrc='/icons/mobility/speedLimits.png'
-               titleText='Effective Top Speed'
-               valueText={[
-                  calculateEffectiveTopSpeed(
-                     vehicleEngine[selectedModuleNames.vehicleEngine]?.power,
-                     totalWeight / 1000,
-                     vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
-                     speedLimit?.forward,
-                  ),
-                  calculateEffectiveTopSpeed(
-                     vehicleEngine[selectedModuleNames.vehicleEngine]?.power,
-                     totalWeight / 1000,
-                     vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[1],
-                     speedLimit?.forward,
-                  ),
-                  calculateEffectiveTopSpeed(
-                     vehicleEngine[selectedModuleNames.vehicleEngine]?.power,
-                     totalWeight / 1000,
-                     vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[2],
-                     speedLimit?.forward,
-                  ),
-               ]}
-               unit='km/h'
-               toFixed={2}
-               paddingLeft
+            <EffectiveTopSpeed
+               enginePower={enginePower}
+               totalWeight={totalWeight}
+               forwardSpeed={forwardSpeed}
+               forwardSpeedBase={forwardSpeedBase}
+               vehicleEnginePowerBase={vehicleEnginePowerBase}
             />
-            <TableRowComponent
-               iconSrc='/icons/mobility/chassisRotationSpeed.png'
-               titleText='Effective Traverse Speed'
-               valueText={[
-                  calculateEffectiveTraverseSpeed(
-                     vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed,
-                     vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
-                     vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
-                     0.95,
-                  ),
-                  calculateEffectiveTraverseSpeed(
-                     vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed,
-                     vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
-                     vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[1],
-                     0.95,
-                  ),
-                  calculateEffectiveTraverseSpeed(
-                     vehicleChassis[selectedModuleNames.vehicleChassis]?.rotationSpeed,
-                     vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
-                     vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[2],
-                     0.95,
-                  ),
-               ]}
-               toFixed={2}
-               unit='°/s'
-               paddingLeft
-            />
+            <EffectiveTraverseSpeed traverseSpeed={traverseSpeed} />
          </TableBody>
       </Table>
    )

@@ -21,6 +21,7 @@
       "paths": {
          "@/*": ["./*"],
          "@/lib/*": ["./src/lib/*"],
+         "@/utils/*": ["./src/utils/*"],
          "@/Base/*": ["./src/components/Base/*"],
          "@/components*": ["./src/components/*"],
          "@/helpers/*": ["./src/helpers/*"],
@@ -37,7 +38,8 @@
          "@/DevicesContext/*": ["./src/components/VehicleDetails/Context/DevicesContext/*"],
          "@/OrderContext/*": ["./src/components/VehiclesTable/Context/*"],
          // MECHANICS
-         "@/Mechanics/*": ["./src/components/VehicleDetails/Modules/DetailsTable/Mechanics/*"]
+         "@/Mechanics/*": ["./src/components/VehicleDetails/Modules/DetailsTable/Mechanics/*"],
+         "@/DetailsTable/*": ["./src/components/VehicleDetails/Modules/DetailsTable/*"]
       }
    },
    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

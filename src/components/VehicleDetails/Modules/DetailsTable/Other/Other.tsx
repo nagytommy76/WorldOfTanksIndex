@@ -10,13 +10,14 @@ import TableRowComponent from '../Includes/TableRow'
 
 import ShellCost from './Includes/ShellCost'
 import PotentialDmg from './Includes/PotentialDmg'
+import FireChance from './Includes/FireChance'
 
 export default function Miscellaneous() {
    const {
       tankCost,
       vehicleReducer: {
          selectedModuleNames,
-         moduleGroup: { shells, vehicleGun, vehicleEngine },
+         moduleGroup: { shells, vehicleGun },
       },
       modifiersReducer: {
          modifiers: { shells: shellsModifiers },
@@ -38,15 +39,7 @@ export default function Miscellaneous() {
             iconSrc='/icons/details/miscellaneous.png'
          />
          <TableBody>
-            {vehicleEngine[selectedModuleNames.vehicleEngine]?.fireStartingChance && (
-               <TableRowComponent
-                  iconSrc='/icons/miscellaneous/vehicleFireChance.png'
-                  titleText='Engine Fire Chance'
-                  valueText={vehicleEngine[selectedModuleNames.vehicleEngine]?.fireStartingChance * 100}
-                  unit='%'
-               />
-            )}
-
+            <FireChance />
             <TableRowComponent
                iconSrc='/icons/miscellaneous/continuousShotsPerMinute.png'
                titleText='Ammo Capacity'
@@ -71,14 +64,14 @@ export default function Miscellaneous() {
                <TableRowComponent
                   iconSrc='/icons/money_silver.webp'
                   titleText='Tank Cost'
-                  valueText={tankCost}
+                  valueText={tankCost.toLocaleString()}
                   unit='Credits'
                />
             ) : (
                <TableRowComponent
                   iconSrc='/icons/money_gold.webp'
                   titleText='Tank Cost'
-                  valueText={tankCost.gold || 0}
+                  valueText={tankCost.gold.toLocaleString() || 0}
                   unit='gold'
                />
             )}

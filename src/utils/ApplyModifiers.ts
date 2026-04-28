@@ -16,7 +16,6 @@ interface IModifierConfig {
 
 /**
  * @description Central mapping: device modifier name (from XML/DB) → what it does to your stat fields.
- * Add new entries here as you implement more stats.
  *
  * 'mul' = multiply (e.g. 0.9 reload time = 10% faster)
  * 'add' = additive  (e.g. +4 km/h forward speed)
@@ -203,10 +202,7 @@ export default function applyModifiersOnVehicleDetails<T extends Record<string, 
                   break
                case 'mulAdd':
                   const percentValue = ReturnPercentValue(modifier.value)
-                  // let camo = calculateCamoValues(result[key])
-                  // console.log(percentValue)
                   ;(result[key] as number) += percentValue
-
                   break
                case 'mulSubtract':
                   const percentValue2 = 1 - (modifier.value - 1)
@@ -240,10 +236,10 @@ export default function applyModifiersOnVehicleDetails<T extends Record<string, 
  * 110 - Crew efficiency level with fully trained crew
  * 390m / 0.875 * (0.00375 * 50 + 0.5)
  * 
- * Degressive stat (e.g. reload time, aim time — lower is better)
+ *    Degressive stat (e.g. reload time, aim time — lower is better)
       actualStat = nominalStat * 0.875 / (0.00375 * effectiveSkill + 0.5)
 
-   Progressive stat (e.g. view range — higher is better)
+      Progressive stat (e.g. view range — higher is better)
       actualStat = nominalStat / 0.875 * (0.00375 * effectiveSkill + 0.5)
 
 
@@ -253,7 +249,7 @@ export default function applyModifiersOnVehicleDetails<T extends Record<string, 
 
          Without ventilation (100% crew):
 
-         Effective skill = 100 + (100 * 0.1) = 110%
+        @example Effective skill = 100 + (100 * 0.1) = 110%
          Reload: 7.8 * 0.875 / (0.00375 * 110 + 0.5) = 7.8 * 0.875 / 0.9125 ≈ 7.48s
 
          With ventilation (+5%):
@@ -261,3 +257,14 @@ export default function applyModifiersOnVehicleDetails<T extends Record<string, 
          Effective skill = (105) + (105 * 0.1) = 115.5%
          Reload: 7.8 * 0.875 / (0.00375 * 115.5 + 0.5) = 7.8 * 0.875 / 0.93 ≈ 7.34s
  */
+
+function testFunction(nominalStat: number, crewEfficiencyLevel: number | undefined = 100) {
+   if (crewEfficiencyLevel === 100) {
+      // In this case we don't need to calculate anything because the base stats are coming from the XML files
+   }
+
+   const actualStat = (nominalStat * 0.875) / (0.00375 * crewEfficiencyLevel + 0.5)
+   return actualStat
+}
+
+console.log(testFunction(7.8, 110))

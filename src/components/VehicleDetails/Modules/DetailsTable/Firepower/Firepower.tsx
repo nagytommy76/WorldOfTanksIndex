@@ -38,12 +38,14 @@ export default function Firepower() {
    } = useContext(DeviceContext)
 
    const clipDamage =
-      (vehicleGun[selectedModuleNames.vehicleGun]?.clip?.count as number) *
-         (shells[selectedModuleNames.shells]?.damage.armor as number) || 0
+      (vehicleGun[selectedModuleNames.vehicleGun].clip?.count as number) *
+         (shells[selectedModuleNames.shells].damage.armor as number) || 0
 
-   const reloadBetweenShells = 60 / (vehicleGun[selectedModuleNames.vehicleGun]?.clip?.rate as number) || 0
+   const reloadBetweenShells = 60 / (vehicleGun[selectedModuleNames.vehicleGun].clip?.rate as number) || 0
 
+   // Reload: 7.8 * 0.875 / (0.00375 * 110 + 0.5) = 7.8 * 0.875 / 0.9125 ≈ 7.48s
    const vehicleReloadTime = vehicleGun[selectedModuleNames.vehicleGun].reloadTime
+   //Italian autoloader line
    const totalReloadTime =
       ((vehicleGun[selectedModuleNames.vehicleGun].clip?.count as number) - 1) * reloadBetweenShells +
          vehicleReloadTime || 0

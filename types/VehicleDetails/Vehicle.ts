@@ -2,6 +2,7 @@ import type { IEngines, IRocketAcceleration } from './Engines'
 import type { IChassis, IHull } from './Hull'
 import type { ITurrets } from './Turrets'
 import type { IFuelTank, IRadios, ISpeedLimit, IHydropneumatic, ISiegeMode, VehicleTypes } from './Other'
+import { ICrewMembers } from './Crew'
 
 /**
  * @description From WG API
@@ -68,10 +69,7 @@ export interface ITankData {
    type: VehicleTypes
    xmlId: string
    notInShop: boolean
-   crew: {
-      primary: string
-      secondary: string[]
-   }[]
+   crew: ICrewMembers[]
    siegeMode: null | Partial<ITankStats>
    stats: ITankStats
    mechanics: unknown

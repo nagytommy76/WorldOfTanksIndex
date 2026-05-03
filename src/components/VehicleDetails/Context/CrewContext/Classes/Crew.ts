@@ -60,21 +60,37 @@ export default class CrewMember {
    }
 
    private setAffectedVehicleStats() {
+      let helperArray: string[] = []
       switch (this.primaryRole) {
          case 'commander':
-            return ['circularVisionRadius']
+            helperArray = COMMANDER_AFFECTED_FIELDS
+            break
          case 'gunner':
-            return [
-               'vehicleGunAimSpeed',
-               'vehicleGunShotFullDispersion',
-               'vehicleTurretOrCuttingRotationSpeed',
-            ]
+            helperArray = GUNNER_AFFECTED_FIELDS
+            if (this.secondaryRole[0] === 'loader') {
+               helperArray = helperArray.concat(LOADER_AFFECTED_FIELDS)
+            }
+            break
          case 'driver':
-            return ['vehicleAllGroundRotationSpeed', 'vehicleSpeedGain']
+            helperArray = DRIVER_AFFECTED_FIELDS
+            break
          case 'loader':
-            return ['vehicleGunReloadTime']
+            helperArray = LOADER_AFFECTED_FIELDS
+            break
          case 'radioman':
-            return ['vehicleRadioCircularVisionRadius']
+            helperArray = RADIOMAN_AFFECTED_FIELDS
+            break
       }
+      return helperArray
    }
 }
+
+const COMMANDER_AFFECTED_FIELDS = ['circularVisionRadius']
+const DRIVER_AFFECTED_FIELDS = ['vehicleAllGroundRotationSpeed', 'vehicleSpeedGain']
+const GUNNER_AFFECTED_FIELDS = [
+   'vehicleGunAimSpeed',
+   'vehicleGunShotFullDispersion',
+   'vehicleTurretOrCuttingRotationSpeed',
+]
+const LOADER_AFFECTED_FIELDS = ['vehicleGunReloadTime']
+const RADIOMAN_AFFECTED_FIELDS = ['vehicleRadioCircularVisionRadius']

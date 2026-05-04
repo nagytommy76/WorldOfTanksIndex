@@ -36,6 +36,7 @@
          // Contexts
          "@/VehicleContext/*": ["./src/components/VehicleDetails/Context/*"],
          "@/DevicesContext/*": ["./src/components/VehicleDetails/Context/DevicesContext/*"],
+         "@/CrewContext/*": ["./src/components/VehicleDetails/Context/CrewContext/*"],
          "@/OrderContext/*": ["./src/components/VehiclesTable/Context/*"],
          // MECHANICS
          "@/Mechanics/*": ["./src/components/VehicleDetails/Modules/DetailsTable/Mechanics/*"],

@@ -1,9 +1,14 @@
 'use client'
 import { useContext, useMemo } from 'react'
 import type { IClip, IDualAccuracy } from '@/types/VehicleDetails/Guns'
+
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
-import applyModifiersOnVehicleDetails from '@/src/utils/ApplyModifiers'
+import { CrewContext } from '@/CrewContext/CrewContext'
+
+import applyStatPipeline from '@/utils/applyStatPipeline'
+import createCrewTransformer from '@/utils/ApplyCrewModifiers'
+import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -36,6 +41,9 @@ export default function Firepower() {
    const {
       deviceReducer: { appliedDevicesModifiers },
    } = useContext(DeviceContext)
+   const {
+      crewReducer: { crewMembers },
+   } = useContext(CrewContext)
 
    const clipDamage =
       (vehicleGun[selectedModuleNames.vehicleGun].clip?.count as number) *
@@ -53,16 +61,14 @@ export default function Firepower() {
    const vehicleGunAutoReload = vehicleGun[selectedModuleNames.vehicleGun].autoreload
    const vehicleAimTime = vehicleGun[selectedModuleNames.vehicleGun].aimTime
 
-   const { aimingTime, reloadTime } = useMemo(
+   const { reloadTime, aimingTime } = useMemo(
       () =>
-         applyModifiersOnVehicleDetails(
-            {
-               aimingTime: vehicleAimTime,
-               reloadTime: vehicleReloadTime,
-            },
-            appliedDevicesModifiers,
-         ),
-      [vehicleAimTime, vehicleReloadTime, appliedDevicesModifiers],
+         applyStatPipeline({ reloadTime: vehicleReloadTime, aimingTime: vehicleAimTime }, [
+            createDeviceTransformer(appliedDevicesModifiers),
+            createCrewTransformer(crewMembers.gunner, 'effective'),
+            createCrewTransformer(crewMembers.loader, 'effective'),
+         ]),
+      [vehicleAimTime, vehicleReloadTime, appliedDevicesModifiers, crewMembers],
    )
 
    return (

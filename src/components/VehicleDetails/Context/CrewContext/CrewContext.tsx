@@ -1,5 +1,6 @@
 'use client'
-import { createContext, useReducer, useEffect } from 'react'
+import { createContext, useReducer, useEffect, useContext } from 'react'
+import { DeviceContext } from '@/DevicesContext/DeviceContext'
 
 import type { ICrewMembers } from '@/types/VehicleDetails/Crew'
 import type { CrewMembersType, ICrewContext } from './Types'
@@ -25,18 +26,33 @@ export default function CrewContextProvider({
    crewMembers: ICrewMembers[]
 }) {
    const [crewReducer, crewDispatch] = useReducer(CrewReducer, crewInitialState)
+   const {
+      deviceReducer: { appliedDevicesModifiers },
+   } = useContext(DeviceContext)
 
    useEffect(() => {
-      const crewHelperObject = initialCrewMembers as CrewMembersType
-      for (const member of crewMembers) {
-         const crewMember = new CrewMember({
-            primaryRole: member.primary,
-            secondaryRole: member.secondary,
-         })
-         crewHelperObject[crewMember.primaryRole] = crewMember
+      const crewHelperObject = { ...initialCrewMembers } as CrewMembersType
+
+      if (appliedDevicesModifiers && appliedDevicesModifiers['improvedVentilation']) {
+         for (const member of crewMembers) {
+            const crewMember = new CrewMember({
+               primaryRole: member.primary,
+               secondaryRole: member.secondary,
+               crewModifierBonuses: [appliedDevicesModifiers['improvedVentilation'][0].value],
+            })
+            crewHelperObject[crewMember.primaryRole] = crewMember
+         }
+      } else {
+         for (const member of crewMembers) {
+            const crewMember = new CrewMember({
+               primaryRole: member.primary,
+               secondaryRole: member.secondary,
+            })
+            crewHelperObject[crewMember.primaryRole] = crewMember
+         }
       }
       crewDispatch({ type: 'ADD_INITIAL_CREW', payload: crewHelperObject })
-   }, [crewMembers])
+   }, [crewMembers, appliedDevicesModifiers])
 
    return (
       <CrewContext.Provider

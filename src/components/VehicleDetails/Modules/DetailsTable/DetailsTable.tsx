@@ -9,9 +9,16 @@ import Concealment from './Concealment/Concealment'
 import Spotting from './Spotting/Spotting'
 import MechanicsContainer from './Mechanics/MechanicsContainer'
 
+import CrewSwitch from './CrewSwitch/CrewSwitch'
+import Camouflage from './Camouflage/Camouflage'
+
 export default function DetailsTable() {
    return (
       <section className='w-full'>
+         <div className='flex flex-col gap-1 items-center mb-2 xl:flex-row xl:gap-4'>
+            <CrewSwitch />
+            <Camouflage />
+         </div>
          <Typography gutterBottom variant='h5'>
             Tank specifications
          </Typography>

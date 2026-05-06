@@ -38,6 +38,10 @@ const CREW_MODIFIER_CONFIG: Record<string, IModifierConfig> = {
       fields: ['turretTraverseSpeed'],
       operation: 'degressive',
    },
+   vehicleGunShotDispersion: {
+      fields: ['vehicleMovement', 'vehicleRotation', 'turretRotation', 'afterShot'],
+      operation: 'degressive',
+   },
    // LOADER ------------------------------
    vehicleGunReloadTime: {
       fields: ['reloadTime'],

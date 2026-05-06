@@ -5,6 +5,7 @@ import { CrewContext } from '@/CrewContext/CrewContext'
 import { styled } from '@mui/material/styles'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch, { SwitchProps } from '@mui/material/Switch'
+import Tooltip from '@mui/material/Tooltip'
 
 const CustomCrewSwitch = styled((props: SwitchProps) => (
    <Switch focusVisibleClassName='.Mui-focusVisible' disableRipple {...props} />
@@ -77,12 +78,14 @@ export default function CrewSwitch() {
    }
 
    return (
-      <FormControlLabel
-         checked={crewMode === 'base' ? false : true}
-         onChange={handleChange}
-         control={<CustomCrewSwitch sx={{ m: 1 }} />}
-         labelPlacement='start'
-         label='Show Effective Values'
-      />
+      <Tooltip title={'Toggle between showing raw values and effective values with commander bonus applied.'}>
+         <FormControlLabel
+            checked={crewMode === 'base' ? false : true}
+            onChange={handleChange}
+            control={<CustomCrewSwitch sx={{ m: 1 }} />}
+            labelPlacement='start'
+            label='Show Effective Values'
+         />
+      </Tooltip>
    )
 }

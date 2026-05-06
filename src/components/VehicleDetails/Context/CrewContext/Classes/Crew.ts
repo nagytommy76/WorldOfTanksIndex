@@ -15,7 +15,7 @@ export default class CrewMember {
    constructor({
       primaryRole,
       secondaryRole,
-      crewModifierBonuses = [1.05],
+      crewModifierBonuses = [],
    }: {
       primaryRole: ICrewRoles
       secondaryRole: ICrewRoles[]
@@ -91,6 +91,7 @@ const GUNNER_AFFECTED_FIELDS = [
    'vehicleGunAimSpeed',
    'vehicleGunShotFullDispersion',
    'vehicleTurretOrCuttingRotationSpeed',
+   'vehicleGunShotDispersion',
 ]
 const LOADER_AFFECTED_FIELDS = ['vehicleGunReloadTime']
 const RADIOMAN_AFFECTED_FIELDS = ['vehicleRadioCircularVisionRadius']

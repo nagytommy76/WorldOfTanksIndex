@@ -13,7 +13,7 @@ import CrewReducer from './CrewReducer'
 export const CrewContext = createContext<ICrewContext>({
    crewDispatch: () => null,
    crewReducer: {
-      crewMode: 'base',
+      crewMode: 'effective',
       crewMembers: initialCrewMembers,
    },
 })

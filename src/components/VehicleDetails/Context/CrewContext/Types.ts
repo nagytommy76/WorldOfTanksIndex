@@ -36,7 +36,7 @@ export const initialCrewMembers = {
 }
 
 export const crewInitialState: ICrewReducerState = {
-   crewMode: 'base',
+   crewMode: 'effective',
    crewMembers: initialCrewMembers,
 }
 

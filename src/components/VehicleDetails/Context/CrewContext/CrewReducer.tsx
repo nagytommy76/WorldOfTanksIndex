@@ -6,6 +6,14 @@ export default function CrewReducer(
 ): ICrewReducerState {
    switch (action.type) {
       case 'TOGGLE_CREW_MODE':
+         for (const [role, member] of Object.entries(state.crewMembers)) {
+            if (!member) continue
+
+            const newEfficiencyLevel = member.computeEfficiencyLevel([], state.crewMode === 'base')
+            // console.log('ROLE: ', role)
+            // console.log(role, newEfficiencyLevel)
+            member.efficiencyLevel = newEfficiencyLevel
+         }
          return {
             ...state,
             crewMode: state.crewMode === 'base' ? 'effective' : 'base',

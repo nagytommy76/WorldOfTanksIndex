@@ -36,7 +36,7 @@ const CREW_MODIFIER_CONFIG: Record<string, IModifierConfig> = {
    },
    vehicleTurretOrCuttingRotationSpeed: {
       fields: ['turretTraverseSpeed'],
-      operation: 'degressive',
+      operation: 'progressive',
    },
    vehicleGunShotDispersion: {
       fields: ['vehicleMovement', 'vehicleRotation', 'turretRotation', 'afterShot'],

@@ -42,7 +42,7 @@ export default function Firepower() {
       deviceReducer: { appliedDevicesModifiers },
    } = useContext(DeviceContext)
    const {
-      crewReducer: { crewMembers },
+      crewReducer: { crewMembers, crewMode },
    } = useContext(CrewContext)
 
    const clipDamage =
@@ -65,10 +65,10 @@ export default function Firepower() {
       () =>
          applyStatPipeline({ reloadTime: vehicleReloadTime, aimingTime: vehicleAimTime }, [
             createDeviceTransformer(appliedDevicesModifiers),
-            createCrewTransformer(crewMembers.gunner, 'effective'),
-            createCrewTransformer(crewMembers.loader, 'effective'),
+            createCrewTransformer(crewMembers.gunner, crewMode),
+            createCrewTransformer(crewMembers.loader, crewMode),
          ]),
-      [vehicleAimTime, vehicleReloadTime, appliedDevicesModifiers, crewMembers],
+      [vehicleAimTime, vehicleReloadTime, appliedDevicesModifiers, crewMembers, crewMode],
    )
 
    return (

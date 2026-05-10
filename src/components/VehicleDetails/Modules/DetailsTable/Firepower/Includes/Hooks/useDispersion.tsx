@@ -1,8 +1,12 @@
 import { useContext, useMemo } from 'react'
+
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
+import { CrewContext } from '@/CrewContext/CrewContext'
 
-import applyModifiersOnVehicleDetails from '@/src/utils/ApplyModifiers'
+import applyStatPipeline from '@/utils/applyStatPipeline'
+import createCrewTransformer from '@/utils/ApplyCrewModifiers'
+import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 
 export default function useDispersion() {
    const {
@@ -11,10 +15,12 @@ export default function useDispersion() {
          moduleGroup: { vehicleGun, vehicleChassis },
       },
    } = useContext(VehicleContext)
-
    const {
       deviceReducer: { appliedDevicesModifiers },
    } = useContext(DeviceContext)
+   const {
+      crewReducer: { crewMembers, crewMode },
+   } = useContext(CrewContext)
 
    const accuracyBase = vehicleGun[selectedModuleNames.vehicleGun].accuracy
    const vehicleMovementBase = vehicleChassis[selectedModuleNames.vehicleChassis].dispersion.vehicleMovement
@@ -23,26 +29,31 @@ export default function useDispersion() {
    const afterShotBase = vehicleGun[selectedModuleNames.vehicleGun].dispersion.afterShot
    const accuracyWhileDamagedBase = vehicleGun[selectedModuleNames.vehicleGun].dispersion.whileDamaged
 
-   // Grab base values from selected modules
-   const baseDispersionValues = useMemo(
-      () => ({
-         accuracy: accuracyBase,
-         vehicleMovement: vehicleMovementBase,
-         vehicleRotation: vehicleRotationBase,
-         turretRotation: turretRotationBase,
-         afterShot: afterShotBase,
-      }),
-      [vehicleMovementBase, vehicleRotationBase, turretRotationBase, afterShotBase, accuracyBase],
-   )
-
-   /**
-    * Recomputes dispersion values whenever base values OR applied devices change.
-    * No useState/useEffect needed — this is purely derived data.
-    * Stacks multiplicatively if multiple devices share the same modifier name.
-    */
    const { vehicleMovement, vehicleRotation, turretRotation, afterShot, accuracy } = useMemo(
-      () => applyModifiersOnVehicleDetails(baseDispersionValues, appliedDevicesModifiers),
-      [baseDispersionValues, appliedDevicesModifiers],
+      () =>
+         applyStatPipeline(
+            {
+               accuracy: accuracyBase,
+               vehicleMovement: vehicleMovementBase,
+               vehicleRotation: vehicleRotationBase,
+               turretRotation: turretRotationBase,
+               afterShot: afterShotBase,
+            },
+            [
+               createDeviceTransformer(appliedDevicesModifiers),
+               createCrewTransformer(crewMembers.gunner, crewMode),
+            ],
+         ),
+      [
+         vehicleMovementBase,
+         vehicleRotationBase,
+         turretRotationBase,
+         afterShotBase,
+         accuracyBase,
+         appliedDevicesModifiers,
+         crewMembers,
+         crewMode,
+      ],
    )
 
    return {

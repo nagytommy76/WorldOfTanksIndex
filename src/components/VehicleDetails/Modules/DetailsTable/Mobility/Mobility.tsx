@@ -2,11 +2,13 @@
 import { useContext, useMemo } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
+import { CrewContext } from '@/CrewContext/CrewContext'
 
 import useSetTotalWeight from './Hooks/useSetTotalWeight'
-import applyModifiersOnVehicleDetails from '@/utils/ApplyModifiers'
 
-// import { calculateEffectiveTraverseSpeed } from '../../Helpers/calculate'
+import applyStatPipeline from '@/utils/applyStatPipeline'
+import createCrewTransformer from '@/utils/ApplyCrewModifiers'
+import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 
 import TableHeadComponent from '../Includes/TableHead'
 
@@ -39,6 +41,9 @@ export default function Mobility() {
    const {
       deviceReducer: { appliedDevicesModifiers },
    } = useContext(DeviceContext)
+   const {
+      crewReducer: { crewMembers, crewMode },
+   } = useContext(CrewContext)
 
    const gunDepression = -vehicleGun[selectedModuleNames.vehicleGun].elevationLimits.depression[1] || 0
    const gunElevation = -vehicleGun[selectedModuleNames.vehicleGun].elevationLimits.elevation[1] || 0
@@ -61,7 +66,7 @@ export default function Mobility() {
       terrainResistance3,
    } = useMemo(
       () =>
-         applyModifiersOnVehicleDetails(
+         applyStatPipeline(
             {
                enginePower: vehicleEnginePowerBase,
                forwardSpeed: forwardSpeedBase,
@@ -72,7 +77,11 @@ export default function Mobility() {
                terrainResistance2: vehicleTerrainResistanceBase[1],
                terrainResistance3: vehicleTerrainResistanceBase[2],
             },
-            appliedDevicesModifiers,
+            [
+               createDeviceTransformer(appliedDevicesModifiers),
+               createCrewTransformer(crewMembers.driver, crewMode),
+               createCrewTransformer(crewMembers.gunner, crewMode),
+            ],
          ),
       [
          vehicleEnginePowerBase,
@@ -82,6 +91,8 @@ export default function Mobility() {
          vehicleGunRotationSpeedBase,
          appliedDevicesModifiers,
          vehicleTerrainResistanceBase,
+         crewMembers,
+         crewMode,
       ],
    )
 

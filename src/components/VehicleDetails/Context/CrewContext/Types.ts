@@ -41,8 +41,11 @@ export const crewInitialState: ICrewReducerState = {
 }
 
 export type ICrewContextActions =
-   | { type: 'TOGGLE_CREW_MODE' }
+   | { type: 'TOGGLE_CREW_MODE'; payload: boolean }
    | { type: 'ADD_INITIAL_CREW'; payload: CrewMembersType }
+   | { type: 'SET_APPLIED_CREW_MODIFIER'; payload: { name: string; value: number } }
+   | { type: 'CLEAR_APPLIED_CREW_MODIFIERS' }
+   | { type: 'REMOVE_APPLIED_CREW_MODIFIER'; payload: string }
 
 export interface ICrewContext {
    crewReducer: ICrewReducerState

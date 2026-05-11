@@ -7,6 +7,19 @@ export default class CrewMember {
    secondaryRole: ICrewRoles[]
    efficiencyLevel: number
    affectedVehicleStats: string[] // e.g. aiming time, reload time
+   /**
+    * @description e.g. ventilation, brother in arms, extra combat ration
+    */
+   appliedCrewModifiers:
+      | Map<
+           string,
+           {
+              situationalParam: boolean
+              value: number
+              paramName: string
+           }
+        >
+      | undefined = undefined
 
    // Commander gives +10% to all OTHER crew members
    private static readonly COMMANDER_BONUS = 0.1
@@ -15,16 +28,16 @@ export default class CrewMember {
    constructor({
       primaryRole,
       secondaryRole,
-      crewModifierBonuses = [],
+      // crewModifierBonuses = [],
    }: {
       primaryRole: ICrewRoles
       secondaryRole: ICrewRoles[]
-      crewModifierBonuses?: number[] // e.g. ventilation, brother in arms, extra combat ration
+      // crewModifierBonuses?: number[]
    }) {
       this.primaryRole = primaryRole
       this.secondaryRole = secondaryRole
 
-      this.efficiencyLevel = this.computeEfficiencyLevel(crewModifierBonuses)
+      this.efficiencyLevel = 100
       this.affectedVehicleStats = this.setAffectedVehicleStats()
    }
 
@@ -47,16 +60,48 @@ export default class CrewMember {
     * // commander → 100 * (1 + 0.05)       = 105
     * // loader    → 100 * (1 + 0.05) * 1.1 = 115.5
     */
-   computeEfficiencyLevel(crewModifierBonuses: number[]): number {
+   computeEfficiencyLevel(/*crewModifierBonuses: number[]*/): number {
       let boostedBase = CrewMember.BASE_TRAINING
+      if (this.appliedCrewModifiers) {
+         this.appliedCrewModifiers.forEach((modifier, key) => {
+            // if (key === 'commanderBonus' && this.primaryRole !== 'commander') {
+            // console.log('COMMANDER', this.primaryRole)
+            boostedBase *= 1 + modifier.value
+            // } else {
+            //    // COMMANDER BONUS OR OTHER BONUSES that don't apply to commander
+            //    // boostedBase *= modifier.value
+            // }
+         })
+      }
 
-      crewModifierBonuses.forEach((bonus) => {
-         boostedBase *= bonus
+      // crewModifierBonuses.forEach((bonus) => {
+      //    boostedBase *= bonus
+      // })
+
+      // if (this.primaryRole === 'commander') return boostedBase
+
+      // return parseFloat((boostedBase * (1 + CrewMember.COMMANDER_BONUS)).toFixed(1))
+      return parseFloat(boostedBase.toFixed(1))
+   }
+
+   setAppliedCrewModifier(modifier: { name: string; paramName: string; value: number }) {
+      if (!this.appliedCrewModifiers) this.appliedCrewModifiers = new Map()
+      this.appliedCrewModifiers.set(modifier.name, {
+         paramName: modifier.paramName,
+         value: modifier.value,
+         situationalParam: false,
       })
-
-      if (this.primaryRole === 'commander') return boostedBase
-
-      return parseFloat((boostedBase * (1 + CrewMember.COMMANDER_BONUS)).toFixed(1))
+      this.efficiencyLevel = this.computeEfficiencyLevel()
+   }
+   clearAppliedCrewModifiers() {
+      if (!this.appliedCrewModifiers) return
+      this.appliedCrewModifiers.clear()
+      this.efficiencyLevel = 100
+   }
+   removeAppliedCrewModifier(modifierName: string) {
+      if (!this.appliedCrewModifiers) return
+      this.appliedCrewModifiers.delete(modifierName)
+      this.efficiencyLevel = this.computeEfficiencyLevel()
    }
 
    private setAffectedVehicleStats() {

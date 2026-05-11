@@ -1,5 +1,5 @@
 'use client'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { CrewContext } from '@/CrewContext/CrewContext'
 
 import { styled } from '@mui/material/styles'
@@ -72,15 +72,18 @@ export default function CrewSwitch() {
       crewDispatch,
       crewReducer: { crewMode },
    } = useContext(CrewContext)
+   const [checked, setChecked] = useState(false)
 
-   function handleChange() {
-      crewDispatch({ type: 'TOGGLE_CREW_MODE' })
+   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+      // console.log(event.target.checked)
+      setChecked(event.target.checked)
+      crewDispatch({ type: 'TOGGLE_CREW_MODE', payload: event.target.checked })
    }
 
    return (
       <Tooltip title={'Toggle between showing raw values and effective values with commander bonus applied.'}>
          <FormControlLabel
-            checked={crewMode === 'base' ? false : true}
+            checked={checked}
             onChange={handleChange}
             control={<CustomCrewSwitch sx={{ m: 1 }} />}
             labelPlacement='start'

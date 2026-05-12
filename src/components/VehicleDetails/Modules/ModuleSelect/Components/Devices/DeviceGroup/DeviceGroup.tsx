@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/VehicleContext/DevicesContext/DeviceContext'
+import { CrewContext } from '@/VehicleDetails/Context/CrewContext/CrewContext'
 
 import useMenuHandler from './Hooks/useMenuHandler'
 import useDeviceStates from './Hooks/useDeviceStates'
@@ -43,6 +44,7 @@ export default function DeviceGroup({
       deviceDispatch,
       deviceReducer: { incompatibleDevices },
    } = useContext(DeviceContext)
+   const { crewDispatch } = useContext(CrewContext)
    // ── Local state ──────────────────────────────────────────────────────────
    const foundDevices = ReturnFoundDevices(devices)
 
@@ -68,12 +70,17 @@ export default function DeviceGroup({
          type: 'REMOVE_DEVICE_MODIFIER',
          payload: { archeType },
       })
-      if (foundDevices.tiers?.incompatibleTags && foundDevices.equipmentModernized_1?.incompatibleTags) {
+      // Remove incompatible tag
+      if (selectedDevice?.incompatibleTags?.length) {
          deviceDispatch({
             type: 'REMOVE_INCOMPATIBLE_DEVICE',
-            payload:
-               foundDevices.tiers.incompatibleTags?.[0] ??
-               foundDevices.equipmentModernized_1.incompatibleTags?.[0],
+            payload: selectedDevice.incompatibleTags?.[0],
+         })
+      }
+      if (selectedDevice?.archeType === 'improvedVentilation') {
+         crewDispatch({
+            type: 'REMOVE_APPLIED_CREW_MODIFIER',
+            payload: selectedDevice.archeType,
          })
       }
    }

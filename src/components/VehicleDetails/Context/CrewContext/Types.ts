@@ -11,13 +11,6 @@ export type CrewMode = 'base' | 'effective'
  */
 export type CrewStatType = 'degressive' | 'progressive'
 
-/** Per-field config: stat type + which crew role's efficiency drives it */
-// export interface ICrewStatConfig {
-//    type: CrewStatType
-//    /** The primaryRole of the crew member whose efficiency drives this stat */
-//    role: ICrewRoles
-// }
-
 export type CrewMembersType = {
    [crewRole in ICrewRoles]: CrewMember | undefined
 }
@@ -41,7 +34,7 @@ export const crewInitialState: ICrewReducerState = {
 }
 
 export type ICrewContextActions =
-   | { type: 'TOGGLE_CREW_MODE'; payload: boolean }
+   | { type: 'TOGGLE_COMMANDER_BONUS'; payload: boolean }
    | { type: 'ADD_INITIAL_CREW'; payload: CrewMembersType }
    | { type: 'SET_APPLIED_CREW_MODIFIER'; payload: { name: string; value: number } }
    | { type: 'CLEAR_APPLIED_CREW_MODIFIERS' }

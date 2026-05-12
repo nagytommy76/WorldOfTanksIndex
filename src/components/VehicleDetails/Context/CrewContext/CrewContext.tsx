@@ -33,26 +33,33 @@ export default function CrewContextProvider({
    useEffect(() => {
       const crewHelperObject = { ...initialCrewMembers } as CrewMembersType
 
-      // if (appliedDevicesModifiers && appliedDevicesModifiers['improvedVentilation']) {
-      //    for (const member of crewMembers) {
-      //       const crewMember = new CrewMember({
-      //          primaryRole: member.primary,
-      //          secondaryRole: member.secondary,
-      //          crewModifierBonuses: [appliedDevicesModifiers['improvedVentilation'][0].value],
-      //       })
-      //       crewHelperObject[crewMember.primaryRole] = crewMember
-      //    }
-      // } else {
       for (const member of crewMembers) {
          const crewMember = new CrewMember({
             primaryRole: member.primary,
             secondaryRole: member.secondary,
          })
+         if (member.primary !== 'commander') {
+            crewMember.setAppliedCrewModifier({
+               name: 'commanderBonus',
+               paramName: 'commanderBonus',
+               value: 1.1,
+            })
+         }
          crewHelperObject[crewMember.primaryRole] = crewMember
       }
-      // }
       crewDispatch({ type: 'ADD_INITIAL_CREW', payload: crewHelperObject })
-   }, [crewMembers, appliedDevicesModifiers])
+   }, [crewMembers])
+
+   useEffect(() => {
+      if (!appliedDevicesModifiers?.improvedVentilation) return
+      crewDispatch({
+         type: 'SET_APPLIED_CREW_MODIFIER',
+         payload: {
+            name: 'improvedVentilation',
+            value: appliedDevicesModifiers.improvedVentilation[0].value,
+         },
+      })
+   }, [appliedDevicesModifiers])
 
    return (
       <CrewContext.Provider

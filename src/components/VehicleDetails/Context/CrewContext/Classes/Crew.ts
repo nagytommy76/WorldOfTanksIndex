@@ -3,9 +3,21 @@
 import type { ICrewRoles } from '@/types/VehicleDetails/Crew'
 
 export default class CrewMember {
+   /**
+    * @param primaryRole - The crew member's main role (commander, gunner, driver, loader, radioman)
+    */
    primaryRole: ICrewRoles
+   /**
+    * @param primaryRole - The crew member's secondary role (commander, gunner, driver, loader, radioman)
+    */
    secondaryRole: ICrewRoles[]
+   /**
+    * @description The crew member's efficiency level, which is used in the crew formula to compute actual stat values. Starts at 100% and is modified by crew perks (e.g. Brothers in Arms) and equipment (e.g. Improved Ventilation).
+    */
    efficiencyLevel: number
+   /**
+    * @description Which vehicle parameters this crew member affects, used to determine which stats to apply the crew formula to. E.g. commander affects circular vision radius, driver affects traverse speed and ground rotation speed, etc.
+    */
    affectedVehicleStats: string[] // e.g. aiming time, reload time
    /**
     * @description e.g. ventilation, brother in arms, extra combat ration
@@ -21,67 +33,14 @@ export default class CrewMember {
         >
       | undefined = undefined
 
-   // Commander gives +10% to all OTHER crew members
-   private static readonly COMMANDER_BONUS = 0.1
    private static readonly BASE_TRAINING = 100
 
-   constructor({
-      primaryRole,
-      secondaryRole,
-      // crewModifierBonuses = [],
-   }: {
-      primaryRole: ICrewRoles
-      secondaryRole: ICrewRoles[]
-      // crewModifierBonuses?: number[]
-   }) {
+   constructor({ primaryRole, secondaryRole }: { primaryRole: ICrewRoles; secondaryRole: ICrewRoles[] }) {
       this.primaryRole = primaryRole
       this.secondaryRole = secondaryRole
 
-      this.efficiencyLevel = 100
+      this.efficiencyLevel = CrewMember.BASE_TRAINING
       this.affectedVehicleStats = this.setAffectedVehicleStats()
-   }
-
-   /**
-    * @description Computes the effective efficiency level for this crew member.
-    *
-    * Rules:
-    *  - Ventilation bonus is applied to base BEFORE commander bonus
-    *  - Commander does NOT receive their own +10% bonus
-    *  - All other members DO receive the commander +10% bonus
-    *
-    * @param crewModifierBonuses - fractional bonus, e.g. 0.05 for Improved Ventilation
-    *
-    * @example
-    * // Without ventilation:
-    * // commander → 100 * (1 + 0)       = 100
-    * // loader    → 100 * (1 + 0) * 1.1 = 110
-    *
-    * // With Improved Ventilation (+5%):
-    * // commander → 100 * (1 + 0.05)       = 105
-    * // loader    → 100 * (1 + 0.05) * 1.1 = 115.5
-    */
-   computeEfficiencyLevel(/*crewModifierBonuses: number[]*/): number {
-      let boostedBase = CrewMember.BASE_TRAINING
-      if (this.appliedCrewModifiers) {
-         this.appliedCrewModifiers.forEach((modifier, key) => {
-            // if (key === 'commanderBonus' && this.primaryRole !== 'commander') {
-            // console.log('COMMANDER', this.primaryRole)
-            boostedBase *= 1 + modifier.value
-            // } else {
-            //    // COMMANDER BONUS OR OTHER BONUSES that don't apply to commander
-            //    // boostedBase *= modifier.value
-            // }
-         })
-      }
-
-      // crewModifierBonuses.forEach((bonus) => {
-      //    boostedBase *= bonus
-      // })
-
-      // if (this.primaryRole === 'commander') return boostedBase
-
-      // return parseFloat((boostedBase * (1 + CrewMember.COMMANDER_BONUS)).toFixed(1))
-      return parseFloat(boostedBase.toFixed(1))
    }
 
    setAppliedCrewModifier(modifier: { name: string; paramName: string; value: number }) {
@@ -96,7 +55,7 @@ export default class CrewMember {
    clearAppliedCrewModifiers() {
       if (!this.appliedCrewModifiers) return
       this.appliedCrewModifiers.clear()
-      this.efficiencyLevel = 100
+      this.efficiencyLevel = CrewMember.BASE_TRAINING
    }
    removeAppliedCrewModifier(modifierName: string) {
       if (!this.appliedCrewModifiers) return
@@ -127,6 +86,35 @@ export default class CrewMember {
             break
       }
       return helperArray
+   }
+
+   /**
+    * @description Computes the effective efficiency level for this crew member.
+    *
+    * Rules:
+    *  - Ventilation bonus is applied to base BEFORE commander bonus
+    *  - Commander does NOT receive their own +10% bonus
+    *  - All other members DO receive the commander +10% bonus
+    *
+    * @param crewModifierBonuses - fractional bonus, e.g. 0.05 for Improved Ventilation
+    *
+    * @example
+    * // Without ventilation:
+    * // commander → 100 * (1 + 0)       = 100
+    * // loader    → 100 * (1 + 0) * 1.1 = 110
+    *
+    * // With Improved Ventilation (+5%):
+    * // commander → 100 * (1 + 0.05)       = 105
+    * // loader    → 100 * (1 + 0.05) * 1.1 = 115.5
+    */
+   private computeEfficiencyLevel(): number {
+      let boostedBase = CrewMember.BASE_TRAINING
+      if (this.appliedCrewModifiers) {
+         this.appliedCrewModifiers.forEach((modifier) => {
+            boostedBase *= modifier.value
+         })
+      }
+      return parseFloat(boostedBase.toFixed(1))
    }
 }
 

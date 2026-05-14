@@ -68,6 +68,9 @@ export default class CrewMember {
       switch (this.primaryRole) {
          case 'commander':
             helperArray = COMMANDER_AFFECTED_FIELDS
+            if (this.secondaryRole[0] === 'radioman') {
+               helperArray = helperArray.concat(RADIOMAN_AFFECTED_FIELDS)
+            }
             break
          case 'gunner':
             helperArray = GUNNER_AFFECTED_FIELDS
@@ -80,6 +83,9 @@ export default class CrewMember {
             break
          case 'loader':
             helperArray = LOADER_AFFECTED_FIELDS
+            if (this.secondaryRole[0] === 'radioman') {
+               helperArray = helperArray.concat(RADIOMAN_AFFECTED_FIELDS)
+            }
             break
          case 'radioman':
             helperArray = RADIOMAN_AFFECTED_FIELDS
@@ -118,7 +124,7 @@ export default class CrewMember {
    }
 }
 
-const COMMANDER_AFFECTED_FIELDS = ['circularVisionRadius']
+const COMMANDER_AFFECTED_FIELDS = ['vehicleCircularVisionRadius']
 const DRIVER_AFFECTED_FIELDS = ['vehicleAllGroundRotationSpeed', 'vehicleSpeedGain']
 const GUNNER_AFFECTED_FIELDS = [
    'vehicleGunAimSpeed',

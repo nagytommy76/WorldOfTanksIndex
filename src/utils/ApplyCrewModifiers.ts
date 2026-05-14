@@ -2,7 +2,6 @@ import CREW_MODIFIER_CONFIG from './crewModifierConfig'
 import CrewMember from '@/CrewContext/Classes/Crew'
 
 import type { StatTransformer } from './applyStatPipeline'
-import type { CrewMode } from '@/CrewContext/Types'
 
 /**
  * T100LT Example
@@ -44,10 +43,7 @@ import type { CrewMode } from '@/CrewContext/Types'
  */
 export default function createCrewTransformer<T extends Record<string, number>>(
    crewMember: CrewMember | undefined,
-   crewMode: CrewMode,
 ): StatTransformer<T> {
-   // Base mode — raw XML values, no formula applied
-   if (crewMode === 'base') return (values) => values
    if (!crewMember)
       return (baseValues: T): T => {
          return baseValues

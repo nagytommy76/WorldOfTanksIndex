@@ -72,12 +72,11 @@ export default function CrewSwitch() {
       crewDispatch,
       crewReducer: { crewMode },
    } = useContext(CrewContext)
-   const [checked, setChecked] = useState(false)
+   const [checked, setChecked] = useState(crewMode === 'effective' ? true : false)
 
-   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-      // console.log(event.target.checked)
-      setChecked(event.target.checked)
-      crewDispatch({ type: 'TOGGLE_CREW_MODE', payload: event.target.checked })
+   function handleChange(_: React.SyntheticEvent, checked: boolean) {
+      setChecked(checked)
+      crewDispatch({ type: 'TOGGLE_COMMANDER_BONUS', payload: checked })
    }
 
    return (

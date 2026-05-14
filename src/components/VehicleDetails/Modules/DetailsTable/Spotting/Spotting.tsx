@@ -2,13 +2,17 @@
 import { useContext, useMemo } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
+import { CrewContext } from '@/CrewContext/CrewContext'
+
+import applyStatPipeline from '@/utils/applyStatPipeline'
+import createCrewTransformer from '@/utils/ApplyCrewModifiers'
+import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 
 import TableHeadComponent from '../Includes/TableHead'
 import TableRowComponent from '../Includes/TableRow'
-import applyModifiersOnVehicleDetails from '@/src/utils/ApplyModifiers'
 
 const SPOTTED_TIME = 10
 export default function Spotting() {
@@ -21,22 +25,32 @@ export default function Spotting() {
    const {
       deviceReducer: { appliedDevicesModifiers },
    } = useContext(DeviceContext)
+   const {
+      crewReducer: { crewMembers },
+   } = useContext(CrewContext)
 
    const viewRangeBase = vehicleTurret[selectedModuleNames.vehicleTurret].viewRange
    const viewRangeStillBase = vehicleTurret[selectedModuleNames.vehicleTurret].viewRange
+   const radioRangeBase = vehicleRadio[selectedModuleNames.vehicleRadio].distance
 
-   const { enemySpottingTime, ownSpottingTime, viewRange, stillViewRange } = useMemo(
+   const { enemySpottingTime, ownSpottingTime, viewRange, radioRange, stillViewRange } = useMemo(
       () =>
-         applyModifiersOnVehicleDetails(
+         applyStatPipeline(
             {
                enemySpottingTime: SPOTTED_TIME,
                ownSpottingTime: SPOTTED_TIME,
                viewRange: viewRangeBase,
                stillViewRange: viewRangeStillBase,
+               radioRange: radioRangeBase,
             },
-            appliedDevicesModifiers,
+            [
+               createDeviceTransformer(appliedDevicesModifiers),
+               createCrewTransformer(crewMembers.commander),
+               createCrewTransformer(crewMembers.radioman),
+               createCrewTransformer(crewMembers.loader),
+            ],
          ),
-      [viewRangeBase, viewRangeStillBase, appliedDevicesModifiers],
+      [viewRangeBase, viewRangeStillBase, radioRangeBase, appliedDevicesModifiers, crewMembers],
    )
 
    return (
@@ -77,8 +91,14 @@ export default function Spotting() {
             <TableRowComponent
                iconSrc='/icons/spot/radioDistance.png'
                titleText='Signal range'
-               valueText={vehicleRadio[selectedModuleNames.vehicleRadio]?.distance}
+               valueText={radioRange}
                unit='m'
+               modifiers={[
+                  {
+                     difference: parseFloat((radioRange - radioRangeBase).toFixed(2)),
+                     improved: true,
+                  },
+               ]}
             />
             <TableRowComponent
                iconSrc='/icons/spot/vehicleOwnSpottingTime.png'

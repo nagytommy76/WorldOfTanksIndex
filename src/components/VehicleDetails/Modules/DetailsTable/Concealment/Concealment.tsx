@@ -3,7 +3,7 @@ import { useContext, useMemo } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
 
-import applyModifiersOnVehicleDetails from '@/src/utils/ApplyModifiers'
+import applyModifiersOnVehicleDetails from '@/utils/ApplyModifiers'
 
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -11,6 +11,12 @@ import TableBody from '@mui/material/TableBody'
 import TableHeadComponent from '../Includes/TableHead'
 import TableRowComponent from '../Includes/TableRow'
 import { calculateCamoValues } from '../../Helpers/calculate'
+
+/**
+ *
+ * A Camoflage NEt nél van deluxe és sima vehicleStillCamouflageDeluxe és vehicleStillCamouflage
+ * ami külön adódik hozzá a contexhez!!!! MEGOLDANI!!!
+ */
 
 export default function Concealment() {
    const {

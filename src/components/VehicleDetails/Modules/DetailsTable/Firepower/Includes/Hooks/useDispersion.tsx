@@ -19,7 +19,7 @@ export default function useDispersion() {
       deviceReducer: { appliedDevicesModifiers },
    } = useContext(DeviceContext)
    const {
-      crewReducer: { crewMembers, crewMode },
+      crewReducer: { crewMembers },
    } = useContext(CrewContext)
 
    const accuracyBase = vehicleGun[selectedModuleNames.vehicleGun].accuracy
@@ -39,10 +39,7 @@ export default function useDispersion() {
                turretRotation: turretRotationBase,
                afterShot: afterShotBase,
             },
-            [
-               createDeviceTransformer(appliedDevicesModifiers),
-               createCrewTransformer(crewMembers.gunner, crewMode),
-            ],
+            [createDeviceTransformer(appliedDevicesModifiers), createCrewTransformer(crewMembers.gunner)],
          ),
       [
          vehicleMovementBase,
@@ -52,7 +49,6 @@ export default function useDispersion() {
          accuracyBase,
          appliedDevicesModifiers,
          crewMembers,
-         crewMode,
       ],
    )
 

@@ -29,6 +29,7 @@
          "@/Providers*": ["./src/Providers/*"],
          "@/Images*": ["./src/assets/images/*"],
          "@/Techtree*": ["./src/components/Techtree/*"],
+         // MODELS
          "@Models/*": ["./src/models/*"],
          // TYPES
          "@Types/*": ["./types/*"],
@@ -40,7 +41,9 @@
          "@/OrderContext/*": ["./src/components/VehiclesTable/Context/*"],
          // MECHANICS
          "@/Mechanics/*": ["./src/components/VehicleDetails/Modules/DetailsTable/Mechanics/*"],
-         "@/DetailsTable/*": ["./src/components/VehicleDetails/Modules/DetailsTable/*"]
+         "@/DetailsTable/*": ["./src/components/VehicleDetails/Modules/DetailsTable/*"],
+         // CLASSES
+         "@/Classes/*": ["./src/Classes/*"]
       }
    },
    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

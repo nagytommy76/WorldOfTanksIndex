@@ -1,17 +1,9 @@
 import React from 'react'
 import type { OverlayTypes } from '../../../Types'
-import { styled } from '@mui/material/styles'
 
-import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip'
+import HtmlTooltip from '@/helpers/HtmlTooltip'
+
 import Button from '@mui/material/Button'
-
-const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
-   <Tooltip {...props} classes={{ popper: className }} />
-))(() => ({
-   [`& .${tooltipClasses.tooltip}`]: {
-      padding: 0,
-   },
-}))
 
 export default function DeviceButton({
    children,

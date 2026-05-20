@@ -3,6 +3,7 @@
 import Modules from './Components/Modules'
 import Shells from './Components/Shells'
 import Devices from './Components/Devices/Devices'
+import CrewSkills from './Components/CrewSkills/CrewSkills'
 
 export default function ModuleSelect() {
    return (
@@ -10,6 +11,7 @@ export default function ModuleSelect() {
          <Modules />
          <Shells />
          <Devices />
+         <CrewSkills />
       </aside>
    )
 }

@@ -1,28 +1,26 @@
 import React from 'react'
 import Image from 'next/image'
 
+import CrewSkills from '@/Classes/CrewSkills'
+
 import Typography from '@mui/material/Typography'
 
-export default function TooltipContent({
-   skillName,
-   description,
-   iconName,
-   isSituational = false,
-}: {
-   skillName: string
-   description: string
-   iconName: string
-   isSituational?: boolean
-}) {
+export default function TooltipContent({ skill }: { skill: CrewSkills }) {
    return (
       <section className='bg-[#121212] min-w-[350px]'>
          <div className='p-2 flex align-center items-center mb-1'>
-            <Image src={`/crewSkills/${iconName}.png`} alt={skillName} width={80} height={80} className='' />
+            <Image
+               src={`/crewSkills/${skill.xmlName}.png`}
+               alt={skill.name || ''}
+               width={80}
+               height={80}
+               className=''
+            />
             <div className=''>
                <Typography variant='h6' fontWeight={700}>
-                  {skillName}
+                  {skill.name}
                </Typography>
-               {isSituational ? (
+               {skill.typeName === 'situational' ? (
                   <Typography className='text-white/50' variant='caption'>
                      Perk with a situational effect <span className='text-amber-500'>*</span>
                   </Typography>
@@ -34,9 +32,9 @@ export default function TooltipContent({
             </div>
          </div>
          <div className='p-3 '>
-            <Typography variant='body2'>{description}</Typography>
+            <Typography variant='body2'>{skill.description}</Typography>
          </div>
-         {isSituational && (
+         {skill.typeName === 'situational' && (
             <div className='p-3 my-2'>
                <Typography className='text-white/50' variant='caption'>
                   <span className='text-amber-500'>*</span> Situational effects trigger when certain

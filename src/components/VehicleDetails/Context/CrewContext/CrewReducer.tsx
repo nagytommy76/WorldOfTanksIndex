@@ -27,19 +27,29 @@ export default function CrewReducer(
             crewMode: state.crewMode === 'base' ? 'effective' : 'base',
          }
       case 'SET_APPLIED_CREW_MODIFIER':
+         const { name, value } = action.payload
          const newCrewMembers = state.crewMembers
+
          for (const member of Object.values(newCrewMembers)) {
             if (!member) continue
             member.setAppliedCrewModifier({
-               name: action.payload.name,
-               paramName: action.payload.name,
-               value: action.payload.value,
+               name,
+               paramName: name,
+               value,
             })
          }
          return {
             ...state,
             crewMembers: { ...newCrewMembers },
          }
+      case 'SET_APPLIED_CREW_SKILLS':
+         const { crewSkillModifiers, role } = action.payload
+         if (!role) {
+         } else {
+            const newSkillCrewMembers = state.crewMembers[role]
+         }
+
+         return state
       case 'REMOVE_APPLIED_CREW_MODIFIER':
          const newRemoveCrewMembers = state.crewMembers
          for (const member of Object.values(newRemoveCrewMembers)) {

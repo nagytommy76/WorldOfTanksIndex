@@ -1,5 +1,6 @@
-import type { ICrewRoles } from '@/types/VehicleDetails/Crew'
+// import type { ICrewRoles } from '@/types/VehicleDetails/Crew'
 import CrewMember from './Classes/Crew'
+import type { MeasureType, ICrewRoles } from '@/Classes/CrewSkills'
 
 /** Whether to show raw XML values or crew-formula-adjusted values */
 export type CrewMode = 'base' | 'effective'
@@ -36,9 +37,24 @@ export const crewInitialState: ICrewReducerState = {
 export type ICrewContextActions =
    | { type: 'TOGGLE_COMMANDER_BONUS'; payload: boolean }
    | { type: 'ADD_INITIAL_CREW'; payload: CrewMembersType }
-   | { type: 'SET_APPLIED_CREW_MODIFIER'; payload: { name: string; value: number } }
    | { type: 'CLEAR_APPLIED_CREW_MODIFIERS' }
    | { type: 'REMOVE_APPLIED_CREW_MODIFIER'; payload: string }
+   | {
+        type: 'SET_APPLIED_CREW_MODIFIER'
+        payload: { name: string; value: number }
+     }
+   | {
+        type: 'SET_APPLIED_CREW_SKILLS'
+        payload: {
+           role: ICrewRoles | undefined
+           crewSkillModifiers: {
+              situationalParam: boolean
+              value: number
+              paramName: string
+              measureType: MeasureType
+           }[]
+        }
+     }
 
 export interface ICrewContext {
    crewReducer: ICrewReducerState

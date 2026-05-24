@@ -1,13 +1,16 @@
 export type CrewSkillsType = 'situational' | 'commanderSpecial' | 'common'
 
+export type MeasureType = 'seconds' | 'percent'
+
 export type CrewSkillModifier = {
-   measureType: 'seconds' | 'percent'
+   measureType: MeasureType
    situationalParam: boolean
    paramName: string
    value: number
 }
 
 export type CrewSkillRoles = 'commander' | 'gunner' | 'driver' | 'radioman' | 'loader' | 'common'
+export type ICrewRoles = Exclude<CrewSkillRoles, 'common'>
 
 export default class CrewSkills {
    /**

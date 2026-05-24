@@ -1,6 +1,6 @@
 // https://worldoftanks.fandom.com/wiki/Crew#Proficiency
 
-import type { ICrewRoles } from '@/types/VehicleDetails/Crew'
+import type { MeasureType, ICrewRoles } from '@/Classes/CrewSkills'
 
 export default class CrewMember {
    /**
@@ -26,9 +26,22 @@ export default class CrewMember {
       | Map<
            string,
            {
+              value: number
+              paramName: string
+           }
+        >
+      | undefined = undefined
+   /**
+    * @description e.g: driver_motorExpert: paramName: "vehPenaltyForDamagedEngine"
+    */
+   appliedCrewSkills:
+      | Map<
+           string,
+           {
               situationalParam: boolean
               value: number
               paramName: string
+              measureType: MeasureType
            }
         >
       | undefined = undefined
@@ -43,12 +56,23 @@ export default class CrewMember {
       this.affectedVehicleStats = this.setAffectedVehicleStats()
    }
 
+   setAppliedCrewSkill(
+      crewSkillModifiers: {
+         situationalParam: boolean
+         value: number
+         paramName: string
+         measureType: MeasureType
+      }[],
+   ) {
+      if (this.appliedCrewSkills === undefined) this.appliedCrewSkills = new Map()
+      crewSkillModifiers.forEach((modifier) => this.appliedCrewSkills?.set(modifier.paramName, modifier))
+   }
+
    setAppliedCrewModifier(modifier: { name: string; paramName: string; value: number }) {
       if (!this.appliedCrewModifiers) this.appliedCrewModifiers = new Map()
       this.appliedCrewModifiers.set(modifier.name, {
          paramName: modifier.paramName,
          value: modifier.value,
-         situationalParam: false,
       })
       this.efficiencyLevel = this.computeEfficiencyLevel()
    }

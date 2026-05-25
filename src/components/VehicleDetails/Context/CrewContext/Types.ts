@@ -46,6 +46,7 @@ export type ICrewContextActions =
    | {
         type: 'SET_APPLIED_CREW_SKILLS'
         payload: {
+           appliedSkillName: string
            role: ICrewRoles | undefined
            crewSkillModifiers: {
               situationalParam: boolean
@@ -55,6 +56,7 @@ export type ICrewContextActions =
            }[]
         }
      }
+   | { type: 'REMOVE_APPLIED_CREW_SKILLS'; payload: { skillName: string; crewRole: ICrewRoles } }
 
 export interface ICrewContext {
    crewReducer: ICrewReducerState

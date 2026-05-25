@@ -42,7 +42,7 @@ export default class CrewMember {
               value: number
               paramName: string
               measureType: MeasureType
-           }
+           }[]
         >
       | undefined = undefined
 
@@ -57,6 +57,7 @@ export default class CrewMember {
    }
 
    setAppliedCrewSkill(
+      skillName: string,
       crewSkillModifiers: {
          situationalParam: boolean
          value: number
@@ -65,7 +66,7 @@ export default class CrewMember {
       }[],
    ) {
       if (this.appliedCrewSkills === undefined) this.appliedCrewSkills = new Map()
-      crewSkillModifiers.forEach((modifier) => this.appliedCrewSkills?.set(modifier.paramName, modifier))
+      this.appliedCrewSkills?.set(skillName, crewSkillModifiers)
    }
 
    setAppliedCrewModifier(modifier: { name: string; paramName: string; value: number }) {
@@ -85,6 +86,10 @@ export default class CrewMember {
       if (!this.appliedCrewModifiers) return
       this.appliedCrewModifiers.delete(modifierName)
       this.efficiencyLevel = this.computeEfficiencyLevel()
+   }
+   removeAppliedCrewSkill(crewSkillName: string) {
+      if (!this.appliedCrewSkills) return
+      this.appliedCrewSkills.delete(crewSkillName)
    }
 
    private setAffectedVehicleStats() {

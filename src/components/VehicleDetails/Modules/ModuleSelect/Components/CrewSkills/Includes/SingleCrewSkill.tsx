@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { CrewContext } from '@/VehicleDetails/Context/CrewContext/CrewContext'
 
 import CrewSkills, { type ICrewRoles } from '@/Classes/CrewSkills'
@@ -7,13 +7,13 @@ import HtmlTooltip from '@/helpers/HtmlTooltip'
 import TooltipContent from '../Includes/TooltipContent'
 
 export default function SingleCrewSkill({ skill, role }: { skill: CrewSkills; role: ICrewRoles }) {
+   const [checked, setChecked] = useState(false)
    const {
       crewDispatch,
       crewReducer: { crewMembers },
    } = useContext(CrewContext)
    function handleClick() {
-      console.log(skill)
-      console.log(skill.modifiers[0])
+      setChecked((prevChecked) => !prevChecked)
       if (skill.xmlName === 'brotherhood' || skill.modifiers[0].paramName === 'crewLevelIncrease') {
          crewDispatch({
             type: 'SET_APPLIED_CREW_MODIFIER',
@@ -26,6 +26,7 @@ export default function SingleCrewSkill({ skill, role }: { skill: CrewSkills; ro
          crewDispatch({
             type: 'SET_APPLIED_CREW_SKILLS',
             payload: {
+               appliedSkillName: skill.xmlName,
                crewSkillModifiers: skill.modifiers,
                role,
             },
@@ -35,7 +36,9 @@ export default function SingleCrewSkill({ skill, role }: { skill: CrewSkills; ro
 
    return (
       <div
-         className={`w-[40px] h-[40px] cursor-pointer opacity-100 border-1 rounded-md border-amber-500 m-1`}
+         className={`w-[40px] h-[40px] cursor-pointer opacity-100 border-1 rounded-md m-1 
+            ${checked ? 'border-amber-500' : 'border-transparent'}            
+            `}
          onClick={handleClick}
       >
          <HtmlTooltip

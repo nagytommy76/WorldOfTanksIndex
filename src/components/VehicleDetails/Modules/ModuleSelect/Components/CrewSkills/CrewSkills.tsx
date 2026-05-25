@@ -1,7 +1,6 @@
-import { useState } from 'react'
 import Image from 'next/image'
 
-import type { CrewSkillRoles } from '@/Classes/CrewSkills'
+import type { CrewSkillRoles, ICrewRoles } from '@/Classes/CrewSkills'
 import useGetCrewSkills from './Hooks/useGetCrewSkills'
 import SingleCrewSkill from './Includes/SingleCrewSkill'
 
@@ -38,7 +37,7 @@ export default function CrewSkills() {
          <Typography variant='h6'>Crew Skills</Typography>
          <section className='flex flex-row'>
             {Object.entries(sortedCrew).map(([role, skills]) => (
-               <div className='flex flex-col gap-2 items-center' key={role}>
+               <div className='flex flex-col items-center' key={role}>
                   <Image
                      src={`/crewSkills/roles/${role}.png`}
                      alt={role}
@@ -47,7 +46,7 @@ export default function CrewSkills() {
                      title={`${role} skills`}
                   />
                   {skills.map((skill) => (
-                     <SingleCrewSkill key={skill.xmlName} skill={skill} />
+                     <SingleCrewSkill key={skill.xmlName} role={role as ICrewRoles} skill={skill} />
                   ))}
                </div>
             ))}

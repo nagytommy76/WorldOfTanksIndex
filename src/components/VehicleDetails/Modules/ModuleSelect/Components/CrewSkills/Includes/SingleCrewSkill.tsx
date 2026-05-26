@@ -13,34 +13,34 @@ export default function SingleCrewSkill({ skill, role }: { skill: CrewSkills; ro
       crewReducer: { crewMembers },
    } = useContext(CrewContext)
    function handleClick() {
-      setChecked((prevChecked) => !prevChecked)
-      if (skill.xmlName === 'brotherhood' || skill.modifiers[0].paramName === 'crewLevelIncrease') {
-         crewDispatch({
-            type: 'SET_APPLIED_CREW_MODIFIER',
-            payload: {
-               name: skill.xmlName,
-               value: skill.modifiers[0].value,
-            },
-         })
+      if (!checked) {
+         if (skill.xmlName === 'brotherhood' || skill.modifiers[0].paramName === 'crewLevelIncrease') {
+            crewDispatch({
+               type: 'SET_APPLIED_CREW_MODIFIER',
+               payload: {
+                  name: skill.xmlName,
+                  value: skill.modifiers[0].value,
+               },
+            })
+         } else {
+            crewDispatch({
+               type: 'SET_APPLIED_CREW_SKILLS',
+               payload: {
+                  appliedSkillName: skill.xmlName,
+                  crewSkillModifiers: skill.modifiers,
+                  role,
+               },
+            })
+         }
       } else {
-         crewDispatch({
-            type: 'SET_APPLIED_CREW_SKILLS',
-            payload: {
-               appliedSkillName: skill.xmlName,
-               crewSkillModifiers: skill.modifiers,
-               role,
-            },
-         })
+         console.log('CHECKED SO REMOVE SKILL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
       }
+
+      setChecked((prevChecked) => !prevChecked)
    }
 
    return (
-      <div
-         className={`w-[40px] h-[40px] cursor-pointer opacity-100 border-1 rounded-md m-1 
-            ${checked ? 'border-amber-500' : 'border-transparent'}            
-            `}
-         onClick={handleClick}
-      >
+      <div onClick={handleClick}>
          <HtmlTooltip
             key={skill.xmlName}
             placement='top'

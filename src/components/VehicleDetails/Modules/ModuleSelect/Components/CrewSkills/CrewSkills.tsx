@@ -1,18 +1,13 @@
 import Image from 'next/image'
-import { useState } from 'react'
 
 import type { CrewSkillRoles, ICrewRoles } from '@/Classes/CrewSkills'
 import useGetCrewSkills from './Hooks/useGetCrewSkills'
-import SingleCrewSkill from './Includes/SingleCrewSkill'
+import ToggleCrewSkills from './Includes/ToggleCrewSkills'
 
 import Typography from '@mui/material/Typography'
 
-import ToggleButton from '@mui/material/ToggleButton'
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
-
 export default function CrewSkills() {
    const crewSkills = useGetCrewSkills()
-   const [selectedSkills, setSelectedSkills] = useState<string[]>([])
 
    /**
     * T100Lt has 3 crew members:
@@ -35,22 +30,10 @@ export default function CrewSkills() {
       crewOrder.filter((role) => role in crewSkills).map((role) => [role, crewSkills[role]]),
    ) as Record<CrewSkillRoles, (typeof crewSkills)[CrewSkillRoles]>
 
-   const handleChange = (event: React.MouseEvent<HTMLElement>, newFormats: string[]) => {
-      setSelectedSkills(newFormats)
-   }
-
-   console.log(sortedCrew)
-
    return (
       <>
          <Typography variant='h6'>Crew Skills</Typography>
-         <ToggleButtonGroup
-            className='gap-1'
-            orientation='horizontal'
-            value={selectedSkills}
-            exclusive
-            onChange={handleChange}
-         >
+         <div className='flex flex-row'>
             {Object.entries(sortedCrew).map(([role, skills]) => (
                <div className='flex flex-col items-center' key={role}>
                   <Image
@@ -61,22 +44,10 @@ export default function CrewSkills() {
                      title={`${role} skills`}
                      className='w-[20px] h-[20px] object-cover mb-3'
                   />
-                  {skills.map((skill) => (
-                     <ToggleButton
-                        key={skill.xmlName}
-                        value={skill.xmlName}
-                        aria-label='crew_skill_list'
-                        sx={{
-                           padding: '2px',
-                           border: 'none',
-                        }}
-                     >
-                        <SingleCrewSkill key={skill.xmlName} role={role as ICrewRoles} skill={skill} />
-                     </ToggleButton>
-                  ))}
+                  <ToggleCrewSkills skills={skills} role={role as ICrewRoles} />
                </div>
             ))}
-         </ToggleButtonGroup>
+         </div>
       </>
    )
 }

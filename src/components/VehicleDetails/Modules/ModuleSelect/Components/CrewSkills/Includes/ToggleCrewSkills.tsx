@@ -1,53 +1,18 @@
-import { useContext, useState } from 'react'
-import { CrewContext } from '@/VehicleDetails/Context/CrewContext/CrewContext'
+import useHandleToggleChange from './Hooks/useHandleToggleChange'
+import useHandleClick from './Hooks/useHandleClick'
 
 import SingleCrewSkill from './SingleCrewSkill'
-
 import CrewSkills, { ICrewRoles } from '@/Classes/CrewSkills'
 
 import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 
 export default function ToggleCrewSkills({ skills, role }: { skills: CrewSkills[]; role: ICrewRoles }) {
-   const {
-      crewDispatch,
-      //   crewReducer: { crewMembers },
-   } = useContext(CrewContext)
-   const [selectedSkills, setSelectedSkills] = useState<string[]>(() => [])
-
-   const handleChange = (event: React.MouseEvent<HTMLElement>, newFormats: string) => {
-      if (selectedSkills.includes(newFormats)) {
-         const filteredCrewSkill = selectedSkills.filter((skill) => skill !== newFormats)
-         setSelectedSkills(filteredCrewSkill)
-      } else {
-         setSelectedSkills((prevSelectedSkills) => [...prevSelectedSkills, newFormats])
-      }
-   }
-
-   function handleClick(skill: CrewSkills) {
-      if (selectedSkills.includes(skill.xmlName)) {
-         console.log('INCLUDES SO REMOVE SKILL FROM CREW!!!!!!!!!!!!!!!!!!!: ')
-      } else {
-         if (skill.xmlName === 'brotherhood' || skill.modifiers[0].paramName === 'crewLevelIncrease') {
-            crewDispatch({
-               type: 'SET_APPLIED_CREW_MODIFIER',
-               payload: {
-                  name: skill.xmlName,
-                  value: skill.modifiers[0].value,
-               },
-            })
-         } else {
-            crewDispatch({
-               type: 'SET_APPLIED_CREW_SKILLS',
-               payload: {
-                  appliedSkillName: skill.xmlName,
-                  crewSkillModifiers: skill.modifiers,
-                  role,
-               },
-            })
-         }
-      }
-   }
+   const { handleToggleChancge, selectedSkills } = useHandleToggleChange()
+   const { handleClick, primarySkillsSelected, secondarySkillsSelected } = useHandleClick(
+      selectedSkills,
+      role,
+   )
 
    return (
       <ToggleButtonGroup
@@ -58,7 +23,7 @@ export default function ToggleCrewSkills({ skills, role }: { skills: CrewSkills[
          orientation='vertical'
          value={selectedSkills}
          exclusive
-         onChange={handleChange}
+         onChange={handleToggleChancge}
       >
          {skills.map((skill) => (
             <ToggleButton
@@ -66,10 +31,12 @@ export default function ToggleCrewSkills({ skills, role }: { skills: CrewSkills[
                value={skill.xmlName}
                aria-label='crew_skill_list'
                onClick={() => handleClick(skill)}
+               className='border-none'
                sx={{
                   padding: '2px',
                   border: 'none',
                }}
+               // disabled
             >
                <SingleCrewSkill skill={skill} />
             </ToggleButton>

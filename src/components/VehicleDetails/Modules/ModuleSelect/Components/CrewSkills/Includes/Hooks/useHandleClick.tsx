@@ -1,9 +1,9 @@
 import { useContext, useState } from 'react'
 import { CrewContext } from '@/VehicleDetails/Context/CrewContext/CrewContext'
 
-import CrewSkills, { type ICrewRoles } from '@/Classes/CrewSkills'
+import CrewSkills, { type ICrewRoles, CrewSkillRoles } from '@/Classes/CrewSkills'
 
-export default function useHandleClick(selectedSkills: string[], role: ICrewRoles) {
+export default function useHandleClick(selectedSkills: string[], role: CrewSkillRoles) {
    const {
       crewDispatch,
       crewReducer: { crewMembers },
@@ -13,12 +13,28 @@ export default function useHandleClick(selectedSkills: string[], role: ICrewRole
    const [secondarySkillsSelected, setSecondarySkillsSelected] = useState<number>(0)
 
    function handleClick(skill: CrewSkills) {
+      if (role === 'common') {
+         switch (skill.xmlName) {
+            case 'brotherhood':
+               console.log('BROTHERHOOD CREW MODIFIER', role)
+               crewDispatch({
+                  type: 'SET_APPLIED_CREW_MODIFIER',
+                  payload: {
+                     name: skill.xmlName,
+                     value: skill.modifiers[0].value,
+                  },
+               })
+               break
+            default:
+               console.log('ADD CREW MODIFIER', role)
+               break
+         }
+      }
       /**
        * in this case the role is a secondary one e.g: T100LT Commader -> radioman
        */
       Object.entries(crewMembers).map(([crewRole, member]) => {
          if (member?.secondaryRole[0] === role) {
-            console.log('SECONDARY SKILL SELECTION::::')
             if (selectedSkills.includes(skill.xmlName)) {
                setSecondarySkillsSelected((prev) => prev - 1)
                crewDispatch({
@@ -50,27 +66,28 @@ export default function useHandleClick(selectedSkills: string[], role: ICrewRole
             type: 'REMOVE_APPLIED_CREW_SKILLS',
             payload: {
                skillName: skill.xmlName,
-               crewRole: role,
+               crewRole: role as ICrewRoles,
             },
          })
       } else {
          setPrimarySkillsSelected((prev) => prev + 1)
-         console.log('PRIMARY SKILL SELECTION::::')
-         if (skill.xmlName === 'brotherhood' || skill.modifiers[0].paramName === 'crewLevelIncrease') {
-            crewDispatch({
-               type: 'SET_APPLIED_CREW_MODIFIER',
-               payload: {
-                  name: skill.xmlName,
-                  value: skill.modifiers[0].value,
-               },
-            })
+         if (skill.xmlName === 'brotherhood' && skill.modifiers[0].paramName === 'crewLevelIncrease') {
+            // console.log('REMOVE CREW MODIFIER', role)
+            // // if (['brotherhood', 'camouflage', 'repair'].includes(skill.xmlName)) {
+            // crewDispatch({
+            //    type: 'SET_APPLIED_CREW_MODIFIER',
+            //    payload: {
+            //       name: skill.xmlName,
+            //       value: skill.modifiers[0].value,
+            //    },
+            // })
          } else {
             crewDispatch({
                type: 'SET_APPLIED_CREW_SKILLS',
                payload: {
                   appliedSkillName: skill.xmlName,
                   crewSkillModifiers: skill.modifiers,
-                  role,
+                  role: role as ICrewRoles,
                },
             })
          }

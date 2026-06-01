@@ -22,7 +22,6 @@ export default function ToggleCrewSkills({ skills, role }: { skills: CrewSkills[
          className='gap-1'
          orientation='vertical'
          value={selectedSkills}
-         exclusive
          onChange={handleToggleChancge}
       >
          {skills.map((skill) => (
@@ -36,9 +35,18 @@ export default function ToggleCrewSkills({ skills, role }: { skills: CrewSkills[
                   padding: '2px',
                   border: 'none',
                }}
-               // disabled
+               disabled={
+                  (primarySkillsSelected >= 6 || secondarySkillsSelected >= 3) &&
+                  !selectedSkills.includes(skill.xmlName)
+               }
             >
-               <SingleCrewSkill skill={skill} />
+               <SingleCrewSkill
+                  isDisabled={
+                     (primarySkillsSelected >= 6 || secondarySkillsSelected >= 3) &&
+                     !selectedSkills.includes(skill.xmlName)
+                  }
+                  skill={skill}
+               />
             </ToggleButton>
          ))}
       </ToggleButtonGroup>

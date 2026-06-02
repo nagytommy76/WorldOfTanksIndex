@@ -12,11 +12,12 @@ export default function useHandleClick(selectedSkills: string[], role: CrewSkill
    const [primarySkillsSelected, setPrimarySkillsSelected] = useState<number>(0)
    const [secondarySkillsSelected, setSecondarySkillsSelected] = useState<number>(0)
 
-   function handleClick(skill: CrewSkills) {
+   function handleClick(event: React.MouseEvent<HTMLElement>, value: string, skill: CrewSkills) {
       if (role === 'common') {
          switch (skill.xmlName) {
             case 'brotherhood':
                console.log('BROTHERHOOD CREW MODIFIER', role)
+               setPrimarySkillsSelected((prev) => prev + 1)
                crewDispatch({
                   type: 'SET_APPLIED_CREW_MODIFIER',
                   payload: {
@@ -25,8 +26,18 @@ export default function useHandleClick(selectedSkills: string[], role: CrewSkill
                   },
                })
                break
-            default:
-               console.log('ADD CREW MODIFIER', role)
+            case 'repair':
+            case 'camouflage':
+               console.log('REPAIR OR CAMO CREW MODIFIER', role)
+               setPrimarySkillsSelected((prev) => prev + 1)
+               crewDispatch({
+                  type: 'SET_APPLIED_CREW_SKILLS',
+                  payload: {
+                     appliedSkillName: skill.xmlName,
+                     crewSkillModifiers: skill.modifiers,
+                     role: undefined,
+                  },
+               })
                break
          }
       }

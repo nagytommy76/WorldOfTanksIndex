@@ -29,7 +29,7 @@ export default function ToggleCrewSkills({ skills, role }: { skills: CrewSkills[
                key={skill.xmlName}
                value={skill.xmlName}
                aria-label='crew_skill_list'
-               onClick={() => handleClick(skill)}
+               onClick={(event, value) => handleClick(event, value, skill)}
                className='border-none'
                sx={{
                   padding: '2px',

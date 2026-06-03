@@ -56,7 +56,7 @@ export type ICrewContextActions =
            }[]
         }
      }
-   | { type: 'REMOVE_APPLIED_CREW_SKILLS'; payload: { skillName: string; crewRole: ICrewRoles } }
+   | { type: 'REMOVE_APPLIED_CREW_SKILLS'; payload: { skillName: string; crewRole: ICrewRoles | undefined } }
 
 export interface ICrewContext {
    crewReducer: ICrewReducerState

@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import type { CrewSkillRoles, ICrewRoles } from '@/Classes/CrewSkills'
+import type { CrewSkillRoles } from '@/Classes/CrewSkills'
 import useGetCrewSkills from './Hooks/useGetCrewSkills'
 import ToggleCrewSkills from './Includes/ToggleCrewSkills'
 
@@ -25,16 +25,11 @@ export default function CrewSkills() {
 
    if (!crewSkills) return <h1>LOADING....</h1>
 
-   const crewOrder: CrewSkillRoles[] = ['common', 'commander', 'loader', 'driver', 'radioman', 'gunner']
-   const sortedCrew = Object.fromEntries(
-      crewOrder.filter((role) => role in crewSkills).map((role) => [role, crewSkills[role]]),
-   ) as Record<CrewSkillRoles, (typeof crewSkills)[CrewSkillRoles]>
-
    return (
       <>
          <Typography variant='h6'>Crew Skills</Typography>
          <div className='flex flex-row'>
-            {Object.entries(sortedCrew).map(([role, skills]) => (
+            {Object.entries(crewSkills).map(([role, skills]) => (
                <div className='flex flex-col items-center' key={role}>
                   <Image
                      src={`/crewSkills/roles/${role}.png`}
@@ -44,7 +39,7 @@ export default function CrewSkills() {
                      title={`${role} skills`}
                      className='w-[20px] h-[20px] object-cover mb-3'
                   />
-                  <ToggleCrewSkills skills={skills} role={role as ICrewRoles} />
+                  <ToggleCrewSkills skills={skills} role={role as CrewSkillRoles} />
                </div>
             ))}
          </div>

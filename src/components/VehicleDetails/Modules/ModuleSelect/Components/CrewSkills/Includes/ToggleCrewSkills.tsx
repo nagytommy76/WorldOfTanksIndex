@@ -2,12 +2,12 @@ import useHandleToggleChange from './Hooks/useHandleToggleChange'
 import useHandleClick from './Hooks/useHandleClick'
 
 import SingleCrewSkill from './SingleCrewSkill'
-import CrewSkills, { ICrewRoles } from '@/Classes/CrewSkills'
+import CrewSkills, { CrewSkillRoles } from '@/Classes/CrewSkills'
 
 import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 
-export default function ToggleCrewSkills({ skills, role }: { skills: CrewSkills[]; role: ICrewRoles }) {
+export default function ToggleCrewSkills({ skills, role }: { skills: CrewSkills[]; role: CrewSkillRoles }) {
    const { handleToggleChancge, selectedSkills } = useHandleToggleChange()
    const { handleClick, primarySkillsSelected, secondarySkillsSelected } = useHandleClick(
       selectedSkills,

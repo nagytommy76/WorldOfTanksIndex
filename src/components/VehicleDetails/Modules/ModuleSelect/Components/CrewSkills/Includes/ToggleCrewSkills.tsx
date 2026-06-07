@@ -1,3 +1,5 @@
+import type { Dispatch, SetStateAction } from 'react'
+
 import useHandleToggleChange from './Hooks/useHandleToggleChange'
 import useHandleClick from './Hooks/useHandleClick'
 
@@ -7,11 +9,22 @@ import CrewSkills, { CrewSkillRoles } from '@/Classes/CrewSkills'
 import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 
-export default function ToggleCrewSkills({ skills, role }: { skills: CrewSkills[]; role: CrewSkillRoles }) {
+export default function ToggleCrewSkills({
+   skills,
+   role,
+   commonSkillsSelected,
+   setCommonSkillsSelected,
+}: {
+   skills: CrewSkills[]
+   role: CrewSkillRoles
+   commonSkillsSelected: number
+   setCommonSkillsSelected: Dispatch<SetStateAction<number>>
+}) {
    const { handleToggleChancge, selectedSkills } = useHandleToggleChange()
-   const { handleClick, primarySkillsSelected, secondarySkillsSelected } = useHandleClick(
+   const { handleClick, skillsSelected, isSecondarySkill } = useHandleClick(
       selectedSkills,
       role,
+      setCommonSkillsSelected,
    )
 
    return (
@@ -36,13 +49,13 @@ export default function ToggleCrewSkills({ skills, role }: { skills: CrewSkills[
                   border: 'none',
                }}
                disabled={
-                  (primarySkillsSelected >= 6 || secondarySkillsSelected >= 3) &&
+                  (isSecondarySkill ? skillsSelected >= 3 : commonSkillsSelected + skillsSelected >= 6) &&
                   !selectedSkills.includes(skill.xmlName)
                }
             >
                <SingleCrewSkill
                   isDisabled={
-                     (primarySkillsSelected >= 6 || secondarySkillsSelected >= 3) &&
+                     (isSecondarySkill ? skillsSelected >= 3 : commonSkillsSelected + skillsSelected >= 6) &&
                      !selectedSkills.includes(skill.xmlName)
                   }
                   skill={skill}

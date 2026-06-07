@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { useState } from 'react'
 
 import type { CrewSkillRoles } from '@/Classes/CrewSkills'
 import useGetCrewSkills from './Hooks/useGetCrewSkills'
@@ -8,6 +9,7 @@ import Typography from '@mui/material/Typography'
 
 export default function CrewSkills() {
    const crewSkills = useGetCrewSkills()
+   const [commonSkillsSelected, setCommonSkillsSelected] = useState<number>(0)
 
    /**
     * T100Lt has 3 crew members:
@@ -39,7 +41,12 @@ export default function CrewSkills() {
                      title={`${role} skills`}
                      className='w-[20px] h-[20px] object-cover mb-3'
                   />
-                  <ToggleCrewSkills skills={skills} role={role as CrewSkillRoles} />
+                  <ToggleCrewSkills
+                     skills={skills}
+                     role={role as CrewSkillRoles}
+                     commonSkillsSelected={commonSkillsSelected}
+                     setCommonSkillsSelected={setCommonSkillsSelected}
+                  />
                </div>
             ))}
          </div>

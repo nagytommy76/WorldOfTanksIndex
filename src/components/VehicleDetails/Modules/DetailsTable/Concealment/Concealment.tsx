@@ -2,8 +2,11 @@
 import { useContext, useMemo } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
+import { CrewContext } from '@/CrewContext/CrewContext'
 
-import applyModifiersOnVehicleDetails from '@/utils/ApplyModifiers'
+import applyStatPipeline from '@/utils/applyStatPipeline'
+import { createDeviceTransformer } from '@/utils/ApplyModifiers'
+import createCrewSkillsTransformer from '@/utils/ApplyCrewSkillModifier'
 
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -29,6 +32,9 @@ export default function Concealment() {
    const {
       deviceReducer: { appliedDevicesModifiers },
    } = useContext(DeviceContext)
+   const {
+      crewReducer: { crewMembers },
+   } = useContext(CrewContext)
 
    const vehicleStillCamoflageBase = useMemo(() => calculateCamoValues(camo.stationary), [camo])
    const vehicleStillCamoflageAfterFireBase = useMemo(
@@ -52,14 +58,14 @@ export default function Concealment() {
 
    const { camouflageMoving, camouflageStill } = useMemo(
       () =>
-         applyModifiersOnVehicleDetails(
-            {
-               camouflageStill: vehicleStillCamoflageBase,
-               camouflageMoving: vehicleMovingCamoflageBase,
-            },
-            appliedDevicesModifiers,
+         applyStatPipeline(
+            { camouflageStill: vehicleStillCamoflageBase, camouflageMoving: vehicleMovingCamoflageBase },
+            [
+               createDeviceTransformer(appliedDevicesModifiers),
+               createCrewSkillsTransformer(crewMembers.commander),
+            ],
          ),
-      [appliedDevicesModifiers, vehicleMovingCamoflageBase, vehicleStillCamoflageBase],
+      [appliedDevicesModifiers, vehicleMovingCamoflageBase, vehicleStillCamoflageBase, crewMembers],
    )
 
    return (
@@ -78,7 +84,7 @@ export default function Concealment() {
                unit='%'
                modifiers={[
                   {
-                     difference: camouflageStill - vehicleStillCamoflageBase,
+                     difference: parseFloat((camouflageStill - vehicleStillCamoflageBase).toFixed(2)),
                      improved: true,
                   },
                ]}
@@ -91,7 +97,7 @@ export default function Concealment() {
                unit='%'
                modifiers={[
                   {
-                     difference: camouflageMoving - vehicleMovingCamoflageBase,
+                     difference: parseFloat((camouflageMoving - vehicleMovingCamoflageBase).toFixed(2)),
                      improved: true,
                   },
                ]}

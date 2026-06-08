@@ -4,6 +4,8 @@ import CrewMember from '@/CrewContext/Classes/Crew'
 import type { StatTransformer } from './applyStatPipeline'
 
 /**
+ * @url https://worldoftanks.fandom.com/wiki/Crew#Proficiency
+ * 
  * T100LT Example
  *
  * LOADER CREW LOADNIG TIME:

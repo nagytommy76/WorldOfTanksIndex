@@ -28,8 +28,15 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
 
                switch (config.measureType) {
                   case 'percents':
-                     console.log('HELLÓ: ', skill)
-                     ;(calculatedSkillResult[key] as number) *= skill.value
+                     console.log('HELLÓ: ', calculatedSkillResult[key])
+
+                     calculatedSkillResult[key] =
+                        // (skill.value / 0.8741) * (0.003773 * crewMember.efficiencyLevel + 0.5)
+                        // (skill.value / 0.875) * (0.00375 * crewMember.efficiencyLevel + 0.5)
+                        (calculatedSkillResult[key] / 0.875) * (0.00375 * crewMember.efficiencyLevel + 0.5)
+
+                     calculatedSkillResult[key] *= skill.value
+                     // ;(calculatedSkillResult[key] as number) *= skill.value
                      break
                }
             }

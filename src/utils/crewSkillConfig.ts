@@ -49,6 +49,14 @@ const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
    /**
     * LOADER SKILLS ---------------------------------------
     */
+   /**
+    * RADIOMAN SKILLS ---------------------------------------
+    */
+   vehicleCircularVisionRadius: {
+      fields: ['viewRange'],
+      measureType: 'percents',
+      isSituational: false,
+   },
 }
 
 export default CREW_SKILLS_MODIFIER_CONFIG

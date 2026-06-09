@@ -6,6 +6,7 @@ import { CrewContext } from '@/CrewContext/CrewContext'
 
 import applyStatPipeline from '@/utils/applyStatPipeline'
 import createCrewTransformer from '@/utils/ApplyCrewModifiers'
+import createCrewSkillsTransformer from '@/utils/ApplyCrewSkillModifier'
 import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 
 import Table from '@mui/material/Table'
@@ -48,6 +49,7 @@ export default function Spotting() {
                createCrewTransformer(crewMembers.commander),
                createCrewTransformer(crewMembers.radioman),
                createCrewTransformer(crewMembers.loader),
+               createCrewSkillsTransformer(crewMembers.commander),
             ],
          ),
       [viewRangeBase, viewRangeStillBase, radioRangeBase, appliedDevicesModifiers, crewMembers],

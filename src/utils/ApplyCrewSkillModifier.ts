@@ -22,21 +22,27 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
             const config = CREW_SKILLS_MODIFIER_CONFIG[skill.paramName]
             if (!config) continue
 
+            console.log('SKILL NAME : ', skillName)
+            console.log('config: : ', config)
+
             for (const configField of config.fields) {
                if (!(configField in calculatedSkillResult)) continue
                const key = configField as keyof T
+               console.log('configField:  ', configField)
+               console.log('KEY:  ', key)
 
                switch (config.measureType) {
                   case 'percents':
-                     console.log('HELLÓ: ', calculatedSkillResult[key])
+                     console.log('calculatedSkillResult : ', calculatedSkillResult[key])
 
-                     calculatedSkillResult[key] =
-                        // (skill.value / 0.8741) * (0.003773 * crewMember.efficiencyLevel + 0.5)
-                        // (skill.value / 0.875) * (0.00375 * crewMember.efficiencyLevel + 0.5)
-                        (calculatedSkillResult[key] / 0.875) * (0.00375 * crewMember.efficiencyLevel + 0.5)
+                     // calculatedSkillResult[key] =
+                     // (skill.value / 0.8741) * (0.003773 * crewMember.efficiencyLevel + 0.5)
+                     // (skill.value / 0.875) * (0.00375 * crewMember.efficiencyLevel + 0.5)
+                     // (calculatedSkillResult[key] / 0.875) * (0.00375 * crewMember.efficiencyLevel + 0.5)
 
-                     calculatedSkillResult[key] *= skill.value
-                     // ;(calculatedSkillResult[key] as number) *= skill.value
+                     // calculatedSkillResult[key] *= skill.value
+                     ;(calculatedSkillResult[key] as number) *= skill.value
+                     // console.log('HELLÓ22222:   ', skill.value)
                      break
                }
             }

@@ -94,6 +94,7 @@ export default function Firepower() {
                iconSrc='/icons/firepower/reloadTimeSecs.png'
                titleText='Gun Loading'
                valueText={reloadTime}
+               toFixed={2}
                unit='s'
                modifiers={[
                   {

@@ -17,7 +17,6 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
       if (appliedCrewSkills === undefined) return calculatedSkillResult
 
       for (const [skillName, skills] of appliedCrewSkills) {
-         // appliedCrewSkills.values().forEach((skill) => {
          for (const skill of skills) {
             const config = CREW_SKILLS_MODIFIER_CONFIG[skill.paramName]
             if (!config) continue
@@ -35,14 +34,20 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
                   case 'percents':
                      console.log('calculatedSkillResult : ', calculatedSkillResult[key])
 
-                     // calculatedSkillResult[key] =
-                     // (skill.value / 0.8741) * (0.003773 * crewMember.efficiencyLevel + 0.5)
-                     // (skill.value / 0.875) * (0.00375 * crewMember.efficiencyLevel + 0.5)
-                     // (calculatedSkillResult[key] / 0.875) * (0.00375 * crewMember.efficiencyLevel + 0.5)
+                     if (
+                        crewMember.appliedCrewModifiers?.has('commanderBonus') &&
+                        crewMember.appliedCrewModifiers.has('improvedVentilation')
+                     ) {
+                        calculatedSkillResult[key] *= skill.value
+                        ;(calculatedSkillResult[key] as number) =
+                           (calculatedSkillResult[key] / 0.875) *
+                           (0.00375 * (crewMember.efficiencyLevel - 10) + 0.5)
+                     } else {
+                        calculatedSkillResult[key] *= skill.value
+                        ;(calculatedSkillResult[key] as number) =
+                           (calculatedSkillResult[key] / 0.875) * (0.00375 * crewMember.efficiencyLevel + 0.5)
+                     }
 
-                     // calculatedSkillResult[key] *= skill.value
-                     ;(calculatedSkillResult[key] as number) *= skill.value
-                     // console.log('HELLÓ22222:   ', skill.value)
                      break
                }
             }

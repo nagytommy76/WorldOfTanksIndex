@@ -149,7 +149,7 @@ export default class CrewMember {
             boostedBase *= modifier.value
          })
       }
-      return parseFloat(boostedBase.toFixed(1))
+      return parseFloat(boostedBase.toFixed(4))
    }
 }
 

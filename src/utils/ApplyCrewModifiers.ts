@@ -5,6 +5,7 @@ import type { StatTransformer } from './applyStatPipeline'
 
 /**
  * @url https://worldoftanks.fandom.com/wiki/Crew#Proficiency
+ * @url https://www.reddit.com/r/WorldofTanks/comments/1ggtfvx/crew_20_game_mechanics_deepdive/
  * 
  * T100LT Example
  *
@@ -70,8 +71,14 @@ export default function createCrewTransformer<T extends Record<string, number>>(
                         (nominal * 0.875) / (0.00375 * crewMember.efficiencyLevel + 0.5)
                      break
                   case 'progressive':
-                     ;(vehicleParameters[key] as number) =
-                        (nominal / 0.875) * (0.00375 * crewMember.efficiencyLevel + 0.5)
+                     // ;(vehicleParameters[key] as number) =
+                     //    (nominal / 0.875) * (0.003751 * crewMember.efficiencyLevel + 0.5)
+
+                     const crewLevel = crewMember.efficiencyLevel / 100
+                     const effectiveValue = 0.57 + 0.43 * crewLevel
+                     console.log('CREW LEVEL: ', crewLevel)
+                     ;(vehicleParameters[key] as number) = nominal * effectiveValue
+
                      break
                }
             }
@@ -81,3 +88,10 @@ export default function createCrewTransformer<T extends Record<string, number>>(
       return vehicleParameters
    }
 }
+/**
+ *
+ * Vehicle attributes instead scale using the formula
+ * 0.57 + (0.43 × crewLevel). For example, if your commander is at 120%,
+ * your view range will be buffed by 0.57 + (0.43 × 1.2) = 1.086 = +8.6%.
+ *  A handful of skills also use this formula.
+ */

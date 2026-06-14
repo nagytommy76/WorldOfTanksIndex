@@ -62,7 +62,7 @@ export default function Concealment() {
             { camouflageStill: vehicleStillCamoflageBase, camouflageMoving: vehicleMovingCamoflageBase },
             [
                createDeviceTransformer(appliedDevicesModifiers),
-               createCrewSkillsTransformer(crewMembers.commander),
+               createCrewSkillsTransformer(crewMembers.driver),
             ],
          ),
       [appliedDevicesModifiers, vehicleMovingCamoflageBase, vehicleStillCamoflageBase, crewMembers],

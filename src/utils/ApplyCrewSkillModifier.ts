@@ -21,31 +21,40 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
             const config = CREW_SKILLS_MODIFIER_CONFIG[skill.paramName]
             if (!config) continue
 
-            console.log('SKILL NAME : ', skillName)
-            console.log('config: : ', config)
-
             for (const configField of config.fields) {
                if (!(configField in calculatedSkillResult)) continue
                const key = configField as keyof T
-               console.log('configField:  ', configField)
-               console.log('KEY:  ', key)
 
                switch (config.measureType) {
                   case 'percents':
                      console.log('calculatedSkillResult : ', calculatedSkillResult[key])
 
                      if (
-                        crewMember.appliedCrewModifiers?.has('commanderBonus') &&
-                        crewMember.appliedCrewModifiers.has('improvedVentilation')
+                        crewMember.appliedCrewModifiers?.has('commanderBonus') ||
+                        crewMember.appliedCrewModifiers?.has('improvedVentilation')
                      ) {
+                        //    //    ;(calculatedSkillResult[key] as number) =
+                        //    //       (calculatedSkillResult[key] / 0.875) *
+                        //    //       (0.00375 * (crewMember.efficiencyLevel - 10) + 0.5)
+                        //    //    calculatedSkillResult[key] *= skill.value
+                        //    const crewEfficiency = crewMember.efficiencyLevel / 100
+                        //    console.log(crewEfficiency)
+
+                        const crewEfficiency = crewMember.efficiencyLevel / 100
+                        console.log(crewEfficiency)
+
+                        const multiplyValue = 0.57 + 0.43 * crewEfficiency
+                        console.log('MULTIPLYED: ', multiplyValue)
+
+                        const final = skill.value / 100 + multiplyValue
+                        console.log('MULTIPLYED 2222: ', final)
+
                         calculatedSkillResult[key] *= skill.value
-                        ;(calculatedSkillResult[key] as number) =
-                           (calculatedSkillResult[key] / 0.875) *
-                           (0.00375 * (crewMember.efficiencyLevel - 10) + 0.5)
                      } else {
+                        // ;(calculatedSkillResult[key] as number) =
+                        //    (calculatedSkillResult[key] / 0.875) * (0.00375 * crewMember.efficiencyLevel + 0.5)
+                        console.log('CSÁÁÁÉÉ:::  ', calculatedSkillResult[key])
                         calculatedSkillResult[key] *= skill.value
-                        ;(calculatedSkillResult[key] as number) =
-                           (calculatedSkillResult[key] / 0.875) * (0.00375 * crewMember.efficiencyLevel + 0.5)
                      }
 
                      break
@@ -57,3 +66,11 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
       return calculatedSkillResult
    }
 }
+
+/**
+ * 
+ * Vehicle attributes instead scale using the formula
+ * 0.57 + (0.43 × crewLevel). For example, if your commander is at 120%,
+ * your view range will be buffed by 0.57 + (0.43 × 1.2) = 1.086 = +8.6%.
+ *  A handful of skills also use this formula.
+ */

@@ -71,12 +71,15 @@ export default function createCrewTransformer<T extends Record<string, number>>(
                         (nominal * 0.875) / (0.00375 * crewMember.efficiencyLevel + 0.5)
                      break
                   case 'progressive':
+                     // const roundedCrewLevel = Math.round(crewMember.efficiencyLevel)
+
                      // ;(vehicleParameters[key] as number) =
                      //    (nominal / 0.875) * (0.003751 * crewMember.efficiencyLevel + 0.5)
 
                      const crewLevel = crewMember.efficiencyLevel / 100
+
                      const effectiveValue = 0.57 + 0.43 * crewLevel
-                     console.log('CREW LEVEL: ', crewLevel)
+                     // console.log('CREW LEVEL testing : ', roundedCrewLevel)
                      ;(vehicleParameters[key] as number) = nominal * effectiveValue
 
                      break

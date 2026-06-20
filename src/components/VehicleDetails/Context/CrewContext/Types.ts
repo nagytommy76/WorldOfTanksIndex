@@ -1,6 +1,7 @@
 // import type { ICrewRoles } from '@/types/VehicleDetails/Crew'
+import Commander from './Classes/Commander'
 import CrewMember from './Classes/Crew'
-import type { MeasureType, ICrewRoles } from '@/Classes/CrewSkills'
+import type { MeasureType, ICrewRoles, IRolesNonCommander } from '@/Classes/CrewSkills'
 
 /** Whether to show raw XML values or crew-formula-adjusted values */
 export type CrewMode = 'base' | 'effective'
@@ -13,16 +14,16 @@ export type CrewMode = 'base' | 'effective'
 export type CrewStatType = 'degressive' | 'progressive'
 
 export type CrewMembersType = {
-   [crewRole in ICrewRoles]: CrewMember | undefined
+   [crewRole in IRolesNonCommander]: CrewMember | undefined
 }
 
 export interface ICrewReducerState {
    crewMode: CrewMode
    crewMembers: CrewMembersType
+   commander: Commander
 }
 
-export const initialCrewMembers = {
-   commander: undefined,
+export const initialCrewMembers: CrewMembersType = {
    gunner: undefined,
    driver: undefined,
    loader: undefined,
@@ -32,12 +33,13 @@ export const initialCrewMembers = {
 export const crewInitialState: ICrewReducerState = {
    crewMode: 'effective',
    crewMembers: initialCrewMembers,
+   commander: new Commander({ primaryRole: 'commander', secondaryRole: [] }),
 }
 
 export type ICrewContextActions =
+   | { type: 'SET_COMMANDER'; payload: Commander }
    | { type: 'TOGGLE_COMMANDER_BONUS'; payload: boolean }
    | { type: 'ADD_INITIAL_CREW'; payload: CrewMembersType }
-   | { type: 'CLEAR_APPLIED_CREW_MODIFIERS' }
    | { type: 'REMOVE_APPLIED_CREW_MODIFIER'; payload: string }
    | {
         type: 'SET_APPLIED_CREW_MODIFIER'

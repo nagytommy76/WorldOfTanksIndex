@@ -1,10 +1,6 @@
-// import type { ICrewRoles } from '@/types/VehicleDetails/Crew'
 import Commander from './Classes/Commander'
 import CrewMember from './Classes/Crew'
 import type { MeasureType, ICrewRoles, IRolesNonCommander } from '@/Classes/CrewSkills'
-
-/** Whether to show raw XML values or crew-formula-adjusted values */
-export type CrewMode = 'base' | 'effective'
 
 /**
  * Determines which direction is "better" for the crew formula.
@@ -18,7 +14,6 @@ export type CrewMembersType = {
 }
 
 export interface ICrewReducerState {
-   crewMode: CrewMode
    crewMembers: CrewMembersType
    commander: Commander
 }
@@ -31,14 +26,13 @@ export const initialCrewMembers: CrewMembersType = {
 }
 
 export const crewInitialState: ICrewReducerState = {
-   crewMode: 'effective',
    crewMembers: initialCrewMembers,
    commander: new Commander({ primaryRole: 'commander', secondaryRole: [] }),
 }
 
 export type ICrewContextActions =
    | { type: 'SET_COMMANDER'; payload: Commander }
-   | { type: 'TOGGLE_COMMANDER_BONUS'; payload: boolean }
+   | { type: 'TOGGLE_COMMANDER_BONUS'; payload: { checked: boolean; commanderEfficiency: number } }
    | { type: 'ADD_INITIAL_CREW'; payload: CrewMembersType }
    | { type: 'REMOVE_APPLIED_CREW_MODIFIER'; payload: string }
    | {
@@ -49,7 +43,7 @@ export type ICrewContextActions =
         type: 'SET_APPLIED_CREW_SKILLS'
         payload: {
            appliedSkillName: string
-           role: ICrewRoles | undefined
+           role: ICrewRoles | IRolesNonCommander | undefined
            crewSkillModifiers: {
               situationalParam: boolean
               value: number
@@ -58,7 +52,10 @@ export type ICrewContextActions =
            }[]
         }
      }
-   | { type: 'REMOVE_APPLIED_CREW_SKILLS'; payload: { skillName: string; crewRole: ICrewRoles | undefined } }
+   | {
+        type: 'REMOVE_APPLIED_CREW_SKILLS'
+        payload: { skillName: string; crewRole: ICrewRoles | IRolesNonCommander | undefined }
+     }
 
 export interface ICrewContext {
    crewReducer: ICrewReducerState

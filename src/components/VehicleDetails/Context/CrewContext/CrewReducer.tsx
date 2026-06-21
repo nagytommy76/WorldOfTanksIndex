@@ -7,29 +7,31 @@ export default function CrewReducer(
    switch (action.type) {
       case 'TOGGLE_COMMANDER_BONUS':
          const newToggleCrewMembers = state.crewMembers
-         for (const [role, member] of Object.entries(newToggleCrewMembers)) {
+         const { checked, commanderEfficiency } = action.payload
+         for (const member of Object.values(newToggleCrewMembers)) {
             if (!member) continue
-            if (role === 'commander' && action.payload) continue
-            if (action.payload) {
-               member.setAppliedCrewModifier({
-                  name: 'commanderBonus',
-                  paramName: 'commanderBonus',
-                  value: 1.1,
-               })
+            if (checked) {
+               member.applyCommanderBonus(commanderEfficiency)
+               member.setIsCommanderBonusApplied(true)
             } else {
-               member.removeAppliedCrewModifier('commanderBonus')
+               member.removeCommanderBonus()
+               member.setIsCommanderBonusApplied()
             }
          }
 
          return {
             ...state,
             crewMembers: { ...newToggleCrewMembers },
-            crewMode: state.crewMode === 'base' ? 'effective' : 'base',
          }
       case 'SET_APPLIED_CREW_MODIFIER':
          const { name, value } = action.payload
          const newCrewMembers = state.crewMembers
 
+         state.commander.setAppliedCrewModifier({
+            name,
+            paramName: name,
+            value,
+         })
          for (const member of Object.values(newCrewMembers)) {
             if (!member) continue
             member.setAppliedCrewModifier({
@@ -37,10 +39,24 @@ export default function CrewReducer(
                paramName: name,
                value,
             })
+            member.applyCommanderBonus(state.commander.efficiencyLevel)
          }
          return {
             ...state,
             crewMembers: { ...newCrewMembers },
+         }
+      case 'REMOVE_APPLIED_CREW_MODIFIER':
+         const newRemoveCrewMembers = state.crewMembers
+         state.commander.removeAppliedCrewModifier(action.payload)
+
+         for (const member of Object.values(newRemoveCrewMembers)) {
+            if (!member) continue
+            member.removeAppliedCrewModifier(action.payload)
+            member.applyCommanderBonus(state.commander.efficiencyLevel)
+         }
+         return {
+            ...state,
+            crewMembers: { ...newRemoveCrewMembers },
          }
       case 'SET_APPLIED_CREW_SKILLS':
          const { crewSkillModifiers, role, appliedSkillName } = action.payload
@@ -50,11 +66,16 @@ export default function CrewReducer(
                if (!member) return
                member.setAppliedCrewSkill(appliedSkillName, crewSkillModifiers)
             })
+            state.commander.setAppliedCrewSkill(appliedSkillName, crewSkillModifiers)
          } else {
-            const newSkillCrewMember = crewMembers[role]
-            if (!newSkillCrewMember) return state
-            newSkillCrewMember.setAppliedCrewSkill(appliedSkillName, crewSkillModifiers)
-            crewMembers[role] = newSkillCrewMember
+            if (role === 'commander') {
+               state.commander.setAppliedCrewSkill(appliedSkillName, crewSkillModifiers)
+            } else {
+               const newSkillCrewMember = crewMembers[role]
+               if (!newSkillCrewMember) return state
+               newSkillCrewMember.setAppliedCrewSkill(appliedSkillName, crewSkillModifiers)
+               crewMembers[role] = newSkillCrewMember
+            }
          }
 
          return {
@@ -70,32 +91,32 @@ export default function CrewReducer(
                if (!member) return
                member.removeAppliedCrewSkill(skillName)
             })
+            state.commander.removeAppliedCrewSkill(skillName)
          } else {
-            const newSkillCrewMember = newRemoveSkillCrewMembers[crewRole]
-            if (!newSkillCrewMember) return state
-            newSkillCrewMember.removeAppliedCrewSkill(skillName)
-            newRemoveSkillCrewMembers[crewRole] = newSkillCrewMember
+            if (crewRole === 'commander') {
+               state.commander.removeAppliedCrewSkill(skillName)
+            } else {
+               const newSkillCrewMember = newRemoveSkillCrewMembers[crewRole]
+               if (!newSkillCrewMember) return state
+               newSkillCrewMember.removeAppliedCrewSkill(skillName)
+               newRemoveSkillCrewMembers[crewRole] = newSkillCrewMember
+            }
          }
          return {
             ...state,
             crewMembers: { ...newRemoveSkillCrewMembers },
          }
-      case 'REMOVE_APPLIED_CREW_MODIFIER':
-         const newRemoveCrewMembers = state.crewMembers
-         for (const member of Object.values(newRemoveCrewMembers)) {
-            if (!member) continue
-            member.removeAppliedCrewModifier(action.payload)
-         }
-         return {
-            ...state,
-            crewMembers: { ...newRemoveCrewMembers },
-         }
+
       case 'ADD_INITIAL_CREW':
          return {
             ...state,
             crewMembers: action.payload,
          }
-
+      case 'SET_COMMANDER':
+         return {
+            ...state,
+            commander: action.payload,
+         }
       default:
          return state
    }

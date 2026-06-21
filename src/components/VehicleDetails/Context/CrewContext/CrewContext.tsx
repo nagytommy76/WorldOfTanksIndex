@@ -4,17 +4,19 @@ import { DeviceContext } from '@/DevicesContext/DeviceContext'
 
 import type { ICrewMembers } from '@/types/VehicleDetails/Crew'
 import type { CrewMembersType, ICrewContext } from './Types'
+import type { IRolesNonCommander } from '@/Classes/CrewSkills'
 import { crewInitialState, initialCrewMembers } from './Types'
 
 import CrewMember from './Classes/Crew'
+import Commander from './Classes/Commander'
 
 import CrewReducer from './CrewReducer'
 
 export const CrewContext = createContext<ICrewContext>({
    crewDispatch: () => null,
    crewReducer: {
-      crewMode: 'effective',
       crewMembers: initialCrewMembers,
+      commander: {} as Commander,
    },
 })
 
@@ -34,21 +36,33 @@ export default function CrewContextProvider({
       const crewHelperObject = { ...initialCrewMembers } as CrewMembersType
 
       for (const member of crewMembers) {
-         const crewMember = new CrewMember({
-            primaryRole: member.primary,
-            secondaryRole: member.secondary,
-         })
-         if (member.primary !== 'commander') {
-            crewMember.setAppliedCrewModifier({
-               name: 'commanderBonus',
-               paramName: 'commanderBonus',
-               value: 1.1,
-            })
+         switch (member.primary) {
+            case 'commander':
+               const commander = new Commander({ primaryRole: 'commander', secondaryRole: member.secondary })
+               crewDispatch({ type: 'SET_COMMANDER', payload: commander })
+               break
+
+            default:
+               const crewMember = new CrewMember({
+                  primaryRole: member.primary,
+                  secondaryRole: member.secondary as IRolesNonCommander[],
+               })
+               // crewMember.setIsCommanderBonusApplied(crewReducer.crewMode === 'effective' ? true : false)
+
+               crewMember.applyCommanderBonus()
+               crewHelperObject[crewMember.primaryRole] = crewMember
+               break
          }
-         crewHelperObject[crewMember.primaryRole] = crewMember
       }
       crewDispatch({ type: 'ADD_INITIAL_CREW', payload: crewHelperObject })
    }, [crewMembers])
+
+   // useEffect(() => {
+   //    console.log(
+   //       'FROM CREW CONTEXT: ON COMMANDER EFFICIENCY CHANGE:  ',
+   //       crewReducer.crewMembers.commander?.efficiencyLevel,
+   //    )
+   // }, [crewReducer.crewMembers.commander?.efficiencyLevel])
 
    useEffect(() => {
       if (!appliedDevicesModifiers?.improvedVentilation) return

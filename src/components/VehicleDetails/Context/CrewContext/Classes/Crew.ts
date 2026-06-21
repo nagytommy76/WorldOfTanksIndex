@@ -19,9 +19,13 @@ export default class CrewMember extends Member {
     */
    affectedVehicleStats: string[] // e.g. aiming time, reload time
    /**
+    * @description If commander bonus ( +10% ) is applied to crew members
+    * used in CrewSwitch component
+    */
+   isCommanderBonusApplied: boolean = true
+   /**
     * @description e.g. ventilation, brother in arms, extra combat ration
     */
-   isCommanderBonusApplied?: boolean = undefined
    appliedCrewModifiers:
       | Map<
            string,
@@ -60,6 +64,10 @@ export default class CrewMember extends Member {
       this.affectedVehicleStats = this.setAffectedVehicleStats()
    }
 
+   setIsCommanderBonusApplied(isBonusActive: boolean = false) {
+      this.isCommanderBonusApplied = isBonusActive
+   }
+
    private setAffectedVehicleStats() {
       let affectedStats: string[] = []
       affectedStats = affectedFields[this.primaryRole]
@@ -69,12 +77,25 @@ export default class CrewMember extends Member {
       return affectedStats
    }
 
-   applyCommanderBonus() {
-      const bonusLevel = this.efficiencyLevel * 0.1
-      const efficiency = this.computeEfficiencyLevel()
+   /**
+    * @description Computes the Commander bonus for a crew member.
+    *
+    * @example
+    *
+    * effectiveSkill = (primarySkill + ventilationBonus) + ((commanderSkill + ventilationBonus) * 0.1)
+    * (100 + 5) + ((100 + 5) * 0.1) = 105 + 10.5 = 115.5%
+    *
+    * // With Improved Ventilation (+5%):
+    * // commander → 100 * (1 + 0.05)       = 105
+    * // loader    → 100 * (1 + 0.05) * 1.1 = 115.5
+    */
+   applyCommanderBonus(commanderEfficiency: number = 100) {
+      if (!this.isCommanderBonusApplied) return
 
-      console.log('APPLY BONUS:::: ', this.primaryRole, bonusLevel)
-      this.efficiencyLevel = efficiency + bonusLevel
+      const efficiency = this.computeEfficiencyLevel()
+      const effectiveSkill = efficiency + commanderEfficiency * 0.1
+
+      this.efficiencyLevel = effectiveSkill
    }
 
    removeCommanderBonus() {

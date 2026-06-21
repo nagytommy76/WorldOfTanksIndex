@@ -1,5 +1,5 @@
 'use client'
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { CrewContext } from '@/CrewContext/CrewContext'
 
 import { styled } from '@mui/material/styles'
@@ -70,19 +70,29 @@ const CustomCrewSwitch = styled((props: SwitchProps) => (
 export default function CrewSwitch() {
    const {
       crewDispatch,
-      crewReducer: { crewMode },
+      crewReducer: {
+         commander,
+         crewMembers: { driver },
+      },
    } = useContext(CrewContext)
-   const [checked, setChecked] = useState(crewMode === 'effective' ? true : false)
+   const [checkedState, setChecked] = useState(false)
+
+   useEffect(() => {
+      setChecked(driver?.isCommanderBonusApplied ? true : false)
+   }, [driver])
 
    function handleChange(_: React.SyntheticEvent, checked: boolean) {
       setChecked(checked)
-      crewDispatch({ type: 'TOGGLE_COMMANDER_BONUS', payload: checked })
+      crewDispatch({
+         type: 'TOGGLE_COMMANDER_BONUS',
+         payload: { checked, commanderEfficiency: commander.efficiencyLevel },
+      })
    }
 
    return (
       <Tooltip title={'Toggle between showing raw values and effective values with commander bonus applied.'}>
          <FormControlLabel
-            checked={checked}
+            checked={checkedState}
             onChange={handleChange}
             control={<CustomCrewSwitch sx={{ m: 1 }} />}
             labelPlacement='start'

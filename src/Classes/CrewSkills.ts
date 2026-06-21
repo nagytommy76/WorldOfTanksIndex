@@ -11,6 +11,7 @@ export type CrewSkillModifier = {
 
 export type CrewSkillRoles = 'commander' | 'gunner' | 'driver' | 'radioman' | 'loader' | 'common'
 export type ICrewRoles = Exclude<CrewSkillRoles, 'common'>
+export type IRolesNonCommander = Exclude<ICrewRoles, 'commander'>
 
 export default class CrewSkills {
    /**

@@ -27,7 +27,7 @@ export default function Spotting() {
       deviceReducer: { appliedDevicesModifiers },
    } = useContext(DeviceContext)
    const {
-      crewReducer: { crewMembers },
+      crewReducer: { crewMembers, commander },
    } = useContext(CrewContext)
 
    const viewRangeBase = vehicleTurret[selectedModuleNames.vehicleTurret].viewRange
@@ -46,13 +46,13 @@ export default function Spotting() {
             },
             [
                createDeviceTransformer(appliedDevicesModifiers),
-               createCrewTransformer(crewMembers.commander),
+               createCrewTransformer(commander),
                createCrewTransformer(crewMembers.radioman),
                createCrewTransformer(crewMembers.loader),
-               createCrewSkillsTransformer(crewMembers.commander),
+               createCrewSkillsTransformer(commander),
             ],
          ),
-      [viewRangeBase, viewRangeStillBase, radioRangeBase, appliedDevicesModifiers, crewMembers],
+      [viewRangeBase, viewRangeStillBase, radioRangeBase, appliedDevicesModifiers, crewMembers, commander],
    )
 
    return (

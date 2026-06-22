@@ -6,6 +6,7 @@ import { CrewContext } from '@/CrewContext/CrewContext'
 
 import applyStatPipeline from '@/utils/applyStatPipeline'
 import createCrewTransformer from '@/utils/ApplyCrewModifiers'
+import createCrewSkillsTransformer from '@/utils/ApplyCrewSkillModifier'
 import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 
 export default function useDispersion() {
@@ -39,7 +40,11 @@ export default function useDispersion() {
                turretRotation: turretRotationBase,
                afterShot: afterShotBase,
             },
-            [createDeviceTransformer(appliedDevicesModifiers), createCrewTransformer(crewMembers.gunner)],
+            [
+               createDeviceTransformer(appliedDevicesModifiers),
+               createCrewTransformer(crewMembers.gunner),
+               createCrewSkillsTransformer(crewMembers.gunner),
+            ],
          ),
       [
          vehicleMovementBase,

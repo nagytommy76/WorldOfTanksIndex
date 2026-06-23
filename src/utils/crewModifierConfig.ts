@@ -1,4 +1,4 @@
-type ModifierOperation = 'degressive' | 'progressive'
+export type ModifierOperation = 'degressive' | 'progressive'
 
 interface IModifierConfig {
    /** Which field names in your flat object this modifier affects */

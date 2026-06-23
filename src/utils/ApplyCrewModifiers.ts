@@ -2,6 +2,7 @@ import CREW_MODIFIER_CONFIG from './crewModifierConfig'
 import CrewMember from '@/CrewContext/Classes/Crew'
 
 import type { StatTransformer } from './applyStatPipeline'
+import Commander from '@/CrewContext/Classes/Commander'
 
 /**
  * @url https://worldoftanks.fandom.com/wiki/Crew#Proficiency
@@ -45,7 +46,7 @@ import type { StatTransformer } from './applyStatPipeline'
          Reload: 7.8 * 0.875 / (0.00375 * 115.5 + 0.5) = 7.8 * 0.875 / 0.93 ≈ 7.34s
  */
 export default function createCrewTransformer<T extends Record<string, number>>(
-   crewMember: CrewMember | undefined,
+   crewMember: CrewMember | Commander | undefined,
 ): StatTransformer<T> {
    if (!crewMember)
       return (baseValues: T): T => {

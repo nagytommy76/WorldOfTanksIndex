@@ -1,3 +1,5 @@
+import type { ModifierOperation } from './crewModifierConfig'
+
 type MeasureType = 'percents' | 'seconds'
 
 interface ICrewSkillConfig {
@@ -6,6 +8,7 @@ interface ICrewSkillConfig {
    /** percents  OR seconds */
    measureType: MeasureType
    isSituational: boolean
+   operation?: ModifierOperation
 }
 
 const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
@@ -35,6 +38,7 @@ const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
       fields: ['aimingTime'],
       measureType: 'percents',
       isSituational: true,
+      operation: 'degressive',
    },
    /**
     * @param commander_emergency - EMERGENCY * situational
@@ -47,8 +51,22 @@ const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
       isSituational: true,
    },
    /**
-    * LOADER SKILLS ---------------------------------------
+    * LOADER SKILLS ----------------------------------------
     */
+   turretAimingDispersion: {
+      fields: ['turretRotation'],
+      isSituational: false,
+      measureType: 'percents',
+   },
+   /**
+    * GUNNER SKILLS ----------------------------------------
+    */
+   vehicleTurretRotationSpeed: {
+      fields: ['aimingTime'],
+      isSituational: false,
+      measureType: 'percents',
+   },
+
    /**
     * RADIOMAN SKILLS ---------------------------------------
     */

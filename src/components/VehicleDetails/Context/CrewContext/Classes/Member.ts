@@ -5,7 +5,9 @@ export default class Member {
     * @description The crew member's efficiency level, which is used in the crew formula to compute actual stat values. Starts at 100% and is modified by crew perks (e.g. Brothers in Arms) and equipment (e.g. Improved Ventilation).
     */
    efficiencyLevel: number
-
+   /**
+    * @description e.g improvedVentillation gives 5% extra to efficiency level of the crew members, BIA gives +5%
+    */
    appliedCrewModifiers:
       | Map<
            string,
@@ -56,7 +58,6 @@ export default class Member {
          value: modifier.value,
       })
       this.efficiencyLevel = this.computeEfficiencyLevel()
-      // this.applyCommanderBonus()
    }
    clearAppliedCrewModifiers() {
       if (!this.appliedCrewModifiers) return
@@ -67,7 +68,6 @@ export default class Member {
       if (!this.appliedCrewModifiers) return
       this.appliedCrewModifiers.delete(modifierName)
       this.efficiencyLevel = this.computeEfficiencyLevel()
-      // this.applyCommanderBonus()
    }
    removeAppliedCrewSkill(crewSkillName: string) {
       if (!this.appliedCrewSkills) return
@@ -101,14 +101,12 @@ export default class Member {
       if (this.appliedCrewModifiers) {
          let testing = 0
          this.appliedCrewModifiers.forEach((modifier) => {
-            if (modifier.paramName !== 'commanderBonus') {
-               console.log('FROM CREW CLASS: MODIFIER: ', modifier)
-               testing = modifier.value - 1 + testing
-            }
+            console.log('FROM MEMBER CLASS: MODIFIER: ', modifier)
+            testing = modifier.value - 1 + testing
          })
          testing += 1
          boostedBase *= testing
-         console.log('FROM CREW CLASS: BOOSTED BASE: ', boostedBase)
+         console.log('FROM MEMBER CLASS: BOOSTED BASE: ', boostedBase)
       }
       return parseFloat(boostedBase.toFixed(4))
    }

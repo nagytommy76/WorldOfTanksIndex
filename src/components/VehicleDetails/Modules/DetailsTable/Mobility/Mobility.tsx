@@ -8,6 +8,7 @@ import useSetTotalWeight from './Hooks/useSetTotalWeight'
 
 import applyStatPipeline from '@/utils/applyStatPipeline'
 import createCrewTransformer from '@/utils/ApplyCrewModifiers'
+import createCrewSkillsTransformer from '@/utils/ApplyCrewSkillModifier'
 import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 
 import TableHeadComponent from '../Includes/TableHead'
@@ -81,6 +82,7 @@ export default function Mobility() {
                createDeviceTransformer(appliedDevicesModifiers),
                createCrewTransformer(crewMembers.driver),
                createCrewTransformer(crewMembers.gunner),
+               createCrewSkillsTransformer(crewMembers.gunner),
             ],
          ),
       [

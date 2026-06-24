@@ -8,7 +8,7 @@ interface ICrewSkillConfig {
    /** percents  OR seconds */
    measureType: MeasureType
    isSituational: boolean
-   operation?: ModifierOperation
+   operation: ModifierOperation
 }
 
 const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
@@ -19,6 +19,7 @@ const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
       fields: ['camouflageMoving', 'camouflageStill'],
       measureType: 'percents',
       isSituational: false,
+      operation: 'progressive',
    },
    /**
     * COMMANDER SKILLS ---------------------------------------
@@ -30,6 +31,7 @@ const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
       fields: ['viewRange'],
       measureType: 'percents',
       isSituational: false,
+      operation: 'progressive',
    },
    /**
     * @param commander_coordination - COORDINATION * situational
@@ -49,22 +51,28 @@ const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
       fields: ['crewLevel'],
       measureType: 'percents',
       isSituational: true,
+      operation: 'progressive',
    },
    /**
     * LOADER SKILLS ----------------------------------------
+    */
+   /**
+    * GUNNER SKILLS ----------------------------------------
+    */
+   vehicleTurretRotationSpeed: {
+      fields: ['turretTraverseSpeed'],
+      isSituational: false,
+      measureType: 'percents',
+      operation: 'progressive',
+   },
+   /**
+    * @param gunner_smoothTurret - snap shot
     */
    turretAimingDispersion: {
       fields: ['turretRotation'],
       isSituational: false,
       measureType: 'percents',
-   },
-   /**
-    * GUNNER SKILLS ----------------------------------------
-    */
-   vehicleTurretRotationSpeed: {
-      fields: ['aimingTime'],
-      isSituational: false,
-      measureType: 'percents',
+      operation: 'degressive',
    },
 
    /**
@@ -74,6 +82,7 @@ const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
       fields: ['viewRange'],
       measureType: 'percents',
       isSituational: false,
+      operation: 'progressive',
    },
 }
 

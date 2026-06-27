@@ -1,8 +1,11 @@
 import { useContext, useMemo } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
+import { CrewContext } from '@/CrewContext/CrewContext'
 
-import applyModifiersOnVehicleDetails from '@/utils/ApplyModifiers'
+import applyStatPipeline from '@/utils/applyStatPipeline'
+import createCrewSkillsTransformer from '@/utils/ApplyCrewSkillModifier'
+import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 
 import TableRowComponent from '../../Includes/TableRow'
 
@@ -19,6 +22,9 @@ export default function AmmoFuelEngineHealth() {
    const {
       deviceReducer: { appliedDevicesModifiers },
    } = useContext(DeviceContext)
+   const {
+      crewReducer: { crewMembers },
+   } = useContext(CrewContext)
 
    const ammoRackHealthBase = hull.ammoRackHealth.maxHealth
    const ammoRackRegenHealthBase = hull.ammoRackHealth.maxRegenHealth
@@ -38,7 +44,7 @@ export default function AmmoFuelEngineHealth() {
       engineRegenStrength,
    } = useMemo(
       () =>
-         applyModifiersOnVehicleDetails(
+         applyStatPipeline(
             {
                ammoRackStrength: ammoRackHealthBase,
                ammoRackRegenStrength: ammoRackRegenHealthBase,
@@ -47,7 +53,11 @@ export default function AmmoFuelEngineHealth() {
                engineStrength: engineHealthBase,
                engineRegenStrength: engineRegenHealthBase,
             },
-            appliedDevicesModifiers,
+            [
+               createDeviceTransformer(appliedDevicesModifiers),
+               createCrewSkillsTransformer(crewMembers.loader),
+               createCrewSkillsTransformer(crewMembers.gunner),
+            ],
          ),
       [
          appliedDevicesModifiers,
@@ -57,6 +67,7 @@ export default function AmmoFuelEngineHealth() {
          fuelTankRegenHealthBase,
          engineHealthBase,
          engineRegenHealthBase,
+         crewMembers,
       ],
    )
 
@@ -69,7 +80,7 @@ export default function AmmoFuelEngineHealth() {
             unit='hp'
             modifiers={[
                {
-                  difference: ammoRackStrength - ammoRackHealthBase,
+                  difference: parseFloat((ammoRackStrength - ammoRackHealthBase).toFixed(2)),
                   improved: true,
                },
                {

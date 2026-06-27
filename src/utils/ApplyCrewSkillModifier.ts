@@ -25,7 +25,6 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
       return (baseValues: T): T => {
          return baseValues
       }
-
    return (baseValues: T): T => {
       const calculatedSkillResult = { ...baseValues }
       const appliedCrewSkills = crewMember.appliedCrewSkills
@@ -42,36 +41,45 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
 
                switch (config.measureType) {
                   case 'percents':
-                     const scaledBonus = (skill.value - 1) * (crewMember.efficiencyLevel / 100)
+                     const scaledBonus = (skill.value - 1) * (crewMember.efficiencyLevel / 100) + 1
                      /**
                       * In this case I check if a crewMember is !Commander
                       * and isCommanderBonusApplied is true (+10% bonus switch turned on)
                       */
-                     // if (crewMember instanceof CrewMember && crewMember.isCommanderBonusApplied) {
                      switch (config.operation) {
                         case 'degressive':
                            console.log(`${crewMember.primaryRole} has ${calculatedSkillResult[key]}`)
-                           // ;(calculatedSkillResult[key] as number) =
-                           //    (calculatedSkillResult[key] * 0.875) /
-                           //    (0.00375 * crewMember.efficiencyLevel + 0.5)
-                           // calculatedSkillResult[key] /= skill.value
-                           calculatedSkillResult[key] /= 1 + scaledBonus
+                           calculatedSkillResult[key] /= scaledBonus
+                           console.log('SCALE BONUS: ', scaledBonus)
 
                            break
                         case 'progressive':
-                           calculatedSkillResult[key] *= 1 + scaledBonus
+                           calculatedSkillResult[key] *= scaledBonus
+                           console.log(`${crewMember.primaryRole} has ${calculatedSkillResult[key]}`)
+                           console.log('SCALE BONUS: ', scaledBonus)
                            break
                      }
-                     // } else {
-                     //    calculatedSkillResult[key] *= 1 + scaledBonus
-                     //    console.log('ELSE APPLY CREW: ', scaledBonus)
-                     // }
 
                      break
                }
             }
          }
       }
+
+      return calculatedSkillResult
+   }
+}
+
+export function createConcealmentSkillTransformer<T extends Record<string, number>>(
+   crewMember: CrewMember[] | Commander | undefined,
+): StatTransformer<T> {
+   if (!crewMember)
+      return (baseValues: T): T => {
+         return baseValues
+      }
+
+   return (baseValues: T): T => {
+      const calculatedSkillResult = { ...baseValues }
 
       return calculatedSkillResult
    }

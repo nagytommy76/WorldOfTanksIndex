@@ -56,6 +56,12 @@ const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
    /**
     * LOADER SKILLS ----------------------------------------
     */
+   vehicleAmmoBayStrength: {
+      fields: ['ammoRackStrength'],
+      isSituational: false,
+      measureType: 'percents',
+      operation: 'progressive',
+   },
    /**
     * GUNNER SKILLS ----------------------------------------
     */

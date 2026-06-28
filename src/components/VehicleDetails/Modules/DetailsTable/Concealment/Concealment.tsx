@@ -6,7 +6,7 @@ import { CrewContext } from '@/CrewContext/CrewContext'
 
 import applyStatPipeline from '@/utils/applyStatPipeline'
 import { createDeviceTransformer } from '@/utils/ApplyModifiers'
-import createCrewSkillsTransformer from '@/utils/ApplyCrewSkillModifier'
+import { createConcealmentSkillTransformer } from '@/utils/ApplyCrewSkillModifier'
 
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -33,7 +33,7 @@ export default function Concealment() {
       deviceReducer: { appliedDevicesModifiers },
    } = useContext(DeviceContext)
    const {
-      crewReducer: { crewMembers },
+      crewReducer: { commander, crewMembers },
    } = useContext(CrewContext)
 
    const vehicleStillCamoflageBase = useMemo(() => calculateCamoValues(camo.stationary), [camo])
@@ -56,16 +56,27 @@ export default function Concealment() {
       [camo, vehicleGun, selectedModuleNames.vehicleGun],
    )
 
-   const { camouflageMoving, camouflageStill } = useMemo(
+   const { camouflageMoving, camouflageStill, camouflageMovingFire, camouflageStillFire } = useMemo(
       () =>
          applyStatPipeline(
-            { camouflageStill: vehicleStillCamoflageBase, camouflageMoving: vehicleMovingCamoflageBase },
-            [
-               createDeviceTransformer(appliedDevicesModifiers),
-               createCrewSkillsTransformer(crewMembers.driver),
-            ],
+            {
+               camouflageStill: vehicleStillCamoflageBase,
+               camouflageMoving: vehicleMovingCamoflageBase,
+               camouflageStillFire: vehicleStillCamoflageAfterFireBase,
+               camouflageMovingFire: vehicleMovingCamoflageAfterFireBase,
+            },
+            [createConcealmentSkillTransformer(commander), createDeviceTransformer(appliedDevicesModifiers)],
          ),
-      [appliedDevicesModifiers, vehicleMovingCamoflageBase, vehicleStillCamoflageBase, crewMembers],
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [
+         appliedDevicesModifiers,
+         vehicleMovingCamoflageBase,
+         vehicleStillCamoflageBase,
+         vehicleMovingCamoflageAfterFireBase,
+         vehicleStillCamoflageAfterFireBase,
+         commander,
+         crewMembers,
+      ],
    )
 
    return (
@@ -79,7 +90,7 @@ export default function Concealment() {
             <TableRowComponent
                iconSrc='/icons/concealment/invisibilityStillFactor.png'
                titleText='Stationary / After Fire'
-               valueText={[camouflageStill, vehicleStillCamoflageAfterFireBase]}
+               valueText={[camouflageStill, camouflageStillFire]}
                toFixed={2}
                unit='%'
                modifiers={[
@@ -92,7 +103,7 @@ export default function Concealment() {
             <TableRowComponent
                iconSrc='/icons/concealment/invisibilityMovingFactor.png'
                titleText='Moving / After Fire'
-               valueText={[camouflageMoving, vehicleMovingCamoflageAfterFireBase]}
+               valueText={[camouflageMoving, camouflageMovingFire]}
                toFixed={2}
                unit='%'
                modifiers={[

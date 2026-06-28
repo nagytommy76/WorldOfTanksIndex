@@ -83,6 +83,7 @@ export default function Mobility() {
                createCrewTransformer(crewMembers.driver),
                createCrewTransformer(crewMembers.gunner),
                createCrewSkillsTransformer(crewMembers.gunner),
+               createCrewSkillsTransformer(crewMembers.driver),
             ],
          ),
       [

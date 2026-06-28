@@ -16,7 +16,7 @@ const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
     * COMMON SKILLS ---------------------------------------
     */
    maskingFactor: {
-      fields: ['camouflageMoving', 'camouflageStill'],
+      fields: ['camouflageMoving', 'camouflageStill', 'camouflageStillFire', 'camouflageMovingFire'],
       measureType: 'percents',
       isSituational: false,
       operation: 'progressive',
@@ -56,8 +56,35 @@ const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
    /**
     * LOADER SKILLS ----------------------------------------
     */
+   /**
+    * @description @param loader_perfectCharge - perfect charge
+    */
    vehicleAmmoBayStrength: {
       fields: ['ammoRackStrength'],
+      isSituational: false,
+      measureType: 'percents',
+      operation: 'progressive',
+   },
+   shellVelocity: {
+      fields: ['shellVelocity'],
+      isSituational: false,
+      measureType: 'percents',
+      operation: 'progressive',
+   },
+   /**
+    * DRIVER SKILLS ----------------------------------------
+    */
+   vehicleGunShotDispersionChassisMovement: {
+      fields: ['vehicleMovement'],
+      isSituational: false,
+      measureType: 'percents',
+      operation: 'progressive',
+   },
+   /**
+    * @param driver_virtuoso - Clutch Braking
+    */
+   vehicleAllGroundRotationSpeed: {
+      fields: ['traverseSpeed'],
       isSituational: false,
       measureType: 'percents',
       operation: 'progressive',

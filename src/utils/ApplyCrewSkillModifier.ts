@@ -3,7 +3,6 @@ import CrewMember from '@/CrewContext/Classes/Crew'
 import Commander from '@/CrewContext/Classes/Commander'
 
 import type { StatTransformer } from './applyStatPipeline'
-
 /**
  * 
  * @param crewMember 
@@ -38,6 +37,9 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
             for (const configField of config.fields) {
                if (!(configField in calculatedSkillResult)) continue
                const key = configField as keyof T
+               if (skill.value <= 0) {
+                  skill.value = 1 - skill.value + 1
+               }
 
                switch (config.measureType) {
                   case 'percents':
@@ -48,15 +50,11 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
                       */
                      switch (config.operation) {
                         case 'degressive':
-                           console.log(`${crewMember.primaryRole} has ${calculatedSkillResult[key]}`)
-                           calculatedSkillResult[key] /= scaledBonus
-                           console.log('SCALE BONUS: ', scaledBonus)
+                           ;(calculatedSkillResult[key] as number) /= scaledBonus
 
                            break
                         case 'progressive':
-                           calculatedSkillResult[key] *= scaledBonus
-                           console.log(`${crewMember.primaryRole} has ${calculatedSkillResult[key]}`)
-                           console.log('SCALE BONUS: ', scaledBonus)
+                           ;(calculatedSkillResult[key] as number) *= scaledBonus
                            break
                      }
 
@@ -71,16 +69,22 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
 }
 
 export function createConcealmentSkillTransformer<T extends Record<string, number>>(
-   crewMember: CrewMember[] | Commander | undefined,
+   commander: Commander,
 ): StatTransformer<T> {
-   if (!crewMember)
-      return (baseValues: T): T => {
-         return baseValues
+   return (camouflageStillMovingValues: T): T => {
+      const appliedCrewSkills = commander.appliedCrewSkills
+      // Making sure it only works if camouflage skill is set
+      if (!appliedCrewSkills?.has('camouflage')) return camouflageStillMovingValues
+      if (appliedCrewSkills === undefined || appliedCrewSkills.size === 0) return camouflageStillMovingValues
+
+      const scaledBonus = 0.8047 * (commander.efficiencyLevel / 100) + 1
+
+      const config = CREW_SKILLS_MODIFIER_CONFIG['maskingFactor']
+
+      for (const field of config.fields) {
+         ;(camouflageStillMovingValues[field] as number) *= scaledBonus
       }
 
-   return (baseValues: T): T => {
-      const calculatedSkillResult = { ...baseValues }
-
-      return calculatedSkillResult
+      return camouflageStillMovingValues
    }
 }

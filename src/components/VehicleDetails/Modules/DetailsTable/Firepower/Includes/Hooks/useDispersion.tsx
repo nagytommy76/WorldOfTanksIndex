@@ -44,6 +44,7 @@ export default function useDispersion() {
                createDeviceTransformer(appliedDevicesModifiers),
                createCrewTransformer(crewMembers.gunner),
                createCrewSkillsTransformer(crewMembers.gunner),
+               createCrewSkillsTransformer(crewMembers.driver),
             ],
          ),
       [

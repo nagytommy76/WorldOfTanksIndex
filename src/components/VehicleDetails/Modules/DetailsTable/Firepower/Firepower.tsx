@@ -61,16 +61,21 @@ export default function Firepower() {
 
    const vehicleGunAutoReload = vehicleGun[selectedModuleNames.vehicleGun].autoreload
    const vehicleAimTime = vehicleGun[selectedModuleNames.vehicleGun].aimTime
+   const shellVelocityBase = shells[selectedModuleNames.shells].speed
 
-   const { reloadTime, aimingTime } = useMemo(
+   const { reloadTime, aimingTime, shellVelocity } = useMemo(
       () =>
-         applyStatPipeline({ reloadTime: vehicleReloadTime, aimingTime: vehicleAimTime }, [
-            createDeviceTransformer(appliedDevicesModifiers),
-            createCrewTransformer(crewMembers.gunner),
-            createCrewTransformer(crewMembers.loader),
-            createCrewSkillsTransformer(crewMembers.gunner),
-         ]),
-      [vehicleAimTime, vehicleReloadTime, appliedDevicesModifiers, crewMembers],
+         applyStatPipeline(
+            { reloadTime: vehicleReloadTime, aimingTime: vehicleAimTime, shellVelocity: shellVelocityBase },
+            [
+               createDeviceTransformer(appliedDevicesModifiers),
+               createCrewTransformer(crewMembers.gunner),
+               createCrewTransformer(crewMembers.loader),
+               createCrewSkillsTransformer(crewMembers.gunner),
+               createCrewSkillsTransformer(crewMembers.loader),
+            ],
+         ),
+      [vehicleAimTime, vehicleReloadTime, shellVelocityBase, appliedDevicesModifiers, crewMembers],
    )
 
    return (
@@ -78,11 +83,11 @@ export default function Firepower() {
          <TableHeadComponent headTitle='Firepower' iconSrc='/icons/details/firepower.png' />
          <TableBody>
             <Damage
-               damage={shells[selectedModuleNames.shells]?.damage.armor}
+               damage={shells[selectedModuleNames.shells].damage.armor}
                shellDamageDiff={shellsModifiers['damage.armor']}
             />
             <Penetration
-               piercingPower={(shells[selectedModuleNames.shells]?.piercingPower as number[]) || [0, 0]}
+               piercingPower={(shells[selectedModuleNames.shells].piercingPower as number[]) || [0, 0]}
                shellDamageDiff={shellsModifiers}
             />
             <RoF totalReloadTime={totalReloadTime} reloadTime={reloadTime} />
@@ -202,8 +207,12 @@ export default function Firepower() {
             <TableRowComponent
                iconSrc='/icons/firepower/shellVelocity.png'
                titleText='Shell velocity'
-               valueText={shells[selectedModuleNames.shells]?.speed}
+               valueText={shellVelocity}
                modifiers={[
+                  {
+                     difference: parseFloat((shellVelocity - shellVelocityBase).toFixed(2)),
+                     improved: true,
+                  },
                   {
                      difference: shellsModifiers.speed?.difference ?? 0,
                      improved: shellsModifiers.speed?.improved || false,

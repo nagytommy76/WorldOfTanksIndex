@@ -74,11 +74,14 @@ const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
    /**
     * DRIVER SKILLS ----------------------------------------
     */
+   /**
+    * @param driver_smoothDriving - Smooth Driving
+    */
    vehicleGunShotDispersionChassisMovement: {
       fields: ['vehicleMovement'],
       isSituational: false,
       measureType: 'percents',
-      operation: 'progressive',
+      operation: 'degressive',
    },
    /**
     * @param driver_virtuoso - Clutch Braking
@@ -88,6 +91,21 @@ const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
       isSituational: false,
       measureType: 'percents',
       operation: 'progressive',
+   },
+   /**
+    * @param driver_badRoadsKing - Off-Road Driving
+    */
+   mediumGroundFactor: {
+      fields: ['terrainResistance2'],
+      isSituational: false,
+      measureType: 'percents',
+      operation: 'degressive',
+   },
+   softGroundFactor: {
+      fields: ['terrainResistance3'],
+      isSituational: false,
+      measureType: 'percents',
+      operation: 'degressive',
    },
    /**
     * GUNNER SKILLS ----------------------------------------

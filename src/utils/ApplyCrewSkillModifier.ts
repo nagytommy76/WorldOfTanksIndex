@@ -38,7 +38,7 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
                if (!(configField in calculatedSkillResult)) continue
                const key = configField as keyof T
                if (skill.value <= 0) {
-                  skill.value = 1 - skill.value + 1
+                  skill.value = 1 - skill.value
                }
 
                switch (config.measureType) {

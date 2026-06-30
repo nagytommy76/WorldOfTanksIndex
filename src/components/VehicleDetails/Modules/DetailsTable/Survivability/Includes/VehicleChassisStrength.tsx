@@ -1,8 +1,11 @@
 import { useContext, useMemo } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
+import { CrewContext } from '@/CrewContext/CrewContext'
 
-import applyModifiersOnVehicleDetails from '@/utils/ApplyModifiers'
+import applyStatPipeline from '@/utils/applyStatPipeline'
+import createCrewSkillsTransformer from '@/utils/ApplyCrewSkillModifier'
+import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 
 import TableRowComponent from '../../Includes/TableRow'
 
@@ -17,20 +20,26 @@ export default function VehicleChassisStrength() {
    const {
       deviceReducer: { appliedDevicesModifiers },
    } = useContext(DeviceContext)
+   const {
+      crewReducer: { crewMembers },
+   } = useContext(CrewContext)
 
    const maxVehicleHealthBase = vehicleChassis[selectedModuleNames.vehicleChassis].maxHealth
    const maxVehicleRegenHealthBase = vehicleChassis[selectedModuleNames.vehicleChassis].maxRegenHealth
 
    const { chassisHealth, chassisRegenHealth } = useMemo(
       () =>
-         applyModifiersOnVehicleDetails(
+         applyStatPipeline(
             {
                chassisHealth: maxVehicleHealthBase,
                chassisRegenHealth: maxVehicleRegenHealthBase,
             },
-            appliedDevicesModifiers,
+            [
+               createDeviceTransformer(appliedDevicesModifiers),
+               createCrewSkillsTransformer(crewMembers.driver),
+            ],
          ),
-      [appliedDevicesModifiers, maxVehicleHealthBase, maxVehicleRegenHealthBase],
+      [appliedDevicesModifiers, maxVehicleHealthBase, maxVehicleRegenHealthBase, crewMembers],
    )
 
    return (

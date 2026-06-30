@@ -1,6 +1,5 @@
+import type { MeasureType } from '../Classes/CrewSkills'
 import type { ModifierOperation } from './crewModifierConfig'
-
-type MeasureType = 'percents' | 'seconds'
 
 interface ICrewSkillConfig {
    /** Which field names in your flat object this modifier affects */
@@ -108,6 +107,36 @@ const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
       operation: 'degressive',
    },
    /**
+    * @param driver_motorExpert - Engineer
+    */
+   vehicleForwardMaxSpeed: {
+      fields: ['forwardSpeed'],
+      isSituational: false,
+      measureType: 'mph',
+      operation: 'progressive',
+   },
+   vehicleBackwardMaxSpeed: {
+      fields: ['backwardSpeed'],
+      isSituational: false,
+      measureType: 'mph',
+      operation: 'progressive',
+   },
+   /**
+    * @param driver_reliablePlacement - Reliable Placement
+    */
+   vehicleFireChance: {
+      fields: ['fireChance'],
+      isSituational: false,
+      measureType: 'percents',
+      operation: 'degressive',
+   },
+   suspensionDamageReduction: {
+      fields: ['chassisHealth', 'chassisRegenHealth'],
+      isSituational: false,
+      measureType: 'percents',
+      operation: 'progressive',
+   },
+   /**
     * GUNNER SKILLS ----------------------------------------
     */
    vehicleTurretRotationSpeed: {
@@ -134,6 +163,15 @@ const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
       measureType: 'percents',
       isSituational: false,
       operation: 'progressive',
+   },
+   /**
+    * @param radioman_interference - Jamming
+    */
+   vehicleOwnSpottingTime: {
+      fields: ['ownSpottingTime'],
+      measureType: 'seconds',
+      isSituational: false,
+      operation: 'degressive',
    },
 }
 

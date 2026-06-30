@@ -36,13 +36,14 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
 
             for (const configField of config.fields) {
                if (!(configField in calculatedSkillResult)) continue
+
                const key = configField as keyof T
-               if (skill.value <= 0) {
-                  skill.value = 1 - skill.value
-               }
 
                switch (config.measureType) {
                   case 'percents':
+                     if (skill.value <= 0) {
+                        skill.value = 1 - skill.value
+                     }
                      const scaledBonus = (skill.value - 1) * (crewMember.efficiencyLevel / 100) + 1
                      /**
                       * In this case I check if a crewMember is !Commander
@@ -58,6 +59,15 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
                            break
                      }
 
+                     break
+                  case 'mph':
+                     const scaledBonus1 = skill.value * 100 * (crewMember.efficiencyLevel / 100)
+                     ;(calculatedSkillResult[key] as number) += scaledBonus1
+                     break
+                  case 'seconds':
+                     const scaledBonus2 = skill.value * (crewMember.efficiencyLevel / 100)
+                     ;(calculatedSkillResult[key] as number) =
+                        (calculatedSkillResult[key] as number) + scaledBonus2
                      break
                }
             }

@@ -1,8 +1,11 @@
 import { useContext, useMemo } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
+import { CrewContext } from '@/CrewContext/CrewContext'
 
-import applyModifiersOnVehicleDetails from '@/utils/ApplyModifiers'
+import applyStatPipeline from '@/utils/applyStatPipeline'
+import createCrewSkillsTransformer from '@/utils/ApplyCrewSkillModifier'
+import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 
 import TableRowComponent from '../../Includes/TableRow'
 
@@ -16,17 +19,23 @@ export default function FireChance() {
    const {
       deviceReducer: { appliedDevicesModifiers },
    } = useContext(DeviceContext)
+   const {
+      crewReducer: { crewMembers },
+   } = useContext(CrewContext)
 
    const engineFireChance = vehicleEngine[selectedModuleNames.vehicleEngine].fireStartingChance * 100
    const { fireChance } = useMemo(
       () =>
-         applyModifiersOnVehicleDetails(
+         applyStatPipeline(
             {
                fireChance: engineFireChance,
             },
-            appliedDevicesModifiers,
+            [
+               createDeviceTransformer(appliedDevicesModifiers),
+               createCrewSkillsTransformer(crewMembers.driver),
+            ],
          ),
-      [appliedDevicesModifiers, engineFireChance],
+      [appliedDevicesModifiers, engineFireChance, crewMembers],
    )
 
    return (
@@ -37,7 +46,7 @@ export default function FireChance() {
          unit='%'
          modifiers={[
             {
-               difference: fireChance - engineFireChance,
+               difference: parseFloat((fireChance - engineFireChance).toFixed(2)),
                improved: true,
             },
          ]}

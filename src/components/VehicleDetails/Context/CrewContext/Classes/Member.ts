@@ -48,7 +48,7 @@ export default class Member {
       }[],
    ) {
       if (this.appliedCrewSkills === undefined) this.appliedCrewSkills = new Map()
-      this.appliedCrewSkills?.set(skillName, crewSkillModifiers)
+      this.appliedCrewSkills.set(skillName, crewSkillModifiers)
    }
 
    setAppliedCrewModifier(modifier: { name: string; paramName: string; value: number }) {

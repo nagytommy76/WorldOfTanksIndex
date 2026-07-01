@@ -154,6 +154,12 @@ const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
       measureType: 'percents',
       operation: 'degressive',
    },
+   shotDispersionAngle: {
+      fields: ['accuracy'],
+      isSituational: false,
+      measureType: 'percents',
+      operation: 'degressive',
+   },
 
    /**
     * RADIOMAN SKILLS ---------------------------------------

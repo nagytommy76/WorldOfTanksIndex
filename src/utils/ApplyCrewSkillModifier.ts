@@ -52,7 +52,6 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
                      switch (config.operation) {
                         case 'degressive':
                            ;(calculatedSkillResult[key] as number) /= scaledBonus
-
                            break
                         case 'progressive':
                            ;(calculatedSkillResult[key] as number) *= scaledBonus

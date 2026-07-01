@@ -50,6 +50,7 @@ export default function Spotting() {
                createCrewTransformer(crewMembers.radioman),
                createCrewTransformer(crewMembers.loader),
                createCrewSkillsTransformer(commander),
+               createCrewSkillsTransformer(crewMembers.radioman),
             ],
          ),
       [viewRangeBase, viewRangeStillBase, radioRangeBase, appliedDevicesModifiers, crewMembers, commander],
@@ -109,7 +110,7 @@ export default function Spotting() {
                unit='seconds'
                modifiers={[
                   {
-                     difference: ownSpottingTime - SPOTTED_TIME,
+                     difference: parseFloat((ownSpottingTime - SPOTTED_TIME).toFixed(2)),
                      improved: true,
                   },
                ]}

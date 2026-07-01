@@ -113,7 +113,7 @@ export default function Mobility() {
                unit='km/h'
                modifiers={[
                   {
-                     difference: forwardSpeed - forwardSpeedBase,
+                     difference: parseFloat((forwardSpeed - forwardSpeedBase).toFixed(2)),
                      improved: true,
                   },
                ]}
@@ -125,7 +125,7 @@ export default function Mobility() {
                unit='km/h'
                modifiers={[
                   {
-                     difference: backwardSpeed - backwardSpeedBase,
+                     difference: parseFloat((backwardSpeed - backwardSpeedBase).toFixed(2)),
                      improved: true,
                   },
                ]}

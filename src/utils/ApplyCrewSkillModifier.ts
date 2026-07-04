@@ -19,6 +19,7 @@ import type { StatTransformer } from './applyStatPipeline'
  */
 export default function createCrewSkillsTransformer<T extends Record<string, number>>(
    crewMember: CrewMember | Commander | undefined,
+   calculateSituational: boolean = false,
 ): StatTransformer<T> {
    if (!crewMember || crewMember.appliedCrewSkills === undefined)
       return (baseValues: T): T => {
@@ -33,6 +34,7 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
          for (const skill of skills) {
             const config = CREW_SKILLS_MODIFIER_CONFIG[skill.paramName]
             if (!config) continue
+            if (!calculateSituational && config.isSituational) continue
 
             for (const configField of config.fields) {
                if (!(configField in calculatedSkillResult)) continue
@@ -41,9 +43,6 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
 
                switch (config.measureType) {
                   case 'percents':
-                     if (skill.value <= 0) {
-                        skill.value = 1 - skill.value
-                     }
                      const scaledBonus = (skill.value - 1) * (crewMember.efficiencyLevel / 100) + 1
                      /**
                       * In this case I check if a crewMember is !Commander
@@ -51,7 +50,13 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
                       */
                      switch (config.operation) {
                         case 'degressive':
-                           ;(calculatedSkillResult[key] as number) /= scaledBonus
+                           if (skill.value < 0) {
+                              ;(calculatedSkillResult[key] as number) =
+                                 calculatedSkillResult[key] -
+                                 calculatedSkillResult[key] * Math.abs(scaledBonus)
+                           } else {
+                              ;(calculatedSkillResult[key] as number) /= scaledBonus
+                           }
                            break
                         case 'progressive':
                            ;(calculatedSkillResult[key] as number) *= scaledBonus

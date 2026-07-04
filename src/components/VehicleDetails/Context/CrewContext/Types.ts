@@ -1,5 +1,6 @@
 import Commander from './Classes/Commander'
 import CrewMember from './Classes/Crew'
+import type { Dispatch, SetStateAction } from 'react'
 import type { MeasureType, ICrewRoles, IRolesNonCommander } from '@/Classes/CrewSkills'
 
 /**
@@ -60,4 +61,6 @@ export type ICrewContextActions =
 export interface ICrewContext {
    crewReducer: ICrewReducerState
    crewDispatch: React.Dispatch<ICrewContextActions>
+   isCalculateSituational: boolean
+   setIsCalculateSituational: Dispatch<SetStateAction<boolean>>
 }

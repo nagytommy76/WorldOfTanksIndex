@@ -1,5 +1,5 @@
 'use client'
-import { createContext, useReducer, useEffect, useContext } from 'react'
+import { createContext, useReducer, useEffect, useContext, useState } from 'react'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
 
 import type { ICrewMembers } from '@/types/VehicleDetails/Crew'
@@ -18,6 +18,8 @@ export const CrewContext = createContext<ICrewContext>({
       crewMembers: initialCrewMembers,
       commander: {} as Commander,
    },
+   isCalculateSituational: false,
+   setIsCalculateSituational: () => {},
 })
 
 export default function CrewContextProvider({
@@ -31,6 +33,7 @@ export default function CrewContextProvider({
    const {
       deviceReducer: { appliedDevicesModifiers },
    } = useContext(DeviceContext)
+   const [isCalculateSituational, setIsCalculateSituational] = useState<boolean>(false)
 
    useEffect(() => {
       const crewHelperObject = { ...initialCrewMembers } as CrewMembersType
@@ -57,13 +60,6 @@ export default function CrewContextProvider({
       crewDispatch({ type: 'ADD_INITIAL_CREW', payload: crewHelperObject })
    }, [crewMembers])
 
-   // useEffect(() => {
-   //    console.log(
-   //       'FROM CREW CONTEXT: ON COMMANDER EFFICIENCY CHANGE:  ',
-   //       crewReducer.crewMembers.commander?.efficiencyLevel,
-   //    )
-   // }, [crewReducer.crewMembers.commander?.efficiencyLevel])
-
    useEffect(() => {
       if (!appliedDevicesModifiers?.improvedVentilation) return
       crewDispatch({
@@ -80,6 +76,8 @@ export default function CrewContextProvider({
          value={{
             crewDispatch,
             crewReducer,
+            isCalculateSituational,
+            setIsCalculateSituational,
          }}
       >
          {children}

@@ -38,25 +38,26 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
 
             for (const configField of config.fields) {
                if (!(configField in calculatedSkillResult)) continue
+               const skillValue = Math.abs(skill.value)
 
                const key = configField as keyof T
 
                switch (config.measureType) {
                   case 'percents':
-                     const scaledBonus = (skill.value - 1) * (crewMember.efficiencyLevel / 100) + 1
+                     let scaledBonus = 0
+                     if (skillValue > 0 && skillValue <= 1) {
+                        scaledBonus = skillValue * (crewMember.efficiencyLevel / 100)
+                     } else {
+                        scaledBonus = (skillValue - 1) * (crewMember.efficiencyLevel / 100) + 1
+                     }
                      /**
                       * In this case I check if a crewMember is !Commander
                       * and isCommanderBonusApplied is true (+10% bonus switch turned on)
                       */
                      switch (config.operation) {
                         case 'degressive':
-                           if (skill.value < 0) {
-                              ;(calculatedSkillResult[key] as number) =
-                                 calculatedSkillResult[key] -
-                                 calculatedSkillResult[key] * Math.abs(scaledBonus)
-                           } else {
-                              ;(calculatedSkillResult[key] as number) /= scaledBonus
-                           }
+                           const substract = (calculatedSkillResult[key] as number) * scaledBonus
+                           ;(calculatedSkillResult[key] as number) -= substract
                            break
                         case 'progressive':
                            ;(calculatedSkillResult[key] as number) *= scaledBonus

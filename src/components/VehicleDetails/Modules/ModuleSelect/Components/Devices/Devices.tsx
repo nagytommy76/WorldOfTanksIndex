@@ -2,6 +2,7 @@
 import useGetDevices from './Hooks/useGetDevices'
 import useMaxDevices from './Hooks/useMaxDevices'
 import useHandleSelectedDevice from './Hooks/useHandleSelectedDevice'
+import type { DeviceModifierKeys } from '@/VehicleContext/DevicesContext/Types'
 
 import Typography from '@mui/material/Typography'
 
@@ -31,7 +32,7 @@ export default function Devices() {
             {Object.entries(allGroupedDevices).map(([deviceArcheType, devices]) => (
                <DeviceGroup
                   key={deviceArcheType}
-                  archeType={deviceArcheType}
+                  archeType={deviceArcheType as DeviceModifierKeys}
                   devices={devices}
                   isBlocked={selectedCount >= maxDevices && !(deviceArcheType in selectedDevices)}
                   addSelectedDevice={addSelectedDevice}

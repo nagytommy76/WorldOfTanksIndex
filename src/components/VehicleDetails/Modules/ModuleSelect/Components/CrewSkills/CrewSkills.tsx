@@ -5,6 +5,8 @@ import type { CrewSkillRoles } from '@/Classes/CrewSkills'
 import useGetCrewSkills from './Hooks/useGetCrewSkills'
 import ToggleCrewSkills from './Includes/ToggleCrewSkills'
 
+import ActiveSituational from './Includes/ActiveSituational'
+
 import Typography from '@mui/material/Typography'
 
 export default function CrewSkills() {
@@ -50,6 +52,7 @@ export default function CrewSkills() {
                </div>
             ))}
          </div>
+         <ActiveSituational />
       </>
    )
 }

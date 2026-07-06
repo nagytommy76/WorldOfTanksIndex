@@ -24,15 +24,6 @@ const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
     * COMMANDER SKILLS ---------------------------------------
     */
    /**
-    * @param commander_eagleEye - RECON
-    */
-   circularVisionRadius: {
-      fields: ['viewRange'],
-      measureType: 'percents',
-      isSituational: false,
-      operation: 'progressive',
-   },
-   /**
     * @param commander_coordination - COORDINATION * situational
     */
    vehicleGunAimSpeed: {
@@ -40,6 +31,15 @@ const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
       measureType: 'percents',
       isSituational: true,
       operation: 'degressive',
+   },
+   /**
+    * @param commander_eagleEye - RECON
+    */
+   circularVisionRadius: {
+      fields: ['viewRange'],
+      measureType: 'percents',
+      isSituational: false,
+      operation: 'progressive',
    },
    /**
     * @param commander_emergency - EMERGENCY * situational
@@ -66,6 +66,18 @@ const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
    },
    shellVelocity: {
       fields: ['shellVelocity'],
+      isSituational: false,
+      measureType: 'percents',
+      operation: 'progressive',
+   },
+   vehicleGunReloadTime: {
+      fields: ['reloadTime'],
+      measureType: 'percents',
+      isSituational: true,
+      operation: 'degressive',
+   },
+   damageAndPiercingDistributionLowerBound: {
+      fields: ['minimumDamage'],
       isSituational: false,
       measureType: 'percents',
       operation: 'progressive',

@@ -77,9 +77,9 @@ const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
       operation: 'degressive',
    },
    damageAndPiercingDistributionLowerBound: {
-      fields: ['minimumDamage'],
+      fields: ['minimumDamagePercent'],
       isSituational: false,
-      measureType: 'percents',
+      measureType: 'add',
       operation: 'progressive',
    },
    /**

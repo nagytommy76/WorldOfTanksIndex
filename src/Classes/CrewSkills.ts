@@ -1,6 +1,6 @@
 export type CrewSkillsType = 'situational' | 'commanderSpecial' | 'common'
 
-export type MeasureType = 'seconds' | 'percents' | 'mph'
+export type MeasureType = 'seconds' | 'percents' | 'mph' | 'add'
 
 export type CrewSkillModifier = {
    measureType: MeasureType

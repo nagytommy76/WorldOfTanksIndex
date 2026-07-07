@@ -66,13 +66,17 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
 
                      break
                   case 'mph':
-                     const scaledBonus1 = skill.value * 100 * (crewMember.efficiencyLevel / 100)
+                     const scaledBonus1 = skillValue * 100 * (crewMember.efficiencyLevel / 100)
                      ;(calculatedSkillResult[key] as number) += scaledBonus1
                      break
                   case 'seconds':
-                     const scaledBonus2 = skill.value * (crewMember.efficiencyLevel / 100)
+                     const scaledBonus2 = skillValue * (crewMember.efficiencyLevel / 100)
                      ;(calculatedSkillResult[key] as number) =
                         (calculatedSkillResult[key] as number) + scaledBonus2
+                     break
+                  case 'add':
+                     const addValue = skillValue - 1
+                     ;(calculatedSkillResult[key] as number) += addValue
                      break
                }
             }

@@ -21,7 +21,6 @@ import Penetration from './Includes/Penetration'
 import Damage from './Includes/Damage'
 import Clip from './Includes/Clip'
 import DualAccuracy from './Includes/DualAccuracy'
-import AvgDpm from './Includes/AvgDpm'
 import RoF from './Includes/RoF'
 import Artilerry from './Includes/Artilerry'
 import GunDispersions from './Includes/GunDispersions'
@@ -64,16 +63,23 @@ export default function Firepower() {
    const vehicleAimTime = vehicleGun[selectedModuleNames.vehicleGun].aimTime
    const shellVelocityBase = shells[selectedModuleNames.shells].speed
 
-   const { reloadTime, aimingTime, shellVelocity } = useMemo(
+   const armorDamage = shells[selectedModuleNames.shells].damage.armor
+
+   const { reloadTime, aimingTime, shellVelocity, minimumDamagePercent } = useMemo(
       () =>
          applyStatPipeline(
-            { reloadTime: vehicleReloadTime, aimingTime: vehicleAimTime, shellVelocity: shellVelocityBase },
+            {
+               reloadTime: vehicleReloadTime,
+               aimingTime: vehicleAimTime,
+               shellVelocity: shellVelocityBase,
+               minimumDamagePercent: 0.75,
+            },
             [
                createDeviceTransformer(appliedDevicesModifiers),
                createCrewTransformer(crewMembers.gunner),
                createCrewTransformer(crewMembers.loader),
-               createCrewSkillsTransformer(crewMembers.gunner),
-               createCrewSkillsTransformer(crewMembers.loader),
+               createCrewSkillsTransformer(crewMembers.gunner, isCalculateSituational),
+               createCrewSkillsTransformer(crewMembers.loader, isCalculateSituational),
                createCrewSkillsTransformer(commander, isCalculateSituational),
             ],
          ),
@@ -93,20 +99,19 @@ export default function Firepower() {
          <TableHeadComponent headTitle='Firepower' iconSrc='/icons/details/firepower.png' />
          <TableBody>
             <Damage
-               damage={shells[selectedModuleNames.shells].damage.armor}
+               damage={armorDamage}
+               minimumDamagePercent={minimumDamagePercent}
                shellDamageDiff={shellsModifiers['damage.armor']}
+               clipDamage={clipDamage}
+               reloadBetweenShells={reloadBetweenShells}
+               reloadTime={reloadTime}
+               totalReloadTime={totalReloadTime}
             />
             <Penetration
                piercingPower={(shells[selectedModuleNames.shells].piercingPower as number[]) || [0, 0]}
                shellDamageDiff={shellsModifiers}
             />
             <RoF totalReloadTime={totalReloadTime} reloadTime={reloadTime} />
-            <AvgDpm
-               totalReloadTime={totalReloadTime}
-               clipDamage={clipDamage}
-               reloadBetweenShells={reloadBetweenShells}
-               reloadTime={reloadTime}
-            />
             <TableRowComponent
                iconSrc='/icons/firepower/reloadTimeSecs.png'
                titleText='Gun Loading'
@@ -187,7 +192,7 @@ export default function Firepower() {
             {vehicleGun[selectedModuleNames.vehicleGun]?.dualAccuracy && (
                <DualAccuracy
                   dualAccuracy={vehicleGun[selectedModuleNames.vehicleGun]?.dualAccuracy as IDualAccuracy}
-                  reloadTime={vehicleGun[selectedModuleNames.vehicleGun]?.reloadTime}
+                  reloadTime={reloadTime}
                />
             )}
             <TableRowComponent

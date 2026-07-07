@@ -10,27 +10,26 @@ export default function AvgDpm({
    reloadBetweenShells,
    totalReloadTime,
    reloadTime,
+   armorDamage,
 }: {
    clipDamage: number
    reloadBetweenShells: number
    totalReloadTime: number
    reloadTime: number
+   armorDamage: number | number[]
 }) {
    const {
       vehicleReducer: {
          selectedModuleNames,
-         moduleGroup: { vehicleGun, shells },
+         moduleGroup: { vehicleGun },
       },
    } = useContext(VehicleContext)
 
    const clip = vehicleGun[selectedModuleNames.vehicleGun]?.clip
    const autoreload = vehicleGun[selectedModuleNames.vehicleGun]?.autoreload
 
-   const avarageDPM = returnDPM(
-      vehicleGun[selectedModuleNames.vehicleGun].reloadTime,
-      shells[selectedModuleNames.shells].damage.armor as number,
-   )
-   const baseAvarageDPM = returnDPM(reloadTime, shells[selectedModuleNames.shells].damage.armor as number)
+   const avarageDPM = returnDPM(reloadTime, armorDamage as number)
+   const baseAvarageDPM = returnDPM(reloadTime, armorDamage as number)
 
    switch (true) {
       case autoreload && clip !== null:
@@ -40,9 +39,7 @@ export default function AvgDpm({
                   iconSrc='/icons/firepower/avgDamagePerMinute.png'
                   titleText='Average Damage per Minute'
                   valueText={
-                     ((shells[selectedModuleNames.shells].damage.armor as number) /
-                        autoreload.reloadTime[autoreload.reloadTime.length - 1]) *
-                     60
+                     ((armorDamage as number) / autoreload.reloadTime[autoreload.reloadTime.length - 1]) * 60
                   }
                   toFixed={0}
                   unit='HP/min'
@@ -97,14 +94,11 @@ export default function AvgDpm({
             />
          )
       // Polish Błyskawica line
-      case Array.isArray(shells[selectedModuleNames.shells].damage.armor):
-         const bliskawicaDPM = returnDPM(
-            reloadTime,
-            (shells[selectedModuleNames.shells].damage.armor as number[])[0],
-         )
+      case Array.isArray(armorDamage):
+         const bliskawicaDPM = returnDPM(reloadTime, (armorDamage as number[])[0])
          const baseBliskawicaDPM1 = returnDPM(
             vehicleGun[selectedModuleNames.vehicleGun].reloadTime,
-            (shells[selectedModuleNames.shells].damage.armor as number[])[0],
+            (armorDamage as number[])[0],
          )
          return (
             <TableRowComponent
@@ -127,7 +121,7 @@ export default function AvgDpm({
             <TableRowComponent
                iconSrc='/icons/firepower/avgDamagePerMinute.png'
                titleText='Average Damage per Minute'
-               valueText={baseAvarageDPM}
+               valueText={avarageDPM}
                toFixed={0}
                unit='HP/min'
                modifiers={[

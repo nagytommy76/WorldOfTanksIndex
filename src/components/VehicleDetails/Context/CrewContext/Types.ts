@@ -57,6 +57,9 @@ export type ICrewContextActions =
         type: 'REMOVE_APPLIED_CREW_SKILLS'
         payload: { skillName: string; crewRole: ICrewRoles | IRolesNonCommander | undefined }
      }
+   | {
+        type: 'RESET_APPLIED_CREW_SKILLS'
+     }
 
 export interface ICrewContext {
    crewReducer: ICrewReducerState

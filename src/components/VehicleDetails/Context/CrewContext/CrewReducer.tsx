@@ -106,7 +106,17 @@ export default function CrewReducer(
             ...state,
             crewMembers: { ...newRemoveSkillCrewMembers },
          }
+      case 'RESET_APPLIED_CREW_SKILLS':
+         state.commander.clearAppliedCrewSkills()
 
+         Object.values(state.crewMembers).forEach((member) => {
+            if (!member) return
+            member.clearAppliedCrewSkills()
+         })
+         return {
+            ...state,
+            crewMembers: { ...state.crewMembers },
+         }
       case 'ADD_INITIAL_CREW':
          return {
             ...state,

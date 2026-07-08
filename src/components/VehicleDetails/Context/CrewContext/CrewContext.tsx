@@ -50,7 +50,6 @@ export default function CrewContextProvider({
                   primaryRole: member.primary,
                   secondaryRole: member.secondary as IRolesNonCommander[],
                })
-               // crewMember.setIsCommanderBonusApplied(crewReducer.crewMode === 'effective' ? true : false)
 
                crewMember.applyCommanderBonus()
                crewHelperObject[crewMember.primaryRole] = crewMember

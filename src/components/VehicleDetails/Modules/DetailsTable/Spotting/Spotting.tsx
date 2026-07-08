@@ -28,6 +28,7 @@ export default function Spotting() {
    } = useContext(DeviceContext)
    const {
       crewReducer: { crewMembers, commander },
+      isCalculateSituational,
    } = useContext(CrewContext)
 
    const viewRangeBase = vehicleTurret[selectedModuleNames.vehicleTurret].viewRange
@@ -51,9 +52,18 @@ export default function Spotting() {
                createCrewTransformer(crewMembers.loader),
                createCrewSkillsTransformer(commander),
                createCrewSkillsTransformer(crewMembers.radioman),
+               createCrewSkillsTransformer(crewMembers.gunner, isCalculateSituational),
             ],
          ),
-      [viewRangeBase, viewRangeStillBase, radioRangeBase, appliedDevicesModifiers, crewMembers, commander],
+      [
+         viewRangeBase,
+         viewRangeStillBase,
+         radioRangeBase,
+         appliedDevicesModifiers,
+         crewMembers,
+         commander,
+         isCalculateSituational,
+      ],
    )
 
    return (
@@ -122,7 +132,7 @@ export default function Spotting() {
                unit='seconds'
                modifiers={[
                   {
-                     difference: enemySpottingTime - SPOTTED_TIME,
+                     difference: parseFloat((enemySpottingTime - SPOTTED_TIME).toFixed(2)),
                      improved: true,
                   },
                ]}

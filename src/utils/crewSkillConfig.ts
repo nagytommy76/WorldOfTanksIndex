@@ -29,7 +29,7 @@ const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
    vehicleGunAimSpeed: {
       fields: ['aimingTime'],
       measureType: 'percents',
-      isSituational: true,
+      isSituational: false,
       operation: 'degressive',
    },
    /**
@@ -77,7 +77,7 @@ const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
       operation: 'degressive',
    },
    damageAndPiercingDistributionLowerBound: {
-      fields: ['minimumDamagePercent'],
+      fields: ['minimumDamagePercent', 'minPenetration50', 'minPenetration500'],
       isSituational: false,
       measureType: 'add',
       operation: 'progressive',
@@ -139,7 +139,7 @@ const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
    vehicleFireChance: {
       fields: ['fireChance'],
       isSituational: false,
-      measureType: 'percents',
+      measureType: 'subtract',
       operation: 'degressive',
    },
    suspensionDamageReduction: {
@@ -171,6 +171,18 @@ const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
       isSituational: false,
       measureType: 'percents',
       operation: 'degressive',
+   },
+   vehicleEnemySpottingTime: {
+      fields: ['enemySpottingTime'],
+      isSituational: true,
+      measureType: 'seconds',
+      operation: 'progressive',
+   },
+   piercingHEShellsDistributionUpperBound: {
+      fields: ['maxPenetration50', 'maxPenetration500'],
+      isSituational: true,
+      measureType: 'add',
+      operation: 'progressive',
    },
 
    /**

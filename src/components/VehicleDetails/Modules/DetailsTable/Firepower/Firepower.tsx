@@ -107,10 +107,7 @@ export default function Firepower() {
                reloadTime={reloadTime}
                totalReloadTime={totalReloadTime}
             />
-            <Penetration
-               piercingPower={(shells[selectedModuleNames.shells].piercingPower as number[]) || [0, 0]}
-               shellDamageDiff={shellsModifiers}
-            />
+            <Penetration />
             <RoF totalReloadTime={totalReloadTime} reloadTime={reloadTime} />
             <TableRowComponent
                iconSrc='/icons/firepower/reloadTimeSecs.png'

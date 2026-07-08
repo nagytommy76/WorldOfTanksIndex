@@ -73,6 +73,10 @@ export default class Member {
       if (!this.appliedCrewSkills) return
       this.appliedCrewSkills.delete(crewSkillName)
    }
+   clearAppliedCrewSkills() {
+      if (!this.appliedCrewSkills) return
+      this.appliedCrewSkills.clear()
+   }
 
    /**
     * @description Computes the effective efficiency level for this crew member.

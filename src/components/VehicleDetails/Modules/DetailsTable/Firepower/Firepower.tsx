@@ -46,18 +46,17 @@ export default function Firepower() {
       isCalculateSituational,
    } = useContext(CrewContext)
 
-   const clipDamage =
-      (vehicleGun[selectedModuleNames.vehicleGun].clip?.count as number) *
-         (shells[selectedModuleNames.shells].damage.armor as number) || 0
+   const clip = vehicleGun[selectedModuleNames.vehicleGun].clip
 
-   const reloadBetweenShells = 60 / (vehicleGun[selectedModuleNames.vehicleGun].clip?.rate as number) || 0
+   const clipDamage =
+      (clip?.count as number) * (shells[selectedModuleNames.shells].damage.armor as number) || 0
+
+   const reloadBetweenShells = 60 / (clip?.rate as number) || 0
 
    // Reload: 7.8 * 0.875 / (0.00375 * 110 + 0.5) = 7.8 * 0.875 / 0.9125 ≈ 7.48s
    const vehicleReloadTime = vehicleGun[selectedModuleNames.vehicleGun].reloadTime
    //Italian autoloader line
-   const totalReloadTime =
-      ((vehicleGun[selectedModuleNames.vehicleGun].clip?.count as number) - 1) * reloadBetweenShells +
-         vehicleReloadTime || 0
+   const totalReloadTime = ((clip?.count as number) - 1) * reloadBetweenShells + vehicleReloadTime || 0
 
    const vehicleGunAutoReload = vehicleGun[selectedModuleNames.vehicleGun].autoreload
    const vehicleAimTime = vehicleGun[selectedModuleNames.vehicleGun].aimTime
@@ -78,8 +77,8 @@ export default function Firepower() {
                createDeviceTransformer(appliedDevicesModifiers),
                createCrewTransformer(crewMembers.gunner),
                createCrewTransformer(crewMembers.loader),
-               createCrewSkillsTransformer(crewMembers.gunner, isCalculateSituational),
-               createCrewSkillsTransformer(crewMembers.loader, isCalculateSituational),
+               createCrewSkillsTransformer(crewMembers.gunner, isCalculateSituational, clip ? true : false),
+               createCrewSkillsTransformer(crewMembers.loader, isCalculateSituational, clip ? true : false),
                createCrewSkillsTransformer(commander, isCalculateSituational),
             ],
          ),
@@ -91,6 +90,7 @@ export default function Firepower() {
          crewMembers,
          commander,
          isCalculateSituational,
+         clip,
       ],
    )
 

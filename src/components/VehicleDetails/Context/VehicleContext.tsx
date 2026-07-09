@@ -23,6 +23,7 @@ import useSetRoles from './Hooks/useSetRoles'
 import useSetShells from './Hooks/useSetShells'
 
 export const VehicleContext = createContext<IVehicleContext>({
+   nation: '',
    vehicleDispatch: () => null,
    vehicleReducer: InitialState as ReadyVehicleReducerState,
    modifiersDispatch: () => null,
@@ -80,6 +81,7 @@ export default function VehicleContextProvider({
    return (
       <VehicleContext.Provider
          value={{
+            nation: tankDetails.nation,
             vehicleName: tankDetails.xmlId,
             hull: tankDetails.stats.hull,
             fuelTank: tankDetails.stats.fuelTank,

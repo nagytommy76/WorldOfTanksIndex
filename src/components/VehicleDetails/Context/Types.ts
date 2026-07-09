@@ -80,6 +80,7 @@ export const InitialState: IVehicleReducerState = {
 
 // CONTEXT
 export interface IVehicleContext {
+   nation: string
    vehicleName: string
    hull: IHull
    fuelTank: IFuelTank[]

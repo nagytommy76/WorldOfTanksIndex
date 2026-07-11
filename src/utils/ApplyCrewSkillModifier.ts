@@ -1,4 +1,4 @@
-import CREW_SKILLS_MODIFIER_CONFIG from './crewSkillConfig'
+import CREW_SKILLS_CONFIG from './crewSkillConfig'
 import CrewMember from '@/CrewContext/Classes/Crew'
 import Commander from '@/CrewContext/Classes/Commander'
 
@@ -20,29 +20,34 @@ import type { StatTransformer } from './applyStatPipeline'
 export default function createCrewSkillsTransformer<T extends Record<string, number>>(
    crewMember: CrewMember | Commander | undefined,
    calculateSituational: boolean = false,
+   hasClip: boolean = false,
 ): StatTransformer<T> {
    if (!crewMember || crewMember.appliedCrewSkills === undefined)
       return (baseValues: T): T => {
          return baseValues
       }
+
    return (baseValues: T): T => {
       const calculatedSkillResult = { ...baseValues }
       const appliedCrewSkills = crewMember.appliedCrewSkills
       if (appliedCrewSkills === undefined) return calculatedSkillResult
 
-      for (const [skillName, skills] of appliedCrewSkills) {
-         for (const skill of skills) {
-            const config = CREW_SKILLS_MODIFIER_CONFIG[skill.paramName]
-            if (!config) continue
-            if (!calculateSituational && config.isSituational) continue
+      for (const [skillName, skillModifiers] of appliedCrewSkills) {
+         if (skillName === 'loader_magMastery' && !hasClip) continue
+         if (skillName === 'camouflage') continue
+         for (const skillModifier of skillModifiers) {
+            if (!CREW_SKILLS_CONFIG[skillName]) continue
 
-            for (const configField of config.fields) {
-               if (!(configField in calculatedSkillResult)) continue
-               const skillValue = Math.abs(skill.value)
+            const foundConfigSkill = CREW_SKILLS_CONFIG[skillName][skillModifier.paramName]
 
-               const key = configField as keyof T
+            if (!foundConfigSkill) continue
+            if (!calculateSituational && foundConfigSkill.isSituational) continue
 
-               switch (config.measureType) {
+            for (const configField of foundConfigSkill.fields) {
+               const skillValue = Math.abs(skillModifier.value)
+               const key = configField
+
+               switch (foundConfigSkill.measureType) {
                   case 'percents':
                      let scaledBonus = 0
                      if (skillValue > 0 && skillValue <= 1) {
@@ -54,8 +59,11 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
                       * In this case I check if a crewMember is !Commander
                       * and isCommanderBonusApplied is true (+10% bonus switch turned on)
                       */
-                     switch (config.operation) {
+                     switch (foundConfigSkill.operation) {
                         case 'degressive':
+                           if (scaledBonus > 1) {
+                              scaledBonus = scaledBonus - 1
+                           }
                            const substract = (calculatedSkillResult[key] as number) * scaledBonus
                            ;(calculatedSkillResult[key] as number) -= substract
                            break
@@ -63,7 +71,6 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
                            ;(calculatedSkillResult[key] as number) *= scaledBonus
                            break
                      }
-
                      break
                   case 'mph':
                      const scaledBonus1 = skillValue * 100 * (crewMember.efficiencyLevel / 100)
@@ -71,12 +78,27 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
                      break
                   case 'seconds':
                      const scaledBonus2 = skillValue * (crewMember.efficiencyLevel / 100)
-                     ;(calculatedSkillResult[key] as number) =
-                        (calculatedSkillResult[key] as number) + scaledBonus2
+                     if (foundConfigSkill.operation === 'degressive') {
+                        ;(calculatedSkillResult[key] as number) =
+                           (calculatedSkillResult[key] as number) - scaledBonus2
+                     } else {
+                        ;(calculatedSkillResult[key] as number) =
+                           (calculatedSkillResult[key] as number) + scaledBonus2
+                     }
                      break
                   case 'add':
-                     const addValue = skillValue - 1
+                     /**
+                      * Armorer skill improves the minimum & max potential dmg, but the avg value stays the same
+                      */
+                     if (skillName === 'gunner_armorer') break
+                     const scaledBonus3 = (skillValue - 1) * (crewMember.efficiencyLevel / 100) + 1
+                     const addValue = scaledBonus3 - 1
                      ;(calculatedSkillResult[key] as number) += addValue
+                     break
+                  case 'subtract':
+                     const scaledBonus4 = (skillValue - 1) * (crewMember.efficiencyLevel / 100) + 1
+                     const subtractValue = (scaledBonus4 - 1) * calculatedSkillResult[key]
+                     ;(calculatedSkillResult[key] as number) -= subtractValue
                      break
                }
             }
@@ -98,7 +120,7 @@ export function createConcealmentSkillTransformer<T extends Record<string, numbe
 
       const scaledBonus = 0.8047 * (commander.efficiencyLevel / 100) + 1
 
-      const config = CREW_SKILLS_MODIFIER_CONFIG['maskingFactor']
+      const config = CREW_SKILLS_CONFIG['camouflage']['maskingFactor']
 
       for (const field of config.fields) {
          ;(camouflageStillMovingValues[field] as number) *= scaledBonus

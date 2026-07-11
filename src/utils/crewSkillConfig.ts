@@ -39,6 +39,12 @@ export const CREW_SKILLS_CONFIG: Record<string, Record<string, ICrewSkillConfig>
          isSituational: false,
          operation: 'progressive',
       },
+      penaltyToDamagedSurveyingDevice: {
+         fields: ['surveyDeviceHp'],
+         measureType: 'percents',
+         isSituational: false,
+         operation: 'progressive',
+      },
    },
 
    /**
@@ -348,18 +354,17 @@ export const CREW_SKILLS_CONFIG: Record<string, Record<string, ICrewSkillConfig>
          operation: 'progressive',
       },
    },
-}
-
-const CREW_SKILLS_MODIFIER_CONFIG: Record<string, ICrewSkillConfig> = {
    /**
     * COMMON SKILLS ---------------------------------------
     */
-   maskingFactor: {
-      fields: ['camouflageMoving', 'camouflageStill', 'camouflageStillFire', 'camouflageMovingFire'],
-      measureType: 'percents',
-      isSituational: false,
-      operation: 'progressive',
+   camouflage: {
+      maskingFactor: {
+         fields: ['camouflageMoving', 'camouflageStill', 'camouflageStillFire', 'camouflageMovingFire'],
+         measureType: 'percents',
+         isSituational: false,
+         operation: 'progressive',
+      },
    },
 }
 
-export default CREW_SKILLS_MODIFIER_CONFIG
+export default CREW_SKILLS_CONFIG

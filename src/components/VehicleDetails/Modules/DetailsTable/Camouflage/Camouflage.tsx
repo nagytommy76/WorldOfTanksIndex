@@ -2,7 +2,7 @@
 import { useContext, useState } from 'react'
 import Image from 'next/image'
 
-import { DeviceContext } from '@/VehicleContext/DevicesContext/DeviceContext'
+import { DeviceContext } from '@/DevicesContext/DeviceContext'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 
 import Checkbox from '@mui/material/Checkbox'

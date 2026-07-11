@@ -11,6 +11,7 @@ import MechanicsContainer from './Mechanics/MechanicsContainer'
 
 import CrewSwitch from './CrewSwitch/CrewSwitch'
 import Camouflage from './Camouflage/Camouflage'
+import ExtraRations from './ExtraRations/ExtraRations'
 
 export default function DetailsTable() {
    return (
@@ -18,6 +19,7 @@ export default function DetailsTable() {
          <div className='flex flex-col gap-1 items-center mb-2 xl:flex-row xl:gap-4'>
             <CrewSwitch />
             <Camouflage />
+            <ExtraRations />
          </div>
          <Typography gutterBottom variant='h5'>
             Tank specifications

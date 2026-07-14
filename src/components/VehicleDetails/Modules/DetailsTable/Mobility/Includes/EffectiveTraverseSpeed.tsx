@@ -4,7 +4,17 @@ import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import TableRowComponent from '../../Includes/TableRow'
 import { calculateEffectiveTraverseSpeed } from '../../../Helpers/calculate'
 
-export default function EffectiveTraverseSpeed({ traverseSpeed }: { traverseSpeed: number }) {
+export default function EffectiveTraverseSpeed({
+   traverseSpeed,
+   hardTerrainResistance,
+   mediumTerrainResistance,
+   softTerrainResistance,
+}: {
+   traverseSpeed: number
+   hardTerrainResistance: number
+   mediumTerrainResistance: number
+   softTerrainResistance: number
+}) {
    const {
       vehicleReducer: {
          selectedModuleNames,
@@ -19,43 +29,37 @@ export default function EffectiveTraverseSpeed({ traverseSpeed }: { traverseSpee
 
    const effectiveHardTraverseSpeedBase = calculateEffectiveTraverseSpeed(
       vehicleChassisRotationSpeedBase,
-      vehicleChassis[selectedModuleNames.vehicleChassis].terrainResistance[0],
-      vehicleChassis[selectedModuleNames.vehicleChassis].terrainResistance[0],
+      hardTerrainResistance,
+      hardTerrainResistance,
    )
    const effectiveMediumTraverseSpeedBase = calculateEffectiveTraverseSpeed(
       vehicleChassisRotationSpeedBase,
-      vehicleChassis[selectedModuleNames.vehicleChassis].terrainResistance[0],
-      vehicleChassis[selectedModuleNames.vehicleChassis].terrainResistance[1],
+      hardTerrainResistance,
+      mediumTerrainResistance,
    )
    const effectiveSoftTraverseSpeedBase = calculateEffectiveTraverseSpeed(
       vehicleChassisRotationSpeedBase,
-      vehicleChassis[selectedModuleNames.vehicleChassis].terrainResistance[0],
-      vehicleChassis[selectedModuleNames.vehicleChassis].terrainResistance[2],
+      hardTerrainResistance,
+      softTerrainResistance,
    )
 
    useEffect(() => {
       setEffectiveHardTraverseSpeed(
-         calculateEffectiveTraverseSpeed(
-            traverseSpeed,
-            vehicleChassis[selectedModuleNames.vehicleChassis].terrainResistance[0],
-            vehicleChassis[selectedModuleNames.vehicleChassis].terrainResistance[0],
-         ),
+         calculateEffectiveTraverseSpeed(traverseSpeed, hardTerrainResistance, hardTerrainResistance),
       )
       setEffectiveMediumTraverseSpeed(
-         calculateEffectiveTraverseSpeed(
-            traverseSpeed,
-            vehicleChassis[selectedModuleNames.vehicleChassis].terrainResistance[0],
-            vehicleChassis[selectedModuleNames.vehicleChassis].terrainResistance[1],
-         ),
+         calculateEffectiveTraverseSpeed(traverseSpeed, hardTerrainResistance, mediumTerrainResistance),
       )
       setEffectiveSoftTraverseSpeed(
-         calculateEffectiveTraverseSpeed(
-            traverseSpeed,
-            vehicleChassis[selectedModuleNames.vehicleChassis].terrainResistance[0],
-            vehicleChassis[selectedModuleNames.vehicleChassis].terrainResistance[2],
-         ),
+         calculateEffectiveTraverseSpeed(traverseSpeed, hardTerrainResistance, softTerrainResistance),
       )
-   }, [traverseSpeed, vehicleChassisRotationSpeedBase, vehicleChassis, selectedModuleNames.vehicleChassis])
+   }, [
+      traverseSpeed,
+      vehicleChassisRotationSpeedBase,
+      softTerrainResistance,
+      mediumTerrainResistance,
+      hardTerrainResistance,
+   ])
 
    return (
       <TableRowComponent

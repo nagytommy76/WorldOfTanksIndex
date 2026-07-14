@@ -1,5 +1,4 @@
-import { useContext, useState, useEffect } from 'react'
-import { VehicleContext } from '@/VehicleContext/VehicleContext'
+import { useState, useEffect } from 'react'
 
 import TableRowComponent from '../../Includes/TableRow'
 import { calculateEffectiveTopSpeed } from '../../../Helpers/calculate'
@@ -10,19 +9,19 @@ export default function EffectiveTopSpeed({
    forwardSpeed,
    forwardSpeedBase,
    vehicleEnginePowerBase,
+   hardTerrainResistance,
+   mediumTerrainResistance,
+   softTerrainResistance,
 }: {
    enginePower: number
    totalWeight: number
    forwardSpeed: number
    forwardSpeedBase: number
    vehicleEnginePowerBase: number
+   hardTerrainResistance: number
+   mediumTerrainResistance: number
+   softTerrainResistance: number
 }) {
-   const {
-      vehicleReducer: {
-         selectedModuleNames,
-         moduleGroup: { vehicleChassis },
-      },
-   } = useContext(VehicleContext)
    const [effectiveHardTopSpeed, setEffectiveHardTopSpeed] = useState<number>(0)
    const [effectiveMediumTopSpeed, setEffectiveMediumTopSpeed] = useState<number>(0)
    const [effectiveSoftTopSpeed, setEffectiveSoftTopSpeed] = useState<number>(0)
@@ -30,49 +29,41 @@ export default function EffectiveTopSpeed({
    const effectiveHardTopSpeedBase = calculateEffectiveTopSpeed(
       vehicleEnginePowerBase,
       totalWeight / 1000,
-      vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
+      hardTerrainResistance,
       forwardSpeedBase,
    )
    const effectiveMediumTopSpeedBase = calculateEffectiveTopSpeed(
       vehicleEnginePowerBase,
       totalWeight / 1000,
-      vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[1],
+      mediumTerrainResistance,
       forwardSpeedBase,
    )
    const effectiveSoftTopSpeedBase = calculateEffectiveTopSpeed(
       vehicleEnginePowerBase,
       totalWeight / 1000,
-      vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[2],
+      softTerrainResistance,
       forwardSpeedBase,
    )
 
    useEffect(() => {
       setEffectiveHardTopSpeed(
-         calculateEffectiveTopSpeed(
-            enginePower,
-            totalWeight / 1000,
-            vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[0],
-            forwardSpeed,
-         ),
+         calculateEffectiveTopSpeed(enginePower, totalWeight / 1000, hardTerrainResistance, forwardSpeed),
       )
       setEffectiveMediumTopSpeed(
-         calculateEffectiveTopSpeed(
-            enginePower,
-            totalWeight / 1000,
-            vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[1],
-            forwardSpeed,
-         ),
+         calculateEffectiveTopSpeed(enginePower, totalWeight / 1000, mediumTerrainResistance, forwardSpeed),
       )
 
       setEffectiveSoftTopSpeed(
-         calculateEffectiveTopSpeed(
-            enginePower,
-            totalWeight / 1000,
-            vehicleChassis[selectedModuleNames.vehicleChassis]?.terrainResistance[2],
-            forwardSpeed,
-         ),
+         calculateEffectiveTopSpeed(enginePower, totalWeight / 1000, softTerrainResistance, forwardSpeed),
       )
-   }, [enginePower, forwardSpeed, selectedModuleNames.vehicleChassis, totalWeight, vehicleChassis])
+   }, [
+      enginePower,
+      forwardSpeed,
+      totalWeight,
+      softTerrainResistance,
+      mediumTerrainResistance,
+      hardTerrainResistance,
+   ])
 
    return (
       <TableRowComponent

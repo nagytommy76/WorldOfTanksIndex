@@ -220,8 +220,16 @@ export default function Mobility() {
                forwardSpeed={forwardSpeed}
                forwardSpeedBase={forwardSpeedBase}
                vehicleEnginePowerBase={vehicleEnginePowerBase}
+               hardTerrainResistance={terrainResistance1}
+               mediumTerrainResistance={terrainResistance2}
+               softTerrainResistance={terrainResistance3}
             />
-            <EffectiveTraverseSpeed traverseSpeed={traverseSpeed} />
+            <EffectiveTraverseSpeed
+               traverseSpeed={traverseSpeed}
+               hardTerrainResistance={terrainResistance1}
+               mediumTerrainResistance={terrainResistance2}
+               softTerrainResistance={terrainResistance3}
+            />
          </TableBody>
       </Table>
    )

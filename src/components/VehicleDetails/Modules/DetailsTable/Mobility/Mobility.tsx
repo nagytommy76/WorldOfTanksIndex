@@ -1,5 +1,5 @@
 'use client'
-import { useContext, useMemo } from 'react'
+import { useContext, useMemo, useEffect, useState } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
 import { CrewContext } from '@/CrewContext/CrewContext'
@@ -29,6 +29,11 @@ import EffectiveTraverseSpeed from './Includes/EffectiveTraverseSpeed'
 import TerrainResistance from './Includes/TerrainResistance'
 import SpecificPower from './Includes/SpecificPower'
 
+/**
+ * @url https://www.reddit.com/r/WorldofTanks/comments/o7c1io/hidden_mobility_stats_why_obj_277_is_faster_than/
+ * rollingFriction / 0.0805
+ */
+
 export default function Mobility() {
    const totalWeight = useSetTotalWeight()
    const {
@@ -54,7 +59,8 @@ export default function Mobility() {
    const backwardSpeedBase = speedLimit.backward
    const vehicleChassisRotationSpeedBase = vehicleChassis[selectedModuleNames.vehicleChassis].rotationSpeed
    const vehicleGunRotationSpeedBase = vehicleTurret[selectedModuleNames.vehicleTurret].traverse
-   const vehicleTerrainResistanceBase = vehicleChassis[selectedModuleNames.vehicleChassis].terrainResistance
+   const vehicleTerrainResistanceBase =
+      vehicleChassis[selectedModuleNames.vehicleChassis].effectiveTerrainResistance
 
    const {
       backwardSpeed,
@@ -62,9 +68,9 @@ export default function Mobility() {
       enginePower,
       traverseSpeed,
       turretTraverseSpeed,
-      terrainResistance1,
-      terrainResistance2,
-      terrainResistance3,
+      hardTerrainResistance,
+      mediumTerrainResistance,
+      softTerrainResistance,
    } = useMemo(
       () =>
          applyStatPipeline(
@@ -74,9 +80,9 @@ export default function Mobility() {
                backwardSpeed: backwardSpeedBase,
                traverseSpeed: vehicleChassisRotationSpeedBase,
                turretTraverseSpeed: vehicleGunRotationSpeedBase,
-               terrainResistance1: vehicleTerrainResistanceBase[0],
-               terrainResistance2: vehicleTerrainResistanceBase[1],
-               terrainResistance3: vehicleTerrainResistanceBase[2],
+               hardTerrainResistance: vehicleTerrainResistanceBase[0],
+               mediumTerrainResistance: vehicleTerrainResistanceBase[1],
+               softTerrainResistance: vehicleTerrainResistanceBase[2],
             },
             [
                createDeviceTransformer(appliedDevicesModifiers),
@@ -97,6 +103,14 @@ export default function Mobility() {
          crewMembers,
       ],
    )
+
+   /**
+    * @description softTerrainResistance can't be lower than mediumTerrainResistance value
+    */
+   const [softTerrain, setSoftTerrain] = useState<number>(0)
+   useEffect(() => {
+      setSoftTerrain(Math.max(softTerrainResistance, mediumTerrainResistance))
+   }, [softTerrainResistance, mediumTerrainResistance])
 
    return (
       <Table size='small' aria-label='Mobility table with speed'>
@@ -209,9 +223,9 @@ export default function Mobility() {
                </TableCell>
             </TableRow>
             <TerrainResistance
-               terrainResistance1={terrainResistance1}
-               terrainResistance2={terrainResistance2}
-               terrainResistance3={terrainResistance3}
+               terrainResistance1={hardTerrainResistance}
+               terrainResistance2={mediumTerrainResistance}
+               terrainResistance3={softTerrain}
                vehicleTerrainResistanceBase={vehicleTerrainResistanceBase}
             />
             <EffectiveTopSpeed
@@ -220,15 +234,15 @@ export default function Mobility() {
                forwardSpeed={forwardSpeed}
                forwardSpeedBase={forwardSpeedBase}
                vehicleEnginePowerBase={vehicleEnginePowerBase}
-               hardTerrainResistance={terrainResistance1}
-               mediumTerrainResistance={terrainResistance2}
-               softTerrainResistance={terrainResistance3}
+               hardTerrainResistance={hardTerrainResistance}
+               mediumTerrainResistance={mediumTerrainResistance}
+               softTerrainResistance={softTerrain}
             />
             <EffectiveTraverseSpeed
                traverseSpeed={traverseSpeed}
-               hardTerrainResistance={terrainResistance1}
-               mediumTerrainResistance={terrainResistance2}
-               softTerrainResistance={terrainResistance3}
+               hardTerrainResistance={hardTerrainResistance}
+               mediumTerrainResistance={mediumTerrainResistance}
+               softTerrainResistance={softTerrain}
             />
          </TableBody>
       </Table>

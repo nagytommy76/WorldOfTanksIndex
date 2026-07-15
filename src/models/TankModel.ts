@@ -136,6 +136,7 @@ const stats = {
          rotatesInPlace: Boolean,
          rotationSpeed: Number,
          terrainResistance: [Number],
+         effectiveTerrainResistance: [Number],
          weight: Number,
          wheeled: Boolean,
          wheelAngle: { type: [Number], required: false, default: () => null },

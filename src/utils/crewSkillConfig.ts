@@ -250,13 +250,13 @@ export const CREW_SKILLS_CONFIG: Record<string, Record<string, ICrewSkillConfig>
     */
    driver_badRoadsKing: {
       mediumGroundFactor: {
-         fields: ['terrainResistance2'],
+         fields: ['mediumTerrainResistance'],
          isSituational: false,
          measureType: 'percents',
          operation: 'degressive',
       },
       softGroundFactor: {
-         fields: ['terrainResistance3'],
+         fields: ['softTerrainResistance'],
          isSituational: false,
          measureType: 'percents',
          operation: 'degressive',

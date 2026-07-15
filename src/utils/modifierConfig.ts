@@ -62,7 +62,7 @@ const MODIFIER_CONFIG: Record<string, IModifierConfig> = {
       operation: 'mul',
    },
    vehicleSpeedGain: {
-      fields: ['terrainResistance1', 'terrainResistance2', 'terrainResistance3'],
+      fields: ['hardTerrainResistance', 'mediumTerrainResistance', 'softTerrainResistance'],
       operation: 'mulSubtract',
    },
 

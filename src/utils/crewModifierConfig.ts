@@ -22,8 +22,8 @@ const CREW_MODIFIER_CONFIG: Record<string, IModifierConfig> = {
       operation: 'progressive',
    },
    vehicleSpeedGain: {
-      fields: ['terrainResistance1', 'terrainResistance2', 'terrainResistance3'],
-      operation: 'progressive',
+      fields: ['hardTerrainResistance', 'mediumTerrainResistance', 'softTerrainResistance'],
+      operation: 'degressive',
    },
    // GUNNER -------------------------------
    vehicleGunAimSpeed: {

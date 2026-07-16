@@ -40,7 +40,27 @@ const MODIFIER_CONFIG: Record<string, IModifierConfig> = {
       operation: 'mulSubtract',
    },
 
-   // --- Mobility ---
+   /**
+    * ROCKET BOOSTER MOBILITY: -------------------------------------------------
+    */
+   rocketVehicleEnginePower: {
+      fields: ['enginePower'],
+      operation: 'mul',
+   },
+   rocketVehicleForwardMaxSpeed: {
+      fields: ['forwardSpeed'],
+      operation: 'mul',
+   },
+   rocketVehicleBackwardMaxSpeed: {
+      fields: ['backwardSpeed'],
+      operation: 'mul',
+   },
+   rocketVehicleAllGroundRotationSpeed: {
+      fields: ['traverseSpeed'],
+      operation: 'mul',
+   },
+
+   // --- Mobility --------
    vehicleEnginePower: {
       fields: ['enginePower'],
       operation: 'mul',

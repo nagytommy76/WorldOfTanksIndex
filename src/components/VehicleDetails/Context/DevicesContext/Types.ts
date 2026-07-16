@@ -124,4 +124,10 @@ export const deviceModifierNames = {
    modernizedAimDrivesAimingStabilizer: ['vehicleGunAimSpeed', 'vehicleGunShotDispersion'],
    modernizedImprovedSightsEnhancedAimDrives: ['vehicleGunShotFullDispersion', 'vehicleGunAimSpeed'],
    camouflagePaint: ['vehicleCamouflage'],
+   rocketBoosters: [
+      'vehicleAllGroundRotationSpeed',
+      'vehicleBackwardMaxSpeed',
+      'vehicleForwardMaxSpeed',
+      'vehicleEnginePower',
+   ],
 }

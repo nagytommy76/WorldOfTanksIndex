@@ -2,6 +2,7 @@ import CREW_MODIFIER_CONFIG from './crewModifierConfig'
 import CrewMember from '@/CrewContext/Classes/Crew'
 
 import type { StatTransformer } from './applyStatPipeline'
+import type { CrewMembersType } from '@/CrewContext/Types'
 import Commander from '@/CrewContext/Classes/Commander'
 
 /**
@@ -46,44 +47,59 @@ import Commander from '@/CrewContext/Classes/Commander'
          Reload: 7.8 * 0.875 / (0.00375 * 115.5 + 0.5) = 7.8 * 0.875 / 0.93 ≈ 7.34s
  */
 export default function createCrewTransformer<T extends Record<string, number>>(
-   crewMember: CrewMember | Commander | undefined,
+   commander: Commander,
+   crewMembers: CrewMembersType | undefined,
 ): StatTransformer<T> {
-   if (!crewMember)
+   if (!crewMembers)
       return (baseValues: T): T => {
          return baseValues
       }
 
    return (baseValues: T): T => {
-      const vehicleParameters = { ...baseValues }
+      let vehicleParameters = { ...baseValues }
 
-      for (const element of crewMember.affectedVehicleStats) {
-         const config = CREW_MODIFIER_CONFIG[element]
-         if (!config) continue
+      vehicleParameters = ReturnAffectedVehicleParameters(vehicleParameters, commander)
 
-         for (const field of Object.keys(vehicleParameters)) {
-            if (config.fields.includes(field)) {
-               const nominal = vehicleParameters[field] as number
-
-               const key = field as keyof T
-
-               switch (config.operation) {
-                  case 'degressive':
-                     ;(vehicleParameters[key] as number) =
-                        (nominal * 0.875) / (0.00375 * crewMember.efficiencyLevel + 0.5)
-                     break
-                  case 'progressive':
-                     const crewLevel = crewMember.efficiencyLevel / 100
-                     const effectiveValue = 0.57 + 0.43 * crewLevel
-                     ;(vehicleParameters[key] as number) = nominal * effectiveValue
-                     break
-               }
-            }
-         }
+      for (const member of Object.values(crewMembers)) {
+         if (!member) continue
+         vehicleParameters = ReturnAffectedVehicleParameters(vehicleParameters, member)
       }
-
       return vehicleParameters
    }
 }
+
+function ReturnAffectedVehicleParameters<T extends Record<string, number>>(
+   vehicleParameters: T,
+   crewMember: CrewMember | Commander,
+): T {
+   for (const element of crewMember.affectedVehicleStats) {
+      const config = CREW_MODIFIER_CONFIG[element]
+      if (!config) continue
+
+      for (const field of Object.keys(vehicleParameters)) {
+         if (config.fields.includes(field)) {
+            const nominal = vehicleParameters[field] as number
+
+            const key = field as keyof T
+
+            switch (config.operation) {
+               case 'degressive':
+                  ;(vehicleParameters[key] as number) =
+                     (nominal * 0.875) / (0.00375 * crewMember.efficiencyLevel + 0.5)
+                  break
+               case 'progressive':
+                  const crewLevel = crewMember.efficiencyLevel / 100
+                  const effectiveValue = 0.57 + 0.43 * crewLevel
+                  ;(vehicleParameters[key] as number) = nominal * effectiveValue
+                  break
+            }
+         }
+      }
+   }
+
+   return vehicleParameters
+}
+
 /**
  *
  * Vehicle attributes instead scale using the formula

@@ -20,7 +20,7 @@ export default function useDispersion() {
       deviceReducer: { appliedDevicesModifiers },
    } = useContext(DeviceContext)
    const {
-      crewReducer: { crewMembers },
+      crewReducer: { crewMembers, commander },
       isCalculateSituational,
    } = useContext(CrewContext)
 
@@ -43,9 +43,8 @@ export default function useDispersion() {
             },
             [
                createDeviceTransformer(appliedDevicesModifiers),
-               createCrewTransformer(crewMembers.gunner),
-               createCrewSkillsTransformer(crewMembers.gunner, isCalculateSituational),
-               createCrewSkillsTransformer(crewMembers.driver, isCalculateSituational),
+               createCrewTransformer(commander, crewMembers),
+               createCrewSkillsTransformer(commander, crewMembers, isCalculateSituational),
             ],
          ),
       [
@@ -55,6 +54,7 @@ export default function useDispersion() {
          afterShotBase,
          accuracyBase,
          appliedDevicesModifiers,
+         commander,
          crewMembers,
          isCalculateSituational,
       ],

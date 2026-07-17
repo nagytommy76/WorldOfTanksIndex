@@ -47,12 +47,8 @@ export default function Spotting() {
             },
             [
                createDeviceTransformer(appliedDevicesModifiers),
-               createCrewTransformer(commander),
-               createCrewTransformer(crewMembers.radioman),
-               createCrewTransformer(crewMembers.loader),
-               createCrewSkillsTransformer(commander, isCalculateSituational),
-               createCrewSkillsTransformer(crewMembers.radioman, isCalculateSituational),
-               createCrewSkillsTransformer(crewMembers.gunner, isCalculateSituational),
+               createCrewTransformer(commander, crewMembers),
+               createCrewSkillsTransformer(commander, crewMembers, isCalculateSituational),
             ],
          ),
       [

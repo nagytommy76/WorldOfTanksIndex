@@ -23,7 +23,7 @@ export default function AmmoFuelEngineHealth() {
       deviceReducer: { appliedDevicesModifiers },
    } = useContext(DeviceContext)
    const {
-      crewReducer: { crewMembers },
+      crewReducer: { crewMembers, commander },
    } = useContext(CrewContext)
 
    const ammoRackHealthBase = hull.ammoRackHealth.maxHealth
@@ -55,8 +55,7 @@ export default function AmmoFuelEngineHealth() {
             },
             [
                createDeviceTransformer(appliedDevicesModifiers),
-               createCrewSkillsTransformer(crewMembers.loader),
-               createCrewSkillsTransformer(crewMembers.gunner),
+               createCrewSkillsTransformer(commander, crewMembers),
             ],
          ),
       [
@@ -68,6 +67,7 @@ export default function AmmoFuelEngineHealth() {
          engineHealthBase,
          engineRegenHealthBase,
          crewMembers,
+         commander,
       ],
    )
 

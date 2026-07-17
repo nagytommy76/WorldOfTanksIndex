@@ -75,11 +75,13 @@ export default function Firepower() {
             },
             [
                createDeviceTransformer(appliedDevicesModifiers),
-               createCrewTransformer(crewMembers.gunner),
-               createCrewTransformer(crewMembers.loader),
-               createCrewSkillsTransformer(crewMembers.gunner, isCalculateSituational, clip ? true : false),
-               createCrewSkillsTransformer(crewMembers.loader, isCalculateSituational, clip ? true : false),
-               createCrewSkillsTransformer(commander, isCalculateSituational),
+               createCrewTransformer(commander, crewMembers),
+               createCrewSkillsTransformer(
+                  commander,
+                  crewMembers,
+                  isCalculateSituational,
+                  clip ? true : false,
+               ),
             ],
          ),
       [

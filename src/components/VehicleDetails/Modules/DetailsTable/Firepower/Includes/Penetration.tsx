@@ -19,7 +19,7 @@ export default function Penetration() {
       },
    } = useContext(VehicleContext)
    const {
-      crewReducer: { crewMembers },
+      crewReducer: { crewMembers, commander },
       isCalculateSituational,
    } = useContext(CrewContext)
 
@@ -37,12 +37,9 @@ export default function Penetration() {
                maxPenetration50: 1.25,
                maxPenetration500: 1.25,
             },
-            [
-               createCrewSkillsTransformer(crewMembers.loader, isCalculateSituational),
-               createCrewSkillsTransformer(crewMembers.gunner, isCalculateSituational),
-            ],
+            [createCrewSkillsTransformer(commander, crewMembers, isCalculateSituational)],
          ),
-      [crewMembers, isCalculateSituational],
+      [crewMembers, isCalculateSituational, commander],
    )
 
    const minimumPenetrationAt50 = useMemo(

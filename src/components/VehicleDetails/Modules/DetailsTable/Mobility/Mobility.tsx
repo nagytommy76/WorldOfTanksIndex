@@ -48,7 +48,7 @@ export default function Mobility() {
       deviceReducer: { appliedDevicesModifiers },
    } = useContext(DeviceContext)
    const {
-      crewReducer: { crewMembers },
+      crewReducer: { commander, crewMembers },
    } = useContext(CrewContext)
 
    const gunDepression = -vehicleGun[selectedModuleNames.vehicleGun].elevationLimits.depression[1] || 0
@@ -86,10 +86,8 @@ export default function Mobility() {
             },
             [
                createDeviceTransformer(appliedDevicesModifiers),
-               createCrewTransformer(crewMembers.driver),
-               createCrewTransformer(crewMembers.gunner),
-               createCrewSkillsTransformer(crewMembers.gunner),
-               createCrewSkillsTransformer(crewMembers.driver),
+               createCrewTransformer(commander, crewMembers),
+               createCrewSkillsTransformer(commander, crewMembers),
             ],
          ),
       [
@@ -100,6 +98,7 @@ export default function Mobility() {
          vehicleGunRotationSpeedBase,
          appliedDevicesModifiers,
          vehicleTerrainResistanceBase,
+         commander,
          crewMembers,
       ],
    )
@@ -239,6 +238,8 @@ export default function Mobility() {
                softTerrainResistance={softTerrain}
             />
             <EffectiveTraverseSpeed
+               enginePower={enginePower}
+               stockEnginePower={vehicleEnginePowerBase}
                traverseSpeed={traverseSpeed}
                hardTerrainResistance={hardTerrainResistance}
                mediumTerrainResistance={mediumTerrainResistance}

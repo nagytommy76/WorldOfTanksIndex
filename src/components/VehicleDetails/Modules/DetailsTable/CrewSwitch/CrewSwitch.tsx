@@ -7,7 +7,7 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch, { SwitchProps } from '@mui/material/Switch'
 import Tooltip from '@mui/material/Tooltip'
 
-const CustomCrewSwitch = styled((props: SwitchProps) => (
+export const CustomSwitch = styled((props: SwitchProps) => (
    <Switch focusVisibleClassName='.Mui-focusVisible' disableRipple {...props} />
 ))(({ theme }) => ({
    width: 42,
@@ -94,7 +94,7 @@ export default function CrewSwitch() {
          <FormControlLabel
             checked={checkedState}
             onChange={handleChange}
-            control={<CustomCrewSwitch sx={{ m: 1 }} />}
+            control={<CustomSwitch sx={{ m: 1 }} />}
             labelPlacement='start'
             label='Show Effective Values'
          />

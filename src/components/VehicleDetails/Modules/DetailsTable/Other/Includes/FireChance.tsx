@@ -20,7 +20,7 @@ export default function FireChance() {
       deviceReducer: { appliedDevicesModifiers },
    } = useContext(DeviceContext)
    const {
-      crewReducer: { crewMembers },
+      crewReducer: { crewMembers, commander },
    } = useContext(CrewContext)
 
    const engineFireChance = vehicleEngine[selectedModuleNames.vehicleEngine].fireStartingChance * 100
@@ -32,10 +32,10 @@ export default function FireChance() {
             },
             [
                createDeviceTransformer(appliedDevicesModifiers),
-               createCrewSkillsTransformer(crewMembers.driver),
+               createCrewSkillsTransformer(commander, crewMembers),
             ],
          ),
-      [appliedDevicesModifiers, engineFireChance, crewMembers],
+      [appliedDevicesModifiers, engineFireChance, crewMembers, commander],
    )
 
    return (

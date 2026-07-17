@@ -21,7 +21,7 @@ export default function VehicleChassisStrength() {
       deviceReducer: { appliedDevicesModifiers },
    } = useContext(DeviceContext)
    const {
-      crewReducer: { crewMembers },
+      crewReducer: { crewMembers, commander },
    } = useContext(CrewContext)
 
    const maxVehicleHealthBase = vehicleChassis[selectedModuleNames.vehicleChassis].maxHealth
@@ -36,10 +36,10 @@ export default function VehicleChassisStrength() {
             },
             [
                createDeviceTransformer(appliedDevicesModifiers),
-               createCrewSkillsTransformer(crewMembers.driver),
+               createCrewSkillsTransformer(commander, crewMembers),
             ],
          ),
-      [appliedDevicesModifiers, maxVehicleHealthBase, maxVehicleRegenHealthBase, crewMembers],
+      [appliedDevicesModifiers, maxVehicleHealthBase, maxVehicleRegenHealthBase, crewMembers, commander],
    )
 
    return (

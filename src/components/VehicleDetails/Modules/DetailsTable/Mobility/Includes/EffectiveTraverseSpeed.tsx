@@ -9,11 +9,15 @@ export default function EffectiveTraverseSpeed({
    hardTerrainResistance,
    mediumTerrainResistance,
    softTerrainResistance,
+   enginePower,
+   stockEnginePower,
 }: {
    traverseSpeed: number
    hardTerrainResistance: number
    mediumTerrainResistance: number
    softTerrainResistance: number
+   enginePower: number
+   stockEnginePower: number
 }) {
    const {
       vehicleReducer: {
@@ -31,27 +35,51 @@ export default function EffectiveTraverseSpeed({
       vehicleChassisRotationSpeedBase,
       hardTerrainResistance,
       hardTerrainResistance,
+      enginePower,
+      stockEnginePower,
    )
    const effectiveMediumTraverseSpeedBase = calculateEffectiveTraverseSpeed(
       vehicleChassisRotationSpeedBase,
       hardTerrainResistance,
       mediumTerrainResistance,
+      enginePower,
+      stockEnginePower,
    )
    const effectiveSoftTraverseSpeedBase = calculateEffectiveTraverseSpeed(
       vehicleChassisRotationSpeedBase,
       hardTerrainResistance,
       softTerrainResistance,
+      enginePower,
+      stockEnginePower,
    )
 
    useEffect(() => {
       setEffectiveHardTraverseSpeed(
-         calculateEffectiveTraverseSpeed(traverseSpeed, hardTerrainResistance, hardTerrainResistance),
+         calculateEffectiveTraverseSpeed(
+            traverseSpeed,
+            hardTerrainResistance,
+            hardTerrainResistance,
+            enginePower,
+            stockEnginePower,
+         ),
       )
       setEffectiveMediumTraverseSpeed(
-         calculateEffectiveTraverseSpeed(traverseSpeed, hardTerrainResistance, mediumTerrainResistance),
+         calculateEffectiveTraverseSpeed(
+            traverseSpeed,
+            hardTerrainResistance,
+            mediumTerrainResistance,
+            enginePower,
+            stockEnginePower,
+         ),
       )
       setEffectiveSoftTraverseSpeed(
-         calculateEffectiveTraverseSpeed(traverseSpeed, hardTerrainResistance, softTerrainResistance),
+         calculateEffectiveTraverseSpeed(
+            traverseSpeed,
+            hardTerrainResistance,
+            softTerrainResistance,
+            enginePower,
+            stockEnginePower,
+         ),
       )
    }, [
       traverseSpeed,
@@ -59,6 +87,8 @@ export default function EffectiveTraverseSpeed({
       softTerrainResistance,
       mediumTerrainResistance,
       hardTerrainResistance,
+      enginePower,
+      stockEnginePower,
    ])
 
    return (

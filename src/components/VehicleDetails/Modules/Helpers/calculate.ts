@@ -1,18 +1,32 @@
 /**
- *
  * @param traverseSpeed the given traverse speed of the vehicle in degrees per second
  * @param hardTerrainResistance the terrain resistance of hard terrain.
  * @param targetTerrainResistance the terrain resistance of the target terrain (hard/medium/soft).
+ * @param stockEnginePower
+ * @param enginePower
  * @param crewModifier By default 0.95, Without any crew skills and perks. (RAW VALUE)
+ *
  * @returns number - The effective traverse speed in degrees per second.
+ *
+ * @example traverse =
+ * baseHullTraverse * (enginePower / stockEnginePower) * (resistHard / targetResist) * (weight / stockWeight) * rotationConstant
+ *
+ * rotationConstant = 0.95 if vehicle can rotate about its center, 1.0 if it cannot
  */
 export function calculateEffectiveTraverseSpeed(
    traverseSpeed: number,
    hardTerrainResistance: number,
    targetTerrainResistance: number,
+   enginePower: number,
+   stockEnginePower: number,
    crewModifier: number = 0.95,
 ) {
-   return traverseSpeed * (hardTerrainResistance / targetTerrainResistance) * crewModifier
+   return (
+      traverseSpeed *
+      (hardTerrainResistance / targetTerrainResistance) *
+      (enginePower / stockEnginePower) *
+      crewModifier
+   )
 }
 
 /**

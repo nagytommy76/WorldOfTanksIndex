@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
+// @ts-expect-error CSS import declarations are handled by Next.js
 import './globals.css'
 
 import Providers from '@/ProvidersProviders'

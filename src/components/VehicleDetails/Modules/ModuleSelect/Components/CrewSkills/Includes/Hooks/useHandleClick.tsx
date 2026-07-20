@@ -14,6 +14,7 @@ export default function useHandleClick(
    const {
       crewDispatch,
       crewReducer: { crewMembers, commander },
+      // isCalculateSituational,
    } = useContext(CrewContext)
 
    const [isSecondarySkill, setIsSecondarySkill] = useState<boolean>(false)
@@ -21,6 +22,31 @@ export default function useHandleClick(
       useAppliedSkills()
 
    function handleClick(event: React.MouseEvent<HTMLElement>, value: string, skill: CrewSkills) {
+      // if (skill.modifiers.find((modifier) => modifier.paramName === 'crewLevelIncrease')) {
+      //    console.log('SKILL FROM HANDLE CLICK: ', skill)
+      //    if (selectedSkills.includes('brotherhood') || selectedSkills.includes(skill.xmlName)) {
+      //       setSkillsSelected((prev) => prev - 1)
+      //       setCommonSkillsSelected((prev) => prev - 1)
+      //       crewDispatch({
+      //          type: 'REMOVE_APPLIED_CREW_MODIFIER',
+      //          payload: skill.xmlName,
+      //       })
+      //    } else {
+      //       setSkillsSelected((prev) => prev + 1)
+      //       setCommonSkillsSelected((prev) => prev + 1)
+      //       crewDispatch({
+      //          type: 'SET_APPLIED_CREW_MODIFIER',
+      //          payload: {
+      //             name: skill.xmlName,
+      //             value: skill.modifiers[0].value,
+      //             situationalParam: skill.modifiers[0].situationalParam ?? false,
+      //             isActiveSituational: isCalculateSituational,
+      //          },
+      //       })
+      //    }
+      //    return
+      // }
+      // console.log('ROLE SKILL', skill, role)
       switch (role) {
          case 'common':
             SetCommonSkills(skill, selectedSkills, setSkillsSelected, setCommonSkillsSelected, crewDispatch)
@@ -34,17 +60,10 @@ export default function useHandleClick(
             break
          default:
             /**
-             * Find the first member that has a SECONDARY role matches with the role
-             */
-            const secondarySkill = Object.values(crewMembers).find((member) => {
-               if (member && member.secondaryRole[0] === role) return true
-            })
-
-            /**
              * In this case commander has secondaryRole
              */
-            commander.secondaryRole.map((secondaryRole) => {
-               if (secondaryRole !== role) return
+            if (commander.secondaryRole.includes(role)) {
+               setIsSecondarySkill(true)
                if (selectedSkills.includes(skill.xmlName)) {
                   removeAppliedCrewSkill(skill.xmlName, 'commander')
                   return
@@ -52,6 +71,13 @@ export default function useHandleClick(
                   setAppliedCrewSkill(skill.xmlName, skill.modifiers, 'commander')
                   return
                }
+            }
+
+            /**
+             * Find the first member that has a SECONDARY role matches with the role
+             */
+            const secondarySkill = Object.values(crewMembers).find((member) => {
+               if (member && member.secondaryRole[0] === role) return true
             })
 
             /**

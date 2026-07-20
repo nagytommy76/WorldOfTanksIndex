@@ -1,5 +1,5 @@
 import CrewSkills from '@/Classes/CrewSkills'
-import type { ICrewContextActions } from '@/VehicleDetails/Context/CrewContext/Types'
+import type { ICrewContextActions } from '@/CrewContext/Types'
 import type { SetStateAction } from 'react'
 
 function SetCommonSkills(

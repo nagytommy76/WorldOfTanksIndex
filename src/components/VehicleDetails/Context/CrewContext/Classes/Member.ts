@@ -14,6 +14,7 @@ export default class Member {
            {
               value: number
               paramName: string
+              //   situationalParam?: boolean
            }
         >
       | undefined = undefined
@@ -38,25 +39,22 @@ export default class Member {
       this.efficiencyLevel = Member.BASE_TRAINING
    }
 
-   setAppliedCrewSkill(
-      skillName: string,
-      crewSkillModifiers: {
-         situationalParam: boolean
-         value: number
+   setAppliedCrewModifier(
+      modifier: {
+         name: string
          paramName: string
-         measureType: MeasureType
-      }[],
+         value: number
+         // situationalParam: boolean
+      },
+      // isActiveSituational: boolean = false,
    ) {
-      if (this.appliedCrewSkills === undefined) this.appliedCrewSkills = new Map()
-      this.appliedCrewSkills.set(skillName, crewSkillModifiers)
-   }
-
-   setAppliedCrewModifier(modifier: { name: string; paramName: string; value: number }) {
       if (!this.appliedCrewModifiers) this.appliedCrewModifiers = new Map()
       this.appliedCrewModifiers.set(modifier.name, {
          paramName: modifier.paramName,
          value: modifier.value,
+         // situationalParam: modifier.situationalParam ?? false,
       })
+      // if (isActiveSituational !== true && modifier.situationalParam === true) return
       this.efficiencyLevel = this.computeEfficiencyLevel()
    }
    clearAppliedCrewModifiers() {
@@ -68,6 +66,18 @@ export default class Member {
       if (!this.appliedCrewModifiers) return
       this.appliedCrewModifiers.delete(modifierName)
       this.efficiencyLevel = this.computeEfficiencyLevel()
+   }
+   setAppliedCrewSkill(
+      skillName: string,
+      crewSkillModifiers: {
+         situationalParam: boolean
+         value: number
+         paramName: string
+         measureType: MeasureType
+      }[],
+   ) {
+      if (this.appliedCrewSkills === undefined) this.appliedCrewSkills = new Map()
+      this.appliedCrewSkills.set(skillName, crewSkillModifiers)
    }
    removeAppliedCrewSkill(crewSkillName: string) {
       if (!this.appliedCrewSkills) return
@@ -105,12 +115,12 @@ export default class Member {
       if (this.appliedCrewModifiers) {
          let testing = 0
          this.appliedCrewModifiers.forEach((modifier) => {
-            console.log('FROM MEMBER CLASS: MODIFIER: ', modifier)
+            // console.log('FROM MEMBER CLASS: MODIFIER: ', modifier)
             testing = modifier.value - 1 + testing
          })
          testing += 1
          boostedBase *= testing
-         console.log('FROM MEMBER CLASS: BOOSTED BASE: ', boostedBase)
+         // console.log('FROM MEMBER CLASS: BOOSTED BASE: ', boostedBase)
       }
       return parseFloat(boostedBase.toFixed(4))
    }

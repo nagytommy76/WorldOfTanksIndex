@@ -6,6 +6,13 @@ import DetailsTable from '@/VehicleDetails/Modules/DetailsTable/DetailsTable'
 import VehicleContextProvider from '@/VehicleContext/VehicleContext'
 
 import MockHirschkafer from '../mocks/Hirschkafer'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+const CreateWrapper = ({ children }: { children: React.ReactNode }) => {
+   // ✅ creates a new QueryClient for each test
+   const queryClient = new QueryClient()
+   return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+}
 
 jest.mock('next/navigation', () => ({
    useParams: jest.fn(),
@@ -17,10 +24,12 @@ beforeEach(() => {
       .mockReturnValue({ tank_name: MockHirschkafer.xmlId, tank_id: MockHirschkafer._id.toString() })
 
    render(
-      <VehicleContextProvider tankDetails={MockHirschkafer}>
-         <ModuleSelect />
-         <DetailsTable />
-      </VehicleContextProvider>,
+      <CreateWrapper>
+         <VehicleContextProvider tankDetails={MockHirschkafer}>
+            <ModuleSelect />
+            <DetailsTable />
+         </VehicleContextProvider>
+      </CreateWrapper>,
    )
 })
 

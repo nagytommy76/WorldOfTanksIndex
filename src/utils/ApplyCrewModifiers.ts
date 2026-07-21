@@ -72,6 +72,8 @@ function ReturnAffectedVehicleParameters<T extends Record<string, number>>(
    vehicleParameters: T,
    crewMember: CrewMember | Commander,
 ): T {
+   if (!crewMember.affectedVehicleStats || crewMember.affectedVehicleStats.length === 0)
+      return vehicleParameters
    for (const element of crewMember.affectedVehicleStats) {
       const config = CREW_MODIFIER_CONFIG[element]
       if (!config) continue

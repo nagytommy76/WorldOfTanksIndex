@@ -6,15 +6,15 @@ import {
 
 describe('Calculate Effective Traverse Speed | Hirschkäfer |', () => {
    test('calculateEffectiveTraverseSpeed returns correct HARD terrain', () => {
-      const effectiveTraverseSpeed = calculateEffectiveTraverseSpeed(26, 1.1, 1.1, 0.95)
+      const effectiveTraverseSpeed = calculateEffectiveTraverseSpeed(26, 1.1, 1.1, 830, 830, 0.95)
       expect(effectiveTraverseSpeed).toBeCloseTo(24.7)
    })
    test('calculateEffectiveTraverseSpeed returns correct MEDIUM terrain', () => {
-      const effectiveTraverseSpeed = calculateEffectiveTraverseSpeed(26, 1.1, 1.2, 0.95)
+      const effectiveTraverseSpeed = calculateEffectiveTraverseSpeed(26, 1.1, 1.2, 830, 830, 0.95)
       expect(effectiveTraverseSpeed).toBeCloseTo(22.64)
    })
    test('calculateEffectiveTraverseSpeed returns correct SOFT terrain', () => {
-      const effectiveTraverseSpeed = calculateEffectiveTraverseSpeed(26, 1.1, 2, 0.95)
+      const effectiveTraverseSpeed = calculateEffectiveTraverseSpeed(26, 1.1, 2, 830, 830, 0.95)
       expect(effectiveTraverseSpeed).toBeCloseTo(13.59)
    })
 })

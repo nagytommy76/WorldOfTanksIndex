@@ -43,6 +43,7 @@ const MockHirschkafer: ITankData = {
       },
    },
    tankDetails: {
+      provisions: ['5379067', '5379323', '5379579'],
       tank_id: 40977,
       images: {
          small_icon:
@@ -110,6 +111,7 @@ const MockHirschkafer: ITankData = {
             name: 'Hirschkafer',
             rotatesInPlace: true,
             wheeled: false,
+            effectiveTerrainResistance: [1.1, 1.2, 2],
          },
       ],
       engines: [

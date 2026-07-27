@@ -2,14 +2,36 @@
 import { useState } from 'react'
 import Image from 'next/image'
 
-import Tabs from '@mui/material/Tabs'
-import Tab from '@mui/material/Tab'
 import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 
 import Modules from './Components/Modules'
 import Shells from './Components/Shells'
 import Devices from './Components/Devices/Devices'
 import CrewSkills from './Components/CrewSkills/CrewSkills'
+
+const Pages = {
+   modules: {
+      title: 'Modules',
+      imgSrc: '/icons/survivability/maxHealth.png',
+   },
+   shells: {
+      title: 'Shells',
+      imgSrc: '/icons/shells/ARMOR_PIERCING.png',
+   },
+   equipments: {
+      title: 'Equipments',
+      imgSrc: '/icons/vehicle_modifiers/equipments/commandersView.png',
+   },
+   crew_skills: {
+      title: 'Crew Skills',
+      imgSrc: '/icons/vehicle_modifiers/crew_skills/brotherhood.png',
+   },
+   field_modifications: {
+      title: 'Field Modifications',
+      imgSrc: '/icons/field_modification/field_modification.png',
+   },
+}
 
 export default function ModuleSelect() {
    const [value, setValue] = useState(0)
@@ -20,75 +42,28 @@ export default function ModuleSelect() {
 
    return (
       <>
-         <aside className={'w-full flex flex-col items-center gap-4 py-5 xl:py-0 xl:w-[300px]'}>
-            <Tabs
-               variant='scrollable'
-               scrollButtons='auto'
-               value={value}
-               onChange={handleChange}
-               aria-label='basic tabs example'
-            >
-               <Tab
-                  title='Modules'
-                  icon={
-                     <Image
-                        src={'/icons/survivability/maxHealth.png'}
-                        alt='Crew skills '
-                        width={50}
-                        height={50}
-                     />
-                  }
-                  {...a11yProps(0)}
-               />
-               <Tab
-                  title='Shells'
-                  icon={
-                     <Image
-                        src={'/icons/shells/ARMOR_PIERCING.png'}
-                        alt='Crew skills '
-                        width={50}
-                        height={50}
-                     />
-                  }
-                  {...a11yProps(1)}
-               />
-               <Tab
-                  title='Equipments'
-                  icon={
-                     <Image
-                        src={'/icons/vehicle_modifiers/equipments/commandersView.png'}
-                        alt='Crew skills '
-                        width={50}
-                        height={50}
-                     />
-                  }
-                  {...a11yProps(2)}
-               />
-               <Tab
-                  title='Crew Skills'
-                  icon={
-                     <Image
-                        src={'/icons/vehicle_modifiers/crew_skills/brotherhood.png'}
-                        alt='Crew skills '
-                        width={50}
-                        height={50}
-                     />
-                  }
-                  {...a11yProps(3)}
-               />
-               <Tab
-                  title='Field Modifications'
-                  icon={
-                     <Image
-                        src={'/icons/field_modification/field_modification.png'}
-                        alt='Crew skills '
-                        width={50}
-                        height={50}
-                     />
-                  }
-                  {...a11yProps(4)}
-               />
-            </Tabs>
+         <aside className={'flex flex-col items-center gap-4 py-5 xl:py-0 xl:w-[300px]'}>
+            <div className='max-w-full flex flex-row gap-3'>
+               {Object.entries(Pages).map(([pageName, data], index) => {
+                  return (
+                     <>
+                        <Image
+                           src={data.imgSrc}
+                           alt={`${pageName}-image`}
+                           width={50}
+                           height={50}
+                           onClick={(event) => handleChange(event, index)}
+                           className={`
+                           cursor-pointer
+                           transition-colors
+                           hover:bg-neutral-800
+                           ${value === index ? 'bg-amber-300' : ''} 
+                           `}
+                        />
+                     </>
+                  )
+               })}
+            </div>
             <CustomTabPanel value={value} index={0}>
                <Modules />
             </CustomTabPanel>

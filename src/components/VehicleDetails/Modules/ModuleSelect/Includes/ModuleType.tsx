@@ -1,8 +1,15 @@
+import { TypographyVariant } from '@mui/material'
 import Typography from '@mui/material/Typography'
 
-export default function ReturnTypography({ text }: { text: string }) {
+export default function ReturnTypography({
+   text,
+   variant = 'h5',
+}: {
+   text: string
+   variant?: TypographyVariant
+}) {
    return (
-      <Typography variant='h5' textAlign={'center'} className='text-xl my-1'>
+      <Typography variant={variant} textAlign={'center'} className='mb-5'>
          {text}
       </Typography>
    )

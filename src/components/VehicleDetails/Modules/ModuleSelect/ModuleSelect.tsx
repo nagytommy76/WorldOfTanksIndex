@@ -8,6 +8,7 @@ import CrewSkills from './Components/CrewSkills/CrewSkills'
 
 import SingleTab from './Includes/ModuleTabs/SingleTab'
 import CustomTabPanel from './Includes/ModuleTabs/CustomTabPanel'
+import Typography from '@mui/material/Typography'
 
 const Pages = {
    modules: {
@@ -67,6 +68,9 @@ export default function ModuleSelect() {
          </CustomTabPanel>
          <CustomTabPanel value={value} index={3}>
             <CrewSkills />
+         </CustomTabPanel>
+         <CustomTabPanel value={value} index={4}>
+            <Typography variant='h6'>Field Modifications are coming soon!</Typography>
          </CustomTabPanel>
       </aside>
    )

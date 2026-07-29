@@ -10,6 +10,7 @@ import ModuleImage from './ModuleImg/ModuleImage'
 
 import ListItemButton from '@mui/material/ListItemButton'
 import Tooltip from '@mui/material/Tooltip'
+import Typography from '@mui/material/Typography'
 
 export default function SingleModuleElement({
    module,
@@ -27,12 +28,12 @@ export default function SingleModuleElement({
    return (
       <Tooltip title={moduleName}>
          <ListItemButton
-            className='h-10 w-10 rounded-sm'
+            className='h-10 w-full rounded-sm p-2'
             selected={selected}
             onClick={onClickFn}
             sx={{
                '&.Mui-selected': {
-                  backgroundColor: 'rgba(63, 63, 63, 0.925)',
+                  backgroundColor: 'rgba(63, 63, 63, 0.725)',
                },
                '&.Mui-selected:hover': {
                   backgroundColor: 'rgba(44, 44, 44, 0.925)',
@@ -47,6 +48,9 @@ export default function SingleModuleElement({
                moduleType={moduleType}
                shellImage={'kind' in module ? module.kind : undefined}
             />
+            <Typography className='ml-2' variant='subtitle2'>
+               {moduleName}
+            </Typography>
          </ListItemButton>
       </Tooltip>
    )

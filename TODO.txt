@@ -1,0 +1,21 @@
+
+
+https://api.worldoftanks.eu/wot/encyclopedia/vehicles/?application_id=fefeeb22948e9ab6ed8c62a09515d476&tank_id=19201
+Lekérni a "name": "T-100 LT",
+és minden egyes modul neve:
+"38404": {
+    "name": "100 mm T-100",
+    "next_modules": null,
+    "next_tanks": null,
+    "is_default": true,
+    "price_xp": 0,
+    "price_credit": 240000,
+    "module_id": 38404,
+    "type": "vehicleGun"
+}, 
+
+
+
+
+
+

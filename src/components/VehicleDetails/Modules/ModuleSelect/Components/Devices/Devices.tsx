@@ -17,8 +17,8 @@ export default function Devices() {
    if (!allGroupedDevices) return null
 
    return (
-      <>
-         <ReturnTypography text='Compatible Devices' />
+      <section className='w-[330px] xl:w-[265px] p-2'>
+         <ReturnTypography text='Compatible Devices' variant='h4' />
          <Typography
             variant='caption'
             color='text.secondary'
@@ -39,6 +39,6 @@ export default function Devices() {
                />
             ))}
          </section>
-      </>
+      </section>
    )
 }

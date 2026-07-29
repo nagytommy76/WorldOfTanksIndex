@@ -21,9 +21,9 @@ export default function Shells() {
    const { setModuleName, setModuleNameByType } = useSetModuleName(vehicleDispatch)
 
    return (
-      <>
-         <ReturnTypography text='Shells' />
-         <section className='w-34 flex flex-row items-center justify-center gap-2'>
+      <section className='w-[300px] xl:w-[250px] p-2'>
+         <ReturnTypography text='Shells' variant='h4' />
+         <section className='flex flex-col items-start justify-center gap-2'>
             {Object.values(moduleGroup.shells).map((module: IShells) => (
                <SingleModuleElement
                   key={module.name}
@@ -47,6 +47,6 @@ export default function Shells() {
                />
             ))}
          </section>
-      </>
+      </section>
    )
 }

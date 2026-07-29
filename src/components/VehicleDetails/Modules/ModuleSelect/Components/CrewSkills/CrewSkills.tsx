@@ -4,10 +4,9 @@ import { useState } from 'react'
 import type { CrewSkillRoles } from '@/Classes/CrewSkills'
 import useGetCrewSkills from './Hooks/useGetCrewSkills'
 import ToggleCrewSkills from './Includes/ToggleCrewSkills'
+import ReturnTypography from '../../Includes/ModuleType'
 
 import ActiveSituational from './Includes/ActiveSituational'
-
-import Typography from '@mui/material/Typography'
 
 export default function CrewSkills() {
    const crewSkills = useGetCrewSkills()
@@ -30,8 +29,8 @@ export default function CrewSkills() {
    if (!crewSkills) return <h1>LOADING....</h1>
 
    return (
-      <>
-         <Typography variant='h6'>Crew Skills</Typography>
+      <section className='flex flex-col items-center gap-3 w-[330px] xl:w-[265px] p-2'>
+         <ReturnTypography text='Crew Skills' variant='h4' />
          <div className='flex flex-row'>
             {Object.entries(crewSkills).map(([role, skills]) => (
                <div className='flex flex-col items-center' key={role}>
@@ -53,6 +52,6 @@ export default function CrewSkills() {
             ))}
          </div>
          <ActiveSituational />
-      </>
+      </section>
    )
 }

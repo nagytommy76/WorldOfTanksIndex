@@ -33,6 +33,7 @@ const MockTaschenratte: ITankData = {
    },
    id: 41745,
    tankDetails: {
+      provisions: ['1', '2'],
       tank_id: 41745,
       images: {
          small_icon:
@@ -91,6 +92,7 @@ const MockTaschenratte: ITankData = {
             level: 11,
             weight: 40000,
             terrainResistance: [1.1, 1.3, 2.1],
+            effectiveTerrainResistance: [1.1, 1.3, 2.1],
             rotationSpeed: 15,
             maxHealth: 310,
             maxRegenHealth: 233,

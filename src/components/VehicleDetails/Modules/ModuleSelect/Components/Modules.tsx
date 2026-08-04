@@ -26,22 +26,28 @@ export default function Modules() {
                <section key={key} className='flex flex-col gap-3 w-full'>
                   {key !== 'shells' && (
                      <>
-                        <Typography variant='h6' fontSize={17} gutterBottom color='textSecondary'>
-                           {ModuleTypeTypography(key)}
-                        </Typography>
-                        {(Object.entries(modules) as KeyValuePairs<typeof modules>).map(
-                           ([moduleKey, module]) => (
-                              <SingleModuleElement
-                                 key={moduleKey}
-                                 module={module}
-                                 moduleName={setModuleName(module.name)}
-                                 moduleType={key}
-                                 selected={module.name === selectedModuleNames[key]}
-                                 onClickFn={() => {
-                                    setModuleNameByType(key, module.name)
-                                 }}
-                              />
-                           ),
+                        {(key === 'vehicleTurret' &&
+                           modules[selectedModuleNames.vehicleTurret].armor[0] === 0) ||
+                        modules[selectedModuleNames.vehicleTurret]?.armor?.length === 0 ? null : (
+                           <>
+                              <Typography variant='h6' fontSize={17} gutterBottom color='textSecondary'>
+                                 {ModuleTypeTypography(key)}
+                              </Typography>
+                              {(Object.entries(modules) as KeyValuePairs<typeof modules>).map(
+                                 ([moduleKey, module]) => (
+                                    <SingleModuleElement
+                                       key={moduleKey}
+                                       module={module}
+                                       moduleName={setModuleName(module.name)}
+                                       moduleType={key}
+                                       selected={module.name === selectedModuleNames[key]}
+                                       onClickFn={() => {
+                                          setModuleNameByType(key, module.name)
+                                       }}
+                                    />
+                                 ),
+                              )}
+                           </>
                         )}
                      </>
                   )}

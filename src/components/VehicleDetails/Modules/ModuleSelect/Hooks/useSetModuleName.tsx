@@ -5,7 +5,7 @@ import type { ModuleType } from '@/types/VehicleDetails/module'
 
 export default function useSetModuleName(vehicleDispatch: Dispatch<IVehicleContextActions>) {
    function setModuleName(moduleName: string): string {
-      return moduleName.toString().split('_').join(' ')
+      return moduleName.replace(/^turret_\d+_/i, '').replace(/_/g, ' ')
    }
 
    function setModuleNameByType(moduleType: ModuleType, moduleName: string) {

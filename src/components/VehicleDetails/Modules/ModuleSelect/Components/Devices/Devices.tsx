@@ -31,11 +31,17 @@ export default function Devices() {
          <section className='grid grid-cols-4 gap-1'>
             {Object.entries(allGroupedDevices).map(([deviceArcheType, devices]) => (
                <DeviceGroup
+                  selectedDevices={selectedDevices}
                   key={deviceArcheType}
                   archeType={deviceArcheType as DeviceModifierKeys}
                   devices={devices}
-                  isBlocked={selectedCount >= maxDevices && !(deviceArcheType in selectedDevices)}
+                  isBlocked={
+                     selectedCount >= maxDevices && selectedDevices
+                        ? !(deviceArcheType in selectedDevices)
+                        : false
+                  }
                   addSelectedDevice={addSelectedDevice}
+                  selectedCount={selectedCount}
                />
             ))}
          </section>

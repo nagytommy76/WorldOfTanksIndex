@@ -12,3 +12,5 @@ export type OverlayTypes =
    | 'none'
    | 'tiers'
    | 'supplySlotActive'
+
+export type SelectedDevices = Record<string, number>

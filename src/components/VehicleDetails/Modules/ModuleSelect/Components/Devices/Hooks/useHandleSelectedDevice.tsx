@@ -1,8 +1,9 @@
 import { useState } from 'react'
+import type { SelectedDevices } from '../Types'
 
 export default function useHandleSelectedDevice(maxDevices: number) {
    // Record<archeType, deviceId> — at most MAX_DEVICES (3) entries at any time
-   const [selectedDevices, setSelectedDevices] = useState<Record<string, number>>({})
+   const [selectedDevices, setSelectedDevices] = useState<SelectedDevices>({})
    const selectedCount = Object.keys(selectedDevices).length
 
    /**

@@ -37,13 +37,13 @@ export default function DevicesReducer(
          const incompatibleDevices = state.incompatibleDevices ?? []
          return {
             ...state,
-            incompatibleDevices: incompatibleDevices.concat(payload),
+            incompatibleDevices: incompatibleDevices.concat(payload) ?? null,
          }
       }
       case 'REMOVE_INCOMPATIBLE_DEVICE': {
          return {
             ...state,
-            incompatibleDevices: state.incompatibleDevices?.filter((d) => d !== payload),
+            incompatibleDevices: state.incompatibleDevices?.filter((d) => d !== payload) ?? null,
          }
       }
       default: {

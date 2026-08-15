@@ -1,7 +1,7 @@
 'use client'
+import { useContext } from 'react'
+import { DeviceContext } from '@/VehicleDetails/Context/DevicesContext/DeviceContext'
 import useGetDevices from './Hooks/useGetDevices'
-import useMaxDevices from './Hooks/useMaxDevices'
-import useHandleSelectedDevice from './Hooks/useHandleSelectedDevice'
 import type { DeviceModifierKeys } from '@/VehicleContext/DevicesContext/Types'
 
 import Typography from '@mui/material/Typography'
@@ -11,8 +11,7 @@ import DeviceGroup from './DeviceGroup/DeviceGroup'
 
 export default function Devices() {
    const allGroupedDevices = useGetDevices()
-   const maxDevices = useMaxDevices()
-   const { addSelectedDevice, selectedDevices, selectedCount } = useHandleSelectedDevice(maxDevices)
+   const { selectedDevices, selectedCount, maxDevices } = useContext(DeviceContext)
 
    if (!allGroupedDevices) return null
 
@@ -31,7 +30,6 @@ export default function Devices() {
          <section className='grid grid-cols-4 gap-1'>
             {Object.entries(allGroupedDevices).map(([deviceArcheType, devices]) => (
                <DeviceGroup
-                  selectedDevices={selectedDevices}
                   key={deviceArcheType}
                   archeType={deviceArcheType as DeviceModifierKeys}
                   devices={devices}
@@ -40,8 +38,6 @@ export default function Devices() {
                         ? !(deviceArcheType in selectedDevices)
                         : false
                   }
-                  addSelectedDevice={addSelectedDevice}
-                  selectedCount={selectedCount}
                />
             ))}
          </section>

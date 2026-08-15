@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/VehicleContext/DevicesContext/DeviceContext'
 import { CrewContext } from '@/VehicleDetails/Context/CrewContext/CrewContext'
@@ -9,7 +9,7 @@ import useDeviceStates from './Hooks/useDeviceStates'
 import ReturnFoundDevices from './Functions/ReturnFoundDevices'
 
 import type { IDevice } from '@/types/Devices/Devices'
-import type { OverlayTypes, DeviceTypes, SelectedDevices } from '../Types'
+import type { OverlayTypes, DeviceTypes } from '../Types'
 import type { DeviceModifierKeys } from '@/VehicleContext/DevicesContext/Types'
 
 import Menu from '@mui/material/Menu'
@@ -32,46 +32,39 @@ export default function DeviceGroup({
    archeType,
    devices,
    isBlocked,
-   addSelectedDevice,
-   selectedDevices,
-   selectedCount,
 }: {
    archeType: DeviceModifierKeys
    devices: IDevice[]
    isBlocked: boolean
-   addSelectedDevice(archeType: string, deviceId: number): void
-   selectedDevices: SelectedDevices
-   selectedCount: number
 }) {
    const { supplySlotCategory, vehicleType } = useContext(VehicleContext)
    const {
       deviceDispatch,
       deviceReducer: { incompatibleDevices },
+      addSelectedDevice,
+      selectedDevices,
+      selectedCount,
    } = useContext(DeviceContext)
    const { crewDispatch } = useContext(CrewContext)
    // ── Local state ──────────────────────────────────────────────────────────
    const foundDevices = ReturnFoundDevices(devices)
 
    // selectedDeviceType drives which overlay icon is shown on the button
-   // const { selectedDeviceTypeOverlay, setSelectedDeviceTypeOverlay, selectedDevice, setSelectedDevice } =
-   //    useDeviceStates(foundDevices.tiers || foundDevices.equipmentModernized_1)
-
-   const [selectedDeviceTypeOverlay, setSelectedDeviceTypeOverlay] = useState<OverlayTypes>('none')
-   // selectedDevice drives the icon + tooltip content shown on the button
-   const [selectedDevice, setSelectedDevice] = useState(
-      foundDevices.tiers || foundDevices.equipmentModernized_1,
-   )
-   // console.log('FOUND DEVICEsdfsdfdsffsdíS:: ', selectedDevice)
+   const { selectedDeviceTypeOverlay, setSelectedDeviceTypeOverlay, selectedDevice, setSelectedDevice } =
+      useDeviceStates(foundDevices.tiers || foundDevices.equipmentModernized_1)
+   /**
+    * @description
+    * Check if @param foundDevices contains @param selectedDevices
+    */
    useEffect(() => {
       if (foundDevices && selectedCount > 0) {
          for (const [type, device] of Object.entries(foundDevices)) {
-            if (device && selectedDevices[device.archeType] === device.id)
-               console.log('FOUND DEVICES:: ', type, 'DEVICE:: ', device)
-            // console.log('FOUND DEVICEsdfsdfdsffsdíS:: ', selectedDevice)
-            // setSelectedDevice(device)
+            if (device && selectedDevices[device.archeType] === device.id) {
+               setSelectedDeviceTypeOverlay(type as OverlayTypes)
+            }
          }
       }
-   }, [selectedDevices, foundDevices])
+   }, [selectedDevices, foundDevices, selectedCount, setSelectedDeviceTypeOverlay])
 
    const { anchorEl, setAnchorEl, open, handleMenuClose } = useMenuHandler()
 
@@ -106,7 +99,10 @@ export default function DeviceGroup({
          })
       }
    }
-
+   /**
+    * @description
+    * Called ONLY when SUPPLY SLOT (scouting etc) is selected
+    */
    function supplySlotActiveSelectAndClose() {
       setAnchorEl(null)
       setSelectedDevice(foundDevices.tiers)
@@ -147,7 +143,10 @@ export default function DeviceGroup({
       }
    }
 
-   // Called when the player picks an item (or "Deselect") from the dropdown
+   /**
+    * @description
+    * Called when the player picks an item (or "Deselect") from the dropdown
+    */
    function handleSelectAndClose(deviceType: DeviceTypes) {
       setAnchorEl(null)
       const device = foundDevices[deviceType]

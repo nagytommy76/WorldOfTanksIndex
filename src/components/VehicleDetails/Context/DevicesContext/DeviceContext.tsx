@@ -3,6 +3,8 @@ import { createContext, SetStateAction, useReducer } from 'react'
 import type { DeviceModifierKeys, IDeviceContext } from './Types'
 import { devicesInitialState } from './Types'
 import DevicesReducer from './DevicesReducer'
+import useHandleSelectedDevice from '@/VehicleDetails/Modules/ModuleSelect/Components/Devices/Hooks/useHandleSelectedDevice'
+import useMaxDevices from '@/VehicleDetails/Modules/ModuleSelect/Components/Devices/Hooks/useMaxDevices'
 
 export const DeviceContext = createContext<IDeviceContext>({
    deviceReducer: devicesInitialState,
@@ -11,11 +13,17 @@ export const DeviceContext = createContext<IDeviceContext>({
       return null
    },
    setAppliedDeviceModifier() {},
+   addSelectedDevice() {},
+   selectedDevices: {},
+   selectedCount: 0,
+   maxDevices: 0,
 })
 
 export default function DeviceContextProvider({ children }: { children: React.ReactNode }) {
    const [deviceReducer, deviceDispatch] = useReducer(DevicesReducer, devicesInitialState)
    const appliedDevicesModifiers = deviceReducer.appliedDevicesModifiers
+   const maxDevices = useMaxDevices()
+   const { addSelectedDevice, selectedDevices, selectedCount } = useHandleSelectedDevice(maxDevices)
 
    /**
     *
@@ -70,6 +78,10 @@ export default function DeviceContextProvider({ children }: { children: React.Re
          value={{
             deviceDispatch,
             deviceReducer,
+            addSelectedDevice,
+            maxDevices,
+            selectedDevices,
+            selectedCount,
             returnAppliedModifierDiplayValue,
             setAppliedDeviceModifier,
          }}

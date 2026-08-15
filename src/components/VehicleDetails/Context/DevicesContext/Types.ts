@@ -1,4 +1,5 @@
 import type { SetStateAction } from 'react'
+import { SelectedDevices } from '@/VehicleDetails/Modules/ModuleSelect/Components/Devices/Types'
 
 /**
  * @param name Name of the equipment modifier, e.g: vehicleCircularVisionRadius
@@ -37,6 +38,10 @@ export const devicesInitialState: IDevicesReducerState = {
 export interface IDeviceContext {
    deviceReducer: IDevicesReducerState
    deviceDispatch: React.Dispatch<IDevicesContextActions>
+   addSelectedDevice: (archeType: string, deviceId: number) => void
+   selectedCount: number
+   maxDevices: number
+   selectedDevices: SelectedDevices
    returnAppliedModifierDiplayValue(
       deviceNamme: DeviceModifierKeys,
       selectedSpecification: string | number,

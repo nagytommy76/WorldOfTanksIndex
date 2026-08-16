@@ -4,6 +4,16 @@ import type { MeasureType, IRolesNonCommander } from '@/Classes/CrewSkills'
 import affectedFields from './Roles'
 import Member from './Member'
 
+export type IappliedCrewSkills = Map<
+   string,
+   {
+      situationalParam: boolean
+      value: number
+      paramName: string
+      measureType: MeasureType
+   }[]
+>
+
 export default class CrewMember extends Member {
    /**
     * @param primaryRole - The crew member's main role (commander, gunner, driver, loader, radioman)
@@ -38,17 +48,7 @@ export default class CrewMember extends Member {
    /**
     * @description e.g: driver_motorExpert: paramName: "vehPenaltyForDamagedEngine"
     */
-   appliedCrewSkills:
-      | Map<
-           string,
-           {
-              situationalParam: boolean
-              value: number
-              paramName: string
-              measureType: MeasureType
-           }[]
-        >
-      | undefined = undefined
+   appliedCrewSkills: IappliedCrewSkills | undefined = undefined
 
    constructor({
       primaryRole,

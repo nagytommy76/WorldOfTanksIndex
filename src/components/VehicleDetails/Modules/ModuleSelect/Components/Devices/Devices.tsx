@@ -1,19 +1,23 @@
 'use client'
 import { useContext } from 'react'
 import { DeviceContext } from '@/VehicleDetails/Context/DevicesContext/DeviceContext'
-import useGetDevices from './Hooks/useGetDevices'
 import type { DeviceModifierKeys } from '@/VehicleContext/DevicesContext/Types'
+
+import useGetDevices from './Hooks/useGetDevices'
+import useGetBattleBoosters from './Hooks/useGetBattleBoosters'
 
 import Typography from '@mui/material/Typography'
 
 import ReturnTypography from '../../Includes/ModuleType'
 import DeviceGroup from './DeviceGroup/DeviceGroup'
+import BattleBoosters from '../BattleBoosters/BattleBoosters'
 
 export default function Devices() {
    const allGroupedDevices = useGetDevices()
+   const battleBoosters = useGetBattleBoosters()
    const { selectedDevices, selectedCount, maxDevices } = useContext(DeviceContext)
 
-   if (!allGroupedDevices) return null
+   if (!allGroupedDevices || !battleBoosters) return null
 
    return (
       <section className='w-[330px] xl:w-[265px] p-2'>
@@ -27,7 +31,7 @@ export default function Devices() {
          >
             {selectedCount} / {maxDevices} devices selected
          </Typography>
-         <section className='grid grid-cols-4 gap-1'>
+         <section className='grid grid-cols-4 gap-1 mb-3'>
             {Object.entries(allGroupedDevices).map(([deviceArcheType, devices]) => (
                <DeviceGroup
                   key={deviceArcheType}
@@ -41,6 +45,7 @@ export default function Devices() {
                />
             ))}
          </section>
+         <BattleBoosters battleBoosters={battleBoosters} />
       </section>
    )
 }

@@ -1,5 +1,6 @@
 import Typography from '@mui/material/Typography'
-import ReturnModifierDisplayString from './ReturnDisplayString'
+import ReturnPercentValue from '@/helpers/returnPercentValue'
+import ReturnModifierDisplayString, { ReturnHighlightedValueString } from './ReturnDisplayString'
 /**
  * @returns the appropriate numeric value to display.
  * @description If the supply slot is active AND a specValue exists, show the specValue (boosted value).
@@ -31,10 +32,29 @@ export default function ModifierRow({
    const displayValue = resolveDisplayValue(value, specValue, isSpecActive)
 
    // Look up the human-readable string for this modifier name
-   const displayString = ReturnModifierDisplayString(displayValue)[name]
+   // const displayString = ReturnModifierDisplayString(displayValue)[name]
+   const displayString = ReturnHighlightedValueString(displayValue)[name]
+   let finalHighlighted = displayString.highlightedText
+   switch (name) {
+      case 'vehicleForwardMaxSpeed':
+      case 'vehicleBackwardMaxSpeed':
+         break
+
+      default:
+         finalHighlighted = ReturnPercentValue(displayString.highlightedText)
+
+         break
+   }
 
    // Skip rendering if the modifier name is not recognized
    if (!displayString) return null
 
-   return <Typography variant='body2'>{displayString}</Typography>
+   return (
+      <Typography variant='body2'>
+         <span>{displayString.prefix}</span>
+         <span>{finalHighlighted}</span>
+         <span>{displayString.suffix}</span>
+         <span>{displayString.text}</span>
+      </Typography>
+   )
 }

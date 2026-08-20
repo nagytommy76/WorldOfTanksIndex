@@ -16,8 +16,29 @@ export type DeviceModifiers = {
    [archeType in DeviceModifierKeys]: IAppliedDeviceModifier[]
 }
 
+export type BattleBoosterModifierKeys = Exclude<
+   DeviceModifierKeys,
+   | 'antifragmentationLining'
+   | 'modernizedImprovedSightsEnhancedAimDrives'
+   | 'modernizedAimDrivesAimingStabilizer'
+   | 'modernizedExtraHealthReserveAntifragmentationLining'
+   | 'modernizedTurbochargerRotationMechanism'
+   | 'rocketBoosters'
+   | 'grousers'
+   | 'extraHealthReserve'
+   | 'improvedRotationMechanism'
+   | 'commandersView'
+   | 'camouflageNet'
+   | 'improvedRadioCommunication'
+   | 'stereoscope'
+   | 'camouflagePaint'
+>
+
+export type BattleBoosterModifiers = { [archeType in BattleBoosterModifierKeys]: IAppliedDeviceModifier[] }
+
 export interface IDevicesReducerState {
    appliedDevicesModifiers: DeviceModifiers | null
+   appliedBattleBoosterModifiers: BattleBoosterModifiers | null
    incompatibleDevices: string[] | null
 }
 
@@ -26,12 +47,18 @@ export type IDevicesContextActions =
         type: 'SET_DEVICE_MODIFIER'
         payload: { name: string; value: number; archeType: DeviceModifierKeys }
      }
+   | {
+        type: 'SET_BATTLE_BOOSTER_MODIFIER'
+        payload: { name: string; value: number; archeType: BattleBoosterModifierKeys }
+     }
    | { type: 'REMOVE_DEVICE_MODIFIER'; payload: { archeType: DeviceModifierKeys } }
+   | { type: 'REMOVE_BATTLE_BOOSTER_MODIFIER'; payload: { archeType: BattleBoosterModifierKeys } }
    | { type: 'SET_INCOMPATIBLE_DEVICES'; payload: string[] }
    | { type: 'REMOVE_INCOMPATIBLE_DEVICE'; payload: string }
 
 export const devicesInitialState: IDevicesReducerState = {
    appliedDevicesModifiers: null,
+   appliedBattleBoosterModifiers: null,
    incompatibleDevices: null,
 }
 

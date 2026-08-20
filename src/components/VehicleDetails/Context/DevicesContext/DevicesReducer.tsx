@@ -1,10 +1,18 @@
-import type { IDevicesReducerState, IDevicesContextActions, DeviceModifiers } from './Types'
+import type {
+   IDevicesReducerState,
+   IDevicesContextActions,
+   DeviceModifiers,
+   BattleBoosterModifiers,
+} from './Types'
 
 export default function DevicesReducer(
    state: IDevicesReducerState,
    { payload, type }: IDevicesContextActions,
 ) {
    switch (type) {
+      /**
+       * DEVICE MODIFIERS
+       */
       case 'SET_DEVICE_MODIFIER': {
          const { name, value, archeType } = payload
          const previousForArchetype = state.appliedDevicesModifiers?.[archeType] ?? []
@@ -33,6 +41,37 @@ export default function DevicesReducer(
             appliedDevicesModifiers: rest as DeviceModifiers,
          }
       }
+      /**
+       * BATTLE BOOSTER MODIFIERS
+       */
+      case 'SET_BATTLE_BOOSTER_MODIFIER':
+         const { name, value, archeType } = payload
+         const previousForArchetype = state.appliedBattleBoosterModifiers?.[archeType] ?? []
+         const otherModifiersForArchetype = previousForArchetype.filter((m) => m.name !== name)
+
+         return {
+            ...state,
+            appliedBattleBoosterModifiers: {
+               ...state.appliedBattleBoosterModifiers,
+               [archeType]: [...otherModifiersForArchetype, { name, value }],
+            } as BattleBoosterModifiers,
+         }
+
+      case 'REMOVE_BATTLE_BOOSTER_MODIFIER':
+         if (!state.appliedBattleBoosterModifiers) return state
+         // eslint-disable-next-line @typescript-eslint/no-unused-vars
+         const { [payload.archeType]: _, ...rest } = state.appliedBattleBoosterModifiers
+         if (Object.keys(rest).length === 0) {
+            return {
+               ...state,
+               appliedBattleBoosterModifiers: null,
+            }
+         }
+         return {
+            ...state,
+            appliedBattleBoosterModifiers: rest as BattleBoosterModifiers,
+         }
+
       case 'SET_INCOMPATIBLE_DEVICES': {
          const incompatibleDevices = state.incompatibleDevices ?? []
          return {

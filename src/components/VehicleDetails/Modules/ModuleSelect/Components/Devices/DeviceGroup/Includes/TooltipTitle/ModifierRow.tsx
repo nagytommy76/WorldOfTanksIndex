@@ -37,6 +37,8 @@ export default function ModifierRow({
    switch (name) {
       case 'vehicleForwardMaxSpeed':
       case 'vehicleBackwardMaxSpeed':
+      case 'vehicleEnemySpottingTime':
+      case 'vehicleOwnSpottingTime':
          break
       default:
          finalHighlighted = ReturnPercentValue(displayString.highlightedText)

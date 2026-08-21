@@ -137,7 +137,7 @@ export function ReturnHighlightedValueString(transformValue: number | string): V
       },
       vehicleOwnSpottingTime: {
          highlightedText: transformValue,
-         prefix: '',
+         prefix: '+',
          suffix: 's',
          text: ' duration you are visible to enemy vehicles',
       },

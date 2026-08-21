@@ -7,6 +7,7 @@ import { CrewContext } from '@/CrewContext/CrewContext'
 import applyStatPipeline from '@/utils/applyStatPipeline'
 import createCrewTransformer from '@/utils/ApplyCrewModifiers'
 import createCrewSkillsTransformer from '@/utils/ApplyCrewSkillModifier'
+import { createDeviceBoostersTransformer } from '@/src/utils/ApplyDeviceBooster'
 import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 
 import Table from '@mui/material/Table'
@@ -24,7 +25,7 @@ export default function Spotting() {
       },
    } = useContext(VehicleContext)
    const {
-      deviceReducer: { appliedDevicesModifiers },
+      deviceReducer: { appliedDevicesModifiers, appliedBattleBoosterModifiers },
    } = useContext(DeviceContext)
    const {
       crewReducer: { crewMembers, commander },
@@ -47,6 +48,7 @@ export default function Spotting() {
             },
             [
                createDeviceTransformer(appliedDevicesModifiers),
+               createDeviceBoostersTransformer(appliedBattleBoosterModifiers),
                createCrewTransformer(commander, crewMembers),
                createCrewSkillsTransformer(commander, crewMembers, isCalculateSituational),
             ],
@@ -56,6 +58,7 @@ export default function Spotting() {
          viewRangeStillBase,
          radioRangeBase,
          appliedDevicesModifiers,
+         appliedBattleBoosterModifiers,
          crewMembers,
          commander,
          isCalculateSituational,

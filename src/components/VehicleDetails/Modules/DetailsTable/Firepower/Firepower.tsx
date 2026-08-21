@@ -9,6 +9,7 @@ import { CrewContext } from '@/CrewContext/CrewContext'
 import applyStatPipeline from '@/utils/applyStatPipeline'
 import createCrewTransformer from '@/utils/ApplyCrewModifiers'
 import createCrewSkillsTransformer from '@/utils/ApplyCrewSkillModifier'
+import { createDeviceBoostersTransformer } from '@/src/utils/ApplyDeviceBooster'
 import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 
 import Table from '@mui/material/Table'
@@ -39,7 +40,7 @@ export default function Firepower() {
       },
    } = useContext(VehicleContext)
    const {
-      deviceReducer: { appliedDevicesModifiers },
+      deviceReducer: { appliedDevicesModifiers, appliedBattleBoosterModifiers },
    } = useContext(DeviceContext)
    const {
       crewReducer: { crewMembers, commander },
@@ -82,6 +83,7 @@ export default function Firepower() {
                   isCalculateSituational,
                   clip ? true : false,
                ),
+               createDeviceBoostersTransformer(appliedBattleBoosterModifiers),
             ],
          ),
       [
@@ -89,6 +91,7 @@ export default function Firepower() {
          vehicleReloadTime,
          shellVelocityBase,
          appliedDevicesModifiers,
+         appliedBattleBoosterModifiers,
          crewMembers,
          commander,
          isCalculateSituational,

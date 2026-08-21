@@ -6,6 +6,7 @@ import { CrewContext } from '@/CrewContext/CrewContext'
 
 import applyStatPipeline from '@/utils/applyStatPipeline'
 import { createDeviceTransformer } from '@/utils/ApplyModifiers'
+import { createDeviceBoostersTransformer } from '@/src/utils/ApplyDeviceBooster'
 import { createConcealmentSkillTransformer } from '@/utils/ApplyCrewSkillModifier'
 
 import Table from '@mui/material/Table'
@@ -30,7 +31,7 @@ export default function Concealment() {
       },
    } = useContext(VehicleContext)
    const {
-      deviceReducer: { appliedDevicesModifiers },
+      deviceReducer: { appliedDevicesModifiers, appliedBattleBoosterModifiers },
    } = useContext(DeviceContext)
    const {
       crewReducer: { commander, crewMembers },
@@ -65,11 +66,16 @@ export default function Concealment() {
                camouflageStillFire: vehicleStillCamoflageAfterFireBase,
                camouflageMovingFire: vehicleMovingCamoflageAfterFireBase,
             },
-            [createConcealmentSkillTransformer(commander), createDeviceTransformer(appliedDevicesModifiers)],
+            [
+               createConcealmentSkillTransformer(commander),
+               createDeviceTransformer(appliedDevicesModifiers),
+               createDeviceBoostersTransformer(appliedBattleBoosterModifiers),
+            ],
          ),
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [
          appliedDevicesModifiers,
+         appliedBattleBoosterModifiers,
          vehicleMovingCamoflageBase,
          vehicleStillCamoflageBase,
          vehicleMovingCamoflageAfterFireBase,

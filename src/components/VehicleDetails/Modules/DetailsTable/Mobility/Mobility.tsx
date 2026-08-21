@@ -9,6 +9,7 @@ import useSetTotalWeight from './Hooks/useSetTotalWeight'
 import applyStatPipeline from '@/utils/applyStatPipeline'
 import createCrewTransformer from '@/utils/ApplyCrewModifiers'
 import createCrewSkillsTransformer from '@/utils/ApplyCrewSkillModifier'
+import { createDeviceBoostersTransformer } from '@/src/utils/ApplyDeviceBooster'
 import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 
 import TableHeadComponent from '../Includes/TableHead'
@@ -45,7 +46,7 @@ export default function Mobility() {
       },
    } = useContext(VehicleContext)
    const {
-      deviceReducer: { appliedDevicesModifiers },
+      deviceReducer: { appliedDevicesModifiers, appliedBattleBoosterModifiers },
    } = useContext(DeviceContext)
    const {
       crewReducer: { commander, crewMembers },
@@ -86,6 +87,7 @@ export default function Mobility() {
             },
             [
                createDeviceTransformer(appliedDevicesModifiers),
+               createDeviceBoostersTransformer(appliedBattleBoosterModifiers),
                createCrewTransformer(commander, crewMembers),
                createCrewSkillsTransformer(commander, crewMembers),
             ],
@@ -97,6 +99,7 @@ export default function Mobility() {
          vehicleChassisRotationSpeedBase,
          vehicleGunRotationSpeedBase,
          appliedDevicesModifiers,
+         appliedBattleBoosterModifiers,
          vehicleTerrainResistanceBase,
          commander,
          crewMembers,

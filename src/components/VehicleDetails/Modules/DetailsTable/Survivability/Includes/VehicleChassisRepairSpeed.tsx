@@ -2,7 +2,9 @@ import { useContext, useMemo } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
 
-import applyModifiersOnVehicleDetails from '@/utils/ApplyModifiers'
+import applyStatPipeline from '@/utils/applyStatPipeline'
+import { createDeviceTransformer } from '@/utils/ApplyModifiers'
+import { createDeviceBoostersTransformer } from '@/src/utils/ApplyDeviceBooster'
 
 import TableRowComponent from '../../Includes/TableRow'
 
@@ -15,20 +17,23 @@ export default function VehicleChassisRepairSpeed() {
       },
    } = useContext(VehicleContext)
    const {
-      deviceReducer: { appliedDevicesModifiers },
+      deviceReducer: { appliedDevicesModifiers, appliedBattleBoosterModifiers },
    } = useContext(DeviceContext)
 
    const baseRepariTime = vehicleChassis[selectedModuleNames.vehicleChassis].repairTime
 
    const { chassisRepairSpeed } = useMemo(
       () =>
-         applyModifiersOnVehicleDetails(
+         applyStatPipeline(
             {
                chassisRepairSpeed: baseRepariTime,
             },
-            appliedDevicesModifiers,
+            [
+               createDeviceTransformer(appliedDevicesModifiers),
+               createDeviceBoostersTransformer(appliedBattleBoosterModifiers),
+            ],
          ),
-      [appliedDevicesModifiers, baseRepariTime],
+      [appliedDevicesModifiers, appliedBattleBoosterModifiers, baseRepariTime],
    )
 
    return (

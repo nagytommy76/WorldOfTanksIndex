@@ -8,6 +8,7 @@ import applyStatPipeline from '@/utils/applyStatPipeline'
 import createCrewTransformer from '@/utils/ApplyCrewModifiers'
 import createCrewSkillsTransformer from '@/utils/ApplyCrewSkillModifier'
 import { createDeviceTransformer } from '@/utils/ApplyModifiers'
+import { createDeviceBoostersTransformer } from '@/src/utils/ApplyDeviceBooster'
 
 export default function useDispersion() {
    const {
@@ -17,7 +18,7 @@ export default function useDispersion() {
       },
    } = useContext(VehicleContext)
    const {
-      deviceReducer: { appliedDevicesModifiers },
+      deviceReducer: { appliedDevicesModifiers, appliedBattleBoosterModifiers },
    } = useContext(DeviceContext)
    const {
       crewReducer: { crewMembers, commander },
@@ -43,6 +44,7 @@ export default function useDispersion() {
             },
             [
                createDeviceTransformer(appliedDevicesModifiers),
+               createDeviceBoostersTransformer(appliedBattleBoosterModifiers),
                createCrewTransformer(commander, crewMembers),
                createCrewSkillsTransformer(commander, crewMembers, isCalculateSituational),
             ],
@@ -54,6 +56,7 @@ export default function useDispersion() {
          afterShotBase,
          accuracyBase,
          appliedDevicesModifiers,
+         appliedBattleBoosterModifiers,
          commander,
          crewMembers,
          isCalculateSituational,

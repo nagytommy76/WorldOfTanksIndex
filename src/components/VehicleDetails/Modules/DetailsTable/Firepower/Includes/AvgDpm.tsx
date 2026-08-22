@@ -29,7 +29,10 @@ export default function AvgDpm({
    const autoreload = vehicleGun[selectedModuleNames.vehicleGun]?.autoreload
 
    const avarageDPM = returnDPM(reloadTime, armorDamage as number)
-   const baseAvarageDPM = returnDPM(reloadTime, armorDamage as number)
+   const baseAvarageDPM = returnDPM(
+      vehicleGun[selectedModuleNames.vehicleGun].reloadTime,
+      armorDamage as number,
+   )
 
    switch (true) {
       case autoreload && clip !== null:
@@ -126,7 +129,7 @@ export default function AvgDpm({
                unit='HP/min'
                modifiers={[
                   {
-                     difference: parseFloat((baseAvarageDPM - avarageDPM).toFixed(4)),
+                     difference: parseFloat((avarageDPM - baseAvarageDPM).toFixed(4)),
                      improved: true,
                   },
                ]}

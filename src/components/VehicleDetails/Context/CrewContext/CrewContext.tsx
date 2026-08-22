@@ -31,7 +31,7 @@ export default function CrewContextProvider({
 }) {
    const [crewReducer, crewDispatch] = useReducer(CrewReducer, crewInitialState)
    const {
-      deviceReducer: { appliedDevicesModifiers },
+      deviceReducer: { appliedDevicesModifiers, appliedBattleBoosterModifiers },
    } = useContext(DeviceContext)
    const [isCalculateSituational, setIsCalculateSituational] = useState<boolean>(false)
 
@@ -69,6 +69,16 @@ export default function CrewContextProvider({
          },
       })
    }, [appliedDevicesModifiers])
+   useEffect(() => {
+      if (!appliedBattleBoosterModifiers?.improvedVentilationBattleBooster) return
+      crewDispatch({
+         type: 'SET_APPLIED_CREW_MODIFIER',
+         payload: {
+            name: 'improvedVentilationBattleBooster',
+            value: appliedBattleBoosterModifiers.improvedVentilationBattleBooster[0].value,
+         },
+      })
+   }, [appliedBattleBoosterModifiers])
 
    return (
       <CrewContext.Provider

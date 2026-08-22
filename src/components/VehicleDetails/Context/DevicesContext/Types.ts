@@ -1,5 +1,5 @@
 import type { SetStateAction } from 'react'
-import { SelectedDevices } from '@/VehicleDetails/Modules/ModuleSelect/Components/Devices/Types'
+import type { SelectedDevices } from '@/VehicleDetails/Modules/ModuleSelect/Components/Devices/Types'
 
 /**
  * @param name Name of the equipment modifier, e.g: vehicleCircularVisionRadius
@@ -8,6 +8,7 @@ import { SelectedDevices } from '@/VehicleDetails/Modules/ModuleSelect/Component
 export interface IAppliedDeviceModifier {
    name: string
    value: number
+   isSupplySlot?: boolean
 }
 
 export type DeviceModifierKeys = keyof typeof deviceModifierNames
@@ -32,6 +33,7 @@ export type BattleBoosterModifierKeys = Exclude<
    | 'improvedRadioCommunication'
    | 'stereoscope'
    | 'camouflagePaint'
+   | 'improvedVentilation'
 >
 
 export type BattleBoosterModifiers = { [archeType in BattleBoosterModifierKeys]: IAppliedDeviceModifier[] }
@@ -45,7 +47,7 @@ export interface IDevicesReducerState {
 export type IDevicesContextActions =
    | {
         type: 'SET_DEVICE_MODIFIER'
-        payload: { name: string; value: number; archeType: DeviceModifierKeys }
+        payload: { name: string; value: number; archeType: DeviceModifierKeys; isSupplySlot?: boolean }
      }
    | {
         type: 'SET_BATTLE_BOOSTER_MODIFIER'
@@ -126,6 +128,7 @@ export const deviceModifierNames = {
    coatedOptics: ['vehicleCircularVisionRadius'],
    camouflageNet: ['vehicleStillCamouflageDeluxe'],
    improvedVentilation: ['crewLevel'],
+   improvedVentilationBattleBooster: ['crewLevel'],
    turbocharger: ['vehicleEnginePower', 'vehicleForwardMaxSpeed', 'vehicleBackwardMaxSpeed'],
    improvedConfiguration: [
       'vehicleRepairSpeed',

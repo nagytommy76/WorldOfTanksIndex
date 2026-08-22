@@ -14,14 +14,14 @@ export default function DevicesReducer(
        * DEVICE MODIFIERS
        */
       case 'SET_DEVICE_MODIFIER': {
-         const { name, value, archeType } = payload
+         const { name, value, archeType, isSupplySlot } = payload
          const previousForArchetype = state.appliedDevicesModifiers?.[archeType] ?? []
          const otherModifiersForArchetype = previousForArchetype.filter((m) => m.name !== name)
          return {
             ...state,
             appliedDevicesModifiers: {
                ...state.appliedDevicesModifiers,
-               [archeType]: [...otherModifiersForArchetype, { name, value }],
+               [archeType]: [...otherModifiersForArchetype, { name, value, isSupplySlot }],
             } as DeviceModifiers,
          }
       }

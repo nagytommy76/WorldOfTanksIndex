@@ -1,10 +1,11 @@
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/VehicleContext/DevicesContext/DeviceContext'
-import { CrewContext } from '@/VehicleDetails/Context/CrewContext/CrewContext'
+import { CrewContext } from '@/CrewContext/CrewContext'
 
 import useMenuHandler from './Hooks/useMenuHandler'
 import useDeviceStates from './Hooks/useDeviceStates'
+import useCheckDevices from './Hooks/useCheckDevices'
 
 import ReturnFoundDevices from './Functions/ReturnFoundDevices'
 
@@ -42,8 +43,6 @@ export default function DeviceGroup({
       deviceDispatch,
       deviceReducer: { incompatibleDevices },
       addSelectedDevice,
-      selectedDevices,
-      selectedCount,
    } = useContext(DeviceContext)
    const { crewDispatch } = useContext(CrewContext)
    // ── Local state ──────────────────────────────────────────────────────────
@@ -52,21 +51,8 @@ export default function DeviceGroup({
    // selectedDeviceType drives which overlay icon is shown on the button
    const { selectedDeviceTypeOverlay, setSelectedDeviceTypeOverlay, selectedDevice, setSelectedDevice } =
       useDeviceStates(foundDevices.tiers || foundDevices.equipmentModernized_1)
-   /**
-    * @description
-    * Check if @param foundDevices contains @param selectedDevices
-    */
-   useEffect(() => {
-      if (foundDevices && selectedCount > 0) {
-         for (const [type, device] of Object.entries(foundDevices)) {
-            if (device && selectedDevices[device.archeType] === device.id) {
-               setSelectedDeviceTypeOverlay(type as OverlayTypes)
-            }
-         }
-      }
-   }, [selectedDevices, foundDevices, selectedCount, setSelectedDeviceTypeOverlay])
-
    const { anchorEl, setAnchorEl, open, handleMenuClose } = useMenuHandler()
+   useCheckDevices(foundDevices, archeType, setSelectedDeviceTypeOverlay)
 
    /**
     * @description
@@ -124,6 +110,7 @@ export default function DeviceGroup({
                   archeType,
                   name: modifier.name,
                   value: modifier.specValue ?? modifier.value,
+                  isSupplySlot: true,
                },
             })
          })
@@ -136,6 +123,7 @@ export default function DeviceGroup({
                      archeType,
                      name: aggregatedModifier.name,
                      value: aggregatedModifier.specValue ?? aggregatedModifier.value,
+                     isSupplySlot: true,
                   },
                })
             }

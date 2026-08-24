@@ -7,6 +7,7 @@ import ToggleCrewSkills from './Includes/ToggleCrewSkills'
 import ReturnTypography from '../../Includes/ModuleType'
 
 import ActiveSituational from './Includes/ActiveSituational'
+import CrewBattleBoosters from './CrewBattleBooster/CrewBattleBoosters'
 
 export default function CrewSkills() {
    const crewSkills = useGetCrewSkills()
@@ -52,6 +53,7 @@ export default function CrewSkills() {
             ))}
          </div>
          <ActiveSituational />
+         <CrewBattleBoosters />
       </section>
    )
 }

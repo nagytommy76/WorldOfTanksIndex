@@ -20,7 +20,7 @@ export default function ToggleCrewSkills({
    commonSkillsSelected: number
    setCommonSkillsSelected: Dispatch<SetStateAction<number>>
 }) {
-   const { handleToggleChancge, selectedSkills } = useHandleToggleChange()
+   const { handleToggleChancge, selectedSkills } = useHandleToggleChange(role)
    const { handleClick, skillsSelected, isSecondarySkill } = useHandleClick(
       selectedSkills,
       role,

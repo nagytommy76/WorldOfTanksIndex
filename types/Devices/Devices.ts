@@ -5,6 +5,17 @@
  */
 type IDevicePrice = { crystal: number } | { credits: number } | { equipCoin: number }
 
+export interface ICrewSkillModifier {
+   boostSkill: {
+      name: string
+      value: number
+   }
+   mul: {
+      name: string
+      value: number
+   }
+}
+
 export interface IModifier {
    /**
     * @param {string} name The name of the modifier
@@ -63,6 +74,7 @@ export interface IDevice {
    displayName: string
    modifiers: IModifier[] | null // default: null
    aggregateModifiers: IAggregateModifier[] | null // default: null
+   crewSkillModifier?: ICrewSkillModifier
    price: IDevicePrice
    /**
     * @param vehicleLevel The vehicle level of the device (min, max)

@@ -18,6 +18,12 @@ type VehicleStatDescriptions = {
  */
 export function ReturnHighlightedValueString(transformValue: number | string): VehicleStatDescriptions {
    return {
+      crewSkillCamouflage: {
+         highlightedText: transformValue,
+         prefix: '',
+         suffix: '%',
+         text: ' to all crew members Concealment perk trained.',
+      },
       vehicleCamouflage: {
          highlightedText: transformValue,
          prefix: '+',
@@ -273,6 +279,13 @@ export function ReturnHighlightedValueString(transformValue: number | string): V
          prefix: '+',
          suffix: 'km/h',
          text: ' to top backward speed',
+      },
+
+      crewSkillStunResistance: {
+         highlightedText: transformValue,
+         prefix: '',
+         suffix: '%',
+         text: ' to Sound Detection perk trained',
       },
    }
 }

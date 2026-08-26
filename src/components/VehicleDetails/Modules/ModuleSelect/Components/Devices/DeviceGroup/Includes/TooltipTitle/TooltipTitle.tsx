@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 
-import type { IAggregateModifier, IModifier } from '@/types/Devices/Devices'
+import type { IAggregateModifier, IModifier, ICrewSkillModifier } from '@/types/Devices/Devices'
 import type { OverlayTypes } from '../../../Types'
 
 import ModifierRow from './ModifierRow'
@@ -17,11 +17,13 @@ import ModifierRow from './ModifierRow'
 export default function TooltipTitle({
    selectedDeviceTypeOverlay,
    aggregateModifiers,
+   crewSkillModifier,
    modifiers,
    children,
 }: {
    modifiers: IModifier[] | null
    aggregateModifiers: IAggregateModifier[] | null
+   crewSkillModifier?: ICrewSkillModifier | null
    children: React.ReactNode
    selectedDeviceTypeOverlay: OverlayTypes
 }) {
@@ -53,6 +55,23 @@ export default function TooltipTitle({
                   isSpecActive={isSpecActive}
                />
             ))}
+            {crewSkillModifier && (
+               // <p>{crewSkillModifier.mul.name}</p>
+               <>
+                  <ModifierRow
+                     name={crewSkillModifier.boostSkill.name}
+                     value={2}
+                     specValue={null}
+                     isSpecActive={false}
+                  />
+                  <ModifierRow
+                     name={crewSkillModifier.mul.name}
+                     value={crewSkillModifier.mul.value}
+                     specValue={null}
+                     isSpecActive={false}
+                  />
+               </>
+            )}
          </div>
       </section>
    )

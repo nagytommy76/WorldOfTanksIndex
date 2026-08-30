@@ -3,7 +3,7 @@
  * @param {credits} credits Tiers equipments
  * @param {equipCoin} equipCoin Components
  */
-type IDevicePrice = { crystal: number } | { credits: number } | { equipCoin: number }
+export type IDevicePrice = { crystal: number } | { credits: number } | { equipCoin: number }
 
 export interface ICrewSkillModifier {
    boostSkill: {

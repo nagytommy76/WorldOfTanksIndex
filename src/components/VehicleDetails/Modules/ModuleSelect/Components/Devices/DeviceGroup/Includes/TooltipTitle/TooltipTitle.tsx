@@ -1,10 +1,14 @@
 import { useContext } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
+import Image from 'next/image'
 
-import type { IAggregateModifier, IModifier, ICrewSkillModifier } from '@/types/Devices/Devices'
+import type { IAggregateModifier, IModifier, ICrewSkillModifier, IDevicePrice } from '@/types/Devices/Devices'
 import type { OverlayTypes } from '../../../Types'
 
+import Typography from '@mui/material/Typography'
+
 import ModifierRow from './ModifierRow'
+import CrewBoosterValues from './CrewBoosterValues'
 
 /**
  *
@@ -20,12 +24,14 @@ export default function TooltipTitle({
    crewSkillModifier,
    modifiers,
    children,
+   price,
 }: {
    modifiers: IModifier[] | null
    aggregateModifiers: IAggregateModifier[] | null
    crewSkillModifier?: ICrewSkillModifier | null
    children: React.ReactNode
    selectedDeviceTypeOverlay: OverlayTypes
+   price: IDevicePrice
 }) {
    const { vehicleType } = useContext(VehicleContext)
    // Whether the special (boosted) supply slot is currently active
@@ -56,14 +62,8 @@ export default function TooltipTitle({
                />
             ))}
             {crewSkillModifier && (
-               // <p>{crewSkillModifier.mul.name}</p>
                <>
-                  <ModifierRow
-                     name={crewSkillModifier.boostSkill.name}
-                     value={2}
-                     specValue={null}
-                     isSpecActive={false}
-                  />
+                  <CrewBoosterValues name={crewSkillModifier.boostSkill.name} value={2} />
                   <ModifierRow
                      name={crewSkillModifier.mul.name}
                      value={crewSkillModifier.mul.value}
@@ -73,6 +73,18 @@ export default function TooltipTitle({
                </>
             )}
          </div>
+         {'crystal' in price && <Price image='bonds' price={price.crystal} />}
+         {'credits' in price && <Price image='credits' price={price.credits} />}
+         {'equipCoin' in price && <Price image='equipCoin' price={price.equipCoin} />}
       </section>
+   )
+}
+
+function Price({ image, price }: { price: string | number; image: 'bonds' | 'credits' | 'equipCoin' }) {
+   return (
+      <div className='flex flex-row mt-5 gap-1 items-center'>
+         <Typography variant='caption'>{price}</Typography>
+         <Image src={`/icons/currency/${image}.png`} alt={`${image} icon`} width={40} height={40} />
+      </div>
    )
 }

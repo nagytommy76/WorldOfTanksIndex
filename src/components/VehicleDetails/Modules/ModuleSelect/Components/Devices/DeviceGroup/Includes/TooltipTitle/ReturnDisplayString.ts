@@ -1,7 +1,7 @@
 type VehicleStatDescriptions = {
    [key: string]: {
       highlightedText: string | number
-      prefix: '+' | '-' | ''
+      prefix: string
       suffix: 'km/h' | '%' | 's'
       text: string
    }
@@ -18,12 +18,6 @@ type VehicleStatDescriptions = {
  */
 export function ReturnHighlightedValueString(transformValue: number | string): VehicleStatDescriptions {
    return {
-      crewSkillCamouflage: {
-         highlightedText: transformValue,
-         prefix: '',
-         suffix: '%',
-         text: ' to all crew members Concealment perk trained.',
-      },
       vehicleCamouflage: {
          highlightedText: transformValue,
          prefix: '+',
@@ -240,6 +234,12 @@ export function ReturnHighlightedValueString(transformValue: number | string): V
          suffix: '%',
          text: ' chance of engine fire',
       },
+      vehicleAmmoBayStrength: {
+         highlightedText: transformValue,
+         prefix: '+',
+         suffix: '%',
+         text: ' to Safe Stowage effectiveness.',
+      },
       /**
        * @description Improved Rotation Mechanism
        */
@@ -281,11 +281,111 @@ export function ReturnHighlightedValueString(transformValue: number | string): V
          text: ' to top backward speed',
       },
 
+      /**
+       * CREW SKILL BOOSTERS
+       */
+
+      crewSkillPractical: {
+         highlightedText: transformValue,
+         prefix: '+',
+         suffix: '%',
+         text: ' to Practicality perk trained.',
+      },
+
+      crewSkillStunResistance: {
+         highlightedText: transformValue,
+         prefix: '+',
+         suffix: '%',
+         text: ' to Sound Detection perk.',
+      },
+      crewSkillFireFighting: {
+         highlightedText: transformValue,
+         prefix: '+',
+         suffix: '%',
+         text: ' to Firefighting perk.',
+      },
+      crewSkillRancorousDuration: {
+         highlightedText: transformValue,
+         prefix: '+',
+         suffix: '%',
+         text: ' to Designated Target perk.',
+      },
+      crewSkillSmoothRiding: {
+         highlightedText: transformValue,
+         prefix: '+',
+         suffix: '%',
+         text: ' to Smooth Riding skill.',
+      },
+      crewSkillSmoothTurret: {
+         highlightedText: transformValue,
+         prefix: '+',
+         suffix: '%',
+         text: ' to Snap Shot skill.',
+      },
+      crewSkillVirtuoso: {
+         highlightedText: transformValue,
+         prefix: '+',
+         suffix: '%',
+         text: ' to Clutch Braking skill.',
+      },
+   }
+}
+
+export function ReturnCrewSkillBoosterString(transformValue: number | string): VehicleStatDescriptions {
+   return {
+      crewSkillCamouflage: {
+         highlightedText: transformValue,
+         prefix: '',
+         suffix: '%',
+         text: 'Concealment perk trained for all crew members to ',
+      },
       crewSkillStunResistance: {
          highlightedText: transformValue,
          prefix: '',
          suffix: '%',
-         text: ' to Sound Detection perk trained',
+         text: 'Sound Detection perk trained to ',
+      },
+      crewSkillFireFighting: {
+         highlightedText: transformValue,
+         prefix: '',
+         suffix: '%',
+         text: 'Firefighting perk trained to ',
+      },
+      crewSkillPedant: {
+         highlightedText: transformValue,
+         prefix: '',
+         suffix: '%',
+         text: 'Safe Stowage perk trained to ',
+      },
+      crewSkillPractical: {
+         highlightedText: transformValue,
+         prefix: '',
+         suffix: '%',
+         text: 'Practicality perk trained to ',
+      },
+      crewSkillRancorous: {
+         highlightedText: transformValue,
+         prefix: '',
+         suffix: '%',
+         text: 'Designated Target perk trained to ',
+      },
+      crewSkillSmoothRiding: {
+         highlightedText: transformValue,
+         prefix: '',
+         suffix: '%',
+         text: 'Smooth Riding skill trained to ',
+      },
+      crewSkillSmoothTurret: {
+         highlightedText: transformValue,
+         prefix: '',
+         suffix: '%',
+         text: 'Snap Shot skill trained to ',
+      },
+      crewSkillVirtuoso: {
+         highlightedText: transformValue,
+         prefix: '',
+         suffix: '%',
+         text: 'Clutch Braking skill trained to ',
       },
    }
 }

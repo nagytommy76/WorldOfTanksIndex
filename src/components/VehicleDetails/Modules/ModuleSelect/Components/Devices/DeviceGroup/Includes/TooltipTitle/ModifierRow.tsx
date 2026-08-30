@@ -33,6 +33,8 @@ export default function ModifierRow({
 
    // Look up the human-readable string for this modifier name
    const displayString = ReturnHighlightedValueString(displayValue)[name]
+
+   if (!displayString) return null
    let finalHighlighted = displayString.highlightedText
    switch (name) {
       case 'vehicleForwardMaxSpeed':
@@ -44,9 +46,6 @@ export default function ModifierRow({
          finalHighlighted = ReturnPercentValue(displayString.highlightedText)
          break
    }
-
-   // Skip rendering if the modifier name is not recognized
-   if (!displayString) return null
 
    return (
       <Typography variant='body2'>

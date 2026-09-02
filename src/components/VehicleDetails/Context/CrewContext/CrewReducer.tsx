@@ -5,6 +5,10 @@ export default function CrewReducer(
    action: ICrewContextActions,
 ): ICrewReducerState {
    switch (action.type) {
+      case 'ADD_CREW_BOOSTER':
+         const { boosterName, modifierValueMul } = action.payload
+
+         return { ...state }
       case 'TOGGLE_COMMANDER_BONUS':
          const newToggleCrewMembers = state.crewMembers
          const { checked, commanderEfficiency } = action.payload

@@ -60,6 +60,10 @@ export type ICrewContextActions =
    | {
         type: 'RESET_APPLIED_CREW_SKILLS'
      }
+   | {
+        type: 'ADD_CREW_BOOSTER'
+        payload: { boosterName: string; modifierValueMul: number }
+     }
 
 export interface ICrewContext {
    crewReducer: ICrewReducerState

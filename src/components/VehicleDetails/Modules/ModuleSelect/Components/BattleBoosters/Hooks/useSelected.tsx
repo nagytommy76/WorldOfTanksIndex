@@ -20,26 +20,36 @@ export default function useSelected(booster: IDevice) {
     * @description Checks if incompatibleDevices is null -> set blocked
     */
    useEffect(() => {
-      if (!incompatibleDevices) {
-         setIsBolcked(true)
+      if (!appliedBattleBoosterModifiers) {
+         if (incompatibleDevices) {
+            const foundInAppliedModifiers =
+               incompatibleDevices.includes(booster.icon) ||
+               Object.keys(selectedDevices).includes(booster.icon)
+            if (foundInAppliedModifiers) {
+               setIsBolcked(!foundInAppliedModifiers)
+            } else {
+               setIsBolcked(true)
+               deviceDispatch({
+                  type: 'REMOVE_BATTLE_BOOSTER_MODIFIER',
+                  payload: {
+                     archeType: booster.icon as BattleBoosterModifierKeys,
+                  },
+               })
+               setISSelected(true)
+            }
+         }
          return
       }
-      const foundInAppliedModifiers =
-         incompatibleDevices.includes(booster.icon) || Object.keys(selectedDevices).includes(booster.icon)
 
-      if (foundInAppliedModifiers) {
-         setIsBolcked(!foundInAppliedModifiers)
-      } else {
+      const appliedBoosters = Object.keys(appliedBattleBoosterModifiers)
+      if (appliedBoosters.length === 1 && !appliedBoosters.includes(booster.icon)) {
          setIsBolcked(true)
-         deviceDispatch({
-            type: 'REMOVE_BATTLE_BOOSTER_MODIFIER',
-            payload: {
-               archeType: booster.icon as BattleBoosterModifierKeys,
-            },
-         })
          setISSelected(true)
+      } else {
+         setIsBolcked(false)
+         setISSelected(false)
       }
-   }, [incompatibleDevices, booster.icon, selectedDevices, deviceDispatch])
+   }, [appliedBattleBoosterModifiers, booster.icon, incompatibleDevices, selectedDevices, deviceDispatch])
 
    function AddRemoveBooster() {
       if (booster.modifiers) {

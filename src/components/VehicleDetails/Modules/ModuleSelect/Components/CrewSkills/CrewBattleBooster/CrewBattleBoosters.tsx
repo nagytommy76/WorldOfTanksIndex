@@ -1,6 +1,5 @@
-import React from 'react'
-
-import type { IDevice } from '@/types/Devices/Devices'
+import { useContext } from 'react'
+import { CrewContext } from '@/CrewContext/CrewContext'
 
 import Image from 'next/image'
 
@@ -15,10 +14,59 @@ import TooltipTitle from '../../Devices/DeviceGroup/Includes/TooltipTitle/Toolti
 import Typography from '@mui/material/Typography'
 
 import useGetCrewBoosters from '../Hooks/useGetCrewBoosters'
+import { CrewSkillRoles } from '@/Classes/CrewSkills'
+import type { IDevice } from '@/types/Devices/Devices'
 
 export default function CrewBattleBoosters() {
    const crewBoosters = useGetCrewBoosters()
+   const {
+      crewReducer: { commander, crewMembers },
+   } = useContext(CrewContext)
+
+   function AddCrewBooster(boosterName: string, crewBooster: IDevice) {
+      const boosterSplit = boosterName.split('_')
+
+      switch (boosterSplit.length) {
+         /**
+          * naturalCover || fireFighting
+          */
+         case 1:
+            break
+         default:
+            const crewSkillRole = boosterSplit[0] as 'commander' | 'gunner' | 'loader' | 'driver'
+
+            if (crewSkillRole === 'commander') {
+               const commanderHasSkill: boolean = commander.appliedCrewSkills?.has(boosterName) ? true : false
+            } else {
+               const currentCrewMember = crewMembers[crewSkillRole]
+               let crewMemberHasSkill: boolean = false
+
+               /**
+                * in this case a crew member has an applied crew skill: gunner_rancorous, loader_pedant
+                */
+               if (currentCrewMember && currentCrewMember.appliedCrewSkills?.has(boosterName)) {
+                  crewMemberHasSkill = true
+
+                  const test = currentCrewMember.appliedCrewSkills.get(boosterName)?.map((skill) => {
+                     return {
+                        ...skill,
+                        value: (skill.value *= crewBooster.crewSkillModifier?.mul?.value || 1),
+                     }
+                  })
+
+                  console.log(test)
+
+                  if (test) currentCrewMember.appliedCrewSkills.set(boosterName, test)
+               } else {
+               }
+            }
+
+            break
+      }
+   }
+
    if (!crewBoosters) return
+
    return (
       <>
          <ReturnTypography text='Crew Directives' variant='h6' />
@@ -33,6 +81,7 @@ export default function CrewBattleBoosters() {
                         modifiers={crewBooster.modifiers}
                         aggregateModifiers={crewBooster.aggregateModifiers}
                         crewSkillModifier={crewBooster.crewSkillModifier}
+                        price={crewBooster.price}
                      >
                         <Typography textAlign={'center'} variant='body1' gutterBottom className='font-bold'>
                            {crewBooster.displayName}
@@ -45,7 +94,7 @@ export default function CrewBattleBoosters() {
                      <Button
                         disabled={false}
                         id='boosters-button'
-                        onClick={() => {}}
+                        onClick={() => AddCrewBooster(crewBooster.icon, crewBooster)}
                         //  sx={{
                         //     opacity: isBlocked ? 0.5 : 1,
                         //  }}

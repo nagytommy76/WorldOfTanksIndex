@@ -66,6 +66,15 @@ const roles: Record<VehicleRoles, { name: string; description: string }> = {
       name: 'Wheeled Light Tank',
       description: 'Vehicles with outstanding dynamic characteristics, but weak spot capabilities.',
    },
+   role_LT_scout: {
+      name: 'Scout Light Tank',
+      description: 'Scout tanks are small, agile vehicles built for spotting enemies.',
+   },
+   role_LT_support: {
+      name: 'Support Light Tank',
+      description:
+         'Support light tanks use their high mobility, excellent maneuverability, and powerful guns to quickly switch flanks and cause significant damage before retreating to safety.',
+   },
    role_MT_assault: {
       name: 'Assault Medium Tank',
       description:

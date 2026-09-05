@@ -21,6 +21,12 @@ export type MechanicNameKey =
    | 'wheeledDash'
    | 'lowChargeShot'
    | 'propellantAfterburnerGun'
+   | 'auxiliaryRocketLauncher'
+   | 'shellParamsSwitcher'
+   | 'sightPointer'
+   | 'shellCalibration'
+   | 'autoreloaderSurge'
+   | 'bustleFeed'
 
 const MECHANIC_NAMES: Record<
    MechanicNameKey,
@@ -30,6 +36,20 @@ const MECHANIC_NAMES: Record<
       icon: string
    }
 > = {
+   /**
+    * 
+When activated, the device scans a sector in front of your vehicle, revealing concealed targets before a cooldown. If it
+reveals an unspotted enemy, you also immediately become spotted. You can manually stop the scan after a short delay.
+    */
+   /**
+    * @description china:Ch71_WZ_219
+    */
+   sightPointer: {
+      name: 'Infrared Search and Track (IRST)',
+      description:
+         'When activated, the device scans a sector in front of your vehicle, revealing concealed targets before a cooldown. If it reveals an unspotted enemy, you also immediately become spotted. You can manually stop the scan after a short delay.',
+      icon: 'sightPointer',
+   },
    /**
     * @description China Ch67_BZ_79
     */
@@ -83,6 +103,15 @@ const MECHANIC_NAMES: Record<
       description:
          "Pressing the activation button fires your vehicle's auxiliary weapons at the target. This additional firepower comes with its own reload cycle, independent of the main gun.",
       icon: 'supportWeapon',
+   },
+   /**
+    * @description G195_HWK_40 and others
+    */
+   shellParamsSwitcher: {
+      name: 'Shell Calibration System',
+      description:
+         "The vehicle's gun has special devices that allow some shell parameters to be modified before firing. Parameters for different shells vary based on the selected mode, and each mode lets you quickly adapt to different combat situations.",
+      icon: 'shellParamsSwitcher',
    },
    /**
     * @description Russian R228_KR_1
@@ -193,6 +222,15 @@ const MECHANIC_NAMES: Record<
       icon: 'pillboxSiegeMode',
    },
    /**
+    * @description sweden:S41_BV_111
+    */
+   bustleFeed: {
+      name: 'External Ammunition Feed mode',
+      description:
+         "This vehicle's External Ammunition Supply Module allows it to fire powerful high-charge unitary rounds that cause increased damage. While active, the module also reduces mobility and fire rate.",
+      icon: 'bustleFeed',
+   },
+   /**
     * @description France F135_AS_XX_40_t
     */
    stationaryReload: {
@@ -227,6 +265,33 @@ const MECHANIC_NAMES: Record<
       description:
          'The system keeps the gun cooled, allowing for highly accurate firing. The gun heats up when fired, but begins cooling down and returns to improved parameters during reload. The higher its temperature, the more some of its parameters change.',
       icon: 'heatingZonesGun',
+   },
+   /**
+    * @description japan:J53_Ho_Ri_Shugo
+    */
+   auxiliaryRocketLauncher: {
+      name: 'Coaxial Rocket Launcher',
+      description:
+         'This vehicle is equipped with a rocket launcher mounted in the gun mantlet. Activate the ability to switch to the secondary weapon aiming sight, and then launch an unguided HE rocket with the fire button.',
+      icon: 'auxiliaryRocketLauncher',
+   },
+   /**
+    * @description czech:Cz46_Vz_63P
+    */
+   shellCalibration: {
+      name: 'Adjustable Fuze Setter',
+      description:
+         "When you hit a visible enemy vehicle with a shell, the fuze setter on the next shell is adjusted. If the initial shot penetrated enemy armor, the next shot's damage is increased. If it did not, the next shot's penetration is increased.",
+      icon: 'shellCalibration',
+   },
+   /**
+    * @description italy:It43_CAV_mod_71
+    */
+   autoreloaderSurge: {
+      name: 'Forced Loading Mechanism',
+      description:
+         'The mechanism instantly reduces shell reload to a short fixed time. Each use consumes one charge per shell, and charges replenish over time-faster when the clip is full. A set number of charges is available at the start of battle.',
+      icon: 'autoreloaderSurge',
    },
 }
 

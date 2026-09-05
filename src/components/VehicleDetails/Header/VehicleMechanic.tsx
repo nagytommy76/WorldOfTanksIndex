@@ -50,6 +50,9 @@ function DisplayMechanic({ mechanicName }: { mechanicName: MechanicNameKey }) {
 export default function VehicleMechanic({ vehicleMechanic }: { vehicleMechanic: unknown }) {
    const pathname = usePathname().split('/')[2]
 
+   /**
+    * @description Vehicles that doesn't have mechanic names
+    */
    switch (pathname) {
       case 'G187_Taschenratte':
          return <DisplayMechanic mechanicName={'supportWeapon'} />
@@ -67,6 +70,12 @@ export default function VehicleMechanic({ vehicleMechanic }: { vehicleMechanic: 
          return <DisplayMechanic mechanicName={'twinGun'} />
       case 'A195_Gorilla':
          return <DisplayMechanic mechanicName={'lowChargeShot'} />
+      case 'G193_Pz_Kpfw_55':
+      case 'G195_HWK_40':
+      case 'G196_Versuchspanzer_57':
+      case 'G197_Pz_Kpfw_Neu':
+      case 'G198_Kampfpanzer_67':
+         return <DisplayMechanic mechanicName={'shellParamsSwitcher'} />
       default:
          break
    }

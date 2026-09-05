@@ -22,6 +22,8 @@ import type {
    ExecutorMechanics,
    GorillaMechanics,
    FauteurMechanics,
+   NeuLineMechanics,
+   Wz219Mechanics,
 } from './Types'
 import TIER_XI_VEHICLES from '@/src/helpers/tierXITanks'
 
@@ -29,6 +31,7 @@ import Hirschkafer from './Includes/germany/Hirschkafer'
 import Borkenkafer from './Includes/germany/Borkenkafer'
 import Taschenratte from './Includes/germany/Taschenratte'
 import Leo120 from './Includes/germany/Leo120'
+import Neu from './Includes/germany/Neu'
 // USSR-----------
 import Kr1 from './Includes/ussr/Kr1'
 import Obj432u from './Includes/ussr/obj432u'
@@ -48,6 +51,7 @@ import Executor from './Includes/uk/Executor'
 // China --------------
 import Bz79 from './Includes/china/Bz79'
 import PTZ78 from './Includes/china/PTZ78'
+import WZ219 from './Includes/china/WZ219'
 // Poland --------------
 import Szakal from './Includes/poland/Szakal'
 // Sweden --------------
@@ -65,6 +69,12 @@ export default function Mechanics({ mechanics }: { mechanics: Record<string, unk
          return <Borkenkafer mechanics={mechanics as BorkenkaferMechanics} />
       case 'G187_Taschenratte':
          return <Taschenratte mechanics={mechanics as TaschenratteMechanics} />
+      case 'G193_Pz_Kpfw_55':
+      case 'G195_HWK_40':
+      case 'G196_Versuchspanzer_57':
+      case 'G197_Pz_Kpfw_Neu':
+      case 'G198_Kampfpanzer_67':
+         return <Neu mechanics={mechanics as NeuLineMechanics} />
       case 'G185_Leopard_120_Verbessert':
          return <Leo120 mechanics={mechanics as Leo120Mechanics} />
       case 'R228_KR_1':
@@ -93,6 +103,8 @@ export default function Mechanics({ mechanics }: { mechanics: Record<string, unk
          return <Bz79 mechanics={mechanics as Bz79Mechanics} />
       case 'Ch70_PTZ_78':
          return <PTZ78 mechanics={mechanics as Ptz78Mechanics} />
+      case 'Ch71_WZ_219':
+         return <WZ219 mechanics={mechanics as Wz219Mechanics} />
       case 'Pl37_CS_67_Szakal':
          return <Szakal mechanics={mechanics as SzakalMechanics} />
       case 'S36_Strv_107_12':

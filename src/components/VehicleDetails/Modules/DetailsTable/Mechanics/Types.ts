@@ -3,6 +3,10 @@ type MulType = {
    value: string
 }
 
+export type NeuLineMechanics = {
+   mechanics: { shellParamsSwitchingTime: number }
+}
+
 export type Leo120Mechanics = {
    mechanics: {
       accuracyDispersionCap: string
@@ -313,6 +317,48 @@ export type Ptz78Mechanics = {
          }
       }
       modifiers: Array<MulType>
+   }
+}
+
+export type Wz219Mechanics = {
+   mechanics: {
+      sightPointerDeployTime: number
+      sightPointerReloadTime: number
+      sightPointerDuration: number
+      sightPointerRotationSpeed: string
+      sightPointerSectorAngleStart: number
+      sightPointerSectorAngleEnd: number
+      sightPointerSelfSpottingTime: number
+      sightPointerViewRange: number
+      sightPointerConsealmentFoliage: string
+      sightPointerConsealmentMoving: string
+   }
+
+   sightPointer: {
+      initialDeployTime: number
+      reloadTime: number
+      activeStages: number
+      selfReveal: string
+      selfRevealVisionTime: number
+      sightPointerStages: {
+         stage: Array<{
+            id: string
+            duration: string
+            angle: string
+            vision_modifiers: {
+               mul: Array<{
+                  name: string
+                  value: string
+               }>
+            }
+            vehicle_modifiers: {
+               mul: {
+                  name: string
+                  value: string
+               }
+            }
+         }>
+      }
    }
 }
 

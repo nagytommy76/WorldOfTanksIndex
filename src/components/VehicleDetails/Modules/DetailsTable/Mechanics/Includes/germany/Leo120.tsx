@@ -1,5 +1,5 @@
-import TableRowComponent from '../../Includes/TableRow'
-import type { Leo120Mechanics } from '../Types'
+import TableRowComponent from '../../../Includes/TableRow'
+import type { Leo120Mechanics } from '../../Types'
 
 export default function Leo120({ mechanics }: { mechanics: Leo120Mechanics }) {
    return (

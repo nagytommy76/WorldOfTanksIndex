@@ -25,10 +25,10 @@ import type {
 } from './Types'
 import TIER_XI_VEHICLES from '@/src/helpers/tierXITanks'
 
-import Hirschkafer from './Includes/Hirschkafer'
-import Borkenkafer from './Includes/Borkenkafer'
-import Taschenratte from './Includes/Taschenratte'
-import Leo120 from './Includes/Leo120'
+import Hirschkafer from './Includes/germany/Hirschkafer'
+import Borkenkafer from './Includes/germany/Borkenkafer'
+import Taschenratte from './Includes/germany/Taschenratte'
+import Leo120 from './Includes/germany/Leo120'
 // USSR-----------
 import Kr1 from './Includes/ussr/Kr1'
 import Obj432u from './Includes/ussr/obj432u'

@@ -1,5 +1,5 @@
-import TableRowComponent from '../../Includes/TableRow'
-import type { HirschkaferMechanics } from '../Types'
+import TableRowComponent from '../../../Includes/TableRow'
+import type { HirschkaferMechanics } from '../../Types'
 
 export default function Hirschkafer({ mechanics }: { mechanics: HirschkaferMechanics }) {
    const preheatDispersionCap = -Number(mechanics.mechanics.preheatDispersionCap.split('%')[0])

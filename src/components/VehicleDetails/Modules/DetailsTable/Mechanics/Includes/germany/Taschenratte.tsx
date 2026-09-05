@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
-import TableRowComponent from '../../Includes/TableRow'
-import type { TaschenratteMechanics } from '../Types'
+import TableRowComponent from '../../../Includes/TableRow'
+import type { TaschenratteMechanics } from '../../Types'
 
 export default function Taschenratte({ mechanics }: { mechanics: TaschenratteMechanics }) {
    const {

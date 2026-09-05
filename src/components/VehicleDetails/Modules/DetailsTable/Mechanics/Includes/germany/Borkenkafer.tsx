@@ -1,9 +1,9 @@
-import TableRowComponent from '../../Includes/TableRow'
-import type { BorkenkaferMechanics } from '../Types'
+import TableRowComponent from '../../../Includes/TableRow'
+import type { BorkenkaferMechanics } from '../../Types'
 
 export default function Borkenkafer({ mechanics }: { mechanics: BorkenkaferMechanics }) {
    const preheatDispersionCap = Number(
-      mechanics.mechanics.designatorMarkedEnemiesAdditionalDamage.split('%')[0]
+      mechanics.mechanics.designatorMarkedEnemiesAdditionalDamage.split('%')[0],
    )
 
    return (

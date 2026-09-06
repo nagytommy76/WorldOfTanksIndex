@@ -40,7 +40,7 @@ function DisplayMechanic({ mechanicName }: { mechanicName: MechanicNameKey }) {
                />
             </div>
          </Tooltip>
-         <Typography variant='h5' className='text-xl xl:text-2xl'>
+         <Typography variant='h6' className='text-xl xl:text-2xl font-semibold'>
             {MECHANIC_NAMES[mechanicName].name}
          </Typography>
       </div>
@@ -64,12 +64,16 @@ export default function VehicleMechanic({ vehicleMechanic }: { vehicleMechanic: 
          return <DisplayMechanic mechanicName={'stationaryReload'} />
       case 'J52_STK_2':
          return <DisplayMechanic mechanicName={'heatingZonesGun'} />
+      case 'J53_Ho_Ri_Shugo':
+         return <DisplayMechanic mechanicName={'auxiliaryRocketLauncher'} />
       case 'A179_Black_Rock':
          return <DisplayMechanic mechanicName={'chargeableBurst'} />
       case 'GB147_FV4025_Contriver':
          return <DisplayMechanic mechanicName={'twinGun'} />
       case 'A195_Gorilla':
          return <DisplayMechanic mechanicName={'lowChargeShot'} />
+      case 'Cz46_Vz_63P':
+         return <DisplayMechanic mechanicName={'shellCalibration'} />
       case 'G193_Pz_Kpfw_55':
       case 'G195_HWK_40':
       case 'G196_Versuchspanzer_57':

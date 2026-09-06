@@ -444,12 +444,45 @@ export type Strv107Mechanics = {
    }
 }
 
+export type Bv111Mechanics = {
+   mechanics: {
+      bustleFeedDamagePerShot: number
+      bustleFeedRateOfFire: string
+      bustleFeedMaxSpeed: string
+      bustleFeedSwitchingToEASMMode: number
+      bustleFeedSwitchingToStandardMode: number
+   }
+   bustleFeed: {
+      activationTime: number
+      deactivationTime: number
+      bustleShotReloadFactor: number
+      bustleShotDamageBonusShell0: number
+      bustleShotDamageBonusShell1: number
+      modifiers: {
+         mul: {
+            name: string
+            value: string
+         }
+      }
+   }
+}
+
 // Japan --------------------------------------------------------------------------------------------------------
 export type STK2Mechanics = {
    mechanics: {
       coolingTime: number
       coolingDelay: number
       heatingPerShot: string
+   }
+}
+
+export type HoriShugoMechanics = {
+   mechanics: {
+      auxiliaryRocketLauncherReloadTime: number
+      auxiliaryRocketLauncherAvgDamage: number
+      auxiliaryRocketLauncherPenetration: number
+      auxiliaryRocketLauncherVelocity: number
+      auxiliaryRocketLauncherDispersion: number
    }
 }
 
@@ -478,5 +511,31 @@ export type FauteurMechanics = {
       propellantPostLimitDispersion: string
       propellantPostLimitAimingTime: string
       propellantOverchargeSwitchCooldown: number
+   }
+}
+
+// CHECH --------------------------------------------------------------------------------------
+export type Vz63PMechanics = {
+   mechanics: {
+      shellCalibrationAvgDamage: string
+      shellCalibrationAvgPenetration: string
+   }
+}
+
+// ITALY ------------------------------------------------
+export type CavMod71Mechanics = {
+   mechanics: {
+      autoreloaderSurgeMaxCharges: number
+      autoreloaderSurgeInitCharges: number
+      autoreloaderSurgeChargeTimeSlow: number
+      autoreloaderSurgeChargeTimeFast: number
+      autoreloaderSurgeBoostedReloadTime: number
+   }
+   autoreloaderSurge: {
+      maxCharges: number
+      startCharges: number
+      chargeTimeSRegular: number
+      chargeTimeSFullClip: number
+      reloadTime: number
    }
 }

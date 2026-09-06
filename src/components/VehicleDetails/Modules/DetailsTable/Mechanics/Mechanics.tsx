@@ -24,6 +24,10 @@ import type {
    FauteurMechanics,
    NeuLineMechanics,
    Wz219Mechanics,
+   HoriShugoMechanics,
+   Vz63PMechanics,
+   Bv111Mechanics,
+   CavMod71Mechanics,
 } from './Types'
 import TIER_XI_VEHICLES from '@/src/helpers/tierXITanks'
 
@@ -56,8 +60,14 @@ import WZ219 from './Includes/china/WZ219'
 import Szakal from './Includes/poland/Szakal'
 // Sweden --------------
 import Strv107 from './Includes/sweden/Strv107'
+import BV111 from './Includes/sweden/BV111'
 // Japan --------------
 import STK2 from './Includes/japan/STK2'
+import HoriShugo from './Includes/japan/HoRiShugo'
+// Checz -----------------------
+import Vz63P from './Includes/czech/Vz63P'
+// Italy --------------------------------
+import CAVmod71 from './Includes/italy/CAVmod71'
 
 export default function Mechanics({ mechanics }: { mechanics: Record<string, unknown> }) {
    const { tank_name } = useParams<{ tank_name: (typeof TIER_XI_VEHICLES)[number] }>()
@@ -109,8 +119,16 @@ export default function Mechanics({ mechanics }: { mechanics: Record<string, unk
          return <Szakal mechanics={mechanics as SzakalMechanics} />
       case 'S36_Strv_107_12':
          return <Strv107 mechanics={mechanics as Strv107Mechanics} />
+      case 'S41_BV_111':
+         return <BV111 mechanics={mechanics as Bv111Mechanics} />
       case 'J52_STK_2':
          return <STK2 mechanics={mechanics as STK2Mechanics} />
+      case 'J53_Ho_Ri_Shugo':
+         return <HoriShugo mechanics={mechanics as HoriShugoMechanics} />
+      case 'Cz46_Vz_63P':
+         return <Vz63P mechanics={mechanics as Vz63PMechanics} />
+      case 'It43_CAV_mod_71':
+         return <CAVmod71 mechanics={mechanics as CavMod71Mechanics} />
       case 'A191_Ares_90_C':
       case 'A190_Ares_85':
       case 'A189_Ares_90':

@@ -20,6 +20,10 @@ function returnMechanicName(
       switch (tank_name) {
          case 'J52_STK_2':
             return MECHANIC_NAMES['heatingZonesGun']
+         case 'J53_Ho_Ri_Shugo':
+            return MECHANIC_NAMES['auxiliaryRocketLauncher']
+         case 'Cz46_Vz_63P':
+            return MECHANIC_NAMES['shellCalibration']
          case 'G187_Taschenratte':
             return MECHANIC_NAMES['supportWeapon']
          case 'F136_AMX_67_Imbattable':

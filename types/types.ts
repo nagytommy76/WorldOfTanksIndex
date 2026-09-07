@@ -11,6 +11,8 @@ export type VehicleRoles =
    | 'role_HT_universal'
    | 'role_LT_universal'
    | 'role_LT_wheeled'
+   | 'role_LT_scout'
+   | 'role_LT_support'
    | 'role_MT_assault'
    | 'role_MT_sniper'
    | 'role_MT_support'

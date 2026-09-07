@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import Borkenkafer from '@/Mechanics/Includes/Borkenkafer'
+import Borkenkafer from '@/DetailsTable/Mechanics/Includes/germany/Borkenkafer'
 
 const mockMechanics = {
    mechanics: {

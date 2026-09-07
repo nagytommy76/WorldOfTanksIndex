@@ -1,4 +1,4 @@
-import Leo120 from '@/Mechanics/Includes/Leo120'
+import Leo120 from '@/DetailsTable/Mechanics/Includes/germany/Leo120'
 import { render, screen } from '@testing-library/react'
 
 const mockMechanics = {

@@ -1,4 +1,4 @@
-import Taschenratte from '@/Mechanics/Includes/Taschenratte'
+import Taschenratte from '@/DetailsTable/Mechanics/Includes/germany/Taschenratte'
 import { render, screen } from '@testing-library/react'
 import VehicleContextProvider from '@/VehicleContext/VehicleContext'
 

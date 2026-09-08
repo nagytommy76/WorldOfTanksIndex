@@ -62,7 +62,15 @@ export type ICrewContextActions =
      }
    | {
         type: 'ADD_CREW_BOOSTER'
-        payload: { boosterName: string; modifierValueMul: number }
+        payload: {
+           boosterName: string
+           crewSkillName: string
+           crewRoles: ICrewRoles
+           crewSkillModifier: {
+              boostSkill: number
+              mul: number
+           }
+        }
      }
 
 export interface ICrewContext {

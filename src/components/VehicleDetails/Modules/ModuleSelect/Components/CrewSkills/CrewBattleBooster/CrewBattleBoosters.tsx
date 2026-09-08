@@ -3,6 +3,9 @@ import { CrewContext } from '@/CrewContext/CrewContext'
 
 import Image from 'next/image'
 
+import type { ICrewRoles } from '@/Classes/CrewSkills'
+import type { IDevice } from '@/types/Devices/Devices'
+
 import Button from '@mui/material/Button'
 import Badge from '@mui/material/Badge'
 import CheckIcon from '@mui/icons-material/Check'
@@ -14,14 +17,10 @@ import TooltipTitle from '../../Devices/DeviceGroup/Includes/TooltipTitle/Toolti
 import Typography from '@mui/material/Typography'
 
 import useGetCrewBoosters from '../Hooks/useGetCrewBoosters'
-import { CrewSkillRoles } from '@/Classes/CrewSkills'
-import type { IDevice } from '@/types/Devices/Devices'
 
 export default function CrewBattleBoosters() {
    const crewBoosters = useGetCrewBoosters()
-   const {
-      crewReducer: { commander, crewMembers },
-   } = useContext(CrewContext)
+   const { crewDispatch } = useContext(CrewContext)
 
    function AddCrewBooster(boosterName: string, crewBooster: IDevice) {
       const boosterSplit = boosterName.split('_')
@@ -32,34 +31,24 @@ export default function CrewBattleBoosters() {
           */
          case 1:
             break
+         /**
+          * Crew related boosters -> driver_virtuoso -> virtuosoBattleBooster
+          */
          default:
-            const crewSkillRole = boosterSplit[0] as 'commander' | 'gunner' | 'loader' | 'driver'
+            const crewSkillRole = boosterSplit[0] as ICrewRoles
 
-            if (crewSkillRole === 'commander') {
-               const commanderHasSkill: boolean = commander.appliedCrewSkills?.has(boosterName) ? true : false
-            } else {
-               const currentCrewMember = crewMembers[crewSkillRole]
-               let crewMemberHasSkill: boolean = false
-
-               /**
-                * in this case a crew member has an applied crew skill: gunner_rancorous, loader_pedant
-                */
-               if (currentCrewMember && currentCrewMember.appliedCrewSkills?.has(boosterName)) {
-                  crewMemberHasSkill = true
-
-                  const test = currentCrewMember.appliedCrewSkills.get(boosterName)?.map((skill) => {
-                     return {
-                        ...skill,
-                        value: (skill.value *= crewBooster.crewSkillModifier?.mul?.value || 1),
-                     }
-                  })
-
-                  console.log(test)
-
-                  if (test) currentCrewMember.appliedCrewSkills.set(boosterName, test)
-               } else {
-               }
-            }
+            crewDispatch({
+               type: 'ADD_CREW_BOOSTER',
+               payload: {
+                  crewRoles: crewSkillRole,
+                  boosterName,
+                  crewSkillName: crewBooster.name,
+                  crewSkillModifier: {
+                     boostSkill: crewBooster.crewSkillModifier?.boostSkill.value || 1,
+                     mul: crewBooster.crewSkillModifier?.mul.value || 1,
+                  },
+               },
+            })
 
             break
       }

@@ -6,9 +6,24 @@ export default function CrewReducer(
 ): ICrewReducerState {
    switch (action.type) {
       case 'ADD_CREW_BOOSTER':
-         const { boosterName, modifierValueMul } = action.payload
+         const { boosterName, crewSkillModifier, crewSkillName, crewRoles } = action.payload
 
-         return { ...state }
+         console.log('CREW ROLE: ', crewRoles)
+
+         switch (crewRoles) {
+            case 'commander':
+               state.commander.setAppliedCrewBattleBoosters(boosterName, crewSkillName, crewSkillModifier)
+               return { ...state }
+
+            default:
+               Object.values(state.crewMembers).forEach((member) => {
+                  if (!member) return
+                  if (member.primaryRole === crewRoles) {
+                     member.setAppliedCrewBattleBoosters(boosterName, crewSkillName, crewSkillModifier)
+                  }
+               })
+               return { ...state }
+         }
       case 'TOGGLE_COMMANDER_BONUS':
          const newToggleCrewMembers = state.crewMembers
          const { checked, commanderEfficiency } = action.payload

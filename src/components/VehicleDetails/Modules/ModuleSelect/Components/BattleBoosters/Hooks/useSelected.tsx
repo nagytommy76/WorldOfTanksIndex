@@ -1,13 +1,14 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
 import { CrewContext } from '@/CrewContext/CrewContext'
+
+import useBlocked from '@/BattleBoosters/Hooks/useBlocked'
 
 import type { BattleBoosterModifierKeys } from '@/DevicesContext/Types'
 import type { IDevice } from '@/types/Devices/Devices'
 
 export default function useSelected(booster: IDevice) {
-   const [isBlocked, setIsBolcked] = useState(true)
-   const [isSelected, setISSelected] = useState(true)
+   const { isBlocked, isSelected, setISSelected, setIsBolcked } = useBlocked()
 
    const { crewDispatch } = useContext(CrewContext)
    const {
@@ -49,7 +50,15 @@ export default function useSelected(booster: IDevice) {
          setIsBolcked(false)
          setISSelected(false)
       }
-   }, [appliedBattleBoosterModifiers, booster.icon, incompatibleDevices, selectedDevices, deviceDispatch])
+   }, [
+      appliedBattleBoosterModifiers,
+      booster.icon,
+      incompatibleDevices,
+      selectedDevices,
+      deviceDispatch,
+      setISSelected,
+      setIsBolcked,
+   ])
 
    function AddRemoveBooster() {
       if (booster.modifiers) {

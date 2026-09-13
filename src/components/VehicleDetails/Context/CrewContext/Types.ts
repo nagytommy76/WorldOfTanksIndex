@@ -72,6 +72,10 @@ export type ICrewContextActions =
            }
         }
      }
+   | {
+        type: 'REMOVE_CREW_BOOSTER'
+        payload: string
+     }
 
 export interface ICrewContext {
    crewReducer: ICrewReducerState

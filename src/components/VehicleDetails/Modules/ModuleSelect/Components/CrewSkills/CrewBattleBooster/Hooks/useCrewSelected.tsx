@@ -1,17 +1,58 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { CrewContext } from '@/CrewContext/CrewContext'
 
 import useBlocked from '@/BattleBoosters/Hooks/useBlocked'
 
 import type { IDevice } from '@/types/Devices/Devices'
-import { ICrewRoles } from '@/Classes/CrewSkills'
+import type { ICrewRoles } from '@/Classes/CrewSkills'
+
+import useHandleContext from './useHandleContext'
+import useGetRole from './useGetRole'
 
 export default function useCrewSelected(booster: IDevice) {
-   const { isSelected, setISSelected } = useBlocked()
+   const { isSelected, setISSelected, isBlocked, setIsBolcked } = useBlocked(false)
    const {
-      crewDispatch,
       crewReducer: { crewMembers, commander },
    } = useContext(CrewContext)
+
+   const { addToContextSetSelected, removeFromContextSetSelected } = useHandleContext(setISSelected)
+   const getCrewMemberWithSecondaryRole = useGetRole()
+   /**
+    * @description Checks if incompatibleDevices is null -> set blocked
+    */
+   useEffect(() => {
+      const boosterSplit = booster.icon.split('_')
+      switch (boosterSplit.length) {
+         case 1:
+            if (
+               commander.appliedCrewBattleBoosters &&
+               commander.appliedCrewBattleBoosters.has(booster.icon)
+            ) {
+               setISSelected(false)
+            }
+            break
+
+         default:
+            const crewSkillRole = boosterSplit[0] as ICrewRoles
+            const foundCrewRoleToAddCrewBooster = getCrewMemberWithSecondaryRole(crewSkillRole)
+
+            const currentCrewMemberBoosters =
+               foundCrewRoleToAddCrewBooster === 'commander'
+                  ? commander.appliedCrewBattleBoosters
+                  : crewMembers[foundCrewRoleToAddCrewBooster]?.appliedCrewBattleBoosters
+
+            if (currentCrewMemberBoosters && currentCrewMemberBoosters.has(booster.icon)) {
+               setISSelected(false)
+            }
+            break
+      }
+   }, [
+      booster.icon,
+      crewMembers,
+      commander.appliedCrewBattleBoosters,
+      setISSelected,
+      getCrewMemberWithSecondaryRole,
+   ])
 
    function AddCrewBooster() {
       const boosterSplit = booster.icon.split('_')
@@ -21,37 +62,46 @@ export default function useCrewSelected(booster: IDevice) {
           * naturalCover || fireFighting
           */
          case 1:
+            if (
+               commander.appliedCrewBattleBoosters &&
+               commander.appliedCrewBattleBoosters.has(booster.icon)
+            ) {
+               removeFromContextSetSelected('commander', booster.icon)
+            } else {
+               addToContextSetSelected(
+                  'commander',
+                  booster.icon,
+                  booster.name,
+                  booster.crewSkillModifier?.boostSkill.value,
+                  booster.crewSkillModifier?.mul.value,
+               )
+               setIsBolcked(true)
+            }
             break
          /**
           * Crew related boosters -> driver_virtuoso -> virtuosoBattleBooster
           */
          default:
             const crewSkillRole = boosterSplit[0] as ICrewRoles
+
+            const foundCrewRoleToAddCrewBooster = getCrewMemberWithSecondaryRole(crewSkillRole)
+
             const currentCrewMemberBoosters =
-               crewSkillRole === 'commander'
+               foundCrewRoleToAddCrewBooster === 'commander'
                   ? commander.appliedCrewBattleBoosters
-                  : crewMembers[crewSkillRole]?.appliedCrewBattleBoosters
+                  : crewMembers[foundCrewRoleToAddCrewBooster]?.appliedCrewBattleBoosters
 
             if (currentCrewMemberBoosters && currentCrewMemberBoosters.has(booster.icon)) {
-               console.log('')
-               crewDispatch({ type: 'REMOVE_CREW_BOOSTER', payload: booster.icon })
-
-               setISSelected(true)
+               removeFromContextSetSelected(foundCrewRoleToAddCrewBooster, booster.icon)
             } else {
-               //    console.log('')
-               crewDispatch({
-                  type: 'ADD_CREW_BOOSTER',
-                  payload: {
-                     crewRoles: crewSkillRole,
-                     boosterName: booster.icon,
-                     crewSkillName: booster.name,
-                     crewSkillModifier: {
-                        boostSkill: booster.crewSkillModifier?.boostSkill.value || 1,
-                        mul: booster.crewSkillModifier?.mul.value || 1,
-                     },
-                  },
-               })
-               setISSelected(false)
+               addToContextSetSelected(
+                  foundCrewRoleToAddCrewBooster,
+                  booster.icon,
+                  booster.name,
+                  booster.crewSkillModifier?.boostSkill.value,
+                  booster.crewSkillModifier?.mul.value,
+               )
+               setIsBolcked(true)
             }
 
             break
@@ -59,6 +109,7 @@ export default function useCrewSelected(booster: IDevice) {
    }
    return {
       isSelected,
+      isBlocked,
       AddCrewBooster,
    }
 }

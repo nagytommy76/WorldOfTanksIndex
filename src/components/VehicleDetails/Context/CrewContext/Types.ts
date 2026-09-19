@@ -74,7 +74,10 @@ export type ICrewContextActions =
      }
    | {
         type: 'REMOVE_CREW_BOOSTER'
-        payload: string
+        payload: {
+           currentCrewRole: ICrewRoles
+           boosterToRemove: string
+        }
      }
 
 export interface ICrewContext {

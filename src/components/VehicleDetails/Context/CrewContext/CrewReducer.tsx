@@ -22,15 +22,18 @@ export default function CrewReducer(
                return { ...state }
          }
       case 'REMOVE_CREW_BOOSTER':
-         const boosterToRemove = action.payload
+         const { boosterToRemove, currentCrewRole } = action.payload
+         switch (currentCrewRole) {
+            case 'commander':
+               state.commander.removeAppliedSkillBooster(boosterToRemove)
+               break
+            default:
+               if (state.crewMembers[currentCrewRole]) {
+                  state.crewMembers[currentCrewRole].removeAppliedSkillBooster(boosterToRemove)
+               }
+               break
+         }
 
-         Object.values(state.crewMembers).forEach((member) => {
-            if (!member) return
-            console.log('MEMBER: ', member.primaryRole)
-            // if (member.secondaryRole.includes(crewRoles)) {}
-            member.removeAppliedSkillBooster(boosterToRemove)
-         })
-         state.commander.removeAppliedSkillBooster(boosterToRemove)
          return { ...state }
       case 'TOGGLE_COMMANDER_BONUS':
          const newToggleCrewMembers = state.crewMembers

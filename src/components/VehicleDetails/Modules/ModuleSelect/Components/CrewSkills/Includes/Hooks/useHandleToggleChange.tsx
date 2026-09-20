@@ -22,9 +22,6 @@ export default function useHandleToggleChange(role: CrewSkillRoles) {
       [selectedSkills],
    )
 
-   /**
-    * BROTHERHOOD SKILL GOES TO appliedCrewModifiers!!!!!!!!!! FIX IT
-    */
    useEffect(() => {
       switch (role) {
          case 'commander':

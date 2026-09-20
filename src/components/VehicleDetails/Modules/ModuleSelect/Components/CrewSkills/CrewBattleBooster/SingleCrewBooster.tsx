@@ -4,13 +4,13 @@ import BaseSingleBooster from '@/BattleBoosters/BaseSingleBooster'
 import type { IDevice } from '@/types/Devices/Devices'
 
 export default function SingleCrewBooster({ booster }: { booster: IDevice }) {
-   const { AddCrewBooster, isSelected } = useCrewSelected(booster)
+   const { AddCrewBooster, isSelected, isBlocked } = useCrewSelected(booster)
 
    return (
       <BaseSingleBooster
          booster={booster}
          AddRemoveItem={AddCrewBooster}
-         isBlocked={false}
+         isBlocked={isBlocked}
          isSelected={isSelected}
       />
    )

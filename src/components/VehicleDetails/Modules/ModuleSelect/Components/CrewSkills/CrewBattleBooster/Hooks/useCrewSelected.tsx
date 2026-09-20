@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react'
 import { CrewContext } from '@/CrewContext/CrewContext'
 
 import useBlocked from '@/BattleBoosters/Hooks/useBlocked'
+import useSetBlocked from './useSetBlocked'
 
 import type { IDevice } from '@/types/Devices/Devices'
 import type { ICrewRoles } from '@/Classes/CrewSkills'
@@ -13,10 +14,13 @@ export default function useCrewSelected(booster: IDevice) {
    const { isSelected, setISSelected, isBlocked, setIsBolcked } = useBlocked(false)
    const {
       crewReducer: { crewMembers, commander },
+      setHasAppliedCrewBooster,
    } = useContext(CrewContext)
 
    const { addToContextSetSelected, removeFromContextSetSelected } = useHandleContext(setISSelected)
    const getCrewMemberWithSecondaryRole = useGetRole()
+   useSetBlocked(booster.icon, setIsBolcked)
+
    /**
     * @description Checks if incompatibleDevices is null -> set blocked
     */
@@ -67,6 +71,7 @@ export default function useCrewSelected(booster: IDevice) {
                commander.appliedCrewBattleBoosters.has(booster.icon)
             ) {
                removeFromContextSetSelected('commander', booster.icon)
+               setHasAppliedCrewBooster(undefined)
             } else {
                addToContextSetSelected(
                   'commander',
@@ -75,7 +80,7 @@ export default function useCrewSelected(booster: IDevice) {
                   booster.crewSkillModifier?.boostSkill.value,
                   booster.crewSkillModifier?.mul.value,
                )
-               setIsBolcked(true)
+               setHasAppliedCrewBooster(booster.icon)
             }
             break
          /**
@@ -93,6 +98,7 @@ export default function useCrewSelected(booster: IDevice) {
 
             if (currentCrewMemberBoosters && currentCrewMemberBoosters.has(booster.icon)) {
                removeFromContextSetSelected(foundCrewRoleToAddCrewBooster, booster.icon)
+               setHasAppliedCrewBooster(undefined)
             } else {
                addToContextSetSelected(
                   foundCrewRoleToAddCrewBooster,
@@ -101,7 +107,7 @@ export default function useCrewSelected(booster: IDevice) {
                   booster.crewSkillModifier?.boostSkill.value,
                   booster.crewSkillModifier?.mul.value,
                )
-               setIsBolcked(true)
+               setHasAppliedCrewBooster(booster.icon)
             }
 
             break

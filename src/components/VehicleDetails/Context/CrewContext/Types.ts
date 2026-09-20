@@ -83,6 +83,8 @@ export type ICrewContextActions =
 export interface ICrewContext {
    crewReducer: ICrewReducerState
    crewDispatch: React.Dispatch<ICrewContextActions>
+   hasAppliedCrewBooster: string | undefined
    isCalculateSituational: boolean
+   setHasAppliedCrewBooster: Dispatch<SetStateAction<string | undefined>>
    setIsCalculateSituational: Dispatch<SetStateAction<boolean>>
 }

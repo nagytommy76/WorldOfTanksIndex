@@ -38,6 +38,7 @@ export default function SingleDeviceButton({
                selectedDeviceTypeOverlay={selectedDeviceTypeOverlay}
                modifiers={selectedDevice.modifiers}
                aggregateModifiers={selectedDevice.aggregateModifiers}
+               price={selectedDevice.price}
             >
                <Typography textAlign={'center'} variant='body1' gutterBottom className='font-bold'>
                   {selectedDeviceTypeOverlay === 'equipmentTrophyUpgraded'

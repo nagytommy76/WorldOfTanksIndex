@@ -15,6 +15,17 @@ export const CREW_SKILLS_CONFIG: Record<string, Record<string, ICrewSkillConfig>
     * COMMANDER SKILLS ---------------------------------------
     */
    /**
+    * @param commander_staySharp Stay Sharp situational perk
+    */
+   commander_staySharp: {
+      crewLevelIncrease: {
+         fields: ['crewLevel'],
+         measureType: 'percents',
+         isSituational: true,
+         operation: 'progressive',
+      },
+   },
+   /**
     * @param commander_emergency Emergency situational perk
     */
    commander_emergency: {},

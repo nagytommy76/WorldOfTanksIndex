@@ -12,7 +12,27 @@ function ReturnCrewSkillsParameters<T extends Record<string, number>>(
    hasClip: boolean = false,
 ) {
    const appliedCrewSkills = crewMember.appliedCrewSkills
+   const appliedCrewSBoosters = crewMember.appliedCrewBattleBoosters
+   // console.log('APPLIED CREW BOOSTER: ', appliedCrewSBoosters)
    if (appliedCrewSkills === undefined) return calculatedSkillResult
+
+   /**
+    * Itt kéne vizsgálnom, hogy 1
+    * 1. Ha nincs gunner_smoothTurret crewSkill -> 100% tehát hozzá kell adnom a skillekhez
+    *    Ezt úgy hogy a crewMember.appliedCrewBattleBoosters-hez adom hozzá a: (contextet módosítani!)
+    * {
+         "measureType": "percents",
+         "situationalParam": true,
+         "paramName": "turretAimingDispersion",
+         "value": -0.075
+      }
+
+    * 2. Ha van gunner_smoothTurret skill -> meg kell dupláznom a hatását.
+    *
+    * Amikor hozzá adom a boostert akkor kéne a skill-t is hozzáadni? Context-et használni? vagy szimplán átadni ->
+    * -> CrewSkills -> CrewBattleBoosters -> SingleCrewBooster
+    *
+    */
 
    for (const [skillName, skillModifiers] of appliedCrewSkills) {
       if (skillName === 'loader_magMastery' && !hasClip) continue
@@ -118,6 +138,7 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
       }
 
    return (baseValues: T): T => {
+      // console.log('BASE VALUIES CREW: ')
       let calculatedSkillResult = { ...baseValues }
 
       calculatedSkillResult = ReturnCrewSkillsParameters(
@@ -146,6 +167,7 @@ export function createConcealmentSkillTransformer<T extends Record<string, numbe
    return (camouflageStillMovingValues: T): T => {
       const appliedCrewSkills = commander.appliedCrewSkills
       // Making sure it only works if camouflage skill is set
+      // console.log('BASE VALUIES CREW: ', commander.appliedCrewBattleBoosters?.has('naturalCover'))
       if (!appliedCrewSkills?.has('camouflage')) return camouflageStillMovingValues
       if (appliedCrewSkills === undefined || appliedCrewSkills.size === 0) return camouflageStillMovingValues
 

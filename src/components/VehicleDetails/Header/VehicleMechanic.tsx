@@ -2,14 +2,35 @@
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import MECHANIC_NAMES, { type MechanicNameKey } from '@/src/helpers/mechanicNames'
+import HtmlTooltip from '@/helpers/HtmlTooltip'
 
 import Typography from '@mui/material/Typography'
-import Tooltip from '@mui/material/Tooltip'
 
-function DisplayMechanic({ mechanicName }: { mechanicName: MechanicNameKey }) {
+function DisplayMechanic({
+   mechanicName,
+   vehicleName,
+}: {
+   mechanicName: MechanicNameKey
+   vehicleName: string
+}) {
    return (
       <div className='w-screen h-[100px] mt-4 flex flex-row items-center gap-2 xl:w-[500px]'>
-         <Tooltip title={<Typography variant='body2'>{MECHANIC_NAMES[mechanicName].description}</Typography>}>
+         <HtmlTooltip
+            describeChild
+            title={
+               <div className='w-[300px] bg-neutral-900 p-0'>
+                  <Image
+                     src={`/MechanicImages/${vehicleName}.png`}
+                     alt='mechanic image'
+                     width={300}
+                     height={160}
+                  />
+                  <Typography className='p-3' variant='body1'>
+                     {MECHANIC_NAMES[mechanicName].description}
+                  </Typography>
+               </div>
+            }
+         >
             <div className='w-[100px] h-[50px] relative xl:w-[160px] xl:h-[80px]'>
                <Image
                   src={`/icons/mechanics/x128x128/${mechanicName === 'reactiveDebuffs' ? 'overheatGun' : mechanicName}.png`}
@@ -39,7 +60,7 @@ function DisplayMechanic({ mechanicName }: { mechanicName: MechanicNameKey }) {
                   xl:-top-23 xl:-left-2 xl:w-[280px] xl:h-[280px] '
                />
             </div>
-         </Tooltip>
+         </HtmlTooltip>
          <Typography variant='h6' className='text-xl xl:text-2xl font-semibold'>
             {MECHANIC_NAMES[mechanicName].name}
          </Typography>
@@ -49,37 +70,36 @@ function DisplayMechanic({ mechanicName }: { mechanicName: MechanicNameKey }) {
 
 export default function VehicleMechanic({ vehicleMechanic }: { vehicleMechanic: unknown }) {
    const pathname = usePathname().split('/')[2]
-
    /**
     * @description Vehicles that doesn't have mechanic names
     */
    switch (pathname) {
       case 'G187_Taschenratte':
-         return <DisplayMechanic mechanicName={'supportWeapon'} />
+         return <DisplayMechanic vehicleName={pathname} mechanicName={'supportWeapon'} />
       case 'F136_AMX_67_Imbattable':
-         return <DisplayMechanic mechanicName={'extraShotClip'} />
+         return <DisplayMechanic vehicleName={pathname} mechanicName={'extraShotClip'} />
       case 'F143_Fauteur':
-         return <DisplayMechanic mechanicName={'propellantAfterburnerGun'} />
+         return <DisplayMechanic vehicleName={pathname} mechanicName={'propellantAfterburnerGun'} />
       case 'F135_AS_XX_40_t':
-         return <DisplayMechanic mechanicName={'stationaryReload'} />
+         return <DisplayMechanic vehicleName={pathname} mechanicName={'stationaryReload'} />
       case 'J52_STK_2':
-         return <DisplayMechanic mechanicName={'heatingZonesGun'} />
+         return <DisplayMechanic vehicleName={pathname} mechanicName={'heatingZonesGun'} />
       case 'J53_Ho_Ri_Shugo':
-         return <DisplayMechanic mechanicName={'auxiliaryRocketLauncher'} />
+         return <DisplayMechanic vehicleName={pathname} mechanicName={'auxiliaryRocketLauncher'} />
       case 'A179_Black_Rock':
-         return <DisplayMechanic mechanicName={'chargeableBurst'} />
+         return <DisplayMechanic vehicleName={pathname} mechanicName={'chargeableBurst'} />
       case 'GB147_FV4025_Contriver':
-         return <DisplayMechanic mechanicName={'twinGun'} />
+         return <DisplayMechanic vehicleName={pathname} mechanicName={'twinGun'} />
       case 'A195_Gorilla':
-         return <DisplayMechanic mechanicName={'lowChargeShot'} />
+         return <DisplayMechanic vehicleName={pathname} mechanicName={'lowChargeShot'} />
       case 'Cz46_Vz_63P':
-         return <DisplayMechanic mechanicName={'shellCalibration'} />
+         return <DisplayMechanic vehicleName={pathname} mechanicName={'shellCalibration'} />
       case 'G193_Pz_Kpfw_55':
       case 'G195_HWK_40':
       case 'G196_Versuchspanzer_57':
       case 'G197_Pz_Kpfw_Neu':
       case 'G198_Kampfpanzer_67':
-         return <DisplayMechanic mechanicName={'shellParamsSwitcher'} />
+         return <DisplayMechanic vehicleName={pathname} mechanicName={'shellParamsSwitcher'} />
       default:
          break
    }
@@ -87,5 +107,5 @@ export default function VehicleMechanic({ vehicleMechanic }: { vehicleMechanic: 
    const mechanicName = Object.keys(vehicleMechanic).find((name) => name !== 'mechanics') as MechanicNameKey
    if (!mechanicName) return null
 
-   return <DisplayMechanic mechanicName={mechanicName} />
+   return <DisplayMechanic vehicleName={pathname} mechanicName={mechanicName} />
 }

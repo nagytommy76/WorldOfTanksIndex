@@ -13,8 +13,22 @@ function ReturnCrewSkillsParameters<T extends Record<string, number>>(
 ) {
    const appliedCrewSkills = crewMember.appliedCrewSkills
    const appliedCrewSBoosters = crewMember.appliedCrewBattleBoosters
-   // console.log('APPLIED CREW BOOSTER: ', appliedCrewSBoosters)
-   if (appliedCrewSkills === undefined) return calculatedSkillResult
+   // if (appliedCrewSkills === undefined) return calculatedSkillResult
+   if (appliedCrewSkills === undefined) {
+      console.log('APPLIED CREW BOOSTER: ', calculatedSkillResult)
+
+      return calculatedSkillResult
+   }
+   // We only have crew booster
+   if (appliedCrewSkills === undefined && appliedCrewSBoosters !== undefined) {
+   }
+   // We only have the crew skill activated, NOT CREW BOOSTER
+   else if (appliedCrewSkills !== undefined && appliedCrewSBoosters === undefined) {
+   }
+   // We have both crew skill and crew booster
+   else if (appliedCrewSkills !== undefined && appliedCrewSBoosters !== undefined) {
+      console.log(appliedCrewSBoosters, appliedCrewSkills)
+   }
 
    /**
     * Itt kéne vizsgálnom, hogy 1

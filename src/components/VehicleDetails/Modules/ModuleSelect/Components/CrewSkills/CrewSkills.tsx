@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { useState } from 'react'
+import CrewSkillContextProvider from './CrewBattleBooster/Context/CrewSkillContext'
 
 import type { CrewSkillRoles } from '@/Classes/CrewSkills'
 import useGetCrewSkills from './Hooks/useGetCrewSkills'
@@ -53,7 +54,9 @@ export default function CrewSkills() {
             ))}
          </div>
          <ActiveSituational />
-         <CrewBattleBoosters />
+         <CrewSkillContextProvider crewSkills={crewSkills}>
+            <CrewBattleBoosters />
+         </CrewSkillContextProvider>
       </section>
    )
 }

@@ -43,7 +43,11 @@
          "@/Mechanics/*": ["./src/components/VehicleDetails/Modules/DetailsTable/Mechanics/*"],
          "@/DetailsTable/*": ["./src/components/VehicleDetails/Modules/DetailsTable/*"],
          // CLASSES
-         "@/Classes/*": ["./src/Classes/*"]
+         "@/Classes/*": ["./src/Classes/*"],
+         // Batle Boosters BASE
+         "@/BattleBoosters/*": [
+            "./src/components/VehicleDetails/Modules/ModuleSelect/Components/BattleBoosters/Base/*"
+         ]
       }
    },
    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

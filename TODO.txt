@@ -16,6 +16,14 @@ Lekérni a "name": "T-100 LT",
 
 
 
+LINKS TO DEPLOY:
+
+https://vercel.com/kb/guide/how-can-i-use-github-actions-with-vercel
+
+https://dev.to/latchudevops/github-actions-workflow-to-deploy-the-nextjs-application-on-vercel-cloud-2ooi
+
+
+
 
 
 

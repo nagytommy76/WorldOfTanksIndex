@@ -3,6 +3,13 @@ import CrewMember from './Classes/Crew'
 import type { Dispatch, SetStateAction } from 'react'
 import type { MeasureType, ICrewRoles, IRolesNonCommander } from '@/Classes/CrewSkills'
 
+export type CrewSkillModifiers = {
+   situationalParam: boolean
+   value: number
+   paramName: string
+   measureType: MeasureType
+}
+
 /**
  * Determines which direction is "better" for the crew formula.
  * degressive: lower is better (reload time, aim time)
@@ -45,12 +52,7 @@ export type ICrewContextActions =
         payload: {
            appliedSkillName: string
            role: ICrewRoles | IRolesNonCommander | undefined
-           crewSkillModifiers: {
-              situationalParam: boolean
-              value: number
-              paramName: string
-              measureType: MeasureType
-           }[]
+           crewSkillModifiers: CrewSkillModifiers[]
         }
      }
    | {
@@ -64,8 +66,9 @@ export type ICrewContextActions =
         type: 'ADD_CREW_BOOSTER'
         payload: {
            boosterName: string
-           crewSkillName: string
+           //   crewSkillName: string
            crewRoles: ICrewRoles
+           crewSkillBoosterModifiers: CrewSkillModifiers[]
            crewSkillModifier: {
               boostSkill: number
               mul: number

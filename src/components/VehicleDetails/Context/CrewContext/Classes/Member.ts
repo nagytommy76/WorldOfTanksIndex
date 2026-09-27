@@ -1,4 +1,5 @@
 import type { MeasureType } from '@/Classes/CrewSkills'
+import type { CrewSkillModifiers } from '../Types'
 
 export default class Member {
    /**
@@ -21,33 +22,24 @@ export default class Member {
    /**
     * @description e.g: driver_motorExpert: paramName: "vehPenaltyForDamagedEngine"
     */
-   appliedCrewSkills:
-      | Map<
-           string,
-           {
-              situationalParam: boolean
-              value: number
-              paramName: string
-              measureType: MeasureType
-           }[]
-        >
-      | undefined = undefined
+   appliedCrewSkills: Map<string, CrewSkillModifiers[]> | undefined = undefined
 
    /**
     * @description Applied Crew skill battle boosters: gunner_smoothTurret -> Steady Hand
     */
-   appliedCrewBattleBoosters:
-      | Map<
-           string,
-           {
-              crewSkillName: string
-              crewSkillModifier: {
-                 boostSkill: number
-                 mul: number
-              }
-           }
-        >
-      | undefined
+   appliedCrewBattleBoosters: Map<string, CrewSkillModifiers[]> | undefined
+   // appliedCrewBattleBoosters:
+   //    | Map<
+   //         string,
+   //         {
+   //            crewSkillName: string
+   //            crewSkillModifier: {
+   //               boostSkill: number
+   //               mul: number
+   //            }
+   //         }
+   //      >
+   //    | undefined
 
    private static readonly BASE_TRAINING = 100
 
@@ -55,22 +47,12 @@ export default class Member {
       this.efficiencyLevel = Member.BASE_TRAINING
    }
 
-   setAppliedCrewModifier(
-      modifier: {
-         name: string
-         paramName: string
-         value: number
-         // situationalParam: boolean
-      },
-      // isActiveSituational: boolean = false,
-   ) {
+   setAppliedCrewModifier(modifier: { name: string; paramName: string; value: number }) {
       if (!this.appliedCrewModifiers) this.appliedCrewModifiers = new Map()
       this.appliedCrewModifiers.set(modifier.name, {
          paramName: modifier.paramName,
          value: modifier.value,
-         // situationalParam: modifier.situationalParam ?? false,
       })
-      // if (isActiveSituational !== true && modifier.situationalParam === true) return
       this.efficiencyLevel = this.computeEfficiencyLevel()
    }
    clearAppliedCrewModifiers() {
@@ -106,14 +88,20 @@ export default class Member {
 
    setAppliedCrewBattleBoosters(
       boosterName: string,
-      crewSkillName: string,
-      crewSkillModifier: {
-         boostSkill: number
-         mul: number
-      },
+      // crewSkillName: string,
+      // crewSkillModifier: {
+      //    boostSkill: number
+      //    mul: number
+      // },
+      crewSkillBoosterModifiers: {
+         situationalParam: boolean
+         value: number
+         paramName: string
+         measureType: MeasureType
+      }[],
    ) {
       if (this.appliedCrewBattleBoosters === undefined) this.appliedCrewBattleBoosters = new Map()
-      this.appliedCrewBattleBoosters.set(boosterName, { crewSkillName, crewSkillModifier })
+      this.appliedCrewBattleBoosters.set(boosterName, crewSkillBoosterModifiers)
    }
    removeAppliedSkillBooster(skillName: string) {
       if (!this.appliedCrewBattleBoosters) return

@@ -1,5 +1,6 @@
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { CrewContext } from '@/CrewContext/CrewContext'
+import { CrewSkillContext } from '../Context/CrewSkillContext'
 
 import useBlocked from '@/BattleBoosters/Hooks/useBlocked'
 import useSetBlocked from './useSetBlocked'
@@ -9,6 +10,8 @@ import type { ICrewRoles } from '@/Classes/CrewSkills'
 
 import useHandleContext from './useHandleContext'
 import useGetRole from './useGetRole'
+import findCrewSkillForBooster from './useFindSkill'
+import useCheckSelected from './useCheckSelected'
 
 export default function useCrewSelected(booster: IDevice) {
    const { isSelected, setISSelected, isBlocked, setIsBolcked } = useBlocked(false)
@@ -16,50 +19,16 @@ export default function useCrewSelected(booster: IDevice) {
       crewReducer: { crewMembers, commander },
       setHasAppliedCrewBooster,
    } = useContext(CrewContext)
+   const { crewSkills } = useContext(CrewSkillContext)
 
    const { addToContextSetSelected, removeFromContextSetSelected } = useHandleContext(setISSelected)
    const getCrewMemberWithSecondaryRole = useGetRole()
    useSetBlocked(booster.icon, setIsBolcked)
-
-   /**
-    * @description Checks if incompatibleDevices is null -> set blocked
-    */
-   useEffect(() => {
-      const boosterSplit = booster.icon.split('_')
-      switch (boosterSplit.length) {
-         case 1:
-            if (
-               commander.appliedCrewBattleBoosters &&
-               commander.appliedCrewBattleBoosters.has(booster.icon)
-            ) {
-               setISSelected(false)
-            }
-            break
-
-         default:
-            const crewSkillRole = boosterSplit[0] as ICrewRoles
-            const foundCrewRoleToAddCrewBooster = getCrewMemberWithSecondaryRole(crewSkillRole)
-
-            const currentCrewMemberBoosters =
-               foundCrewRoleToAddCrewBooster === 'commander'
-                  ? commander.appliedCrewBattleBoosters
-                  : crewMembers[foundCrewRoleToAddCrewBooster]?.appliedCrewBattleBoosters
-
-            if (currentCrewMemberBoosters && currentCrewMemberBoosters.has(booster.icon)) {
-               setISSelected(false)
-            }
-            break
-      }
-   }, [
-      booster.icon,
-      crewMembers,
-      commander.appliedCrewBattleBoosters,
-      setISSelected,
-      getCrewMemberWithSecondaryRole,
-   ])
+   useCheckSelected(booster.icon, setIsBolcked)
 
    function AddCrewBooster() {
       const boosterSplit = booster.icon.split('_')
+      const foundCrewSkillForBooster = findCrewSkillForBooster(crewSkills, booster.icon)
 
       switch (boosterSplit.length) {
          /**
@@ -76,7 +45,7 @@ export default function useCrewSelected(booster: IDevice) {
                addToContextSetSelected(
                   'commander',
                   booster.icon,
-                  booster.name,
+                  foundCrewSkillForBooster,
                   booster.crewSkillModifier?.boostSkill.value,
                   booster.crewSkillModifier?.mul.value,
                )
@@ -103,7 +72,7 @@ export default function useCrewSelected(booster: IDevice) {
                addToContextSetSelected(
                   foundCrewRoleToAddCrewBooster,
                   booster.icon,
-                  booster.name,
+                  foundCrewSkillForBooster,
                   booster.crewSkillModifier?.boostSkill.value,
                   booster.crewSkillModifier?.mul.value,
                )

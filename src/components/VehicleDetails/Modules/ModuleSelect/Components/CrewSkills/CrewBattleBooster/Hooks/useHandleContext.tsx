@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useContext } from 'react'
 import { CrewContext } from '@/CrewContext/CrewContext'
 
 import { ICrewRoles } from '@/Classes/CrewSkills'
+import type { CrewSkillModifiers } from '@/CrewContext/Types'
 
 export default function useHandleContext(setISSelected: Dispatch<SetStateAction<boolean>>) {
    const { crewDispatch } = useContext(CrewContext)
@@ -9,7 +10,7 @@ export default function useHandleContext(setISSelected: Dispatch<SetStateAction<
    function addToContextSetSelected(
       role: ICrewRoles,
       boosterName: string,
-      crewSkillName: string,
+      crewSkillBoosterModifiers: CrewSkillModifiers[],
       boostSkill: number | undefined,
       mul: number | undefined,
    ): void {
@@ -18,11 +19,11 @@ export default function useHandleContext(setISSelected: Dispatch<SetStateAction<
          payload: {
             crewRoles: role,
             boosterName: boosterName,
-            crewSkillName: crewSkillName,
             crewSkillModifier: {
                boostSkill: boostSkill || 1,
                mul: mul || 1,
             },
+            crewSkillBoosterModifiers,
          },
       })
       setISSelected(false)

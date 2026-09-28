@@ -27,19 +27,19 @@ export default class Member {
    /**
     * @description Applied Crew skill battle boosters: gunner_smoothTurret -> Steady Hand
     */
-   appliedCrewBattleBoosters: Map<string, CrewSkillModifiers[]> | undefined
-   // appliedCrewBattleBoosters:
-   //    | Map<
-   //         string,
-   //         {
-   //            crewSkillName: string
-   //            crewSkillModifier: {
-   //               boostSkill: number
-   //               mul: number
-   //            }
-   //         }
-   //      >
-   //    | undefined
+   appliedCrewBattleBoosters:
+      | Map<
+           string,
+           {
+              crewSkillBoosterModifiers: CrewSkillModifiers[]
+
+              crewSkillModifier: {
+                 boostSkill: number
+                 mul: number
+              }
+           }
+        >
+      | undefined
 
    private static readonly BASE_TRAINING = 100
 
@@ -88,11 +88,10 @@ export default class Member {
 
    setAppliedCrewBattleBoosters(
       boosterName: string,
-      // crewSkillName: string,
-      // crewSkillModifier: {
-      //    boostSkill: number
-      //    mul: number
-      // },
+      crewSkillModifier: {
+         boostSkill: number
+         mul: number
+      },
       crewSkillBoosterModifiers: {
          situationalParam: boolean
          value: number
@@ -101,7 +100,10 @@ export default class Member {
       }[],
    ) {
       if (this.appliedCrewBattleBoosters === undefined) this.appliedCrewBattleBoosters = new Map()
-      this.appliedCrewBattleBoosters.set(boosterName, crewSkillBoosterModifiers)
+      this.appliedCrewBattleBoosters.set(boosterName, {
+         crewSkillModifier,
+         crewSkillBoosterModifiers,
+      })
    }
    removeAppliedSkillBooster(skillName: string) {
       if (!this.appliedCrewBattleBoosters) return

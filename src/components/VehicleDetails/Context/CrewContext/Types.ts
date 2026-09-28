@@ -66,7 +66,6 @@ export type ICrewContextActions =
         type: 'ADD_CREW_BOOSTER'
         payload: {
            boosterName: string
-           //   crewSkillName: string
            crewRoles: ICrewRoles
            crewSkillBoosterModifiers: CrewSkillModifiers[]
            crewSkillModifier: {

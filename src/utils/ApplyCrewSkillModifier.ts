@@ -1,9 +1,71 @@
-import CREW_SKILLS_CONFIG from './crewSkillConfig'
+import CREW_SKILLS_CONFIG, { type ICrewSkillConfig } from './crewSkillConfig'
 import CrewMember from '@/CrewContext/Classes/Crew'
 import Commander from '@/CrewContext/Classes/Commander'
 
 import type { CrewMembersType } from '@/CrewContext/Types'
 import type { StatTransformer } from './applyStatPipeline'
+
+function ReturnCalculatedSkillResult<T extends Record<string, number>>(
+   calculatedSkillResult: T,
+   foundConfigSkill: ICrewSkillConfig,
+   crewMember: CrewMember | Commander,
+   skillValue: number,
+   key: string,
+   skillName: string,
+) {
+   switch (foundConfigSkill.measureType) {
+      case 'percents':
+         let scaledBonus = 0
+         if (skillValue > 0 && skillValue <= 1) {
+            scaledBonus = skillValue * (crewMember.efficiencyLevel / 100)
+         } else {
+            scaledBonus = (skillValue - 1) * (crewMember.efficiencyLevel / 100) + 1
+         }
+         /**
+          * In this case I check if a crewMember is !Commander
+          * and isCommanderBonusApplied is true (+10% bonus switch turned on)
+          */
+         switch (foundConfigSkill.operation) {
+            case 'degressive':
+               if (scaledBonus > 1) {
+                  scaledBonus = scaledBonus - 1
+               }
+               const substract = (calculatedSkillResult[key] as number) * scaledBonus
+               ;(calculatedSkillResult[key] as number) -= substract
+               break
+            case 'progressive':
+               ;(calculatedSkillResult[key] as number) *= scaledBonus
+               break
+         }
+         break
+      case 'mph':
+         const scaledBonus1 = skillValue * 100 * (crewMember.efficiencyLevel / 100)
+         ;(calculatedSkillResult[key] as number) += scaledBonus1
+         break
+      case 'seconds':
+         const scaledBonus2 = skillValue * (crewMember.efficiencyLevel / 100)
+         if (foundConfigSkill.operation === 'degressive') {
+            ;(calculatedSkillResult[key] as number) = (calculatedSkillResult[key] as number) - scaledBonus2
+         } else {
+            ;(calculatedSkillResult[key] as number) = (calculatedSkillResult[key] as number) + scaledBonus2
+         }
+         break
+      case 'add':
+         /**
+          * Armorer skill improves the minimum & max potential dmg, but the avg value stays the same
+          */
+         if (skillName === 'gunner_armorer') break
+         const scaledBonus3 = (skillValue - 1) * (crewMember.efficiencyLevel / 100) + 1
+         const addValue = scaledBonus3 - 1
+         ;(calculatedSkillResult[key] as number) += addValue
+         break
+      case 'subtract':
+         const scaledBonus4 = (skillValue - 1) * (crewMember.efficiencyLevel / 100) + 1
+         const subtractValue = (scaledBonus4 - 1) * calculatedSkillResult[key]
+         ;(calculatedSkillResult[key] as number) -= subtractValue
+         break
+   }
+}
 
 function ReturnCrewSkillsParameters<T extends Record<string, number>>(
    calculatedSkillResult: T,
@@ -13,21 +75,33 @@ function ReturnCrewSkillsParameters<T extends Record<string, number>>(
 ) {
    const appliedCrewSkills = crewMember.appliedCrewSkills
    const appliedCrewSBoosters = crewMember.appliedCrewBattleBoosters
-   // if (appliedCrewSkills === undefined) return calculatedSkillResult
-   if (appliedCrewSkills === undefined) {
-      console.log('APPLIED CREW BOOSTER: ', calculatedSkillResult)
 
+   switch (true) {
+      // We only have crew booster
+      case (appliedCrewSkills === undefined || appliedCrewSkills.size === 0) &&
+         appliedCrewSBoosters !== undefined &&
+         appliedCrewSBoosters.size !== 0:
+         console.log('WE ONLY HAVE CREW BOOSTER', appliedCrewSBoosters, crewMember.primaryRole)
+         break
+      // We only have the crew skill activated, NOT CREW BOOSTER
+      case (appliedCrewSBoosters === undefined || appliedCrewSBoosters.size === 0) &&
+         appliedCrewSkills !== undefined &&
+         appliedCrewSkills.size !== 0:
+         console.log('WE ONLY HAVE CREW SKILL!!!!!!!!!!!!!!!!', crewMember.primaryRole)
+         break
+      // We have both crew skill and crew booster
+      case appliedCrewSBoosters !== undefined &&
+         appliedCrewSBoosters.size !== 0 &&
+         appliedCrewSkills !== undefined &&
+         appliedCrewSkills.size !== 0:
+         console.log('WE HAVE BOTH CREW BOOSTER AND CREW SKILLS!!!!!!+++', crewMember.primaryRole)
+         break
+      default:
+         console.log('WE HAVE NOTHING!!!!!!!!!!!! CSÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁ')
+         return calculatedSkillResult
+   }
+   if (appliedCrewSkills === undefined) {
       return calculatedSkillResult
-   }
-   // We only have crew booster
-   if (appliedCrewSkills === undefined && appliedCrewSBoosters !== undefined) {
-   }
-   // We only have the crew skill activated, NOT CREW BOOSTER
-   else if (appliedCrewSkills !== undefined && appliedCrewSBoosters === undefined) {
-   }
-   // We have both crew skill and crew booster
-   else if (appliedCrewSkills !== undefined && appliedCrewSBoosters !== undefined) {
-      console.log(appliedCrewSBoosters, appliedCrewSkills)
    }
 
    /**
@@ -63,60 +137,14 @@ function ReturnCrewSkillsParameters<T extends Record<string, number>>(
             const skillValue = Math.abs(skillModifier.value)
             const key = configField
 
-            switch (foundConfigSkill.measureType) {
-               case 'percents':
-                  let scaledBonus = 0
-                  if (skillValue > 0 && skillValue <= 1) {
-                     scaledBonus = skillValue * (crewMember.efficiencyLevel / 100)
-                  } else {
-                     scaledBonus = (skillValue - 1) * (crewMember.efficiencyLevel / 100) + 1
-                  }
-                  /**
-                   * In this case I check if a crewMember is !Commander
-                   * and isCommanderBonusApplied is true (+10% bonus switch turned on)
-                   */
-                  switch (foundConfigSkill.operation) {
-                     case 'degressive':
-                        if (scaledBonus > 1) {
-                           scaledBonus = scaledBonus - 1
-                        }
-                        const substract = (calculatedSkillResult[key] as number) * scaledBonus
-                        ;(calculatedSkillResult[key] as number) -= substract
-                        break
-                     case 'progressive':
-                        ;(calculatedSkillResult[key] as number) *= scaledBonus
-                        break
-                  }
-                  break
-               case 'mph':
-                  const scaledBonus1 = skillValue * 100 * (crewMember.efficiencyLevel / 100)
-                  ;(calculatedSkillResult[key] as number) += scaledBonus1
-                  break
-               case 'seconds':
-                  const scaledBonus2 = skillValue * (crewMember.efficiencyLevel / 100)
-                  if (foundConfigSkill.operation === 'degressive') {
-                     ;(calculatedSkillResult[key] as number) =
-                        (calculatedSkillResult[key] as number) - scaledBonus2
-                  } else {
-                     ;(calculatedSkillResult[key] as number) =
-                        (calculatedSkillResult[key] as number) + scaledBonus2
-                  }
-                  break
-               case 'add':
-                  /**
-                   * Armorer skill improves the minimum & max potential dmg, but the avg value stays the same
-                   */
-                  if (skillName === 'gunner_armorer') break
-                  const scaledBonus3 = (skillValue - 1) * (crewMember.efficiencyLevel / 100) + 1
-                  const addValue = scaledBonus3 - 1
-                  ;(calculatedSkillResult[key] as number) += addValue
-                  break
-               case 'subtract':
-                  const scaledBonus4 = (skillValue - 1) * (crewMember.efficiencyLevel / 100) + 1
-                  const subtractValue = (scaledBonus4 - 1) * calculatedSkillResult[key]
-                  ;(calculatedSkillResult[key] as number) -= subtractValue
-                  break
-            }
+            ReturnCalculatedSkillResult(
+               calculatedSkillResult,
+               foundConfigSkill,
+               crewMember,
+               skillValue,
+               key,
+               skillName,
+            )
          }
       }
    }

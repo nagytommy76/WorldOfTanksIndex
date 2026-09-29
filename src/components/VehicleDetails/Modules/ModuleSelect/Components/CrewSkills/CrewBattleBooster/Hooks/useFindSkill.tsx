@@ -14,7 +14,7 @@ export default function findCrewSkillForBooster(
 
    Object.values(grouppedCrewSkills).map((skills) => {
       for (const skill of skills) {
-         if (skill.xmlName === boosterSplit || skill.xmlName === 'radioman_fireFighting') {
+         if (skill.xmlName === boosterSplit) {
             foundModifier = skill.modifiers
          }
       }

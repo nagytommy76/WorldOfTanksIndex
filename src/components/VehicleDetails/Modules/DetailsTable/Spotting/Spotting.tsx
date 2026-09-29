@@ -30,6 +30,7 @@ export default function Spotting() {
    const {
       crewReducer: { crewMembers, commander },
       isCalculateSituational,
+      hasAppliedCrewBooster,
    } = useContext(CrewContext)
 
    const viewRangeBase = vehicleTurret[selectedModuleNames.vehicleTurret].viewRange
@@ -53,6 +54,7 @@ export default function Spotting() {
                createCrewSkillsTransformer(commander, crewMembers, isCalculateSituational),
             ],
          ),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [
          viewRangeBase,
          viewRangeStillBase,
@@ -62,6 +64,7 @@ export default function Spotting() {
          crewMembers,
          commander,
          isCalculateSituational,
+         hasAppliedCrewBooster,
       ],
    )
 

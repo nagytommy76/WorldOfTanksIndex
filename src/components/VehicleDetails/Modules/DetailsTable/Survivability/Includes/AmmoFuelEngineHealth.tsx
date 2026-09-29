@@ -24,6 +24,7 @@ export default function AmmoFuelEngineHealth() {
    } = useContext(DeviceContext)
    const {
       crewReducer: { crewMembers, commander },
+      hasAppliedCrewBooster,
    } = useContext(CrewContext)
 
    const ammoRackHealthBase = hull.ammoRackHealth.maxHealth
@@ -58,6 +59,7 @@ export default function AmmoFuelEngineHealth() {
                createCrewSkillsTransformer(commander, crewMembers),
             ],
          ),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [
          appliedDevicesModifiers,
          ammoRackHealthBase,
@@ -68,6 +70,7 @@ export default function AmmoFuelEngineHealth() {
          engineRegenHealthBase,
          crewMembers,
          commander,
+         hasAppliedCrewBooster,
       ],
    )
 

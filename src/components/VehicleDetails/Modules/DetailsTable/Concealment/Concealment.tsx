@@ -35,6 +35,7 @@ export default function Concealment() {
    } = useContext(DeviceContext)
    const {
       crewReducer: { commander, crewMembers },
+      hasAppliedCrewBooster,
    } = useContext(CrewContext)
 
    const vehicleStillCamoflageBase = useMemo(() => calculateCamoValues(camo.stationary), [camo])
@@ -82,6 +83,7 @@ export default function Concealment() {
          vehicleStillCamoflageAfterFireBase,
          commander,
          crewMembers,
+         hasAppliedCrewBooster,
       ],
    )
 

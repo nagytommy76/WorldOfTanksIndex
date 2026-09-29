@@ -50,6 +50,7 @@ export default function Mobility() {
    } = useContext(DeviceContext)
    const {
       crewReducer: { commander, crewMembers },
+      hasAppliedCrewBooster,
    } = useContext(CrewContext)
 
    const gunDepression = -vehicleGun[selectedModuleNames.vehicleGun].elevationLimits.depression[1] || 0
@@ -92,6 +93,7 @@ export default function Mobility() {
                createCrewSkillsTransformer(commander, crewMembers),
             ],
          ),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [
          vehicleEnginePowerBase,
          forwardSpeedBase,
@@ -103,6 +105,7 @@ export default function Mobility() {
          vehicleTerrainResistanceBase,
          commander,
          crewMembers,
+         hasAppliedCrewBooster,
       ],
    )
 

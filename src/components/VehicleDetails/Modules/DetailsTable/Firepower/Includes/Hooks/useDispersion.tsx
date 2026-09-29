@@ -22,6 +22,7 @@ export default function useDispersion() {
    } = useContext(DeviceContext)
    const {
       crewReducer: { crewMembers, commander },
+      hasAppliedCrewBooster,
       isCalculateSituational,
    } = useContext(CrewContext)
 
@@ -60,6 +61,7 @@ export default function useDispersion() {
          commander,
          crewMembers,
          isCalculateSituational,
+         hasAppliedCrewBooster,
       ],
    )
 

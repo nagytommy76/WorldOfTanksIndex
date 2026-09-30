@@ -1,156 +1,10 @@
-import CREW_SKILLS_CONFIG, { type ICrewSkillConfig } from './crewSkillConfig'
-import CrewMember from '@/CrewContext/Classes/Crew'
+import CREW_SKILLS_CONFIG from './crewSkillConfig'
 import Commander from '@/CrewContext/Classes/Commander'
 
 import type { CrewMembersType } from '@/CrewContext/Types'
 import type { StatTransformer } from './applyStatPipeline'
 
-function ReturnCalculatedSkillResult<T extends Record<string, number>>(
-   calculatedSkillResult: T,
-   foundConfigSkill: ICrewSkillConfig,
-   crewMember: CrewMember | Commander,
-   skillValue: number,
-   key: string,
-   skillName: string,
-) {
-   switch (foundConfigSkill.measureType) {
-      case 'percents':
-         let scaledBonus = 0
-         if (skillValue > 0 && skillValue <= 1) {
-            scaledBonus = skillValue * (crewMember.efficiencyLevel / 100)
-         } else {
-            scaledBonus = (skillValue - 1) * (crewMember.efficiencyLevel / 100) + 1
-         }
-         /**
-          * In this case I check if a crewMember is !Commander
-          * and isCommanderBonusApplied is true (+10% bonus switch turned on)
-          */
-         switch (foundConfigSkill.operation) {
-            case 'degressive':
-               if (scaledBonus > 1) {
-                  scaledBonus = scaledBonus - 1
-               }
-               const substract = (calculatedSkillResult[key] as number) * scaledBonus
-               ;(calculatedSkillResult[key] as number) -= substract
-               break
-            case 'progressive':
-               ;(calculatedSkillResult[key] as number) *= scaledBonus
-               break
-         }
-         break
-      case 'mph':
-         const scaledBonus1 = skillValue * 100 * (crewMember.efficiencyLevel / 100)
-         ;(calculatedSkillResult[key] as number) += scaledBonus1
-         break
-      case 'seconds':
-         const scaledBonus2 = skillValue * (crewMember.efficiencyLevel / 100)
-         if (foundConfigSkill.operation === 'degressive') {
-            ;(calculatedSkillResult[key] as number) = (calculatedSkillResult[key] as number) - scaledBonus2
-         } else {
-            ;(calculatedSkillResult[key] as number) = (calculatedSkillResult[key] as number) + scaledBonus2
-         }
-         break
-      case 'add':
-         /**
-          * Armorer skill improves the minimum & max potential dmg, but the avg value stays the same
-          */
-         if (skillName === 'gunner_armorer') break
-         const scaledBonus3 = (skillValue - 1) * (crewMember.efficiencyLevel / 100) + 1
-         const addValue = scaledBonus3 - 1
-         ;(calculatedSkillResult[key] as number) += addValue
-         break
-      case 'subtract':
-         const scaledBonus4 = (skillValue - 1) * (crewMember.efficiencyLevel / 100) + 1
-         const subtractValue = (scaledBonus4 - 1) * calculatedSkillResult[key]
-         ;(calculatedSkillResult[key] as number) -= subtractValue
-         break
-   }
-}
-
-function ReturnCrewSkillsParameters<T extends Record<string, number>>(
-   calculatedSkillResult: T,
-   crewMember: CrewMember | Commander,
-   calculateSituational: boolean = false,
-   hasClip: boolean = false,
-) {
-   const appliedCrewSkills = crewMember.appliedCrewSkills
-   const appliedCrewSBoosters = crewMember.appliedCrewBattleBoosters
-
-   switch (true) {
-      // We only have crew booster
-      case (appliedCrewSkills === undefined || appliedCrewSkills.size === 0) &&
-         appliedCrewSBoosters !== undefined &&
-         appliedCrewSBoosters.size !== 0:
-         console.log('WE ONLY HAVE CREW BOOSTER', appliedCrewSBoosters, crewMember.primaryRole)
-         break
-      // We only have the crew skill activated, NOT CREW BOOSTER
-      case (appliedCrewSBoosters === undefined || appliedCrewSBoosters.size === 0) &&
-         appliedCrewSkills !== undefined &&
-         appliedCrewSkills.size !== 0:
-         console.log('WE ONLY HAVE CREW SKILL!!!!!!!!!!!!!!!!', crewMember.primaryRole)
-         break
-      // We have both crew skill and crew booster
-      case appliedCrewSBoosters !== undefined &&
-         appliedCrewSBoosters.size !== 0 &&
-         appliedCrewSkills !== undefined &&
-         appliedCrewSkills.size !== 0:
-         console.log('WE HAVE BOTH CREW BOOSTER AND CREW SKILLS!!!!!!+++', crewMember.primaryRole)
-         break
-      default:
-         console.log('WE HAVE NOTHING!!!!!!!!!!!! CSÁÁÁÁÁÁÁÁÁÁÁÁÁÁÁ')
-         return calculatedSkillResult
-   }
-   if (appliedCrewSkills === undefined) {
-      return calculatedSkillResult
-   }
-
-   /**
-    * Itt kéne vizsgálnom, hogy 1
-    * 1. Ha nincs gunner_smoothTurret crewSkill -> 100% tehát hozzá kell adnom a skillekhez
-    *    Ezt úgy hogy a crewMember.appliedCrewBattleBoosters-hez adom hozzá a: (contextet módosítani!)
-    * {
-         "measureType": "percents",
-         "situationalParam": true,
-         "paramName": "turretAimingDispersion",
-         "value": -0.075
-      }
-
-    * 2. Ha van gunner_smoothTurret skill -> meg kell dupláznom a hatását.
-    *
-    * Amikor hozzá adom a boostert akkor kéne a skill-t is hozzáadni? Context-et használni? vagy szimplán átadni ->
-    * -> CrewSkills -> CrewBattleBoosters -> SingleCrewBooster
-    *
-    */
-
-   for (const [skillName, skillModifiers] of appliedCrewSkills) {
-      if (skillName === 'loader_magMastery' && !hasClip) continue
-      if (skillName === 'camouflage') continue
-      for (const skillModifier of skillModifiers) {
-         if (!CREW_SKILLS_CONFIG[skillName]) continue
-
-         const foundConfigSkill = CREW_SKILLS_CONFIG[skillName][skillModifier.paramName]
-
-         if (!foundConfigSkill) continue
-         if (!calculateSituational && foundConfigSkill.isSituational) continue
-
-         for (const configField of foundConfigSkill.fields) {
-            const skillValue = Math.abs(skillModifier.value)
-            const key = configField
-
-            ReturnCalculatedSkillResult(
-               calculatedSkillResult,
-               foundConfigSkill,
-               crewMember,
-               skillValue,
-               key,
-               skillName,
-            )
-         }
-      }
-   }
-
-   return calculatedSkillResult
-}
+import ReturnCrewSkillsParameters from './helpers/ReturnCrewSkillsParameters'
 
 /**
  * 
@@ -159,7 +13,7 @@ function ReturnCrewSkillsParameters<T extends Record<string, number>>(
  * @param calculateSituational - situational perks
  * @returns calculatedSkillResult - 
  * @example
- *    Recon's base bonus = 2%
+ *    Recons base bonus = 2%
  * 
       baseBonus         = 2% view range
       effectiveQual     = 110%
@@ -180,7 +34,6 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
       }
 
    return (baseValues: T): T => {
-      // console.log('BASE VALUIES CREW: ')
       let calculatedSkillResult = { ...baseValues }
 
       calculatedSkillResult = ReturnCrewSkillsParameters(
@@ -203,22 +56,50 @@ export default function createCrewSkillsTransformer<T extends Record<string, num
    }
 }
 
+/**
+ *
+ * @param commander COMMANDER
+ * @returns camouflageStillMovingValues
+ * @description The Natural Cover directive gives +10% to the amount of camo value the crew perk is giving.
+ * 10% boost to the camouflage skill itself. So the fully trained skill instead of boosting the the camo by 80%, it boosts it by 88%
+ * The addidtional number is: 0.08047
+ *
+ */
 export function createConcealmentSkillTransformer<T extends Record<string, number>>(
    commander: Commander,
 ): StatTransformer<T> {
    return (camouflageStillMovingValues: T): T => {
       const appliedCrewSkills = commander.appliedCrewSkills
-      // Making sure it only works if camouflage skill is set
-      // console.log('BASE VALUIES CREW: ', commander.appliedCrewBattleBoosters?.has('naturalCover'))
-      if (!appliedCrewSkills?.has('camouflage')) return camouflageStillMovingValues
-      if (appliedCrewSkills === undefined || appliedCrewSkills.size === 0) return camouflageStillMovingValues
+      const appliedCrewBattleBoosters = commander.appliedCrewBattleBoosters
 
       const scaledBonus = 0.8047 * (commander.efficiencyLevel / 100) + 1
-
+      // If only natural cover directive is active -> it doesn't get crew efficiency bonus != scales
+      const bonusWithoutEfficiency = 1.7542
       const config = CREW_SKILLS_CONFIG['camouflage']['maskingFactor']
 
-      for (const field of config.fields) {
-         ;(camouflageStillMovingValues[field] as number) *= scaledBonus
+      switch (true) {
+         // We have only crew booster naturalCover
+         case appliedCrewBattleBoosters?.has('naturalCover') && !appliedCrewSkills?.has('camouflage'):
+            for (const field of config.fields) {
+               ;(camouflageStillMovingValues[field] as number) *= bonusWithoutEfficiency
+            }
+            break
+         // We have only crew skill camouflage and NOT naturalCover
+         case appliedCrewSkills?.has('camouflage') && !appliedCrewBattleBoosters?.has('naturalCover'):
+            for (const field of config.fields) {
+               ;(camouflageStillMovingValues[field] as number) *= scaledBonus
+            }
+            break
+         // We have BOTH crew skill camouflage and naturalCover BOOSTER
+         case appliedCrewSkills?.has('camouflage') && appliedCrewBattleBoosters?.has('naturalCover'):
+            const scaledNaturalCover = 0.08047 * (commander.efficiencyLevel / 100) + 1
+
+            for (const field of config.fields) {
+               ;(camouflageStillMovingValues[field] as number) *= scaledBonus + scaledNaturalCover
+            }
+            break
+         default:
+            return camouflageStillMovingValues
       }
 
       return camouflageStillMovingValues

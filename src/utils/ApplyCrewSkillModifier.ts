@@ -92,10 +92,11 @@ export function createConcealmentSkillTransformer<T extends Record<string, numbe
             break
          // We have BOTH crew skill camouflage and naturalCover BOOSTER
          case appliedCrewSkills?.has('camouflage') && appliedCrewBattleBoosters?.has('naturalCover'):
-            const scaledNaturalCover = 0.08047 * (commander.efficiencyLevel / 100) + 1
+            const scaledNaturalCover = 0.08047 * (commander.efficiencyLevel / 100)
+            const bonus = scaledBonus + scaledNaturalCover
 
             for (const field of config.fields) {
-               ;(camouflageStillMovingValues[field] as number) *= scaledBonus + scaledNaturalCover
+               ;(camouflageStillMovingValues[field] as number) *= bonus
             }
             break
          default:

@@ -1,7 +1,7 @@
 import type { MeasureType } from '../Classes/CrewSkills'
 import type { ModifierOperation } from './crewModifierConfig'
 
-interface ICrewSkillConfig {
+export interface ICrewSkillConfig {
    /** Which field names in your flat object this modifier affects */
    fields: string[]
    /** percents  OR seconds */
@@ -370,7 +370,7 @@ export const CREW_SKILLS_CONFIG: Record<string, Record<string, ICrewSkillConfig>
     */
    camouflage: {
       maskingFactor: {
-         fields: ['camouflageMoving', 'camouflageStill', 'camouflageStillFire', 'camouflageMovingFire'],
+         fields: ['camouflageMoving', 'camouflageStill'],
          measureType: 'percents',
          isSituational: false,
          operation: 'progressive',

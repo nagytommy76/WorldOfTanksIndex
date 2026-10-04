@@ -39,33 +39,14 @@ export default function Concealment() {
    } = useContext(CrewContext)
 
    const vehicleStillCamoflageBase = useMemo(() => calculateCamoValues(camo.stationary), [camo])
-   const vehicleStillCamoflageAfterFireBase = useMemo(
-      () =>
-         calculateCamoValues(
-            camo.stationary,
-            vehicleGun[selectedModuleNames.vehicleGun].invisibilityFactorAtShot,
-         ),
-      [camo, vehicleGun, selectedModuleNames.vehicleGun],
-   )
-
    const vehicleMovingCamoflageBase = useMemo(() => calculateCamoValues(camo.moving), [camo])
-   const vehicleMovingCamoflageAfterFireBase = useMemo(
-      () =>
-         calculateCamoValues(
-            camo.moving,
-            vehicleGun[selectedModuleNames.vehicleGun].invisibilityFactorAtShot,
-         ),
-      [camo, vehicleGun, selectedModuleNames.vehicleGun],
-   )
 
-   const { camouflageMoving, camouflageStill, camouflageMovingFire, camouflageStillFire } = useMemo(
+   const { camouflageMoving, camouflageStill } = useMemo(
       () =>
          applyStatPipeline(
             {
                camouflageStill: vehicleStillCamoflageBase,
                camouflageMoving: vehicleMovingCamoflageBase,
-               camouflageStillFire: vehicleStillCamoflageAfterFireBase,
-               camouflageMovingFire: vehicleMovingCamoflageAfterFireBase,
             },
             [
                createConcealmentSkillTransformer(commander),
@@ -79,13 +60,19 @@ export default function Concealment() {
          appliedBattleBoosterModifiers,
          vehicleMovingCamoflageBase,
          vehicleStillCamoflageBase,
-         vehicleMovingCamoflageAfterFireBase,
-         vehicleStillCamoflageAfterFireBase,
          commander,
          crewMembers,
          hasAppliedCrewBooster,
       ],
    )
+
+   const vehicleStillCamoflageAfterFire = useMemo(() => {
+      return camouflageStill * vehicleGun[selectedModuleNames.vehicleGun].invisibilityFactorAtShot
+   }, [vehicleGun, camouflageStill, selectedModuleNames.vehicleGun])
+
+   const vehicleMovingCamoflageAfterFire = useMemo(() => {
+      return camouflageMoving * vehicleGun[selectedModuleNames.vehicleGun].invisibilityFactorAtShot
+   }, [vehicleGun, camouflageMoving, selectedModuleNames.vehicleGun])
 
    return (
       <Table size='small' aria-label='Concealment table with camouflage values (moving, stationary)'>
@@ -98,7 +85,7 @@ export default function Concealment() {
             <TableRowComponent
                iconSrc='/icons/concealment/invisibilityStillFactor.png'
                titleText='Stationary / After Fire'
-               valueText={[camouflageStill, camouflageStillFire]}
+               valueText={[camouflageStill, vehicleStillCamoflageAfterFire]}
                toFixed={2}
                unit='%'
                modifiers={[
@@ -111,7 +98,7 @@ export default function Concealment() {
             <TableRowComponent
                iconSrc='/icons/concealment/invisibilityMovingFactor.png'
                titleText='Moving / After Fire'
-               valueText={[camouflageMoving, camouflageMovingFire]}
+               valueText={[camouflageMoving, vehicleMovingCamoflageAfterFire]}
                toFixed={2}
                unit='%'
                modifiers={[

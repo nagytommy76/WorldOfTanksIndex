@@ -1,11 +1,14 @@
 import { useContext } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
-import { DeviceContext } from '@/VehicleContext/DevicesContext/DeviceContext'
-import { CrewContext } from '@/CrewContext/CrewContext'
+import { DeviceContext } from '@/DevicesContext/DeviceContext'
 
 import useMenuHandler from './Hooks/useMenuHandler'
 import useDeviceStates from './Hooks/useDeviceStates'
 import useCheckDevices from './Hooks/useCheckDevices'
+
+import useSelectAndClose from './Hooks/useSelectAndClose'
+import useSetCloseNone from './Hooks/useSetCloseNone'
+import useSupplyActive from './Hooks/useSupplyActive'
 
 import ReturnFoundDevices from './Functions/ReturnFoundDevices'
 
@@ -18,6 +21,7 @@ import Menu from '@mui/material/Menu'
 import MenuItemOverlay from './Includes/MenuItemOverlay'
 import SingleMenuItem from './Includes/SingleMenuItem'
 import SingleDeviceButton from './Includes/SingleDevicebutton/SingleDeviceButton'
+import MenuTooltip from './Includes/MenuTooltip'
 
 /**
  * @description Renders a single equipment slot button + its dropdown menu.
@@ -40,11 +44,9 @@ export default function DeviceGroup({
 }) {
    const { supplySlotCategory, vehicleType } = useContext(VehicleContext)
    const {
-      deviceDispatch,
       deviceReducer: { incompatibleDevices },
-      addSelectedDevice,
    } = useContext(DeviceContext)
-   const { crewDispatch } = useContext(CrewContext)
+
    // ── Local state ──────────────────────────────────────────────────────────
    const foundDevices = ReturnFoundDevices(devices)
 
@@ -53,140 +55,29 @@ export default function DeviceGroup({
       useDeviceStates(foundDevices.tiers || foundDevices.equipmentModernized_1)
    const { anchorEl, setAnchorEl, open, handleMenuClose } = useMenuHandler()
    useCheckDevices(foundDevices, archeType, setSelectedDeviceTypeOverlay)
-
-   /**
-    * @description
-    * Called ONLY when Deselect equipment is selected from the dropdown.
-    * selectedDeviceTypeOverlay set to none, selectedDevice set to tiers
-    */
-   function selectAndCloseNoneDeviceType() {
-      setAnchorEl(null)
-      // ── Deselect ──────────────────────────────────────────────────────
-      // Reset the button back to the default tiers icon
-      setSelectedDevice(foundDevices.equipmentModernized_1 || foundDevices.tiers)
-      setSelectedDeviceTypeOverlay('none')
-      // Notify parent: deviceId 0 means "remove this slot"
-      addSelectedDevice(archeType, 0)
-      deviceDispatch({
-         type: 'REMOVE_DEVICE_MODIFIER',
-         payload: { archeType },
-      })
-      // Remove incompatible tag
-      if (selectedDevice?.incompatibleTags?.length) {
-         deviceDispatch({
-            type: 'REMOVE_INCOMPATIBLE_DEVICE',
-            payload: selectedDevice.incompatibleTags?.[0],
-         })
-      }
-      if (selectedDevice?.archeType === 'improvedVentilation') {
-         crewDispatch({
-            type: 'REMOVE_APPLIED_CREW_MODIFIER',
-            payload: selectedDevice.archeType,
-         })
-      }
-   }
-   /**
-    * @description
-    * Called ONLY when SUPPLY SLOT (scouting etc) is selected
-    */
-   function supplySlotActiveSelectAndClose() {
-      setAnchorEl(null)
-      setSelectedDevice(foundDevices.tiers)
-      setSelectedDeviceTypeOverlay('supplySlotActive')
-      addSelectedDevice(archeType, foundDevices.tiers?.id ?? 0)
-
-      if (foundDevices.tiers?.incompatibleTags) {
-         deviceDispatch({
-            type: 'SET_INCOMPATIBLE_DEVICES',
-            payload: foundDevices.tiers.incompatibleTags,
-         })
-      }
-
-      if (foundDevices.tiers?.modifiers) {
-         foundDevices.tiers.modifiers.forEach((modifier) => {
-            deviceDispatch({
-               type: 'SET_DEVICE_MODIFIER',
-               payload: {
-                  archeType,
-                  name: modifier.name,
-                  value: modifier.specValue ?? modifier.value,
-                  isSupplySlot: true,
-               },
-            })
-         })
-      } else if (foundDevices.tiers?.aggregateModifiers) {
-         foundDevices.tiers.aggregateModifiers.forEach((aggregatedModifier) => {
-            if (aggregatedModifier.vehicleTypes.includes(vehicleType)) {
-               deviceDispatch({
-                  type: 'SET_DEVICE_MODIFIER',
-                  payload: {
-                     archeType,
-                     name: aggregatedModifier.name,
-                     value: aggregatedModifier.specValue ?? aggregatedModifier.value,
-                     isSupplySlot: true,
-                  },
-               })
-            }
-         })
-      }
-   }
-
-   /**
-    * @description
-    * Called when the player picks an item (or "Deselect") from the dropdown
-    */
-   function handleSelectAndClose(deviceType: DeviceTypes) {
-      setAnchorEl(null)
-      const device = foundDevices[deviceType]
-      if (!device) return // guard: variant doesn't exist for this archeType
-
-      setSelectedDevice(device)
-      setSelectedDeviceTypeOverlay(deviceType)
-      // Notify parent with the real device id so it can track the selection
-      addSelectedDevice(archeType, device.id)
-      if (device.incompatibleTags) {
-         deviceDispatch({
-            type: 'SET_INCOMPATIBLE_DEVICES',
-            payload: device.incompatibleTags,
-         })
-      }
-      if (device.modifiers) {
-         device.modifiers.forEach((modifier) => {
-            if (modifier.name === 'vehicleStillCircularVisionRadiusDeluxe') {
-               deviceDispatch({
-                  type: 'SET_DEVICE_MODIFIER',
-                  payload: {
-                     archeType,
-                     name: 'vehicleStillCircularVisionRadius',
-                     value: modifier.value,
-                  },
-               })
-            } else {
-               deviceDispatch({
-                  type: 'SET_DEVICE_MODIFIER',
-                  payload: {
-                     archeType,
-                     name: modifier.name,
-                     value: modifier.value,
-                  },
-               })
-            }
-         })
-      } else if (device.aggregateModifiers) {
-         device.aggregateModifiers.forEach((aggregatedModifier) => {
-            if (aggregatedModifier.vehicleTypes.includes(vehicleType)) {
-               deviceDispatch({
-                  type: 'SET_DEVICE_MODIFIER',
-                  payload: {
-                     archeType,
-                     name: aggregatedModifier.name,
-                     value: aggregatedModifier.value,
-                  },
-               })
-            }
-         })
-      }
-   }
+   const handleSelectAndClose = useSelectAndClose(
+      foundDevices,
+      archeType,
+      setAnchorEl,
+      setSelectedDevice,
+      setSelectedDeviceTypeOverlay,
+   )
+   const selectAndCloseNoneDeviceType = useSetCloseNone(
+      selectedDevice,
+      foundDevices,
+      archeType,
+      setAnchorEl,
+      setSelectedDevice,
+      setSelectedDeviceTypeOverlay,
+   )
+   const supplySlotActiveSelectAndClose = useSupplyActive(
+      vehicleType,
+      foundDevices,
+      archeType,
+      setAnchorEl,
+      setSelectedDevice,
+      setSelectedDeviceTypeOverlay,
+   )
 
    if (!selectedDevice) return null
    return (
@@ -223,17 +114,27 @@ export default function DeviceGroup({
                      <div key={deviceType}>
                         {deviceType === 'tiers' ? (
                            <>
-                              <SingleMenuItem
+                              <MenuTooltip
                                  key={deviceType}
-                                 displayName={device.displayName}
-                                 handleClose={() => handleSelectAndClose(deviceType)}
+                                 DisplayTextComponent={device.displayName}
+                                 aggregateModifiers={device.aggregateModifiers}
+                                 modifiers={device.modifiers}
+                                 price={device.price}
+                                 selectedDeviceTypeOverlay={'tiers'}
                               >
-                                 <MenuItemOverlay
-                                    overlayType={deviceType as OverlayTypes}
-                                    altName={device.name}
-                                    icon={device.icon}
-                                 />
-                              </SingleMenuItem>
+                                 <SingleMenuItem
+                                    key={deviceType}
+                                    displayName={device.displayName}
+                                    handleClose={() => handleSelectAndClose(deviceType)}
+                                 >
+                                    <MenuItemOverlay
+                                       overlayType={deviceType as OverlayTypes}
+                                       altName={device.name}
+                                       icon={device.icon}
+                                    />
+                                 </SingleMenuItem>
+                              </MenuTooltip>
+
                               {/**
                                * IF We have MOBILITY supplySlotCategory inside VehicleContext.
                                * If TIERS device has this category, Use specValue of device.modifiers array.
@@ -241,34 +142,54 @@ export default function DeviceGroup({
                               {supplySlotCategory &&
                                  foundDevices.tiers?.categories &&
                                  foundDevices.tiers?.categories?.includes(supplySlotCategory) && (
-                                    <SingleMenuItem
-                                       displayName={`${foundDevices.tiers.displayName} in ${supplySlotCategory} slot`}
-                                       handleClose={supplySlotActiveSelectAndClose}
+                                    <MenuTooltip
+                                       DisplayTextComponent={`${foundDevices.tiers.displayName} (in ${supplySlotCategory} slot)`}
+                                       aggregateModifiers={foundDevices.tiers.aggregateModifiers}
+                                       modifiers={foundDevices.tiers.modifiers}
+                                       price={foundDevices.tiers.price}
+                                       selectedDeviceTypeOverlay={'supplySlotActive'}
                                     >
-                                       <MenuItemOverlay
-                                          overlayType='supplySlotActive'
-                                          supplySlotIconName={supplySlotCategory}
-                                          altName={foundDevices.tiers.displayName}
-                                          icon={foundDevices.tiers.icon}
-                                       />
-                                    </SingleMenuItem>
+                                       <SingleMenuItem
+                                          displayName={`${foundDevices.tiers.displayName} in ${supplySlotCategory} slot`}
+                                          handleClose={supplySlotActiveSelectAndClose}
+                                       >
+                                          <MenuItemOverlay
+                                             overlayType='supplySlotActive'
+                                             supplySlotIconName={supplySlotCategory}
+                                             altName={foundDevices.tiers.displayName}
+                                             icon={foundDevices.tiers.icon}
+                                          />
+                                       </SingleMenuItem>
+                                    </MenuTooltip>
                                  )}
                            </>
                         ) : (
-                           <SingleMenuItem
-                              key={deviceType}
-                              displayName={`
-                           ${deviceType === 'equipmentTrophyUpgraded' ? 'Upgraded ' : ''}
-                           ${device.displayName}
-                           `}
-                              handleClose={() => handleSelectAndClose(deviceType as DeviceTypes)}
+                           <MenuTooltip
+                              DisplayTextComponent={
+                                 (deviceType as OverlayTypes) === 'equipmentTrophyUpgraded'
+                                    ? `Upgraded ${device.displayName}`
+                                    : device.displayName
+                              }
+                              aggregateModifiers={device.aggregateModifiers}
+                              modifiers={device.modifiers}
+                              price={device.price}
+                              selectedDeviceTypeOverlay={deviceType as OverlayTypes}
                            >
-                              <MenuItemOverlay
-                                 overlayType={deviceType as OverlayTypes}
-                                 altName={device.name}
-                                 icon={device.icon}
-                              />
-                           </SingleMenuItem>
+                              <SingleMenuItem
+                                 key={deviceType}
+                                 displayName={`
+                                 ${deviceType === 'equipmentTrophyUpgraded' ? 'Upgraded ' : ''}
+                                 ${device.displayName}
+                                 `}
+                                 handleClose={() => handleSelectAndClose(deviceType as DeviceTypes)}
+                              >
+                                 <MenuItemOverlay
+                                    overlayType={deviceType as OverlayTypes}
+                                    altName={device.name}
+                                    icon={device.icon}
+                                 />
+                              </SingleMenuItem>
+                           </MenuTooltip>
                         )}
                      </div>
                   ),

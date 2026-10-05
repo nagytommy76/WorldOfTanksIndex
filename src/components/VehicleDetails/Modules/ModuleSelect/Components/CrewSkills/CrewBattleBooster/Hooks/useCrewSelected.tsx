@@ -24,7 +24,7 @@ export default function useCrewSelected(booster: IDevice) {
    const { addToContextSetSelected, removeFromContextSetSelected } = useHandleContext(setISSelected)
    const getCrewMemberWithSecondaryRole = useGetRole()
    useSetBlocked(booster.icon, setIsBolcked)
-   useCheckSelected(booster.icon, setIsBolcked)
+   useCheckSelected(booster.icon, setISSelected)
 
    function AddCrewBooster() {
       const boosterSplit = booster.icon.split('_')

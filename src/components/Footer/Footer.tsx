@@ -39,7 +39,7 @@ export default function Footer() {
                <LinkedInIcon fontSize='large' />
             </LinkComponent>
          </div>
-         <small className=''>
+         <small className='text-white/50'>
             I made this project for fun, to practice my Next.js skills and to create a useful tool for the
             World of Tanks community.
             <br />

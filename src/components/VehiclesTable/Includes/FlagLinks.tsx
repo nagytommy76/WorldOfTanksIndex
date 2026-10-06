@@ -1,4 +1,5 @@
 'use client'
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -16,7 +17,7 @@ export default function FlagLinks({
 }) {
    const pathname = usePathname()
    const vehicleType = pathname && pathname.split('/')[2]
-   const isVehicleTypeInPath = vehicleType === undefined ? vehicleTypeProp : vehicleType
+   const nation = pathname.split('/')[3]
 
    return (
       <section
@@ -25,14 +26,21 @@ export default function FlagLinks({
          }
       >
          {Object.keys(flagSources).map((key) => {
-            const isActive = pathname === `/vehicles/${isVehicleTypeInPath}/${key}`
-            const opacityClass = isActive ? `` : ` opacity-${opacity} `
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            const [isHover, setIsHover] = useState<boolean>(false)
+            const isActive = key === nation
 
             return (
                <Link
-                  className={`${opacityClass} hover:opacity-100 transition-all duration-150`}
+                  style={{
+                     opacity: isActive || isHover ? 1 : opacity / 100,
+                     transition: 'opacity 0.15s',
+                     transitionDuration: '150ms',
+                  }}
                   href={`/vehicles/${vehicleType === undefined ? vehicleTypeProp : vehicleType}/${key}`}
                   key={key}
+                  onMouseEnter={() => setIsHover(true)}
+                  onMouseLeave={() => setIsHover(false)}
                >
                   <Image
                      src={flagSources[key].source}

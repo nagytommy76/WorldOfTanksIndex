@@ -22,31 +22,28 @@ export default function useHandleClick(
       useAppliedSkills()
 
    function handleClick(event: React.MouseEvent<HTMLElement>, value: string, skill: CrewSkills) {
-      // if (skill.modifiers.find((modifier) => modifier.paramName === 'crewLevelIncrease')) {
-      //    console.log('SKILL FROM HANDLE CLICK: ', skill)
-      //    if (selectedSkills.includes('brotherhood') || selectedSkills.includes(skill.xmlName)) {
-      //       setSkillsSelected((prev) => prev - 1)
-      //       setCommonSkillsSelected((prev) => prev - 1)
-      //       crewDispatch({
-      //          type: 'REMOVE_APPLIED_CREW_MODIFIER',
-      //          payload: skill.xmlName,
-      //       })
-      //    } else {
-      //       setSkillsSelected((prev) => prev + 1)
-      //       setCommonSkillsSelected((prev) => prev + 1)
-      //       crewDispatch({
-      //          type: 'SET_APPLIED_CREW_MODIFIER',
-      //          payload: {
-      //             name: skill.xmlName,
-      //             value: skill.modifiers[0].value,
-      //             situationalParam: skill.modifiers[0].situationalParam ?? false,
-      //             isActiveSituational: isCalculateSituational,
-      //          },
-      //       })
-      //    }
-      //    return
-      // }
-      // console.log('ROLE SKILL', skill, role)
+      if (skill.modifiers.find((modifier) => modifier.paramName === 'crewLevelIncrease')) {
+         if (!selectedSkills.includes('brotherhood') && selectedSkills.includes(skill.xmlName)) {
+            console.log('ROLE SKILLselectedSkills:')
+            setSkillsSelected((prev) => prev - 1)
+            setCommonSkillsSelected((prev) => prev - 1)
+            crewDispatch({
+               type: 'REMOVE_APPLIED_CREW_MODIFIER',
+               payload: skill.xmlName,
+            })
+         } else {
+            setSkillsSelected((prev) => prev + 1)
+            setCommonSkillsSelected((prev) => prev + 1)
+            crewDispatch({
+               type: 'SET_APPLIED_CREW_MODIFIER',
+               payload: {
+                  name: skill.xmlName,
+                  value: skill.modifiers[0].value,
+                  situationalParam: skill.modifiers[0].situationalParam,
+               },
+            })
+         }
+      }
       switch (role) {
          case 'common':
             SetCommonSkills(skill, selectedSkills, setSkillsSelected, setCommonSkillsSelected, crewDispatch)

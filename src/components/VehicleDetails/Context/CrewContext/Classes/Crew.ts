@@ -42,6 +42,7 @@ export default class CrewMember extends Member {
            {
               value: number
               paramName: string
+              situationalParam: boolean
            }
         >
       | undefined = undefined

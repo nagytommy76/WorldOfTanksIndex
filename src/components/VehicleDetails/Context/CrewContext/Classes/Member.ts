@@ -15,7 +15,7 @@ export default class Member {
            {
               value: number
               paramName: string
-              //   situationalParam?: boolean
+              situationalParam: boolean
            }
         >
       | undefined = undefined
@@ -47,11 +47,17 @@ export default class Member {
       this.efficiencyLevel = Member.BASE_TRAINING
    }
 
-   setAppliedCrewModifier(modifier: { name: string; paramName: string; value: number }) {
+   setAppliedCrewModifier(modifier: {
+      name: string
+      paramName: string
+      value: number
+      situationalParam?: boolean
+   }) {
       if (!this.appliedCrewModifiers) this.appliedCrewModifiers = new Map()
       this.appliedCrewModifiers.set(modifier.name, {
          paramName: modifier.paramName,
          value: modifier.value,
+         situationalParam: modifier.situationalParam || false,
       })
       this.efficiencyLevel = this.computeEfficiencyLevel()
    }

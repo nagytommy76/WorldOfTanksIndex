@@ -45,7 +45,7 @@ export type ICrewContextActions =
    | { type: 'REMOVE_APPLIED_CREW_MODIFIER'; payload: string }
    | {
         type: 'SET_APPLIED_CREW_MODIFIER'
-        payload: { name: string; value: number }
+        payload: { name: string; value: number; situationalParam?: boolean }
      }
    | {
         type: 'SET_APPLIED_CREW_SKILLS'

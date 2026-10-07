@@ -62,13 +62,14 @@ export default function CrewReducer(
             crewMembers: { ...newToggleCrewMembers },
          }
       case 'SET_APPLIED_CREW_MODIFIER':
-         const { name, value } = action.payload
+         const { name, value, situationalParam } = action.payload
          const newCrewMembers = state.crewMembers
 
          state.commander.setAppliedCrewModifier({
             name,
             paramName: name,
             value,
+            situationalParam: situationalParam || false,
          })
          for (const member of Object.values(newCrewMembers)) {
             if (!member) continue
@@ -76,6 +77,7 @@ export default function CrewReducer(
                name,
                paramName: name,
                value,
+               situationalParam: situationalParam || false,
             })
             member.applyCommanderBonus(state.commander.efficiencyLevel)
          }

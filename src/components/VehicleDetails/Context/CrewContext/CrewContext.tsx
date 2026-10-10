@@ -22,6 +22,8 @@ export const CrewContext = createContext<ICrewContext>({
    hasAppliedCrewBooster: undefined,
    setHasAppliedCrewBooster: () => {},
    setIsCalculateSituational: () => {},
+   isAppliedCommanderBonus: false,
+   setIsAppliedCommanderBonus: () => {},
 })
 
 export default function CrewContextProvider({
@@ -36,6 +38,7 @@ export default function CrewContextProvider({
       deviceReducer: { appliedDevicesModifiers, appliedBattleBoosterModifiers },
    } = useContext(DeviceContext)
    const [isCalculateSituational, setIsCalculateSituational] = useState<boolean>(false)
+   const [isAppliedCommanderBonus, setIsAppliedCommanderBonus] = useState<boolean>(true)
    const [hasAppliedCrewBooster, setHasAppliedCrewBooster] = useState<string | undefined>(undefined)
 
    useEffect(() => {
@@ -90,8 +93,10 @@ export default function CrewContextProvider({
             crewReducer,
             isCalculateSituational,
             hasAppliedCrewBooster,
+            isAppliedCommanderBonus,
             setHasAppliedCrewBooster,
             setIsCalculateSituational,
+            setIsAppliedCommanderBonus,
          }}
       >
          {children}

@@ -89,4 +89,6 @@ export interface ICrewContext {
    isCalculateSituational: boolean
    setHasAppliedCrewBooster: Dispatch<SetStateAction<string | undefined>>
    setIsCalculateSituational: Dispatch<SetStateAction<boolean>>
+   isAppliedCommanderBonus: boolean
+   setIsAppliedCommanderBonus: Dispatch<SetStateAction<boolean>>
 }

@@ -51,6 +51,7 @@ export default function Mobility() {
    const {
       crewReducer: { commander, crewMembers },
       hasAppliedCrewBooster,
+      isCalculateSituational,
    } = useContext(CrewContext)
 
    const gunDepression = -vehicleGun[selectedModuleNames.vehicleGun].elevationLimits.depression[1] || 0
@@ -89,7 +90,7 @@ export default function Mobility() {
             [
                createDeviceTransformer(appliedDevicesModifiers),
                createDeviceBoostersTransformer(appliedBattleBoosterModifiers),
-               createCrewTransformer(commander, crewMembers),
+               createCrewTransformer(commander, crewMembers, isCalculateSituational),
                createCrewSkillsTransformer(commander, crewMembers),
             ],
          ),
@@ -106,6 +107,7 @@ export default function Mobility() {
          commander,
          crewMembers,
          hasAppliedCrewBooster,
+         isCalculateSituational,
       ],
    )
 

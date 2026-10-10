@@ -76,7 +76,7 @@ export default function Firepower() {
             },
             [
                createDeviceTransformer(appliedDevicesModifiers),
-               createCrewTransformer(commander, crewMembers),
+               createCrewTransformer(commander, crewMembers, isCalculateSituational),
                createCrewSkillsTransformer(
                   commander,
                   crewMembers,

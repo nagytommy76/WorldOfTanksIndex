@@ -46,10 +46,11 @@ export default function useDispersion() {
             [
                createDeviceTransformer(appliedDevicesModifiers),
                createDeviceBoostersTransformer(appliedBattleBoosterModifiers),
-               createCrewTransformer(commander, crewMembers),
+               createCrewTransformer(commander, crewMembers, isCalculateSituational),
                createCrewSkillsTransformer(commander, crewMembers, isCalculateSituational),
             ],
          ),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [
          vehicleMovementBase,
          vehicleRotationBase,

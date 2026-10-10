@@ -50,7 +50,7 @@ export default function Spotting() {
             [
                createDeviceTransformer(appliedDevicesModifiers),
                createDeviceBoostersTransformer(appliedBattleBoosterModifiers),
-               createCrewTransformer(commander, crewMembers),
+               createCrewTransformer(commander, crewMembers, isCalculateSituational),
                createCrewSkillsTransformer(commander, crewMembers, isCalculateSituational),
             ],
          ),

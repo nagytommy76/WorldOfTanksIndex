@@ -90,7 +90,7 @@ export default function Mobility() {
             [
                createDeviceTransformer(appliedDevicesModifiers),
                createDeviceBoostersTransformer(appliedBattleBoosterModifiers),
-               createCrewTransformer(commander, crewMembers, isCalculateSituational),
+               createCrewTransformer(commander, crewMembers),
                createCrewSkillsTransformer(commander, crewMembers),
             ],
          ),

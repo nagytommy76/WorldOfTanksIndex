@@ -14,7 +14,6 @@ export default function useHandleClick(
    const {
       crewDispatch,
       crewReducer: { crewMembers, commander },
-      // isCalculateSituational,
    } = useContext(CrewContext)
 
    const [isSecondarySkill, setIsSecondarySkill] = useState<boolean>(false)
@@ -23,8 +22,7 @@ export default function useHandleClick(
 
    function handleClick(event: React.MouseEvent<HTMLElement>, value: string, skill: CrewSkills) {
       if (skill.modifiers.find((modifier) => modifier.paramName === 'crewLevelIncrease')) {
-         if (!selectedSkills.includes('brotherhood') && selectedSkills.includes(skill.xmlName)) {
-            console.log('ROLE SKILLselectedSkills:')
+         if (selectedSkills.includes(skill.xmlName)) {
             setSkillsSelected((prev) => prev - 1)
             setCommonSkillsSelected((prev) => prev - 1)
             crewDispatch({
@@ -43,6 +41,7 @@ export default function useHandleClick(
                },
             })
          }
+         return
       }
       switch (role) {
          case 'common':

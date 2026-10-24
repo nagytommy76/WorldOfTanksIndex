@@ -34,6 +34,11 @@ export default function useHandleToggleChange(role: CrewSkillRoles) {
                   setSelectedSkills((prevSkills) => [...prevSkills, 'brotherhood'])
                }
             }
+            if (commander.appliedCrewModifiers && commander.appliedCrewModifiers.has('commander_staySharp')) {
+               if (!selectedSkills.includes('commander_staySharp')) {
+                  setSelectedSkills((prevSkills) => [...prevSkills, 'commander_staySharp'])
+               }
+            }
             break
          default:
             const member = crewMembers[role]

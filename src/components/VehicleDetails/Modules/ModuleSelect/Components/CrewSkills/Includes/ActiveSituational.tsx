@@ -6,10 +6,11 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import FormGroup from '@mui/material/FormGroup'
 
 export default function ActiveSituational() {
-   const { isCalculateSituational, setIsCalculateSituational } = useContext(CrewContext)
+   const { isCalculateSituational, setIsCalculateSituational, crewDispatch } = useContext(CrewContext)
 
    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       setIsCalculateSituational(event.target.checked)
+      crewDispatch({ type: 'SET_SITUATIONAL_ACTIVE', payload: event.target.checked })
    }
 
    return (

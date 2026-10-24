@@ -41,6 +41,13 @@ export default class Member {
         >
       | undefined
 
+   /**
+    * @description If false, applied crew modifiers with situationalParam
+    * (e.g. commander_staySharp) are left out of the efficiency level.
+    * Controlled by the "Active Situational" switch
+    */
+   isSituationalActive: boolean = false
+
    private static readonly BASE_TRAINING = 100
 
    constructor() {
@@ -69,6 +76,10 @@ export default class Member {
    removeAppliedCrewModifier(modifierName: string) {
       if (!this.appliedCrewModifiers) return
       this.appliedCrewModifiers.delete(modifierName)
+      this.efficiencyLevel = this.computeEfficiencyLevel()
+   }
+   setSituationalActive(isActive: boolean) {
+      this.isSituationalActive = isActive
       this.efficiencyLevel = this.computeEfficiencyLevel()
    }
    setAppliedCrewSkill(
@@ -140,19 +151,20 @@ export default class Member {
     * // With Improved Ventilation (+5%):
     * // commander → 100 * (1 + 0.05)       = 105
     * // loader    → 100 * (1 + 0.05) * 1.1 = 115.5
+    *
+    * Situational modifiers (e.g. commander_staySharp) only count when isSituationalActive is true.
     */
    computeEfficiencyLevel(): number {
       let boostedBase = Member.BASE_TRAINING
 
       if (this.appliedCrewModifiers) {
-         let testing = 0
+         let totalBonus = 0
          this.appliedCrewModifiers.forEach((modifier) => {
-            // console.log('FROM MEMBER CLASS: MODIFIER: ', modifier)
-            testing = modifier.value - 1 + testing
+            if (modifier.situationalParam && !this.isSituationalActive) return
+            totalBonus = modifier.value - 1 + totalBonus
          })
-         testing += 1
-         boostedBase *= testing
-         // console.log('FROM MEMBER CLASS: BOOSTED BASE: ', boostedBase)
+         totalBonus += 1
+         boostedBase *= totalBonus
       }
       return parseFloat(boostedBase.toFixed(4))
    }

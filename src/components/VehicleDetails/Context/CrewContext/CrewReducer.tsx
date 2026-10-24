@@ -98,6 +98,19 @@ export default function CrewReducer(
             ...state,
             crewMembers: { ...newRemoveCrewMembers },
          }
+      case 'SET_SITUATIONAL_ACTIVE':
+         const newSituationalCrewMembers = state.crewMembers
+         state.commander.setSituationalActive(action.payload)
+
+         for (const member of Object.values(newSituationalCrewMembers)) {
+            if (!member) continue
+            member.setSituationalActive(action.payload)
+            member.applyCommanderBonus(state.commander.efficiencyLevel)
+         }
+         return {
+            ...state,
+            crewMembers: { ...newSituationalCrewMembers },
+         }
       case 'SET_APPLIED_CREW_SKILLS':
          const { crewSkillModifiers, role, appliedSkillName } = action.payload
          const crewMembers = state.crewMembers

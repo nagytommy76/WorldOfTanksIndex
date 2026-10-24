@@ -43,6 +43,7 @@ export type ICrewContextActions =
    | { type: 'TOGGLE_COMMANDER_BONUS'; payload: { checked: boolean; commanderEfficiency: number } }
    | { type: 'ADD_INITIAL_CREW'; payload: CrewMembersType }
    | { type: 'REMOVE_APPLIED_CREW_MODIFIER'; payload: string }
+   | { type: 'SET_SITUATIONAL_ACTIVE'; payload: boolean }
    | {
         type: 'SET_APPLIED_CREW_MODIFIER'
         payload: { name: string; value: number; situationalParam?: boolean }

@@ -68,20 +68,26 @@ export default function createCrewTransformer<T extends Record<string, number>>(
    }
 }
 
+/**
+ * @description Situational crew modifiers (e.g. commander_staySharp) are already included in
+ * or left out of crewMember.efficiencyLevel, based on the "Active Situational" switch
+ * (see Member.setSituationalActive)
+ */
 function ReturnAffectedVehicleParameters<T extends Record<string, number>>(
    vehicleParameters: T,
    crewMember: CrewMember | Commander,
 ): T {
    if (!crewMember.affectedVehicleStats || crewMember.affectedVehicleStats.length === 0)
       return vehicleParameters
+
    for (const element of crewMember.affectedVehicleStats) {
       const config = CREW_MODIFIER_CONFIG[element]
+
       if (!config) continue
 
       for (const field of Object.keys(vehicleParameters)) {
          if (config.fields.includes(field)) {
             const nominal = vehicleParameters[field] as number
-
             const key = field as keyof T
 
             switch (config.operation) {

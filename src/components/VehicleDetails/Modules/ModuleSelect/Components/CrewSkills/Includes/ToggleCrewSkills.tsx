@@ -1,7 +1,8 @@
-import type { Dispatch, SetStateAction } from 'react'
+import { useEffect } from 'react'
 
 import useHandleToggleChange from './Hooks/useHandleToggleChange'
 import useHandleClick from './Hooks/useHandleClick'
+import { isRoleLimitReached } from './Hooks/Helpers/SkillLimits'
 
 import SingleCrewSkill from './SingleCrewSkill'
 import CrewSkills, { CrewSkillRoles } from '@/Classes/CrewSkills'
@@ -12,20 +13,39 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 export default function ToggleCrewSkills({
    skills,
    role,
-   commonSkillsSelected,
-   setCommonSkillsSelected,
+   isSecondary,
+   commonSelected,
+   maxPrimaryOwnSelected,
+   reportSelectedCount,
 }: {
    skills: CrewSkills[]
    role: CrewSkillRoles
-   commonSkillsSelected: number
-   setCommonSkillsSelected: Dispatch<SetStateAction<number>>
+   isSecondary: boolean
+   commonSelected: number
+   maxPrimaryOwnSelected: number
+   reportSelectedCount: (role: CrewSkillRoles, count: number) => void
 }) {
    const { handleToggleChancge, selectedSkills } = useHandleToggleChange(role)
-   const { handleClick, skillsSelected, isSecondarySkill } = useHandleClick(
-      selectedSkills,
+   const { handleClick } = useHandleClick(selectedSkills, role)
+
+   /**
+    * Only count the skills of this column, selectedSkills may contain other column's skills
+    * e.g: commander & common are both filled from commander.appliedCrewSkills
+    */
+   const ownSelected = skills.filter((skill) => selectedSkills.includes(skill.xmlName)).length
+
+   useEffect(() => {
+      reportSelectedCount(role, ownSelected)
+   }, [role, ownSelected, reportSelectedCount])
+
+   const limitReached = isRoleLimitReached(
       role,
-      setCommonSkillsSelected,
+      ownSelected,
+      isSecondary,
+      commonSelected,
+      maxPrimaryOwnSelected,
    )
+   const isDisabled = (xmlName: string) => limitReached && !selectedSkills.includes(xmlName)
 
    return (
       <ToggleButtonGroup
@@ -48,18 +68,9 @@ export default function ToggleCrewSkills({
                   padding: '2px',
                   border: 'none',
                }}
-               disabled={
-                  (isSecondarySkill ? skillsSelected >= 3 : commonSkillsSelected + skillsSelected >= 6) &&
-                  !selectedSkills.includes(skill.xmlName)
-               }
+               disabled={isDisabled(skill.xmlName)}
             >
-               <SingleCrewSkill
-                  isDisabled={
-                     (isSecondarySkill ? skillsSelected >= 3 : commonSkillsSelected + skillsSelected >= 6) &&
-                     !selectedSkills.includes(skill.xmlName)
-                  }
-                  skill={skill}
-               />
+               <SingleCrewSkill isDisabled={isDisabled(skill.xmlName)} skill={skill} />
             </ToggleButton>
          ))}
       </ToggleButtonGroup>

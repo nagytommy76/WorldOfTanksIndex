@@ -247,7 +247,7 @@ export function ReturnHighlightedValueString(transformValue: number | string): V
          highlightedText: transformValue,
          prefix: '+',
          suffix: '%',
-         text: ' to hull traverse speed',
+         text: ' to turret traverse speed',
       },
       /**
        * @description Improved Aiming
@@ -279,6 +279,64 @@ export function ReturnHighlightedValueString(transformValue: number | string): V
          prefix: '+',
          suffix: 'km/h',
          text: ' to top backward speed',
+      },
+
+      /**
+       * @description Field modifications
+       */
+      vehicleGunShotDispersionAfterShot: {
+         highlightedText: transformValue,
+         prefix: '',
+         suffix: '%',
+         text: ' to dispersion after firing',
+      },
+      vehicleGunShotDispersionChassisMovement: {
+         highlightedText: transformValue,
+         prefix: '',
+         suffix: '%',
+         text: ' to dispersion during movement',
+      },
+      vehicleGunShotDispersionChassisRotation: {
+         highlightedText: transformValue,
+         prefix: '',
+         suffix: '%',
+         text: ' to dispersion during hull traverse',
+      },
+      vehicleGunShotDispersionTurretRotation: {
+         highlightedText: transformValue,
+         prefix: '',
+         suffix: '%',
+         text: ' to dispersion during turret traverse',
+      },
+      vehicleGunShotDispersionWhileGunDamaged: {
+         highlightedText: transformValue,
+         prefix: '',
+         suffix: '%',
+         text: ' to dispersion when the gun is damaged',
+      },
+      vehicleInvisibilityAfterShot: {
+         highlightedText: transformValue,
+         prefix: '+',
+         suffix: '%',
+         text: ' to concealment after firing',
+      },
+      shellVelocity: {
+         highlightedText: transformValue,
+         prefix: '+',
+         suffix: '%',
+         text: ' to shell velocity',
+      },
+      damageEnemiesByRamming: {
+         highlightedText: transformValue,
+         prefix: '+',
+         suffix: '%',
+         text: ' to damage dealt by ramming',
+      },
+      damageAndPiercingDistributionLowerBound: {
+         highlightedText: transformValue,
+         prefix: '+',
+         suffix: '%',
+         text: ' to the minimum damage and penetration roll',
       },
 
       /**

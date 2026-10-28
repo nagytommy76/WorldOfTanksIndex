@@ -6,10 +6,8 @@ import { FieldModification } from '@Models/FieldModifications/FieldModification.
 import { FieldModificationPrice } from '@Models/FieldModifications/Price.model'
 import type { IFieldModification } from '@Models/FieldModifications/FieldModificationTypes'
 import { resolveFieldModificationTree } from '@/utils/resolveFieldModificationTree'
+import { isFieldModificationTier } from '@/utils/fieldModificationTiers'
 import { VEHICLE_ROLES, type VehicleRoles } from '@Types/types'
-
-const MINIMUM_VALID_TIER = 6
-const MAXIMUM_VALID_TIER = 10
 
 export async function GET(req: NextRequest) {
    /**
@@ -21,7 +19,7 @@ export async function GET(req: NextRequest) {
 
    if (!role || !VEHICLE_ROLES.includes(role as VehicleRoles))
       return NextResponse.json({ error: 'Valid role header is required' }, { status: 400 })
-   if (!Number.isInteger(tier) || tier < MINIMUM_VALID_TIER || tier > MAXIMUM_VALID_TIER)
+   if (!isFieldModificationTier(tier))
       return NextResponse.json(
          { error: 'Valid tier header is required minimum Tier 6, maximum tier 10' },
          { status: 400 },

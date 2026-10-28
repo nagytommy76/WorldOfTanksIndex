@@ -7,6 +7,7 @@ import DetailsTable from '@/VehicleDetails/Modules/DetailsTable/DetailsTable'
 import VehicleContextProvider from '@/VehicleContext/VehicleContext'
 import DeviceContextProvider from '@/VehicleContext/DevicesContext/DeviceContext'
 import CrewContextProvider from '@/VehicleContext/CrewContext/CrewContext'
+import FieldModificationContextProvider from '@/VehicleContext/FieldModificationContext/FieldModificationContext'
 
 type Params = Promise<{ tank_id: string; tank_name: string }>
 
@@ -38,15 +39,17 @@ export default async function page({ params }: { params: Params }) {
       <VehicleContextProvider tankDetails={tankStats}>
          <DeviceContextProvider>
             <CrewContextProvider crewMembers={tankStats.crew}>
-               <section
-                  className={`
-               flex w-full min-h-screen flex-col gap-0 p-2 xl:flex-row xl:gap-5 
+               <FieldModificationContextProvider>
+                  <section
+                     className={`
+               flex w-full min-h-screen flex-col gap-0 p-2 xl:flex-row xl:gap-5
                xl:justify-between bg-neutral-900 rounded-lg xl:p-3
                `}
-               >
-                  <ModuleSelect />
-                  <DetailsTable />
-               </section>
+                  >
+                     <ModuleSelect />
+                     <DetailsTable />
+                  </section>
+               </FieldModificationContextProvider>
             </CrewContextProvider>
          </DeviceContextProvider>
       </VehicleContextProvider>

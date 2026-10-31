@@ -9,6 +9,7 @@ import type { ITankData } from '@VehicleTypes/Vehicle'
 
 import { modifiersInitialState } from './ModifiersTypes'
 import { InitialState, IVehicleContext, isVehicleReady, ReadyVehicleReducerState } from './Types'
+import { getVehicleRole } from '@/FieldModificationUtils/getVehicleRole'
 
 import useSetChassis from './Hooks/useSetChassis'
 import useSetRadios from './Hooks/useSetRadios'
@@ -37,6 +38,7 @@ export const VehicleContext = createContext<IVehicleContext>({
    provisions: [],
    vehicleType: 'SPG',
    vehicleTier: 1,
+   vehicleRole: null,
    supplySlotCategory: null,
    customRoleSlotOptions: null,
    /**
@@ -92,9 +94,11 @@ export default function VehicleContextProvider({
             rocketAcceleration: rocketBooser,
             provisions,
             supplySlotCategory,
+            customRoleSlotOptions: tankDetails.customRoleSlotOptions ?? null,
             vehicleReducer: vehicleReducer as ReadyVehicleReducerState,
             vehicleType: tankDetails.type,
             vehicleTier: tankDetails.tier,
+            vehicleRole: getVehicleRole(tankDetails.tags),
             vehicleDispatch,
             modifiersDispatch,
             modifiersReducer,

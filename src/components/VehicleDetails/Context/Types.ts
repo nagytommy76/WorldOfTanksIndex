@@ -6,6 +6,7 @@ import type { IEngines, IRocketAcceleration } from '@VehicleTypes/Engines'
 import type { IChassis, IHull } from '@VehicleTypes/Hull'
 import type { IGuns } from '@VehicleTypes/Guns'
 import type { IShells } from '@VehicleTypes/Shells'
+import type { VehicleRoles } from '@Types/types'
 
 export type ModuleTypeMap = {
    vehicleChassis: IChassis
@@ -90,6 +91,11 @@ export interface IVehicleContext {
    provisions: string[]
    vehicleType: VehicleTypes
    vehicleTier: number
+   /**
+    * @description Role tag, e.g. role_MT_sniper. It is also the key of the field modification tree.
+    * null when the vehicle has no role.
+    */
+   vehicleRole: VehicleRoles | null
    supplySlotCategory?: string | null
    customRoleSlotOptions?: string[] | null
    /**

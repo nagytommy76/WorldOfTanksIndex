@@ -22,6 +22,7 @@ export default function FieldModificationReducer(
       case 'SET_UNLOCKED_LEVEL': {
          const unlockedLevel = Math.max(0, action.payload)
          return {
+            ...state,
             unlockedLevel,
             pairChoices: keepUnlockedPairChoices(state.pairChoices, unlockedLevel),
             roleSlot: state.roleSlot && state.roleSlot.level <= unlockedLevel ? state.roleSlot : null,

@@ -7,6 +7,14 @@ export interface IFieldModificationRoleSlot {
    category: string
 }
 
+export type Operations = 'mul' | 'add'
+
+interface IAppliedModification {
+   value: number
+   operation: Operations
+   name: string
+}
+
 /**
  * @param unlockedLevel 0 = nothing unlocked, n = levels I..n are unlocked (their main steps are researched)
  * @param pairChoices level → xmlId of the chosen pair option, e.g. { 2: 4011, 4: 4022 }
@@ -16,6 +24,8 @@ export interface IFieldModificationReducerState {
    unlockedLevel: number
    pairChoices: Partial<Record<number, number>>
    roleSlot: IFieldModificationRoleSlot | null
+   appliedBaseModifications: IAppliedModification[] | null
+   appliedPairModifications: IAppliedModification[] | null
 }
 
 /**
@@ -34,6 +44,8 @@ export const fieldModificationInitialState: IFieldModificationReducerState = {
    unlockedLevel: 0,
    pairChoices: {},
    roleSlot: null,
+   appliedBaseModifications: null,
+   appliedPairModifications: null,
 }
 
 export interface IFieldModificationContext {

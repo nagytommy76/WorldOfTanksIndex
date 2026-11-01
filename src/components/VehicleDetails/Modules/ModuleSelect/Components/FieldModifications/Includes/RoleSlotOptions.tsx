@@ -7,7 +7,7 @@ import HtmlTooltip from '@/helpers/HtmlTooltip'
 
 import type { IResolvedTreeStep } from '@Models/FieldModifications/TreeTypes'
 import useFieldModSelection from '../Hooks/useFieldModSelection'
-import { ROLE_SLOT_ICON_SIZE } from '../Helpers/constants'
+import { ROLE_SLOT_ICON_SIZE, FIELD_MOD_FEATURES } from '../Helpers/constants'
 import { getImageStateClasses, getOptionState } from '../Helpers/getImageStateClasses'
 import { getOptionGroupSx } from '../Helpers/toggleStyles'
 
@@ -40,7 +40,7 @@ export default function RoleSlotOptions({
          value={chosenCategory}
          onChange={(_event, category: string | null) => chooseRoleSlot(step.level, category)}
          aria-label={`${levelName} role slot`}
-         sx={getOptionGroupSx('50%', 3)}
+         sx={getOptionGroupSx(1)}
       >
          {categories.map((category) => {
             const isChosen = category === chosenCategory
@@ -50,12 +50,20 @@ export default function RoleSlotOptions({
             const imageClasses = `${getImageStateClasses(state)}${state === 'available' ? ' grayscale' : ''}`
 
             return (
-               <ToggleButton key={category} value={category} aria-label={name} sx={{ width: 48, height: 48 }}>
-                  <HtmlTooltip
-                     placement='top'
-                     title={<FieldModTooltip subtitle={levelName} title={name} cost={step.cost} />}
-                     disableInteractive
-                  >
+               <HtmlTooltip
+                  key={category}
+                  placement='top'
+                  title={
+                     <FieldModTooltip
+                        subtitle={levelName}
+                        title={name}
+                        cost={step.cost}
+                        icon={FIELD_MOD_FEATURES[step.action.value].icon}
+                     />
+                  }
+                  disableInteractive
+               >
+                  <ToggleButton value={category} aria-label={name} className='w-[80px] h-[80px]'>
                      <Image
                         src={`/icons/details/${category}.png`}
                         alt={name}
@@ -65,8 +73,8 @@ export default function RoleSlotOptions({
                         data-state={state}
                         className={imageClasses}
                      />
-                  </HtmlTooltip>
-               </ToggleButton>
+                  </ToggleButton>
+               </HtmlTooltip>
             )
          })}
       </ToggleButtonGroup>

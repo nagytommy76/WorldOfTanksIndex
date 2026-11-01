@@ -14,6 +14,7 @@ import useGetFieldModTree from './Hooks/useGetFieldModTree'
 import ReturnTypography from '../../Includes/ModuleType'
 import FieldModTree from './Includes/FieldModTree'
 import ResetBtn from './Includes/ResetBtn'
+import Costs from './Includes/Costs'
 
 import CircularProgress from '@mui/material/CircularProgress'
 import Typography from '@mui/material/Typography'
@@ -21,6 +22,7 @@ import Typography from '@mui/material/Typography'
 export default function FieldModifications() {
    const { vehicleTier, vehicleRole, customRoleSlotOptions } = useContext(VehicleContext)
    const { fieldModificationTree, isError, isLoading } = useGetFieldModTree(vehicleTier, vehicleRole)
+
    const levels = useMemo(
       () => groupFieldModificationLevels(fieldModificationTree?.steps ?? []),
       [fieldModificationTree],
@@ -46,6 +48,7 @@ export default function FieldModifications() {
    } else {
       content = (
          <>
+            <Costs steps={fieldModificationTree?.steps} />
             <FieldModTree levels={levels} roleSlotOptions={customRoleSlotOptions ?? null} />
             <ResetBtn />
          </>

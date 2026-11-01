@@ -19,7 +19,7 @@ export default function FieldModTree({
    const { unlockedLevel } = useFieldModSelection()
 
    return (
-      <div className='flex flex-row gap-3 pt-3'>
+      <div className='flex flex-row gap-3 pt-1'>
          <div className='flex w-[64px] justify-center'>
             <LevelSlider levels={levels} />
          </div>

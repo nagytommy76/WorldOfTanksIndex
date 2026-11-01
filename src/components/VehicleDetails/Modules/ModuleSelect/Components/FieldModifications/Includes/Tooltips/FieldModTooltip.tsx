@@ -19,12 +19,14 @@ export default function FieldModTooltip({
    kpis = [],
    cost = null,
    note,
+   icon,
 }: {
    subtitle?: string
    title: string
    kpis?: IModifierOp[]
    cost?: IResolvedTreeStep['cost']
    note?: string
+   icon?: string
 }) {
    return (
       <section className='min-w-[260px] max-w-[360px] bg-[#121212] p-3'>
@@ -36,6 +38,7 @@ export default function FieldModTooltip({
          <Typography variant='subtitle1' fontWeight={700}>
             {title}
          </Typography>
+         {icon && <Image src={icon} alt={title} width={400} height={250} />}
          {kpis.length > 0 && (
             <div className='mt-1 flex flex-col gap-0.5'>
                {kpis.map((kpi, index) => (

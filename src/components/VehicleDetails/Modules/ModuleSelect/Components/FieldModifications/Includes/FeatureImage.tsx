@@ -25,7 +25,14 @@ export default function FeatureImage({ step, isUnlocked }: { step: IResolvedTree
    return (
       <HtmlTooltip
          placement='top'
-         title={<FieldModTooltip subtitle={levelName} title={feature.title} cost={step.cost} />}
+         title={
+            <FieldModTooltip
+               subtitle={levelName}
+               title={feature.title}
+               cost={step.cost}
+               icon={feature.icon}
+            />
+         }
          disableInteractive
       >
          <ButtonBase

@@ -31,6 +31,10 @@ const MODIFIER_CONFIG: Record<string, IModifierConfig> = {
       fields: ['accuracy'],
       operation: 'mul',
    },
+   vehicleGunShotDispersionAfterShot: {
+      fields: ['afterShot'],
+      operation: 'mul',
+   },
    vehicleGunReloadTime: {
       fields: ['reloadTime'],
       operation: 'mul',
@@ -38,6 +42,26 @@ const MODIFIER_CONFIG: Record<string, IModifierConfig> = {
    vehicleGunAimSpeed: {
       fields: ['aimingTime'],
       operation: 'mulSubtract',
+   },
+   vehicleGunShotDispersionTurretRotation: {
+      fields: ['turretRotation'],
+      operation: 'mul',
+   },
+   vehicleGunShotDispersionChassisRotation: {
+      fields: ['vehicleRotation'],
+      operation: 'mul',
+   },
+   vehicleGunShotDispersionChassisMovement: {
+      fields: ['vehicleMovement'],
+      operation: 'mul',
+   },
+   shellVelocity: {
+      fields: ['shellVelocity'],
+      operation: 'mul',
+   },
+   vehicleGunShotDispersionWhileGunDamaged: {
+      fields: ['accuracyWhileDamaged'],
+      operation: 'mul',
    },
 
    /**
@@ -161,6 +185,21 @@ const MODIFIER_CONFIG: Record<string, IModifierConfig> = {
    vehicleOwnSpottingTime: {
       fields: ['ownSpottingTime'],
       operation: 'add',
+   },
+   demaskFoliageFactor: {
+      fields: ['demaskFoliageFactor'],
+      operation: 'mul',
+   },
+   demaskMovingFactor: {
+      fields: ['demaskMovingFactor'],
+      operation: 'mul',
+   },
+   /**
+    * Need to calculate inside Concealment component!!!!!!!!!!!!!!!!!!
+    */
+   vehicleInvisibilityAfterShot: {
+      fields: ['vehicleStillCamoflageAfterFire', 'vehicleMovingCamoflageAfterFire'],
+      operation: 'mul',
    },
 }
 

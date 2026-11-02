@@ -37,6 +37,21 @@ export default function Spotting() {
    const viewRangeStillBase = vehicleTurret[selectedModuleNames.vehicleTurret].viewRange
    const radioRangeBase = vehicleRadio[selectedModuleNames.vehicleRadio].distance
 
+   const demaskFoliageFactor = useMemo(
+      () =>
+         appliedDevicesModifiers &&
+         appliedDevicesModifiers['commandersView'] &&
+         (appliedDevicesModifiers['commandersView'][0].value - 1) * 100,
+      [appliedDevicesModifiers],
+   )
+   const demaskMovingFactor = useMemo(
+      () =>
+         appliedDevicesModifiers &&
+         appliedDevicesModifiers['commandersView'] &&
+         (appliedDevicesModifiers['commandersView'][1].value - 1) * 100,
+      [appliedDevicesModifiers],
+   )
+
    const { enemySpottingTime, ownSpottingTime, viewRange, radioRange, stillViewRange } = useMemo(
       () =>
          applyStatPipeline(
@@ -46,6 +61,8 @@ export default function Spotting() {
                viewRange: viewRangeBase,
                stillViewRange: viewRangeStillBase,
                radioRange: radioRangeBase,
+               demaskFoliageFactor: demaskFoliageFactor ?? 0,
+               demaskMovingFactor: demaskMovingFactor ?? 0,
             },
             [
                createDeviceTransformer(appliedDevicesModifiers),
@@ -65,6 +82,8 @@ export default function Spotting() {
          commander,
          isCalculateSituational,
          hasAppliedCrewBooster,
+         demaskFoliageFactor,
+         demaskMovingFactor,
       ],
    )
 
@@ -139,25 +158,21 @@ export default function Spotting() {
                   },
                ]}
             />
-            {appliedDevicesModifiers && appliedDevicesModifiers['commandersView'] && (
-               <>
-                  <TableRowComponent
-                     iconSrc='/icons/spot/demaskFoliageFactor.png'
-                     titleText='Concealment of enemy vehicles behind foliage'
-                     valueText={parseFloat(
-                        ((appliedDevicesModifiers['commandersView'][0].value - 1) * 100).toFixed(2),
-                     )}
-                     unit='%'
-                  />
-                  <TableRowComponent
-                     iconSrc='/icons/spot/demaskMovingFactor.png'
-                     titleText='Concealment of moving enemy vehicles'
-                     valueText={parseFloat(
-                        ((appliedDevicesModifiers['commandersView'][1].value - 1) * 100).toFixed(2),
-                     )}
-                     unit='%'
-                  />
-               </>
+            {demaskFoliageFactor && (
+               <TableRowComponent
+                  iconSrc='/icons/spot/demaskFoliageFactor.png'
+                  titleText='Concealment of enemy vehicles behind foliage'
+                  valueText={parseFloat(demaskFoliageFactor.toFixed(2))}
+                  unit='%'
+               />
+            )}
+            {demaskMovingFactor && (
+               <TableRowComponent
+                  iconSrc='/icons/spot/demaskMovingFactor.png'
+                  titleText='Concealment of moving enemy vehicles'
+                  valueText={parseFloat(demaskMovingFactor.toFixed(2))}
+                  unit='%'
+               />
             )}
          </TableBody>
       </Table>

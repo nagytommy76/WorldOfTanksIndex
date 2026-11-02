@@ -33,38 +33,40 @@ export default function useDispersion() {
    const afterShotBase = vehicleGun[selectedModuleNames.vehicleGun].dispersion.afterShot
    const accuracyWhileDamagedBase = vehicleGun[selectedModuleNames.vehicleGun].dispersion.whileDamaged
 
-   const { vehicleMovement, vehicleRotation, turretRotation, afterShot, accuracy } = useMemo(
-      () =>
-         applyStatPipeline(
-            {
-               accuracy: accuracyBase,
-               vehicleMovement: vehicleMovementBase,
-               vehicleRotation: vehicleRotationBase,
-               turretRotation: turretRotationBase,
-               afterShot: afterShotBase,
-            },
-            [
-               createDeviceTransformer(appliedDevicesModifiers),
-               createDeviceBoostersTransformer(appliedBattleBoosterModifiers),
-               createCrewTransformer(commander, crewMembers),
-               createCrewSkillsTransformer(commander, crewMembers, isCalculateSituational),
-            ],
-         ),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [
-         vehicleMovementBase,
-         vehicleRotationBase,
-         turretRotationBase,
-         afterShotBase,
-         accuracyBase,
-         appliedDevicesModifiers,
-         appliedBattleBoosterModifiers,
-         commander,
-         crewMembers,
-         isCalculateSituational,
-         hasAppliedCrewBooster,
-      ],
-   )
+   const { vehicleMovement, vehicleRotation, turretRotation, afterShot, accuracy, accuracyWhileDamaged } =
+      useMemo(
+         () =>
+            applyStatPipeline(
+               {
+                  accuracy: accuracyBase,
+                  vehicleMovement: vehicleMovementBase,
+                  vehicleRotation: vehicleRotationBase,
+                  turretRotation: turretRotationBase,
+                  afterShot: afterShotBase,
+                  accuracyWhileDamaged: accuracyWhileDamagedBase,
+               },
+               [
+                  createDeviceTransformer(appliedDevicesModifiers),
+                  createDeviceBoostersTransformer(appliedBattleBoosterModifiers),
+                  createCrewTransformer(commander, crewMembers),
+                  createCrewSkillsTransformer(commander, crewMembers, isCalculateSituational),
+               ],
+            ),
+         // eslint-disable-next-line react-hooks/exhaustive-deps
+         [
+            vehicleMovementBase,
+            vehicleRotationBase,
+            turretRotationBase,
+            afterShotBase,
+            accuracyBase,
+            appliedDevicesModifiers,
+            appliedBattleBoosterModifiers,
+            commander,
+            crewMembers,
+            isCalculateSituational,
+            hasAppliedCrewBooster,
+         ],
+      )
 
    return {
       vehicleMovement,
@@ -77,6 +79,6 @@ export default function useDispersion() {
       vehicleRotationBase,
       turretRotationBase,
       afterShotBase,
-      accuracyWhileDamagedBase,
+      accuracyWhileDamaged,
    }
 }

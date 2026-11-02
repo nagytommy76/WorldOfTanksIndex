@@ -18,7 +18,7 @@ export default function GunDispersions() {
       vehicleRotationBase,
       turretRotationBase,
       afterShotBase,
-      accuracyWhileDamagedBase,
+      accuracyWhileDamaged,
    } = useDispersion()
 
    return (
@@ -97,7 +97,7 @@ export default function GunDispersions() {
          <TableRowComponent
             iconSrc='/icons/firepower/vehicleGunShotDispersionWhileGunDamaged.png'
             titleText='While damaged'
-            valueText={accuracyWhileDamagedBase}
+            valueText={accuracyWhileDamaged}
             unit='m'
             paddingLeft
          />

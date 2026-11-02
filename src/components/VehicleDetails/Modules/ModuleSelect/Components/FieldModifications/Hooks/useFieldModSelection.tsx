@@ -11,6 +11,7 @@ export default function useFieldModSelection() {
     * @description Unlocks levels I..level (0 = nothing), the choices above it are dropped
     */
    function setUnlockedLevel(level: number) {
+      console.log('CSÁÁÁÁÁÁÁÁÁÁÁÁÁÁ: ', level)
       fieldModDispatch({ type: 'SET_UNLOCKED_LEVEL', payload: level })
    }
 

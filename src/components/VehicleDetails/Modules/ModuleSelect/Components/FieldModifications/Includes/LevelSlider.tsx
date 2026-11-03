@@ -2,9 +2,10 @@ import Slider from '@mui/material/Slider'
 import Tooltip from '@mui/material/Tooltip'
 
 import tiers from '@/lib/tierList'
-import type { IFieldModificationLevel } from '@/src/utils/FieldModifications/groupFieldModificationLevels'
+import type { IFieldModificationLevel } from '@/utils/FieldModifications/groupFieldModificationLevels'
 
 import useFieldModSelection from '../Hooks/useFieldModSelection'
+import useSetModifications from '../Hooks/useSetModifications'
 import { FIELD_MOD_ORANGE, ROW_HEIGHT } from '../Helpers/constants'
 
 import LevelIcon from './LevelIcon'
@@ -35,6 +36,7 @@ function getAriaValueText(sliderValue: number) {
  */
 export default function LevelSlider({ levels }: { levels: IFieldModificationLevel[] }) {
    const { unlockedLevel, setUnlockedLevel } = useFieldModSelection()
+   const { setBaseModification } = useSetModifications(levels)
    const maxLevel = levels[levels.length - 1].level
 
    // Sorted ascending: with step={null} the arrow keys move between neighbouring marks
@@ -52,7 +54,10 @@ export default function LevelSlider({ levels }: { levels: IFieldModificationLeve
          aria-label='Unlocked field modification level'
          getAriaValueText={getAriaValueText}
          value={toSliderValue(unlockedLevel)}
-         onChange={(_event, value: number) => setUnlockedLevel(toUnlockedLevel(value))}
+         onChange={(_event, value: number) => {
+            setBaseModification(toUnlockedLevel(value))
+            setUnlockedLevel(toUnlockedLevel(value))
+         }}
          min={-maxLevel}
          max={START_VALUE}
          step={null}

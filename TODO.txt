@@ -1,6 +1,6 @@
 
 
-https://api.worldoftanks.eu/wot/encyclopedia/vehicles/?application_id=fefeeb22948e9ab6ed8c62a09515d476&tank_id=19201
+https://api.worldoftanks.eu/wot/encyclopedia/vehicles/?application_id=&tank_id=19201
 Lekérni a "name": "T-100 LT",
 és minden egyes modul neve:
 "38404": {

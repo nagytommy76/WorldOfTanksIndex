@@ -19,6 +19,25 @@ export default function FieldModificationReducer(
    action: IFieldModificationContextActions,
 ): IFieldModificationReducerState {
    switch (action.type) {
+      case 'SET_APPLIED_BASE_MODIFICATIONS': {
+         const { name, value, operation } = action.payload
+         const previousForModifier = state.appliedBaseModifications?.[name] ?? []
+         const otherModifiersForModifier = previousForModifier.filter((m) => m.operation !== operation)
+         return {
+            ...state,
+            appliedBaseModifications: {
+               ...state.appliedBaseModifications,
+               [name]: [...otherModifiersForModifier, { name, value, operation }],
+            },
+         }
+      }
+
+      case 'SET_APPLIED_PAIR_MODIFICATIONS': {
+         return { ...state, appliedPairModifications: [action.payload] }
+      }
+      case 'RESET_APPLIED_BASE_MODIFICATIONS': {
+         return { ...state, appliedBaseModifications: null }
+      }
       case 'SET_UNLOCKED_LEVEL': {
          const unlockedLevel = Math.max(0, action.payload)
          return {

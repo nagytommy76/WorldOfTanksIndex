@@ -15,6 +15,10 @@ interface IAppliedModification {
    name: string
 }
 
+export interface IAppliedModifications {
+   [modifierName: string]: IAppliedModification[]
+}
+
 /**
  * @param unlockedLevel 0 = nothing unlocked, n = levels I..n are unlocked (their main steps are researched)
  * @param pairChoices level → xmlId of the chosen pair option, e.g. { 2: 4011, 4: 4022 }
@@ -24,7 +28,7 @@ export interface IFieldModificationReducerState {
    unlockedLevel: number
    pairChoices: Partial<Record<number, number>>
    roleSlot: IFieldModificationRoleSlot | null
-   appliedBaseModifications: IAppliedModification[] | null
+   appliedBaseModifications: IAppliedModifications | null
    appliedPairModifications: IAppliedModification[] | null
 }
 
@@ -38,7 +42,16 @@ export type IFieldModificationContextActions =
    | { type: 'SET_UNLOCKED_LEVEL'; payload: number }
    | { type: 'CHOOSE_PAIR_OPTION'; payload: { level: number; optionXmlId: number | null } }
    | { type: 'CHOOSE_ROLE_SLOT'; payload: { level: number; category: string | null } }
+   | {
+        type: 'SET_APPLIED_BASE_MODIFICATIONS'
+        payload: { name: string; value: number; operation: Operations }
+     }
+   | {
+        type: 'SET_APPLIED_PAIR_MODIFICATIONS'
+        payload: { name: string; value: number; operation: Operations }
+     }
    | { type: 'RESET' }
+   | { type: 'RESET_APPLIED_BASE_MODIFICATIONS' }
 
 export const fieldModificationInitialState: IFieldModificationReducerState = {
    unlockedLevel: 0,

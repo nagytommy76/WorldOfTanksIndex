@@ -1,8 +1,11 @@
 import { useContext, useMemo } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
+import { FieldModificationContext } from '@/VehicleContext/FieldModificationContext/FieldModificationContext'
 
-import applyModifiersOnVehicleDetails from '@/utils/ApplyModifiers'
+import applyStatPipeline from '@/utils/applyStatPipeline'
+import { createDeviceTransformer } from '@/utils/ApplyModifiers'
+import createBaseFieldModTransformer from '@/utils/FieldModifications/ApplyFieldModifications'
 
 import TableRowComponent from '../../Includes/TableRow'
 
@@ -10,6 +13,9 @@ export default function MaxHealth() {
    const {
       deviceReducer: { appliedDevicesModifiers },
    } = useContext(DeviceContext)
+   const {
+      fieldModReducer: { appliedBaseModifications },
+   } = useContext(FieldModificationContext)
    const {
       vehicleReducer: {
          selectedModuleNames,
@@ -22,13 +28,16 @@ export default function MaxHealth() {
 
    const { maxHealth } = useMemo(
       () =>
-         applyModifiersOnVehicleDetails(
+         applyStatPipeline(
             {
                maxHealth: vehicleBaseMaxHealth,
             },
-            appliedDevicesModifiers,
+            [
+               createDeviceTransformer(appliedDevicesModifiers),
+               createBaseFieldModTransformer(appliedBaseModifications),
+            ],
          ),
-      [appliedDevicesModifiers, vehicleBaseMaxHealth],
+      [appliedDevicesModifiers, vehicleBaseMaxHealth, appliedBaseModifications],
    )
 
    return (

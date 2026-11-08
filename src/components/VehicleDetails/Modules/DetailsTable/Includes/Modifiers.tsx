@@ -19,14 +19,17 @@ function ReturnTypography({ children, improved = true }: { children: React.React
 }
 
 export default function Modifiers({ modifiers }: { modifiers: ModifiersType[] }) {
-   if (modifiers[0].difference === 0) return
    if (modifiers.length === 1) {
-      return <ReturnTypography improved={modifiers[0].improved}>{modifiers[0].difference}</ReturnTypography>
-   } else {
-      return modifiers.map((modifier: ModifiersType, index: number) => (
+      return modifiers[0].difference === 0 ? null : (
+         <ReturnTypography improved={modifiers[0].improved}>{modifiers[0].difference}</ReturnTypography>
+      )
+   }
+
+   return modifiers.map((modifier: ModifiersType, index: number) => {
+      return modifier.difference === 0 ? null : (
          <ReturnTypography key={index} improved={modifier.improved}>
             {modifier.difference} {index === modifiers.length - 1 ? ' ' : '/ '}
          </ReturnTypography>
-      ))
-   }
+      )
+   })
 }

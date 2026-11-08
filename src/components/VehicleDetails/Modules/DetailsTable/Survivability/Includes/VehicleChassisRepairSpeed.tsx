@@ -1,8 +1,10 @@
 import { useContext, useMemo } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
+import { FieldModificationContext } from '@/FieldModificationContext/FieldModificationContext'
 
 import applyStatPipeline from '@/utils/applyStatPipeline'
+import createBaseFieldModTransformer from '@/utils/FieldModifications/ApplyFieldModifications'
 import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 import { createDeviceBoostersTransformer } from '@/src/utils/ApplyDeviceBooster'
 
@@ -19,6 +21,9 @@ export default function VehicleChassisRepairSpeed() {
    const {
       deviceReducer: { appliedDevicesModifiers, appliedBattleBoosterModifiers },
    } = useContext(DeviceContext)
+   const {
+      fieldModReducer: { appliedBaseModifications },
+   } = useContext(FieldModificationContext)
 
    const baseRepariTime = vehicleChassis[selectedModuleNames.vehicleChassis].repairTime
 
@@ -31,9 +36,10 @@ export default function VehicleChassisRepairSpeed() {
             [
                createDeviceTransformer(appliedDevicesModifiers),
                createDeviceBoostersTransformer(appliedBattleBoosterModifiers),
+               createBaseFieldModTransformer(appliedBaseModifications),
             ],
          ),
-      [appliedDevicesModifiers, appliedBattleBoosterModifiers, baseRepariTime],
+      [appliedDevicesModifiers, appliedBattleBoosterModifiers, appliedBaseModifications, baseRepariTime],
    )
 
    return (

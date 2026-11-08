@@ -2,9 +2,11 @@ import { useContext, useMemo } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
 import { CrewContext } from '@/CrewContext/CrewContext'
+import { FieldModificationContext } from '@/FieldModificationContext/FieldModificationContext'
 
 import applyStatPipeline from '@/utils/applyStatPipeline'
 import createCrewSkillsTransformer from '@/utils/ApplyCrewSkillModifier'
+import createBaseFieldModTransformer from '@/utils/FieldModifications/ApplyFieldModifications'
 import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 
 import TableRowComponent from '../../Includes/TableRow'
@@ -23,6 +25,9 @@ export default function VehicleChassisStrength() {
    const {
       crewReducer: { crewMembers, commander },
    } = useContext(CrewContext)
+   const {
+      fieldModReducer: { appliedBaseModifications },
+   } = useContext(FieldModificationContext)
 
    const maxVehicleHealthBase = vehicleChassis[selectedModuleNames.vehicleChassis].maxHealth
    const maxVehicleRegenHealthBase = vehicleChassis[selectedModuleNames.vehicleChassis].maxRegenHealth
@@ -37,9 +42,17 @@ export default function VehicleChassisStrength() {
             [
                createDeviceTransformer(appliedDevicesModifiers),
                createCrewSkillsTransformer(commander, crewMembers),
+               createBaseFieldModTransformer(appliedBaseModifications),
             ],
          ),
-      [appliedDevicesModifiers, maxVehicleHealthBase, maxVehicleRegenHealthBase, crewMembers, commander],
+      [
+         appliedDevicesModifiers,
+         appliedBaseModifications,
+         maxVehicleHealthBase,
+         maxVehicleRegenHealthBase,
+         crewMembers,
+         commander,
+      ],
    )
 
    return (

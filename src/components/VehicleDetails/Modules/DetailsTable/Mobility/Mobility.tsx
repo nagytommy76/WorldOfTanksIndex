@@ -3,12 +3,14 @@ import { useContext, useMemo, useEffect, useState } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
 import { CrewContext } from '@/CrewContext/CrewContext'
+import { FieldModificationContext } from '@/FieldModificationContext/FieldModificationContext'
 
 import useSetTotalWeight from './Hooks/useSetTotalWeight'
 
 import applyStatPipeline from '@/utils/applyStatPipeline'
 import createCrewTransformer from '@/utils/ApplyCrewModifiers'
 import createCrewSkillsTransformer from '@/utils/ApplyCrewSkillModifier'
+import createBaseFieldModTransformer from '@/utils/FieldModifications/ApplyFieldModifications'
 import { createDeviceBoostersTransformer } from '@/src/utils/ApplyDeviceBooster'
 import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 
@@ -48,6 +50,9 @@ export default function Mobility() {
    const {
       deviceReducer: { appliedDevicesModifiers, appliedBattleBoosterModifiers },
    } = useContext(DeviceContext)
+   const {
+      fieldModReducer: { appliedBaseModifications },
+   } = useContext(FieldModificationContext)
    const {
       crewReducer: { commander, crewMembers },
       hasAppliedCrewBooster,
@@ -92,6 +97,7 @@ export default function Mobility() {
                createDeviceBoostersTransformer(appliedBattleBoosterModifiers),
                createCrewTransformer(commander, crewMembers),
                createCrewSkillsTransformer(commander, crewMembers),
+               createBaseFieldModTransformer(appliedBaseModifications),
             ],
          ),
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -103,6 +109,7 @@ export default function Mobility() {
          vehicleGunRotationSpeedBase,
          appliedDevicesModifiers,
          appliedBattleBoosterModifiers,
+         appliedBaseModifications,
          vehicleTerrainResistanceBase,
          commander,
          crewMembers,

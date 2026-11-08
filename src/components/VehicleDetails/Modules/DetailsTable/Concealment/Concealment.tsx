@@ -3,8 +3,10 @@ import { useContext, useMemo } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
 import { CrewContext } from '@/CrewContext/CrewContext'
+import { FieldModificationContext } from '@/FieldModificationContext/FieldModificationContext'
 
 import applyStatPipeline from '@/utils/applyStatPipeline'
+import createBaseFieldModTransformer from '@/utils/FieldModifications/ApplyFieldModifications'
 import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 import { createDeviceBoostersTransformer } from '@/src/utils/ApplyDeviceBooster'
 import { createConcealmentSkillTransformer } from '@/utils/ApplyCrewSkillModifier'
@@ -23,6 +25,9 @@ import { calculateCamoValues } from '../../Helpers/calculate'
  */
 
 export default function Concealment() {
+   const {
+      fieldModReducer: { appliedBaseModifications },
+   } = useContext(FieldModificationContext)
    const {
       camo,
       vehicleReducer: {
@@ -52,12 +57,14 @@ export default function Concealment() {
                createConcealmentSkillTransformer(commander),
                createDeviceTransformer(appliedDevicesModifiers),
                createDeviceBoostersTransformer(appliedBattleBoosterModifiers),
+               createBaseFieldModTransformer(appliedBaseModifications),
             ],
          ),
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [
          appliedDevicesModifiers,
          appliedBattleBoosterModifiers,
+         appliedBaseModifications,
          vehicleMovingCamoflageBase,
          vehicleStillCamoflageBase,
          commander,
@@ -66,13 +73,25 @@ export default function Concealment() {
       ],
    )
 
-   const vehicleStillCamoflageAfterFire = useMemo(() => {
+   const vehicleStillCamoflageAfterFireBase = useMemo(() => {
       return camouflageStill * vehicleGun[selectedModuleNames.vehicleGun].invisibilityFactorAtShot
    }, [vehicleGun, camouflageStill, selectedModuleNames.vehicleGun])
 
-   const vehicleMovingCamoflageAfterFire = useMemo(() => {
+   const vehicleMovingCamoflageAfterFireBase = useMemo(() => {
       return camouflageMoving * vehicleGun[selectedModuleNames.vehicleGun].invisibilityFactorAtShot
    }, [vehicleGun, camouflageMoving, selectedModuleNames.vehicleGun])
+
+   const { vehicleStillCamoflageAfterFire, vehicleMovingCamoflageAfterFire } = useMemo(
+      () =>
+         applyStatPipeline(
+            {
+               vehicleStillCamoflageAfterFire: vehicleStillCamoflageAfterFireBase,
+               vehicleMovingCamoflageAfterFire: vehicleMovingCamoflageAfterFireBase,
+            },
+            [createBaseFieldModTransformer(appliedBaseModifications)],
+         ),
+      [vehicleStillCamoflageAfterFireBase, vehicleMovingCamoflageAfterFireBase, appliedBaseModifications],
+   )
 
    return (
       <Table size='small' aria-label='Concealment table with camouflage values (moving, stationary)'>
@@ -93,6 +112,12 @@ export default function Concealment() {
                      difference: parseFloat((camouflageStill - vehicleStillCamoflageBase).toFixed(2)),
                      improved: true,
                   },
+                  {
+                     difference: parseFloat(
+                        (vehicleStillCamoflageAfterFire - vehicleStillCamoflageAfterFireBase).toFixed(2),
+                     ),
+                     improved: true,
+                  },
                ]}
             />
             <TableRowComponent
@@ -104,6 +129,12 @@ export default function Concealment() {
                modifiers={[
                   {
                      difference: parseFloat((camouflageMoving - vehicleMovingCamoflageBase).toFixed(2)),
+                     improved: true,
+                  },
+                  {
+                     difference: parseFloat(
+                        (vehicleMovingCamoflageAfterFire - vehicleMovingCamoflageAfterFireBase).toFixed(2),
+                     ),
                      improved: true,
                   },
                ]}

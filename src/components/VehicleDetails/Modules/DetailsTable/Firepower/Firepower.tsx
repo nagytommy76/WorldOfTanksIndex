@@ -5,10 +5,12 @@ import type { IClip, IDualAccuracy } from '@/types/VehicleDetails/Guns'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
 import { CrewContext } from '@/CrewContext/CrewContext'
+import { FieldModificationContext } from '@/FieldModificationContext/FieldModificationContext'
 
 import applyStatPipeline from '@/utils/applyStatPipeline'
 import createCrewTransformer from '@/utils/ApplyCrewModifiers'
 import createCrewSkillsTransformer from '@/utils/ApplyCrewSkillModifier'
+import createBaseFieldModTransformer from '@/utils/FieldModifications/ApplyFieldModifications'
 import { createDeviceBoostersTransformer } from '@/src/utils/ApplyDeviceBooster'
 import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 
@@ -46,6 +48,9 @@ export default function Firepower() {
       crewReducer: { crewMembers, commander },
       isCalculateSituational,
    } = useContext(CrewContext)
+   const {
+      fieldModReducer: { appliedBaseModifications },
+   } = useContext(FieldModificationContext)
 
    const clip = vehicleGun[selectedModuleNames.vehicleGun].clip
 
@@ -84,6 +89,7 @@ export default function Firepower() {
                   clip ? true : false,
                ),
                createDeviceBoostersTransformer(appliedBattleBoosterModifiers),
+               createBaseFieldModTransformer(appliedBaseModifications),
             ],
          ),
       [
@@ -92,6 +98,7 @@ export default function Firepower() {
          shellVelocityBase,
          appliedDevicesModifiers,
          appliedBattleBoosterModifiers,
+         appliedBaseModifications,
          crewMembers,
          commander,
          clip,

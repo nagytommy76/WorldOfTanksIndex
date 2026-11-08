@@ -2,17 +2,18 @@ import { NextResponse, type NextRequest } from 'next/server'
 import dbConnect from '@/lib/ConnectDB'
 
 import { FieldModificationTree } from '@Models/FieldModifications/FieldModificationTree.model'
-import { FieldModification } from '@Models/FieldModifications/FieldModification.model'
 import { FieldModificationPrice } from '@Models/FieldModifications/Price.model'
+import { FieldModification } from '@Models/FieldModifications/FieldModification.model'
 import type { IFieldModification } from '@Models/FieldModifications/FieldModificationTypes'
-import { resolveFieldModificationTree } from '@/utils/resolveFieldModificationTree'
-import { isFieldModificationTier } from '@/utils/fieldModificationTiers'
+
+import { isFieldModificationTier } from '@/FieldModificationUtils/fieldModificationTiers'
+import { resolveFieldModificationTree } from '@/FieldModificationUtils/resolveFieldModificationTree'
 import { VEHICLE_ROLES, type VehicleRoles } from '@Types/types'
 
 export async function GET(req: NextRequest) {
    /**
     * role: role_LT_universal || role_HT_universal ...
-    * tier: 1 - 11
+    * tier: 6 - 10
     */
    const role = req.headers.get('role')
    const tier = Number(req.headers.get('tier'))
@@ -36,7 +37,14 @@ export async function GET(req: NextRequest) {
             tree.steps.filter((step) => step.action.type !== 'feature').map((step) => step.action.value),
          ),
       ]
-      const priceKeys = [...new Set(tree.steps.map((step) => step.price))]
+      const priceKeys = [
+         ...new Set(
+            tree.steps.map((step) => {
+               if (step.price === 'unlockPairModificationCost') return 'buyPairModificationCost'
+               return step.price
+            }),
+         ),
+      ]
 
       // Base & pair documents share one collection (discriminator), so a single query returns both
       const [modifications, prices] = await Promise.all([

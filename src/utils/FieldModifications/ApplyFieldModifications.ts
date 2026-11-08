@@ -26,7 +26,26 @@ export default function createBaseFieldModTransformer<T extends Record<string, n
                const key = configField as keyof T
 
                switch (config.operation) {
+                  case 'mulSubtract':
+                  case 'mulAdd':
                   case 'mul':
+                     /** mulSubtract */
+                     if (
+                        ['vehicleSpeedGain', 'vehicleGunAimSpeed', 'vehicleChassisRepairSpeed'].includes(
+                           modifier.name,
+                        )
+                     ) {
+                        const percentValue = 1 - (modifier.value - 1)
+                        ;(result[key] as number) *= percentValue
+                        break
+                     }
+                     /** mulAdd */
+                     if (['vehicleCamouflage'].includes(modifier.name)) {
+                        const percentValue = ReturnPercentValue(modifier.value)
+                        ;(result[key] as number) += percentValue
+                        break
+                     }
+                     /** mul */
                      ;(result[key] as number) *= modifier.value
                      break
                   case 'add':

@@ -194,9 +194,6 @@ const MODIFIER_CONFIG: Record<string, IModifierConfig> = {
       fields: ['demaskMovingFactor'],
       operation: 'mul',
    },
-   /**
-    * Need to calculate inside Concealment component!!!!!!!!!!!!!!!!!!
-    */
    vehicleInvisibilityAfterShot: {
       fields: ['vehicleStillCamoflageAfterFire', 'vehicleMovingCamoflageAfterFire'],
       operation: 'mul',

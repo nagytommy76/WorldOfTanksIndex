@@ -30,7 +30,11 @@ export default function PairOptions({ step, isUnlocked }: { step: IResolvedTreeS
       <ToggleButtonGroup
          exclusive
          value={chosenXmlId}
-         onChange={(_event, optionXmlId: number | null) => choosePairOption(step.level, optionXmlId)}
+         onChange={(_event, optionXmlId: number | null) => {
+            const foundOptionByXmlId = pair.options.find((option) => option.xmlId === optionXmlId)
+            // console.log('CSÁÁÁ FROM CHANGE: optionXmlId ', foundOptionByXmlId)
+            choosePairOption(step.level, optionXmlId, foundOptionByXmlId)
+         }}
          aria-label={`${levelName} pair modification`}
          sx={getOptionGroupSx(1)}
       >

@@ -1,5 +1,6 @@
 import { useContext } from 'react'
 import { FieldModificationContext } from '@/VehicleContext/FieldModificationContext/FieldModificationContext'
+import type { IPairOption } from '@Models/FieldModifications/FieldModificationTypes'
 
 /**
  * @description Field modification choices of the vehicle page, with the actions that change them
@@ -24,8 +25,12 @@ export default function useFieldModSelection() {
    /**
     * @param optionXmlId The chosen pair option, null clears the choice of the level
     */
-   function choosePairOption(level: number, optionXmlId: number | null) {
-      fieldModDispatch({ type: 'CHOOSE_PAIR_OPTION', payload: { level, optionXmlId } })
+   function choosePairOption(
+      level: number,
+      optionXmlId: number | null,
+      foundOptionByXmlId: IPairOption | undefined,
+   ) {
+      fieldModDispatch({ type: 'CHOOSE_PAIR_OPTION', payload: { level, optionXmlId, foundOptionByXmlId } })
    }
 
    /**

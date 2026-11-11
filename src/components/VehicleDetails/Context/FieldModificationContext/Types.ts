@@ -1,3 +1,5 @@
+import type { IPairOption } from '@Models/FieldModifications/FieldModificationTypes'
+
 /**
  * @param level Level of the roleSlot feature step (VI in the current trees)
  * @param category The chosen category, one of the vehicle's customRoleSlotOptions, e.g. 'stealth'
@@ -9,7 +11,7 @@ export interface IFieldModificationRoleSlot {
 
 export type Operations = 'mul' | 'add'
 
-interface IAppliedModification {
+export interface IAppliedModification {
    value: number
    operation: Operations
    name: string
@@ -29,29 +31,32 @@ export interface IFieldModificationReducerState {
    pairChoices: Partial<Record<number, number>>
    roleSlot: IFieldModificationRoleSlot | null
    appliedBaseModifications: IAppliedModifications | null
-   appliedPairModifications: IAppliedModification[] | null
+   appliedPairModifications: IAppliedModifications | null
 }
 
 /**
  * - SET_UNLOCKED_LEVEL: sets the unlocked level, the choices above it are dropped
  * - CHOOSE_PAIR_OPTION: chooses a pair option (null clears it), choosing unlocks every level up to it
  * - CHOOSE_ROLE_SLOT: chooses a role slot category (null clears it), choosing unlocks every level up to it
+ * - SET_APPLIED_BASE_MODIFICATIONS: replaces every applied base modification (null = none), it never merges
+ * - RESET_APPLIED_BASE_MODIFICATIONS: no base modification applied
  * - RESET: nothing unlocked, nothing chosen
  */
 export type IFieldModificationContextActions =
    | { type: 'SET_UNLOCKED_LEVEL'; payload: number }
-   | { type: 'CHOOSE_PAIR_OPTION'; payload: { level: number; optionXmlId: number | null } }
-   | { type: 'CHOOSE_ROLE_SLOT'; payload: { level: number; category: string | null } }
    | {
-        type: 'SET_APPLIED_BASE_MODIFICATIONS'
-        payload: { name: string; value: number; operation: Operations }
+        type: 'CHOOSE_PAIR_OPTION'
+        payload: { level: number; optionXmlId: number | null; foundOptionByXmlId?: IPairOption | undefined }
      }
+   | { type: 'CHOOSE_ROLE_SLOT'; payload: { level: number; category: string | null } }
+   | { type: 'SET_APPLIED_BASE_MODIFICATIONS'; payload: IAppliedModifications | null }
    | {
         type: 'SET_APPLIED_PAIR_MODIFICATIONS'
-        payload: { name: string; value: number; operation: Operations }
+        payload: IAppliedModifications | null
      }
    | { type: 'RESET' }
    | { type: 'RESET_APPLIED_BASE_MODIFICATIONS' }
+   | { type: 'RESET_APPLIED_PAIR_MODIFICATIONS' }
 
 export const fieldModificationInitialState: IFieldModificationReducerState = {
    unlockedLevel: 0,

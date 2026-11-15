@@ -2,9 +2,13 @@ import { useContext, useMemo } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
 import { CrewContext } from '@/CrewContext/CrewContext'
+import { FieldModificationContext } from '@/VehicleContext/FieldModificationContext/FieldModificationContext'
 
 import applyStatPipeline from '@/utils/applyStatPipeline'
 import createCrewSkillsTransformer from '@/utils/ApplyCrewSkillModifier'
+import createBaseFieldModTransformer, {
+   createPairFieldModTransformer,
+} from '@/utils/FieldModifications/ApplyFieldModifications'
 import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 
 import TableRowComponent from '../../Includes/TableRow'
@@ -26,6 +30,9 @@ export default function AmmoFuelEngineHealth() {
       crewReducer: { crewMembers, commander },
       hasAppliedCrewBooster,
    } = useContext(CrewContext)
+   const {
+      fieldModReducer: { appliedBaseModifications, appliedPairModifications },
+   } = useContext(FieldModificationContext)
 
    const ammoRackHealthBase = hull.ammoRackHealth.maxHealth
    const ammoRackRegenHealthBase = hull.ammoRackHealth.maxRegenHealth
@@ -57,11 +64,15 @@ export default function AmmoFuelEngineHealth() {
             [
                createDeviceTransformer(appliedDevicesModifiers),
                createCrewSkillsTransformer(commander, crewMembers),
+               createBaseFieldModTransformer(appliedBaseModifications),
+               createPairFieldModTransformer(appliedPairModifications),
             ],
          ),
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [
          appliedDevicesModifiers,
+         appliedBaseModifications,
+         appliedPairModifications,
          ammoRackHealthBase,
          ammoRackRegenHealthBase,
          fuelTankHealthBase,

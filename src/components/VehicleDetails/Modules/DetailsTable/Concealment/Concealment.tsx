@@ -6,7 +6,9 @@ import { CrewContext } from '@/CrewContext/CrewContext'
 import { FieldModificationContext } from '@/FieldModificationContext/FieldModificationContext'
 
 import applyStatPipeline from '@/utils/applyStatPipeline'
-import createBaseFieldModTransformer from '@/utils/FieldModifications/ApplyFieldModifications'
+import createBaseFieldModTransformer, {
+   createPairFieldModTransformer,
+} from '@/utils/FieldModifications/ApplyFieldModifications'
 import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 import { createDeviceBoostersTransformer } from '@/src/utils/ApplyDeviceBooster'
 import { createConcealmentSkillTransformer } from '@/utils/ApplyCrewSkillModifier'
@@ -26,7 +28,7 @@ import { calculateCamoValues } from '../../Helpers/calculate'
 
 export default function Concealment() {
    const {
-      fieldModReducer: { appliedBaseModifications },
+      fieldModReducer: { appliedBaseModifications, appliedPairModifications },
    } = useContext(FieldModificationContext)
    const {
       camo,
@@ -58,6 +60,7 @@ export default function Concealment() {
                createDeviceTransformer(appliedDevicesModifiers),
                createDeviceBoostersTransformer(appliedBattleBoosterModifiers),
                createBaseFieldModTransformer(appliedBaseModifications),
+               createPairFieldModTransformer(appliedPairModifications),
             ],
          ),
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -65,6 +68,7 @@ export default function Concealment() {
          appliedDevicesModifiers,
          appliedBattleBoosterModifiers,
          appliedBaseModifications,
+         appliedPairModifications,
          vehicleMovingCamoflageBase,
          vehicleStillCamoflageBase,
          commander,

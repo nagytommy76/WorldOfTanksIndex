@@ -8,7 +8,9 @@ import { CrewContext } from '@/CrewContext/CrewContext'
 import applyStatPipeline from '@/utils/applyStatPipeline'
 import createCrewTransformer from '@/utils/ApplyCrewModifiers'
 import createCrewSkillsTransformer from '@/utils/ApplyCrewSkillModifier'
-import createBaseFieldModTransformer from '@/utils/FieldModifications/ApplyFieldModifications'
+import createBaseFieldModTransformer, {
+   createPairFieldModTransformer,
+} from '@/utils/FieldModifications/ApplyFieldModifications'
 import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 import { createDeviceBoostersTransformer } from '@/src/utils/ApplyDeviceBooster'
 
@@ -23,7 +25,7 @@ export default function useDispersion() {
       deviceReducer: { appliedDevicesModifiers, appliedBattleBoosterModifiers },
    } = useContext(DeviceContext)
    const {
-      fieldModReducer: { appliedBaseModifications },
+      fieldModReducer: { appliedBaseModifications, appliedPairModifications },
    } = useContext(FieldModificationContext)
    const {
       crewReducer: { crewMembers, commander },
@@ -56,6 +58,7 @@ export default function useDispersion() {
                   createCrewTransformer(commander, crewMembers),
                   createCrewSkillsTransformer(commander, crewMembers, isCalculateSituational),
                   createBaseFieldModTransformer(appliedBaseModifications),
+                  createPairFieldModTransformer(appliedPairModifications),
                ],
             ),
          // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -68,6 +71,7 @@ export default function useDispersion() {
             appliedDevicesModifiers,
             appliedBattleBoosterModifiers,
             appliedBaseModifications,
+            appliedPairModifications,
             commander,
             crewMembers,
             isCalculateSituational,

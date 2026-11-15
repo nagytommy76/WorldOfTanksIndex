@@ -6,7 +6,9 @@ import { FieldModificationContext } from '@/FieldModificationContext/FieldModifi
 
 import applyStatPipeline from '@/utils/applyStatPipeline'
 import createCrewSkillsTransformer from '@/utils/ApplyCrewSkillModifier'
-import createBaseFieldModTransformer from '@/utils/FieldModifications/ApplyFieldModifications'
+import createBaseFieldModTransformer, {
+   createPairFieldModTransformer,
+} from '@/utils/FieldModifications/ApplyFieldModifications'
 import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 
 import TableRowComponent from '../../Includes/TableRow'
@@ -26,7 +28,7 @@ export default function VehicleChassisStrength() {
       crewReducer: { crewMembers, commander },
    } = useContext(CrewContext)
    const {
-      fieldModReducer: { appliedBaseModifications },
+      fieldModReducer: { appliedBaseModifications, appliedPairModifications },
    } = useContext(FieldModificationContext)
 
    const maxVehicleHealthBase = vehicleChassis[selectedModuleNames.vehicleChassis].maxHealth
@@ -43,11 +45,13 @@ export default function VehicleChassisStrength() {
                createDeviceTransformer(appliedDevicesModifiers),
                createCrewSkillsTransformer(commander, crewMembers),
                createBaseFieldModTransformer(appliedBaseModifications),
+               createPairFieldModTransformer(appliedPairModifications),
             ],
          ),
       [
          appliedDevicesModifiers,
          appliedBaseModifications,
+         appliedPairModifications,
          maxVehicleHealthBase,
          maxVehicleRegenHealthBase,
          crewMembers,

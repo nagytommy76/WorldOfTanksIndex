@@ -4,7 +4,9 @@ import { DeviceContext } from '@/DevicesContext/DeviceContext'
 import { FieldModificationContext } from '@/FieldModificationContext/FieldModificationContext'
 
 import applyStatPipeline from '@/utils/applyStatPipeline'
-import createBaseFieldModTransformer from '@/utils/FieldModifications/ApplyFieldModifications'
+import createBaseFieldModTransformer, {
+   createPairFieldModTransformer,
+} from '@/utils/FieldModifications/ApplyFieldModifications'
 import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 import { createDeviceBoostersTransformer } from '@/src/utils/ApplyDeviceBooster'
 
@@ -22,7 +24,7 @@ export default function VehicleChassisRepairSpeed() {
       deviceReducer: { appliedDevicesModifiers, appliedBattleBoosterModifiers },
    } = useContext(DeviceContext)
    const {
-      fieldModReducer: { appliedBaseModifications },
+      fieldModReducer: { appliedBaseModifications, appliedPairModifications },
    } = useContext(FieldModificationContext)
 
    const baseRepariTime = vehicleChassis[selectedModuleNames.vehicleChassis].repairTime
@@ -37,9 +39,16 @@ export default function VehicleChassisRepairSpeed() {
                createDeviceTransformer(appliedDevicesModifiers),
                createDeviceBoostersTransformer(appliedBattleBoosterModifiers),
                createBaseFieldModTransformer(appliedBaseModifications),
+               createPairFieldModTransformer(appliedPairModifications),
             ],
          ),
-      [appliedDevicesModifiers, appliedBattleBoosterModifiers, appliedBaseModifications, baseRepariTime],
+      [
+         appliedDevicesModifiers,
+         appliedBattleBoosterModifiers,
+         appliedBaseModifications,
+         appliedPairModifications,
+         baseRepariTime,
+      ],
    )
 
    return (

@@ -5,7 +5,9 @@ import { FieldModificationContext } from '@/VehicleContext/FieldModificationCont
 
 import applyStatPipeline from '@/utils/applyStatPipeline'
 import { createDeviceTransformer } from '@/utils/ApplyModifiers'
-import createBaseFieldModTransformer from '@/utils/FieldModifications/ApplyFieldModifications'
+import createBaseFieldModTransformer, {
+   createPairFieldModTransformer,
+} from '@/utils/FieldModifications/ApplyFieldModifications'
 
 import TableRowComponent from '../../Includes/TableRow'
 
@@ -14,7 +16,7 @@ export default function MaxHealth() {
       deviceReducer: { appliedDevicesModifiers },
    } = useContext(DeviceContext)
    const {
-      fieldModReducer: { appliedBaseModifications },
+      fieldModReducer: { appliedBaseModifications, appliedPairModifications },
    } = useContext(FieldModificationContext)
    const {
       vehicleReducer: {
@@ -35,9 +37,10 @@ export default function MaxHealth() {
             [
                createDeviceTransformer(appliedDevicesModifiers),
                createBaseFieldModTransformer(appliedBaseModifications),
+               createPairFieldModTransformer(appliedPairModifications),
             ],
          ),
-      [appliedDevicesModifiers, vehicleBaseMaxHealth, appliedBaseModifications],
+      [appliedDevicesModifiers, vehicleBaseMaxHealth, appliedBaseModifications, appliedPairModifications],
    )
 
    return (

@@ -3,10 +3,14 @@ import { useContext, useMemo } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
 import { CrewContext } from '@/CrewContext/CrewContext'
+import { FieldModificationContext } from '@/FieldModificationContext/FieldModificationContext'
 
 import applyStatPipeline from '@/utils/applyStatPipeline'
 import createCrewTransformer from '@/utils/ApplyCrewModifiers'
 import createCrewSkillsTransformer from '@/utils/ApplyCrewSkillModifier'
+import createBaseFieldModTransformer, {
+   createPairFieldModTransformer,
+} from '@/utils/FieldModifications/ApplyFieldModifications'
 import { createDeviceBoostersTransformer } from '@/src/utils/ApplyDeviceBooster'
 import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 
@@ -32,6 +36,9 @@ export default function Spotting() {
       isCalculateSituational,
       hasAppliedCrewBooster,
    } = useContext(CrewContext)
+   const {
+      fieldModReducer: { appliedBaseModifications, appliedPairModifications },
+   } = useContext(FieldModificationContext)
 
    const viewRangeBase = vehicleTurret[selectedModuleNames.vehicleTurret].viewRange
    const viewRangeStillBase = vehicleTurret[selectedModuleNames.vehicleTurret].viewRange
@@ -69,6 +76,8 @@ export default function Spotting() {
                createDeviceBoostersTransformer(appliedBattleBoosterModifiers),
                createCrewTransformer(commander, crewMembers),
                createCrewSkillsTransformer(commander, crewMembers, isCalculateSituational),
+               createBaseFieldModTransformer(appliedBaseModifications),
+               createPairFieldModTransformer(appliedPairModifications),
             ],
          ),
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -78,6 +87,8 @@ export default function Spotting() {
          radioRangeBase,
          appliedDevicesModifiers,
          appliedBattleBoosterModifiers,
+         appliedBaseModifications,
+         appliedPairModifications,
          crewMembers,
          commander,
          isCalculateSituational,
@@ -117,7 +128,7 @@ export default function Spotting() {
                   modifiers={[
                      {
                         difference: parseFloat((viewRange - viewRangeBase).toFixed(2)),
-                        improved: true,
+                        improved: viewRange - viewRangeBase > 0,
                      },
                   ]}
                />

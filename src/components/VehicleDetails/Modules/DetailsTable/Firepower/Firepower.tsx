@@ -10,7 +10,9 @@ import { FieldModificationContext } from '@/FieldModificationContext/FieldModifi
 import applyStatPipeline from '@/utils/applyStatPipeline'
 import createCrewTransformer from '@/utils/ApplyCrewModifiers'
 import createCrewSkillsTransformer from '@/utils/ApplyCrewSkillModifier'
-import createBaseFieldModTransformer from '@/utils/FieldModifications/ApplyFieldModifications'
+import createBaseFieldModTransformer, {
+   createPairFieldModTransformer,
+} from '@/utils/FieldModifications/ApplyFieldModifications'
 import { createDeviceBoostersTransformer } from '@/src/utils/ApplyDeviceBooster'
 import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 
@@ -49,7 +51,7 @@ export default function Firepower() {
       isCalculateSituational,
    } = useContext(CrewContext)
    const {
-      fieldModReducer: { appliedBaseModifications },
+      fieldModReducer: { appliedBaseModifications, appliedPairModifications },
    } = useContext(FieldModificationContext)
 
    const clip = vehicleGun[selectedModuleNames.vehicleGun].clip
@@ -90,6 +92,7 @@ export default function Firepower() {
                ),
                createDeviceBoostersTransformer(appliedBattleBoosterModifiers),
                createBaseFieldModTransformer(appliedBaseModifications),
+               createPairFieldModTransformer(appliedPairModifications),
             ],
          ),
       [
@@ -99,6 +102,7 @@ export default function Firepower() {
          appliedDevicesModifiers,
          appliedBattleBoosterModifiers,
          appliedBaseModifications,
+         appliedPairModifications,
          crewMembers,
          commander,
          clip,

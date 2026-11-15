@@ -10,7 +10,9 @@ import useSetTotalWeight from './Hooks/useSetTotalWeight'
 import applyStatPipeline from '@/utils/applyStatPipeline'
 import createCrewTransformer from '@/utils/ApplyCrewModifiers'
 import createCrewSkillsTransformer from '@/utils/ApplyCrewSkillModifier'
-import createBaseFieldModTransformer from '@/utils/FieldModifications/ApplyFieldModifications'
+import createBaseFieldModTransformer, {
+   createPairFieldModTransformer,
+} from '@/utils/FieldModifications/ApplyFieldModifications'
 import { createDeviceBoostersTransformer } from '@/src/utils/ApplyDeviceBooster'
 import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 
@@ -51,7 +53,7 @@ export default function Mobility() {
       deviceReducer: { appliedDevicesModifiers, appliedBattleBoosterModifiers },
    } = useContext(DeviceContext)
    const {
-      fieldModReducer: { appliedBaseModifications },
+      fieldModReducer: { appliedBaseModifications, appliedPairModifications },
    } = useContext(FieldModificationContext)
    const {
       crewReducer: { commander, crewMembers },
@@ -98,6 +100,7 @@ export default function Mobility() {
                createCrewTransformer(commander, crewMembers),
                createCrewSkillsTransformer(commander, crewMembers),
                createBaseFieldModTransformer(appliedBaseModifications),
+               createPairFieldModTransformer(appliedPairModifications),
             ],
          ),
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -110,6 +113,7 @@ export default function Mobility() {
          appliedDevicesModifiers,
          appliedBattleBoosterModifiers,
          appliedBaseModifications,
+         appliedPairModifications,
          vehicleTerrainResistanceBase,
          commander,
          crewMembers,

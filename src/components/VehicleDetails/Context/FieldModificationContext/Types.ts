@@ -22,6 +22,18 @@ export interface IAppliedModifications {
 }
 
 /**
+ * @description level → KPIs of the chosen pair option of that level, only one option per level (pair)
+ * @example
+ * {
+ *   2: {
+ *     vehicleEnginePower: [{ name: 'vehicleEnginePower', operation: 'mul', value: 1.03 }],
+ *     vehicleForwardMaxSpeed: [{ name: 'vehicleForwardMaxSpeed', operation: 'add', value: -2 }],
+ *   },
+ * }
+ */
+export type IAppliedPairModifications = Partial<Record<number, IAppliedModifications>>
+
+/**
  * @param unlockedLevel 0 = nothing unlocked, n = levels I..n are unlocked (their main steps are researched)
  * @param pairChoices level → xmlId of the chosen pair option, e.g. { 2: 4011, 4: 4022 }
  * @param roleSlot The chosen role slot category, null when nothing is chosen
@@ -31,15 +43,18 @@ export interface IFieldModificationReducerState {
    pairChoices: Partial<Record<number, number>>
    roleSlot: IFieldModificationRoleSlot | null
    appliedBaseModifications: IAppliedModifications | null
-   appliedPairModifications: IAppliedModifications | null
+   appliedPairModifications: IAppliedPairModifications | null
 }
 
 /**
  * - SET_UNLOCKED_LEVEL: sets the unlocked level, the choices above it are dropped
- * - CHOOSE_PAIR_OPTION: chooses a pair option (null clears it), choosing unlocks every level up to it
+ * - CHOOSE_PAIR_OPTION: chooses a pair option (null clears it), choosing unlocks every level up to it.
+ *   The KPIs of the chosen option replace the other option's KPIs of the same level in appliedPairModifications
  * - CHOOSE_ROLE_SLOT: chooses a role slot category (null clears it), choosing unlocks every level up to it
  * - SET_APPLIED_BASE_MODIFICATIONS: replaces every applied base modification (null = none), it never merges
+ * - SET_APPLIED_PAIR_MODIFICATIONS: replaces every applied pair modification (null = none), it never merges
  * - RESET_APPLIED_BASE_MODIFICATIONS: no base modification applied
+ * - RESET_APPLIED_PAIR_MODIFICATIONS: no pair modification applied
  * - RESET: nothing unlocked, nothing chosen
  */
 export type IFieldModificationContextActions =
@@ -52,7 +67,7 @@ export type IFieldModificationContextActions =
    | { type: 'SET_APPLIED_BASE_MODIFICATIONS'; payload: IAppliedModifications | null }
    | {
         type: 'SET_APPLIED_PAIR_MODIFICATIONS'
-        payload: IAppliedModifications | null
+        payload: IAppliedPairModifications | null
      }
    | { type: 'RESET' }
    | { type: 'RESET_APPLIED_BASE_MODIFICATIONS' }

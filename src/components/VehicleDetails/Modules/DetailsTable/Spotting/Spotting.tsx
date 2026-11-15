@@ -115,7 +115,6 @@ export default function Spotting() {
                   modifiers={[
                      {
                         difference: parseFloat((stillViewRange - viewRangeStillBase).toFixed(2)),
-                        improved: true,
                      },
                   ]}
                />
@@ -128,7 +127,6 @@ export default function Spotting() {
                   modifiers={[
                      {
                         difference: parseFloat((viewRange - viewRangeBase).toFixed(2)),
-                        improved: viewRange - viewRangeBase > 0,
                      },
                   ]}
                />
@@ -141,19 +139,18 @@ export default function Spotting() {
                modifiers={[
                   {
                      difference: parseFloat((radioRange - radioRangeBase).toFixed(2)),
-                     improved: true,
                   },
                ]}
             />
             <TableRowComponent
                iconSrc='/icons/spot/vehicleOwnSpottingTime.png'
                titleText='Time being spotted'
+               direction='lower-is-better'
                valueText={ownSpottingTime}
                unit='seconds'
                modifiers={[
                   {
                      difference: parseFloat((ownSpottingTime - SPOTTED_TIME).toFixed(2)),
-                     improved: true,
                   },
                ]}
             />
@@ -165,7 +162,6 @@ export default function Spotting() {
                modifiers={[
                   {
                      difference: parseFloat((enemySpottingTime - SPOTTED_TIME).toFixed(2)),
-                     improved: true,
                   },
                ]}
             />

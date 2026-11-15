@@ -113,7 +113,6 @@ export default function AvgDpm({
                modifiers={[
                   {
                      difference: parseFloat((bliskawicaDPM - baseBliskawicaDPM1).toFixed(4)),
-                     improved: true,
                   },
                ]}
             />
@@ -130,7 +129,6 @@ export default function AvgDpm({
                modifiers={[
                   {
                      difference: parseFloat((avarageDPM - baseAvarageDPM).toFixed(4)),
-                     improved: true,
                   },
                ]}
             />

@@ -95,11 +95,9 @@ export default function AmmoFuelEngineHealth() {
             modifiers={[
                {
                   difference: parseFloat((ammoRackStrength - ammoRackHealthBase).toFixed(2)),
-                  improved: true,
                },
                {
                   difference: ammoRackRegenStrength - ammoRackRegenHealthBase,
-                  improved: true,
                },
             ]}
          />
@@ -112,11 +110,9 @@ export default function AmmoFuelEngineHealth() {
             modifiers={[
                {
                   difference: fuelTankStrength - fuelTankHealthBase,
-                  improved: true,
                },
                {
                   difference: fuelTankRegenStrength - fuelTankRegenHealthBase,
-                  improved: true,
                },
             ]}
          />
@@ -128,11 +124,9 @@ export default function AmmoFuelEngineHealth() {
             modifiers={[
                {
                   difference: engineStrength - engineHealthBase,
-                  improved: true,
                },
                {
                   difference: engineRegenStrength - engineRegenHealthBase,
-                  improved: true,
                },
             ]}
          />

@@ -128,13 +128,13 @@ export default function Firepower() {
             <TableRowComponent
                iconSrc='/icons/firepower/reloadTimeSecs.png'
                titleText='Gun Loading'
+               direction='lower-is-better'
                valueText={reloadTime}
                toFixed={2}
                unit='s'
                modifiers={[
                   {
                      difference: parseFloat((reloadTime - vehicleReloadTime).toFixed(4)),
-                     improved: true,
                   },
                ]}
             />
@@ -149,13 +149,13 @@ export default function Firepower() {
             <TableRowComponent
                iconSrc='/icons/firepower/aimingTime.png'
                titleText='Aiming Time'
+               direction='lower-is-better'
                valueText={aimingTime}
                toFixed={2}
                unit='s'
                modifiers={[
                   {
                      difference: parseFloat((aimingTime - vehicleAimTime).toFixed(4)),
-                     improved: true,
                   },
                ]}
             />
@@ -239,7 +239,6 @@ export default function Firepower() {
                modifiers={[
                   {
                      difference: parseFloat((shellVelocity - shellVelocityBase).toFixed(2)),
-                     improved: true,
                   },
                   {
                      difference: shellsModifiers.speed?.difference ?? 0,

@@ -52,7 +52,6 @@ export default function MaxHealth() {
          modifiers={[
             {
                difference: parseFloat((maxHealth - vehicleBaseMaxHealth).toFixed(4)),
-               improved: true,
             },
          ]}
       />

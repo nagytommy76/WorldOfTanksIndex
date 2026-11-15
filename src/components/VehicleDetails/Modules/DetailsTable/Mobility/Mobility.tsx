@@ -146,7 +146,6 @@ export default function Mobility() {
                modifiers={[
                   {
                      difference: parseFloat((forwardSpeed - forwardSpeedBase).toFixed(2)),
-                     improved: true,
                   },
                ]}
             />
@@ -158,7 +157,6 @@ export default function Mobility() {
                modifiers={[
                   {
                      difference: parseFloat((backwardSpeed - backwardSpeedBase).toFixed(2)),
-                     improved: true,
                   },
                ]}
             />
@@ -175,7 +173,6 @@ export default function Mobility() {
                modifiers={[
                   {
                      difference: parseFloat((traverseSpeed - vehicleChassisRotationSpeedBase).toFixed(2)),
-                     improved: true,
                   },
                ]}
             />
@@ -187,7 +184,6 @@ export default function Mobility() {
                modifiers={[
                   {
                      difference: parseFloat((turretTraverseSpeed - vehicleGunRotationSpeedBase).toFixed(2)),
-                     improved: true,
                   },
                ]}
             />
@@ -225,7 +221,6 @@ export default function Mobility() {
                modifiers={[
                   {
                      difference: parseFloat((enginePower - vehicleEnginePowerBase).toFixed(2)),
-                     improved: true,
                   },
                ]}
             />

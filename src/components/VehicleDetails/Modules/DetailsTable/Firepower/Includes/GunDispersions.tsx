@@ -32,65 +32,65 @@ export default function GunDispersions() {
          <TableRowComponent
             iconSrc='/icons/firepower/shotDispersionAngle.png'
             titleText='Accuracy At 100 m'
+            direction='lower-is-better'
             valueText={accuracy}
             unit='m'
             paddingLeft
             modifiers={[
                {
                   difference: parseFloat((accuracy - accuracyBase).toFixed(4)),
-                  improved: true,
                },
             ]}
          />
          <TableRowComponent
             iconSrc='/icons/firepower/vehicleGunShotDispersionChassisMovement.png'
             titleText='Moving'
+            direction='lower-is-better'
             valueText={vehicleMovement}
             unit='m'
             paddingLeft
             modifiers={[
                {
                   difference: parseFloat((vehicleMovement - vehicleMovementBase).toFixed(4)),
-                  improved: true,
                },
             ]}
          />
          <TableRowComponent
             iconSrc='/icons/firepower/vehicleGunShotDispersionChassisRotation.png'
             titleText='Tank traverse'
+            direction='lower-is-better'
             valueText={vehicleRotation}
             unit='m'
             paddingLeft
             modifiers={[
                {
                   difference: parseFloat((vehicleRotation - vehicleRotationBase).toFixed(4)),
-                  improved: true,
                },
             ]}
          />
          <TableRowComponent
             iconSrc='/icons/firepower/vehicleGunShotDispersionTurretRotation.png'
             titleText='Turret traverse'
+            direction='lower-is-better'
             valueText={turretRotation}
             unit='m'
             paddingLeft
             modifiers={[
                {
                   difference: parseFloat((turretRotation - turretRotationBase).toFixed(4)),
-                  improved: true,
                },
             ]}
          />
          <TableRowComponent
             iconSrc='/icons/firepower/vehicleGunShotDispersionAfterShot.png'
             titleText='After firing'
+            direction='lower-is-better'
             valueText={afterShot}
             unit=''
             paddingLeft
             modifiers={[
                {
                   difference: parseFloat((afterShot - afterShotBase).toFixed(4)),
-                  improved: true,
                },
             ]}
          />

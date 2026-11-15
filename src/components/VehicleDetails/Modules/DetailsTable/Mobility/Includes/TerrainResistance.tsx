@@ -25,18 +25,19 @@ export default function TerrainResistance({
          toFixed={2}
          unit='m/s²'
          paddingLeft
+         // The difference is base - current here (a lower resistance is the better one), so the base is passed explicitly
          modifiers={[
             {
                difference: parseFloat((vehicleTerrainResistanceBase[0] - terrainResistance1).toFixed(2)),
-               improved: true,
+               base: vehicleTerrainResistanceBase[0],
             },
             {
                difference: parseFloat((vehicleTerrainResistanceBase[1] - terrainResistance2).toFixed(2)),
-               improved: true,
+               base: vehicleTerrainResistanceBase[1],
             },
             {
                difference: parseFloat((vehicleTerrainResistanceBase[2] - terrainResistance3).toFixed(2)),
-               improved: true,
+               base: vehicleTerrainResistanceBase[2],
             },
          ]}
       />

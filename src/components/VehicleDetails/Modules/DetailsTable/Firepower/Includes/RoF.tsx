@@ -54,8 +54,7 @@ export default function RoF({
                unit='rounds/min'
                modifiers={[
                   {
-                     difference: parseFloat((baseRateOfFire - rateOfFire).toFixed(2)),
-                     improved: true,
+                     difference: parseFloat((rateOfFire - baseRateOfFire).toFixed(2)),
                   },
                ]}
             />

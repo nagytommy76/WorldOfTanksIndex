@@ -36,7 +36,6 @@ export default function SpecificPower({
          modifiers={[
             {
                difference: parseFloat(specificPowerDifference.toFixed(2)),
-               improved: true,
             },
          ]}
       />

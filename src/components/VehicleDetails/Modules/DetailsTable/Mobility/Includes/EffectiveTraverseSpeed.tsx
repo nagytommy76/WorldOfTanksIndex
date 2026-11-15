@@ -104,19 +104,16 @@ export default function EffectiveTraverseSpeed({
                difference: parseFloat(
                   (effectiveHardTraverseSpeed - effectiveHardTraverseSpeedBase).toFixed(2),
                ),
-               improved: true,
             },
             {
                difference: parseFloat(
                   (effectiveMediumTraverseSpeed - effectiveMediumTraverseSpeedBase).toFixed(2),
                ),
-               improved: true,
             },
             {
                difference: parseFloat(
                   (effectiveSoftTraverseSpeed - effectiveSoftTraverseSpeedBase).toFixed(2),
                ),
-               improved: true,
             },
          ]}
       />

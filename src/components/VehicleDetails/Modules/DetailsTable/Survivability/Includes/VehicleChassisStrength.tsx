@@ -68,7 +68,6 @@ export default function VehicleChassisStrength() {
          modifiers={[
             {
                difference: parseFloat((chassisHealth - maxVehicleHealthBase).toFixed(4)),
-               improved: true,
             },
          ]}
       />

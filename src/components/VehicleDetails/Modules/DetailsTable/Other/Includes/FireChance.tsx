@@ -42,12 +42,12 @@ export default function FireChance() {
       <TableRowComponent
          iconSrc='/icons/miscellaneous/vehicleFireChance.png'
          titleText='Engine Fire Chance'
+         direction='lower-is-better'
          valueText={fireChance}
          unit='%'
          modifiers={[
             {
                difference: parseFloat((fireChance - engineFireChance).toFixed(2)),
-               improved: true,
             },
          ]}
       />

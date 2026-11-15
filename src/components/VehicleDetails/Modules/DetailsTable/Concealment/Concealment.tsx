@@ -114,13 +114,11 @@ export default function Concealment() {
                modifiers={[
                   {
                      difference: parseFloat((camouflageStill - vehicleStillCamoflageBase).toFixed(2)),
-                     improved: true,
                   },
                   {
                      difference: parseFloat(
                         (vehicleStillCamoflageAfterFire - vehicleStillCamoflageAfterFireBase).toFixed(2),
                      ),
-                     improved: true,
                   },
                ]}
             />
@@ -133,13 +131,11 @@ export default function Concealment() {
                modifiers={[
                   {
                      difference: parseFloat((camouflageMoving - vehicleMovingCamoflageBase).toFixed(2)),
-                     improved: true,
                   },
                   {
                      difference: parseFloat(
                         (vehicleMovingCamoflageAfterFire - vehicleMovingCamoflageAfterFireBase).toFixed(2),
                      ),
-                     improved: true,
                   },
                ]}
             />

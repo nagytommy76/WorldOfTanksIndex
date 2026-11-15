@@ -55,13 +55,13 @@ export default function VehicleChassisRepairSpeed() {
       <TableRowComponent
          iconSrc='/icons/survivability/vehicleChassisRepairSpeed.png'
          titleText='Track Repair Time'
+         direction='lower-is-better'
          valueText={chassisRepairSpeed}
          toFixed={2}
          unit='s'
          modifiers={[
             {
                difference: parseFloat((chassisRepairSpeed - baseRepariTime).toFixed(2)),
-               improved: true,
             },
          ]}
       />

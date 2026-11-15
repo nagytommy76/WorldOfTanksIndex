@@ -76,15 +76,12 @@ export default function EffectiveTopSpeed({
          modifiers={[
             {
                difference: parseFloat((effectiveHardTopSpeed - effectiveHardTopSpeedBase).toFixed(2)),
-               improved: true,
             },
             {
                difference: parseFloat((effectiveMediumTopSpeed - effectiveMediumTopSpeedBase).toFixed(2)),
-               improved: true,
             },
             {
                difference: parseFloat((effectiveSoftTopSpeed - effectiveSoftTopSpeedBase).toFixed(2)),
-               improved: true,
             },
          ]}
       />

@@ -1,11 +1,9 @@
 import React from 'react'
+import type { DiffDirection, IRowModifier } from '@/types/VehicleDetails/Modifiers'
+
+import { isImproved } from '@/utils/helpers/modifierEffect'
 
 import Typography from '@mui/material/Typography'
-
-type ModifiersType = {
-   difference: number
-   improved: boolean
-}
 
 function ReturnTypography({ children, improved = true }: { children: React.ReactNode; improved: boolean }) {
    return (
@@ -18,16 +16,24 @@ function ReturnTypography({ children, improved = true }: { children: React.React
    )
 }
 
-export default function Modifiers({ modifiers }: { modifiers: ModifiersType[] }) {
+export default function Modifiers({
+   modifiers,
+   direction = 'higher-is-better',
+}: {
+   modifiers: IRowModifier[]
+   direction?: DiffDirection
+}) {
    if (modifiers.length === 1) {
       return modifiers[0].difference === 0 ? null : (
-         <ReturnTypography improved={modifiers[0].improved}>{modifiers[0].difference}</ReturnTypography>
+         <ReturnTypography improved={isImproved(modifiers[0], direction)}>
+            {modifiers[0].difference}
+         </ReturnTypography>
       )
    }
 
-   return modifiers.map((modifier: ModifiersType, index: number) => {
+   return modifiers.map((modifier: IRowModifier, index: number) => {
       return modifier.difference === 0 ? null : (
-         <ReturnTypography key={index} improved={modifier.improved}>
+         <ReturnTypography key={index} improved={isImproved(modifier, direction)}>
             {modifier.difference} {index === modifiers.length - 1 ? ' ' : '/ '}
          </ReturnTypography>
       )

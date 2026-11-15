@@ -1,4 +1,7 @@
 import Image from 'next/image'
+import type { DiffDirection, IRowModifier } from '@/types/VehicleDetails/Modifiers'
+
+import { getRowEffect, getRowTint } from '@/utils/helpers/modifierEffect'
 
 import { styled } from '@mui/material/styles'
 import TableCell from '@mui/material/TableCell'
@@ -29,6 +32,7 @@ export default function TableRowComponent({
    toFixed = 4,
    TooltipTitle,
    modifiers = null,
+   direction = 'higher-is-better',
 }: {
    titleText: string
    valueText: number[] | number | string
@@ -37,20 +41,16 @@ export default function TableRowComponent({
    paddingLeft?: boolean
    iconSrc?: string
    TooltipTitle?: React.ReactNode
-   modifiers?:
-      | {
-           difference: number
-           improved: boolean
-        }[]
-      | null
+   modifiers?: IRowModifier[] | null
+   /** Which sign of the difference is the good one. Gun Loading, Aiming Time, etc. are 'lower-is-better' */
+   direction?: DiffDirection
 }) {
+   // sx instead of style, so the hover highlight still wins over the tint
+   const rowTint = getRowTint(getRowEffect(modifiers, valueText, direction))
+
    return (
       <HtmlTooltip title={TooltipTitle}>
-         <TableRow
-            // className={`h-[30px] ${modifiers && modifiers[0].improved ? 'bg-lime-600/20' : 'bg-red-500'}`}
-            className={`h-[30px]`}
-            hover
-         >
+         <TableRow className='h-[30px]' sx={rowTint ? { backgroundColor: rowTint } : undefined} hover>
             <TableCell component='th' scope='row' className='px-0 py-1'>
                <div className={`${paddingLeft ? 'pl-7' : ''} flex felx-row items-center gap-2`}>
                   {iconSrc && (
@@ -70,7 +70,7 @@ export default function TableRowComponent({
             </TableCell>
             <TableCell align='right' className='px-1 py-1 '>
                <div className='flex flex-row justify-end gap-1 items-center'>
-                  {modifiers && <Modifiers modifiers={modifiers} />}
+                  {modifiers && <Modifiers modifiers={modifiers} direction={direction} />}
                   <Typography className='text-white font-semibold' variant='subtitle1' fontSize={15}>
                      {typeof valueText === 'string' && valueText}
                      {typeof valueText === 'number' && parseFloat(valueText.toFixed(toFixed))}

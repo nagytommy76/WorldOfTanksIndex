@@ -2,7 +2,7 @@
 // Types
 // ---------------------------------------------------------------------------
 
-type ModifierOperation = 'mul' | 'add' | 'mulAdd' | 'mulSubtract'
+export type ModifierOperation = 'mul' | 'add' | 'mulAdd' | 'mulSubtract'
 
 interface IModifierConfig {
    /** Which field names in your flat object this modifier affects */

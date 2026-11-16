@@ -3,6 +3,7 @@ import {
    fieldModificationInitialState,
    type IFieldModificationReducerState,
 } from '@/VehicleContext/FieldModificationContext/Types'
+import type { IPairOption } from '@Models/FieldModifications/FieldModificationTypes'
 
 const chosenState: IFieldModificationReducerState = {
    unlockedLevel: 8,
@@ -110,6 +111,94 @@ describe('FieldModificationReducer', () => {
          payload: null,
       })
       expect(nothing.appliedBaseModifications).toBeNull()
+   })
+
+   describe('applied pair modifications', () => {
+      const improvedEnginePower: IPairOption = {
+         xmlId: 4011,
+         imgName: 'improvedEnginePower',
+         displayName: 'Valves Tuning (Setup 1)',
+         modifiers: [],
+         kpi: [
+            { operation: 'mul', name: 'vehicleEnginePower', value: 1.03 },
+            { operation: 'add', name: 'vehicleForwardMaxSpeed', value: -2 },
+         ],
+      }
+      const improvedSpeedIndicator: IPairOption = {
+         xmlId: 4012,
+         imgName: 'improvedSpeedIndicator',
+         displayName: 'Valves Tuning (Setup 2)',
+         modifiers: [],
+         kpi: [
+            { operation: 'mul', name: 'vehicleEnginePower', value: 0.97 },
+            { operation: 'add', name: 'vehicleForwardMaxSpeed', value: 2 },
+         ],
+      }
+      const levelFourOption: IPairOption = {
+         xmlId: 4021,
+         imgName: 'improvedRotation',
+         displayName: 'Level IV setup 1',
+         modifiers: [],
+         kpi: [{ operation: 'mul', name: 'vehicleAllGroundRotationSpeed', value: 1.05 }],
+      }
+
+      const choose = (state: IFieldModificationReducerState, level: number, option: IPairOption | null) =>
+         FieldModificationReducer(state, {
+            type: 'CHOOSE_PAIR_OPTION',
+            payload: { level, optionXmlId: option?.xmlId ?? null, foundOptionByXmlId: option ?? undefined },
+         })
+
+      it('should apply the KPIs of the chosen option on its level', () => {
+         const state = choose(fieldModificationInitialState, 2, improvedEnginePower)
+         expect(state.appliedPairModifications).toEqual({
+            2: {
+               vehicleEnginePower: [{ name: 'vehicleEnginePower', operation: 'mul', value: 1.03 }],
+               vehicleForwardMaxSpeed: [{ name: 'vehicleForwardMaxSpeed', operation: 'add', value: -2 }],
+            },
+         })
+      })
+
+      it('should replace the other option of the same pair instead of merging', () => {
+         const first = choose(fieldModificationInitialState, 2, improvedEnginePower)
+         const switched = choose(first, 2, improvedSpeedIndicator)
+         expect(switched.pairChoices).toEqual({ 2: 4012 })
+         expect(switched.appliedPairModifications).toEqual({
+            2: {
+               vehicleEnginePower: [{ name: 'vehicleEnginePower', operation: 'mul', value: 0.97 }],
+               vehicleForwardMaxSpeed: [{ name: 'vehicleForwardMaxSpeed', operation: 'add', value: 2 }],
+            },
+         })
+      })
+
+      it('should keep the chosen options of the other levels', () => {
+         const state = choose(choose(fieldModificationInitialState, 2, improvedEnginePower), 4, levelFourOption)
+         expect(Object.keys(state.appliedPairModifications ?? {})).toEqual(['2', '4'])
+      })
+
+      it('should remove the level when the choice is cleared, null when nothing is left', () => {
+         const both = choose(choose(fieldModificationInitialState, 2, improvedEnginePower), 4, levelFourOption)
+         const levelTwoOnly = choose(both, 4, null)
+         expect(Object.keys(levelTwoOnly.appliedPairModifications ?? {})).toEqual(['2'])
+
+         const nothing = choose(levelTwoOnly, 2, null)
+         expect(nothing.appliedPairModifications).toBeNull()
+      })
+
+      it('should drop the applied pair modifications above the new unlocked level', () => {
+         const both = choose(choose(fieldModificationInitialState, 2, improvedEnginePower), 4, levelFourOption)
+         const levelThree = FieldModificationReducer(both, { type: 'SET_UNLOCKED_LEVEL', payload: 3 })
+         expect(Object.keys(levelThree.appliedPairModifications ?? {})).toEqual(['2'])
+
+         const levelOne = FieldModificationReducer(levelThree, { type: 'SET_UNLOCKED_LEVEL', payload: 1 })
+         expect(levelOne.appliedPairModifications).toBeNull()
+      })
+
+      it('should reset the applied pair modifications', () => {
+         const state = choose(fieldModificationInitialState, 2, improvedEnginePower)
+         const reset = FieldModificationReducer(state, { type: 'RESET_APPLIED_PAIR_MODIFICATIONS' })
+         expect(reset.appliedPairModifications).toBeNull()
+         expect(reset.pairChoices).toEqual({ 2: 4011 })
+      })
    })
 
    it('should reset to the initial state', () => {

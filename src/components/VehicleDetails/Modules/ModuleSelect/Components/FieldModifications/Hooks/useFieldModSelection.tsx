@@ -42,6 +42,7 @@ export default function useFieldModSelection() {
 
    function reset() {
       fieldModDispatch({ type: 'RESET_APPLIED_BASE_MODIFICATIONS' })
+      fieldModDispatch({ type: 'RESET_APPLIED_PAIR_MODIFICATIONS' })
       fieldModDispatch({ type: 'RESET' })
    }
 

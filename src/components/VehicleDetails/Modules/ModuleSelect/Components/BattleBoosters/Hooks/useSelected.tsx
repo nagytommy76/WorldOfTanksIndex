@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import { useCallback, useContext, useEffect } from 'react'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
 import { CrewContext } from '@/CrewContext/CrewContext'
 
@@ -6,6 +6,19 @@ import useBlocked from '@/BattleBoosters/Hooks/useBlocked'
 
 import type { BattleBoosterModifierKeys } from '@/DevicesContext/Types'
 import type { IDevice } from '@/types/Devices/Devices'
+
+const VENTILATION_BOOSTER_KEY = 'improvedVentilationBattleBooster'
+
+/**
+ * @description The key the booster's modifiers are stored under in appliedBattleBoosterModifiers.
+ * improvedVentilation is stored under improvedVentilationBattleBooster (CrewContext reads it from there),
+ * every other booster under its icon.
+ */
+function getBoosterModifierKey(booster: IDevice) {
+   return (
+      booster.icon === 'improvedVentilation' ? VENTILATION_BOOSTER_KEY : booster.icon
+   ) as BattleBoosterModifierKeys
+}
 
 export default function useSelected(booster: IDevice) {
    const { isBlocked, isSelected, setISSelected, setIsBolcked } = useBlocked()
@@ -17,100 +30,73 @@ export default function useSelected(booster: IDevice) {
       selectedDevices,
    } = useContext(DeviceContext)
 
+   const modifierKey = getBoosterModifierKey(booster)
+
+   const removeBooster = useCallback(() => {
+      deviceDispatch({
+         type: 'REMOVE_BATTLE_BOOSTER_MODIFIER',
+         payload: { archeType: modifierKey },
+      })
+      if (modifierKey === VENTILATION_BOOSTER_KEY) {
+         crewDispatch({
+            type: 'REMOVE_APPLIED_CREW_MODIFIER',
+            payload: VENTILATION_BOOSTER_KEY,
+         })
+      }
+   }, [modifierKey, deviceDispatch, crewDispatch])
+
    /**
-    * @description Checks if incompatibleDevices is null -> set blocked
+    * @description The booster is blocked until a device with the same archeType is selected,
+    * or while another booster is applied.
+    * If the device gets deselected while this booster is applied, the booster is removed too.
     */
    useEffect(() => {
-      if (!appliedBattleBoosterModifiers) {
-         if (incompatibleDevices) {
-            const foundInAppliedModifiers =
-               incompatibleDevices.includes(booster.icon) ||
-               Object.keys(selectedDevices).includes(booster.icon)
-            if (foundInAppliedModifiers) {
-               setIsBolcked(!foundInAppliedModifiers)
-            } else {
-               setIsBolcked(true)
-               deviceDispatch({
-                  type: 'REMOVE_BATTLE_BOOSTER_MODIFIER',
-                  payload: {
-                     archeType: booster.icon as BattleBoosterModifierKeys,
-                  },
-               })
-               setISSelected(true)
-            }
-         }
+      const appliedBoosters = appliedBattleBoosterModifiers ? Object.keys(appliedBattleBoosterModifiers) : []
+      const isThisBoosterApplied = appliedBoosters.includes(modifierKey)
+      const isDeviceSelected =
+         Boolean(incompatibleDevices?.includes(booster.icon)) || booster.icon in selectedDevices
+
+      if (!isDeviceSelected) {
+         if (isThisBoosterApplied) removeBooster()
+         setIsBolcked(true)
+         setISSelected(true)
          return
       }
 
-      const appliedBoosters = Object.keys(appliedBattleBoosterModifiers)
-      if (appliedBoosters.length === 1 && !appliedBoosters.includes(booster.icon)) {
-         setIsBolcked(true)
-         setISSelected(true)
-      } else {
-         setIsBolcked(false)
-         setISSelected(false)
-      }
+      const isOtherBoosterApplied = appliedBoosters.length > 0 && !isThisBoosterApplied
+      setIsBolcked(isOtherBoosterApplied)
+      setISSelected(!isThisBoosterApplied)
    }, [
       appliedBattleBoosterModifiers,
       booster.icon,
+      modifierKey,
       incompatibleDevices,
       selectedDevices,
-      deviceDispatch,
+      removeBooster,
       setISSelected,
       setIsBolcked,
    ])
 
    function AddRemoveBooster() {
-      if (booster.modifiers) {
-         if (
-            appliedBattleBoosterModifiers &&
-            (Object.keys(appliedBattleBoosterModifiers).includes(booster.icon) ||
-               Object.keys(appliedBattleBoosterModifiers).includes(booster.name))
-         ) {
-            deviceDispatch({
-               type: 'REMOVE_BATTLE_BOOSTER_MODIFIER',
-               payload: {
-                  archeType: booster.icon as BattleBoosterModifierKeys,
-               },
-            })
-            if (booster.icon === 'improvedVentilation') {
-               deviceDispatch({
-                  type: 'REMOVE_BATTLE_BOOSTER_MODIFIER',
-                  payload: {
-                     archeType: 'improvedVentilationBattleBooster',
-                  },
-               })
-               crewDispatch({
-                  type: 'REMOVE_APPLIED_CREW_MODIFIER',
-                  payload: 'improvedVentilationBattleBooster',
-               })
-            }
-            setISSelected(true)
-         } else {
-            if (booster.icon === 'improvedVentilation') {
-               deviceDispatch({
-                  type: 'SET_BATTLE_BOOSTER_MODIFIER',
-                  payload: {
-                     archeType: 'improvedVentilationBattleBooster',
-                     name: booster.modifiers[0].name,
-                     value: booster.modifiers[0].value,
-                  },
-               })
-            } else {
-               booster.modifiers.forEach((modifier) => {
-                  deviceDispatch({
-                     type: 'SET_BATTLE_BOOSTER_MODIFIER',
-                     payload: {
-                        archeType: booster.icon as BattleBoosterModifierKeys,
-                        name: modifier.name,
-                        value: modifier.value,
-                     },
-                  })
-               })
-            }
-            setISSelected(false)
-         }
+      if (!booster.modifiers) return
+
+      if (appliedBattleBoosterModifiers?.[modifierKey]) {
+         removeBooster()
+         setISSelected(true)
+         return
       }
+
+      booster.modifiers.forEach((modifier) => {
+         deviceDispatch({
+            type: 'SET_BATTLE_BOOSTER_MODIFIER',
+            payload: {
+               archeType: modifierKey,
+               name: modifier.name,
+               value: modifier.value,
+            },
+         })
+      })
+      setISSelected(false)
    }
 
    return {

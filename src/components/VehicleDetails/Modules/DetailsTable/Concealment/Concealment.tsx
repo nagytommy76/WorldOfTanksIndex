@@ -92,9 +92,17 @@ export default function Concealment() {
                vehicleStillCamoflageAfterFire: vehicleStillCamoflageAfterFireBase,
                vehicleMovingCamoflageAfterFire: vehicleMovingCamoflageAfterFireBase,
             },
-            [createBaseFieldModTransformer(appliedBaseModifications)],
+            [
+               createBaseFieldModTransformer(appliedBaseModifications),
+               createPairFieldModTransformer(appliedPairModifications),
+            ],
          ),
-      [vehicleStillCamoflageAfterFireBase, vehicleMovingCamoflageAfterFireBase, appliedBaseModifications],
+      [
+         vehicleStillCamoflageAfterFireBase,
+         vehicleMovingCamoflageAfterFireBase,
+         appliedBaseModifications,
+         appliedPairModifications,
+      ],
    )
 
    return (

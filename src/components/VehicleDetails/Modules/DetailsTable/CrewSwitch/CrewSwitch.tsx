@@ -91,7 +91,11 @@ export default function CrewSwitch() {
    }
 
    return (
-      <Tooltip title={'Toggle between showing raw values and effective values with commander bonus applied.'}>
+      <Tooltip
+         title={
+            'Toggle between showing raw values and effective values with commander bonus applied. ( +10% )'
+         }
+      >
          <FormControlLabel
             checked={isAppliedCommanderBonus}
             onChange={handleChange}

@@ -109,7 +109,7 @@ export default function AmmoFuelEngineHealth() {
             unit='hp'
             modifiers={[
                {
-                  difference: fuelTankStrength - fuelTankHealthBase,
+                  difference: parseFloat((fuelTankStrength - fuelTankHealthBase).toFixed(2)),
                },
                {
                   difference: fuelTankRegenStrength - fuelTankRegenHealthBase,
@@ -123,7 +123,7 @@ export default function AmmoFuelEngineHealth() {
             unit='hp'
             modifiers={[
                {
-                  difference: engineStrength - engineHealthBase,
+                  difference: parseFloat((engineStrength - engineHealthBase).toFixed(2)),
                },
                {
                   difference: engineRegenStrength - engineRegenHealthBase,

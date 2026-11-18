@@ -1,26 +1,19 @@
 import CrewSkills from '@/Classes/CrewSkills'
 import type { ICrewContextActions } from '@/CrewContext/Types'
-import type { SetStateAction } from 'react'
 
 function SetCommonSkills(
    skill: CrewSkills,
    selectedSkills: string[],
-   setSkillsSelected: (value: SetStateAction<number>) => void,
-   setCommonSkillsSelected: (value: SetStateAction<number>) => void,
    crewDispatch: (value: ICrewContextActions) => void,
 ) {
    switch (skill.xmlName) {
       case 'brotherhood':
          if (selectedSkills.includes('brotherhood')) {
-            setSkillsSelected((prev) => prev - 1)
-            setCommonSkillsSelected((prev) => prev - 1)
             crewDispatch({
                type: 'REMOVE_APPLIED_CREW_MODIFIER',
                payload: skill.xmlName,
             })
          } else {
-            setSkillsSelected((prev) => prev + 1)
-            setCommonSkillsSelected((prev) => prev + 1)
             crewDispatch({
                type: 'SET_APPLIED_CREW_MODIFIER',
                payload: {
@@ -32,8 +25,6 @@ function SetCommonSkills(
          break
       case 'repair':
          if (!selectedSkills.includes('repair')) {
-            setCommonSkillsSelected((prev) => prev + 1)
-            setSkillsSelected((prev) => prev + 1)
             crewDispatch({
                type: 'SET_APPLIED_CREW_SKILLS',
                payload: {
@@ -43,8 +34,6 @@ function SetCommonSkills(
                },
             })
          } else {
-            setSkillsSelected((prev) => prev - 1)
-            setCommonSkillsSelected((prev) => prev - 1)
             crewDispatch({
                type: 'REMOVE_APPLIED_CREW_SKILLS',
                payload: {
@@ -56,8 +45,6 @@ function SetCommonSkills(
          break
       case 'camouflage':
          if (!selectedSkills.includes('camouflage')) {
-            setCommonSkillsSelected((prev) => prev + 1)
-            setSkillsSelected((prev) => prev + 1)
             crewDispatch({
                type: 'SET_APPLIED_CREW_SKILLS',
                payload: {
@@ -67,8 +54,6 @@ function SetCommonSkills(
                },
             })
          } else {
-            setSkillsSelected((prev) => prev - 1)
-            setCommonSkillsSelected((prev) => prev - 1)
             crewDispatch({
                type: 'REMOVE_APPLIED_CREW_SKILLS',
                payload: {

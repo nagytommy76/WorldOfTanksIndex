@@ -1,18 +1,23 @@
 import { useContext, useMemo } from 'react'
 import { VehicleContext } from '@/VehicleContext/VehicleContext'
 import { DeviceContext } from '@/DevicesContext/DeviceContext'
+import { CrewContext } from '@/CrewContext/CrewContext'
 import { FieldModificationContext } from '@/FieldModificationContext/FieldModificationContext'
 
 import applyStatPipeline from '@/utils/applyStatPipeline'
 import createBaseFieldModTransformer, {
    createPairFieldModTransformer,
 } from '@/utils/FieldModifications/ApplyFieldModifications'
+import createCrewSkillsTransformer from '@/utils/ApplyCrewSkillModifier'
 import { createDeviceTransformer } from '@/utils/ApplyModifiers'
 import { createDeviceBoostersTransformer } from '@/src/utils/ApplyDeviceBooster'
 
 import TableRowComponent from '../../Includes/TableRow'
 
 export default function VehicleChassisRepairSpeed() {
+   const {
+      crewReducer: { commander, crewMembers },
+   } = useContext(CrewContext)
    const {
       vehicleReducer: {
          selectedModuleNames,
@@ -27,7 +32,7 @@ export default function VehicleChassisRepairSpeed() {
       fieldModReducer: { appliedBaseModifications, appliedPairModifications },
    } = useContext(FieldModificationContext)
 
-   const baseRepariTime = vehicleChassis[selectedModuleNames.vehicleChassis].repairTime
+   const baseRepariTime = vehicleChassis[selectedModuleNames.vehicleChassis].repairTime / 0.57
 
    const { chassisRepairSpeed } = useMemo(
       () =>
@@ -38,6 +43,7 @@ export default function VehicleChassisRepairSpeed() {
             [
                createDeviceTransformer(appliedDevicesModifiers),
                createDeviceBoostersTransformer(appliedBattleBoosterModifiers),
+               createCrewSkillsTransformer(commander, crewMembers),
                createBaseFieldModTransformer(appliedBaseModifications),
                createPairFieldModTransformer(appliedPairModifications),
             ],
@@ -48,6 +54,8 @@ export default function VehicleChassisRepairSpeed() {
          appliedBaseModifications,
          appliedPairModifications,
          baseRepariTime,
+         commander,
+         crewMembers,
       ],
    )
 

@@ -376,6 +376,14 @@ export const CREW_SKILLS_CONFIG: Record<string, Record<string, ICrewSkillConfig>
          operation: 'progressive',
       },
    },
+   repair: {
+      vehicleRepairSpeed: {
+         fields: ['chassisRepairSpeed'],
+         measureType: 'repair',
+         isSituational: false,
+         operation: 'degressive',
+      },
+   },
 }
 
 export default CREW_SKILLS_CONFIG

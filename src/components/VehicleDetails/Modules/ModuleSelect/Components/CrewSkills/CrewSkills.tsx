@@ -1,9 +1,10 @@
 import Image from 'next/image'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import CrewSkillContextProvider from './CrewBattleBooster/Context/CrewSkillContext'
 
 import type { CrewSkillRoles } from '@/Classes/CrewSkills'
 import useGetCrewSkills from './Hooks/useGetCrewSkills'
+import useIsSecondaryRole from './Includes/Hooks/useIsSecondaryRole'
 import ToggleCrewSkills from './Includes/ToggleCrewSkills'
 import ReturnTypography from '../../Includes/ModuleType'
 
@@ -12,7 +13,12 @@ import CrewBattleBoosters from './CrewBattleBooster/CrewBattleBoosters'
 
 export default function CrewSkills() {
    const crewSkills = useGetCrewSkills()
-   const [commonSkillsSelected, setCommonSkillsSelected] = useState<number>(0)
+   const isSecondaryRole = useIsSecondaryRole()
+   const [selectedCounts, setSelectedCounts] = useState<Partial<Record<CrewSkillRoles, number>>>({})
+
+   const reportSelectedCount = useCallback((role: CrewSkillRoles, count: number) => {
+      setSelectedCounts((prev) => (prev[role] === count ? prev : { ...prev, [role]: count }))
+   }, [])
 
    /**
     * T100Lt has 3 crew members:
@@ -21,12 +27,21 @@ export default function CrewSkills() {
     * - Gunner (Secondary: loader)
     *
     * Maximum selection in this case:
-    *  -Commander - 6
-    *  -Radioman (secondary) - 3
-    *  -Driver - 6
-    *  -Gunner - 6
-    *  -Loader (secondary) - 3
+    *  -Commander - 6 (including common skills)
+    *  -Radioman (secondary) - 3 (excluding common skills)
+    *  -Driver - 6 (including common skills)
+    *  -Gunner - 6 (including common skills)
+    *  -Loader (secondary) - 3 (excluding common skills)
+    *
+    * Common skills are blocked when any primary role reaches 6.
     */
+   const commonSelected = selectedCounts.common ?? 0
+   const maxPrimaryOwnSelected = Math.max(
+      0,
+      ...Object.entries(selectedCounts)
+         .filter(([role]) => role !== 'common' && !isSecondaryRole(role as CrewSkillRoles))
+         .map(([, count]) => count ?? 0),
+   )
 
    if (!crewSkills) return <h1>LOADING....</h1>
 
@@ -47,8 +62,10 @@ export default function CrewSkills() {
                   <ToggleCrewSkills
                      skills={skills}
                      role={role as CrewSkillRoles}
-                     commonSkillsSelected={commonSkillsSelected}
-                     setCommonSkillsSelected={setCommonSkillsSelected}
+                     isSecondary={isSecondaryRole(role as CrewSkillRoles)}
+                     commonSelected={commonSelected}
+                     maxPrimaryOwnSelected={maxPrimaryOwnSelected}
+                     reportSelectedCount={reportSelectedCount}
                   />
                </div>
             ))}

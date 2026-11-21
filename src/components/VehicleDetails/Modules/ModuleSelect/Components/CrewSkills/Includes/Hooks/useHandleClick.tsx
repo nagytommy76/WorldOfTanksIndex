@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useContext, useState } from 'react'
+import { useContext } from 'react'
 import { CrewContext } from '@/CrewContext/CrewContext'
 import useAppliedSkills from './useAppliedSkills'
 
@@ -6,32 +6,22 @@ import CrewSkills, { type IRolesNonCommander, CrewSkillRoles } from '@/Classes/C
 
 import SetCommonSkills from './Helpers/CommonSkills'
 
-export default function useHandleClick(
-   selectedSkills: string[],
-   role: CrewSkillRoles,
-   setCommonSkillsSelected: Dispatch<SetStateAction<number>>,
-) {
+export default function useHandleClick(selectedSkills: string[], role: CrewSkillRoles) {
    const {
       crewDispatch,
       crewReducer: { crewMembers, commander },
    } = useContext(CrewContext)
 
-   const [isSecondarySkill, setIsSecondarySkill] = useState<boolean>(false)
-   const { removeAppliedCrewSkill, setAppliedCrewSkill, setSkillsSelected, skillsSelected } =
-      useAppliedSkills()
+   const { removeAppliedCrewSkill, setAppliedCrewSkill } = useAppliedSkills()
 
    function handleClick(event: React.MouseEvent<HTMLElement>, value: string, skill: CrewSkills) {
       if (skill.modifiers.find((modifier) => modifier.paramName === 'crewLevelIncrease')) {
          if (selectedSkills.includes(skill.xmlName)) {
-            setSkillsSelected((prev) => prev - 1)
-            setCommonSkillsSelected((prev) => prev - 1)
             crewDispatch({
                type: 'REMOVE_APPLIED_CREW_MODIFIER',
                payload: skill.xmlName,
             })
          } else {
-            setSkillsSelected((prev) => prev + 1)
-            setCommonSkillsSelected((prev) => prev + 1)
             crewDispatch({
                type: 'SET_APPLIED_CREW_MODIFIER',
                payload: {
@@ -45,7 +35,7 @@ export default function useHandleClick(
       }
       switch (role) {
          case 'common':
-            SetCommonSkills(skill, selectedSkills, setSkillsSelected, setCommonSkillsSelected, crewDispatch)
+            SetCommonSkills(skill, selectedSkills, crewDispatch)
             break
          case 'commander':
             if (selectedSkills.includes(skill.xmlName)) {
@@ -59,7 +49,6 @@ export default function useHandleClick(
              * In this case commander has secondaryRole
              */
             if (commander.secondaryRole.includes(role)) {
-               setIsSecondarySkill(true)
                if (selectedSkills.includes(skill.xmlName)) {
                   removeAppliedCrewSkill(skill.xmlName, 'commander')
                   return
@@ -80,7 +69,6 @@ export default function useHandleClick(
              * in this case the role is a SECONDARY one e.g: T100LT Commader -> radioman
              */
             if (secondarySkill !== undefined) {
-               setIsSecondarySkill(true)
                if (selectedSkills.includes(skill.xmlName)) {
                   removeAppliedCrewSkill(skill.xmlName, secondarySkill.primaryRole)
                   return
@@ -102,5 +90,5 @@ export default function useHandleClick(
       }
    }
 
-   return { handleClick, skillsSelected, isSecondarySkill }
+   return { handleClick }
 }
